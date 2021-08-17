@@ -1,16 +1,16 @@
 # gotenberg.dev
 
-Repository of the Gotenberg documentation.
+This is the source of the official [Gotenberg website](https://gotenberg.dev).
 
 ## Installation
 
-```console
+```bash
 npm install
 ```
 
 ## Local Development
 
-```console
+```bash
 npm start
 ```
 
@@ -18,7 +18,7 @@ This command starts a local development server and opens up a browser window. Mo
 
 ## Prettier
 
-```console
+```bash
 npx prettier --write .
 ```
 
