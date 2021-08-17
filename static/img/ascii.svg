@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="344" height="96"><style>line, path, circle,rect,polygon {
+                          stroke: white;
+                          stroke-width: 2;
+                          stroke-opacity: 1;
+                          fill-opacity: 1;
+                          stroke-linecap: round;
+                          stroke-linejoin: miter;
+                        }
+
+                    text {
+                        /* This fix the spacing bug in svg text*/
+                        white-space: pre;
+                        fill: white;
+                        }
+                        rect.backdrop{
+                            stroke: none;
+                            fill: #20232a;
+                        }
+                        .broken{
+                            stroke-dasharray: 8;
+                        }
+                        .filled{
+                            fill: white;
+                        }
+                        .bg_filled{
+                            fill: #20232a;
+                        }
+                        .nofill{
+                            fill: #20232a;
+                        }
+
+                        text {
+                         font-family: monospace;
+                         font-size: 14px;
+                        }
+
+                        .end_marked_arrow{
+                            marker-end: url(#arrow);
+                         }
+                        .start_marked_arrow{
+                            marker-start: url(#arrow);
+                         }
+
+                        .end_marked_diamond{
+                            marker-end: url(#diamond);
+                         }
+                        .start_marked_diamond{
+                            marker-start: url(#diamond);
+                         }
+
+                        .end_marked_circle{
+                            marker-end: url(#circle);
+                         }
+                        .start_marked_circle{
+                            marker-start: url(#circle);
+                         }
+
+                        .end_marked_open_circle{
+                            marker-end: url(#open_circle);
+                         }
+                        .start_marked_open_circle{
+                            marker-start: url(#open_circle);
+                         }
+
+                        .end_marked_big_open_circle{
+                            marker-end: url(#big_open_circle);
+                         }
+                        .start_marked_big_open_circle{
+                            marker-start: url(#big_open_circle);
+                         }
+
+                         
+                        </style><defs><marker id="arrow" viewBox="-2 -2 8 8" refX="4" refY="2" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><polygon points="0,0 0,4 4,2 0,0"></polygon></marker><marker id="diamond" viewBox="-2 -2 8 8" refX="4" refY="2" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><polygon points="0,2 2,0 4,2 2,4 0,2"></polygon></marker><marker id="circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><circle cx="4" cy="4" r="2" class="filled"></circle></marker><marker id="open_circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><circle cx="4" cy="4" r="2" class="bg_filled"></circle></marker><marker id="big_open_circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><circle cx="4" cy="4" r="3" class="bg_filled"></circle></marker></defs><rect class="backdrop" x="0" y="0" width="344" height="96"></rect><line x1="56" y1="48" x2="64" y2="48" class="solid"></line><line x1="128" y1="40" x2="136" y2="40" class="solid"></line><line x1="200" y1="48" x2="208" y2="48" class="solid"></line><line x1="240" y1="40" x2="248" y2="40" class="solid"></line><line x1="304" y1="48" x2="312" y2="48" class="solid"></line><text x="322" y="44" >'</text><text x="194" y="60" >.</text><text x="306" y="60" >,</text><g><line x1="16" y1="16" x2="56" y2="16" class="solid"></line><line x1="16" y1="16" x2="0" y2="48" class="solid"></line><line x1="56" y1="16" x2="32" y2="64" class="solid"></line><line x1="0" y1="48" x2="8" y2="64" class="solid"></line><line x1="8" y1="64" x2="32" y2="64" class="solid"></line><line x1="40" y1="48" x2="48" y2="64" class="solid"></line><line x1="96" y1="16" x2="112" y2="16" class="solid"></line><line x1="96" y1="16" x2="72" y2="64" class="solid"></line><line x1="112" y1="16" x2="104" y2="32" class="solid"></line><line x1="104" y1="32" x2="144" y2="32" class="solid"></line><line x1="48" y1="64" x2="72" y2="64" class="solid"></line><line x1="96" y1="48" x2="112" y2="48" class="solid"></line><line x1="120" y1="32" x2="104" y2="64" class="solid"></line><line x1="88" y1="64" x2="104" y2="64" class="solid"></line><line x1="112" y1="48" x2="120" y2="64" class="solid"></line><line x1="120" y1="64" x2="152" y2="64" class="solid"></line><line x1="136" y1="48" x2="144" y2="48" class="solid"></line><path d="M 144,32 A 16,16 0,0,1 144,48" class="nofill"></path><line x1="144" y1="48" x2="136" y2="64" class="solid"></line><line x1="160" y1="48" x2="168" y2="48" class="solid"></line><line x1="160" y1="48" x2="152" y2="64" class="solid"></line><line x1="168" y1="48" x2="160" y2="64" class="solid"></line><line x1="160" y1="64" x2="192" y2="64" class="solid"></line><line x1="200" y1="16" x2="216" y2="16" class="solid"></line><line x1="200" y1="16" x2="176" y2="64" class="solid"></line><line x1="216" y1="16" x2="208" y2="32" class="solid"></line><line x1="152" y1="32" x2="176" y2="32" class="solid"></line><line x1="176" y1="32" x2="184" y2="48" class="solid"></line><line x1="24" y1="32" x2="72" y2="32" class="solid"></line><path d="M 24,32 A 16,16 0,0,0 24,48" class="nofill"></path><line x1="24" y1="48" x2="32" y2="48" class="solid"></line><line x1="72" y1="32" x2="88" y2="64" class="solid"></line></g><g><line x1="232" y1="32" x2="256" y2="32" class="solid"></line><line x1="232" y1="32" x2="216" y2="64" class="solid"></line><line x1="200" y1="64" x2="216" y2="64" class="solid"></line><line x1="248" y1="48" x2="256" y2="48" class="solid"></line><path d="M 256,32 A 16,16 0,0,1 256,48" class="nofill"></path><line x1="256" y1="48" x2="248" y2="64" class="solid"></line><line x1="216" y1="32" x2="232" y2="64" class="solid"></line><line x1="232" y1="64" x2="264" y2="64" class="solid"></line><line x1="264" y1="32" x2="320" y2="32" class="solid"></line><line x1="272" y1="48" x2="288" y2="48" class="solid"></line><line x1="296" y1="32" x2="288" y2="48" class="solid"></line><line x1="272" y1="48" x2="264" y2="64" class="solid"></line><line x1="288" y1="48" x2="296" y2="64" class="solid"></line><line x1="296" y1="64" x2="304" y2="64" class="solid"></line></g><g><line x1="328" y1="32" x2="336" y2="32" class="solid"></line><line x1="336" y1="32" x2="312" y2="80" class="solid"></line><line x1="288" y1="64" x2="280" y2="80" class="solid"></line><line x1="280" y1="80" x2="312" y2="80" class="solid"></line></g></svg>

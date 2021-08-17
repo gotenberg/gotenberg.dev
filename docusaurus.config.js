@@ -1,107 +1,224 @@
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+const lightCodeTheme = require("prism-react-renderer/themes/github");
+const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
-  title: 'My Site',
-  tagline: 'Dinosaurs are cool',
-  url: 'https://your-docusaurus-test-site.com',
-  baseUrl: '/',
-  onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/favicon.ico',
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  title: "Gotenberg",
+  tagline: "A Docker-powered stateless API for PDF files",
+  url: "https://gotenberg.dev",
+  baseUrl: "/",
+  onBrokenLinks: "throw",
+  onBrokenMarkdownLinks: "warn",
+  favicon: "img/favicon.ico",
+  organizationName: "gotenberg",
+  projectName: "gotenberg.dev",
   themeConfig: {
+    announcementBar: {
+      id: "supportus",
+      content: `⭐️  &nbsp; If you like Gotenberg, give it a star on <a target="_blank" rel="noopener noreferrer" href="https://github.com/gotenberg/gotenberg">GitHub</a>! ⭐️`,
+    },
     navbar: {
-      title: 'My Site',
+      title: "Gotenberg",
       logo: {
-        alt: 'My Site Logo',
-        src: 'img/logo.svg',
+        alt: "Gotenberg Logo",
+        src: "img/logo.png",
       },
+      hideOnScroll: true,
       items: [
         {
-          type: 'doc',
-          docId: 'intro',
-          position: 'left',
-          label: 'Tutorial',
+          type: "dropdown",
+          position: "left",
+          label: "Get Started",
+          items: [
+            {
+              type: "doc",
+              docId: "intro",
+              label: "Docker",
+            },
+            {
+              type: "doc",
+              docId: "intro",
+              label: "Docker Compose",
+            },
+            {
+              type: "doc",
+              docId: "intro",
+              label: "Kubernetes",
+            },
+            {
+              type: "doc",
+              docId: "intro",
+              label: "Cloud Run",
+            },
+          ],
         },
-        {to: '/blog', label: 'Blog', position: 'left'},
         {
-          href: 'https://github.com/facebook/docusaurus',
-          label: 'GitHub',
-          position: 'right',
+          type: "dropdown",
+          position: "left",
+          label: "Modules",
+          items: [
+            {
+              type: "doc",
+              docId: "intro",
+              label: "API",
+            },
+            {
+              type: "doc",
+              docId: "intro",
+              label: "Chromium",
+            },
+            {
+              type: "doc",
+              docId: "intro",
+              label: "LibreOffice",
+            },
+            {
+              type: "doc",
+              docId: "intro",
+              label: "PDF Engines",
+            },
+            {
+              type: "doc",
+              docId: "intro",
+              label: "Logger",
+            },
+          ],
+        },
+        {
+          type: "doc",
+          docId: "intro",
+          label: "Documentation",
+          position: "left",
+        },
+        {
+          type: "docsVersionDropdown",
+          position: "right",
+        },
+        {
+          href: "https://github.com/gotenberg/gotenberg",
+          label: "OpenAPI",
+          position: "right",
+        },
+        {
+          href: "https://github.com/gotenberg/gotenberg",
+          label: "GitHub",
+          position: "right",
         },
       ],
     },
     footer: {
-      style: 'dark',
+      style: "dark",
+      logo: {
+        alt: "Gotenberg Footer Logo",
+        src: "img/logo.png",
+        href: "https://github.com/gotenberg",
+      },
       links: [
         {
-          title: 'Docs',
+          title: "Get Started",
           items: [
             {
-              label: 'Tutorial',
-              to: '/docs/intro',
+              label: "Docker",
+              to: "/docs/intro",
+            },
+            {
+              label: "Docker Compose",
+              to: "/docs/intro",
+            },
+            {
+              label: "Kubernetes",
+              to: "/docs/intro",
+            },
+            {
+              label: "Cloud Run",
+              to: "/docs/intro",
             },
           ],
         },
         {
-          title: 'Community',
+          title: "Modules",
           items: [
             {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+              label: "API",
+              to: "/docs/intro",
             },
             {
-              label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
+              label: "Chromium",
+              to: "/docs/intro",
             },
             {
-              label: 'Twitter',
-              href: 'https://twitter.com/docusaurus',
+              label: "LibreOffice",
+              to: "/docs/intro",
+            },
+            {
+              label: "PDF Engines",
+              to: "/docs/intro",
+            },
+            {
+              label: "Logger",
+              to: "/docs/intro",
             },
           ],
         },
         {
-          title: 'More',
+          title: "More",
           items: [
             {
-              label: 'Blog',
-              to: '/blog',
+              label: "GitHub",
+              href: "https://github.com/gotenberg/gotenberg",
             },
             {
-              label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
+              label: "OpenAPI",
+              href: "https://github.com/gotenberg/gotenberg",
+            },
+            {
+              label: "TheCodingMachine",
+              href: "https://www.thecodingmachine.com/",
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Gotenberg, Inc.<br /> Built with <a href="docusaurus.io" target="_blank">Docusaurus</a>.`,
     },
     prism: {
       theme: lightCodeTheme,
-      darkTheme: darkCodeTheme,
+    },
+    colorMode: {
+      // "light" | "dark"
+      defaultMode: "light",
+
+      // Hides the switch in the navbar
+      // Useful if you want to support a single color mode
+      disableSwitch: true,
+
+      // Should we use the prefers-color-scheme media-query,
+      // using user system preferences, instead of the hardcoded defaultMode
+      respectPrefersColorScheme: false,
     },
   },
   presets: [
     [
-      '@docusaurus/preset-classic',
+      "@docusaurus/preset-classic",
       {
         docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
-          // Please change this to your repo.
-          editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/',
-        },
-        blog: {
-          showReadingTime: true,
-          // Please change this to your repo.
-          editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/blog/',
+          sidebarPath: require.resolve("./sidebars.js"),
+          editUrl: "https://github.com/gotenberg/gotenberg.dev/edit/main/",
+          lastVersion: "current",
+          versions: {
+            current: {
+              label: "7.x",
+              path: "",
+              banner: "none"
+            },
+            "6.x": {
+              label: "6.x",
+              path: "6.x",
+              banner: "unmaintained",
+            },
+          },
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: require.resolve("./src/css/custom.css"),
         },
       },
     ],
