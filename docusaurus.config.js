@@ -14,7 +14,7 @@ module.exports = {
   projectName: "gotenberg.dev",
   themeConfig: {
     announcementBar: {
-      id: "supportus",
+      id: "support_us",
       content: `⭐️  &nbsp; If you like Gotenberg, give it a star on <a target="_blank" rel="noopener noreferrer" href="https://github.com/gotenberg/gotenberg">GitHub</a>! ⭐️`,
     },
     navbar: {
@@ -26,72 +26,13 @@ module.exports = {
       hideOnScroll: true,
       items: [
         {
-          type: "dropdown",
-          position: "left",
-          label: "Get Started",
-          items: [
-            {
-              type: "doc",
-              docId: "intro",
-              label: "Docker",
-            },
-            {
-              type: "doc",
-              docId: "intro",
-              label: "Docker Compose",
-            },
-            {
-              type: "doc",
-              docId: "intro",
-              label: "Kubernetes",
-            },
-            {
-              type: "doc",
-              docId: "intro",
-              label: "Cloud Run",
-            },
-          ],
-        },
-        {
-          type: "dropdown",
-          position: "left",
-          label: "Modules",
-          items: [
-            {
-              type: "doc",
-              docId: "intro",
-              label: "API",
-            },
-            {
-              type: "doc",
-              docId: "intro",
-              label: "Chromium",
-            },
-            {
-              type: "doc",
-              docId: "intro",
-              label: "LibreOffice",
-            },
-            {
-              type: "doc",
-              docId: "intro",
-              label: "PDF Engines",
-            },
-            {
-              type: "doc",
-              docId: "intro",
-              label: "Logger",
-            },
-          ],
-        },
-        {
           type: "doc",
-          docId: "intro",
           label: "Documentation",
-          position: "left",
+          docId: "intro"
         },
         {
-          type: "docsVersionDropdown",
+          label: "Version 6.x",
+          to: "/docs/6.x/introduction",
           position: "right",
         },
         {
@@ -115,48 +56,23 @@ module.exports = {
       },
       links: [
         {
-          title: "Get Started",
+          title: "Documentation",
           items: [
             {
-              label: "Docker",
+              label: "Get Started",
               to: "/docs/intro",
             },
             {
-              label: "Docker Compose",
+              label: "Modules",
               to: "/docs/intro",
             },
             {
-              label: "Kubernetes",
+              label: "Customize",
               to: "/docs/intro",
             },
             {
-              label: "Cloud Run",
-              to: "/docs/intro",
-            },
-          ],
-        },
-        {
-          title: "Modules",
-          items: [
-            {
-              label: "API",
-              to: "/docs/intro",
-            },
-            {
-              label: "Chromium",
-              to: "/docs/intro",
-            },
-            {
-              label: "LibreOffice",
-              to: "/docs/intro",
-            },
-            {
-              label: "PDF Engines",
-              to: "/docs/intro",
-            },
-            {
-              label: "Logger",
-              to: "/docs/intro",
+              label: "Version 6.x",
+              to: "/docs/6.x/introduction",
             },
           ],
         },
@@ -164,13 +80,18 @@ module.exports = {
           title: "More",
           items: [
             {
-              label: "GitHub",
-              href: "https://github.com/gotenberg/gotenberg",
-            },
-            {
               label: "OpenAPI",
               href: "https://github.com/gotenberg/gotenberg",
             },
+            {
+              label: "GitHub",
+              href: "https://github.com/gotenberg/gotenberg",
+            },
+          ],
+        },
+        {
+          title: "Sponsors",
+          items: [
             {
               label: "TheCodingMachine",
               href: "https://www.thecodingmachine.com/",
@@ -182,6 +103,7 @@ module.exports = {
     },
     prism: {
       theme: lightCodeTheme,
+      additionalLanguages: ['docker', 'php'],
     },
     colorMode: {
       // "light" | "dark"
@@ -208,7 +130,6 @@ module.exports = {
             current: {
               label: "7.x",
               path: "",
-              banner: "none"
             },
             "6.x": {
               label: "6.x",

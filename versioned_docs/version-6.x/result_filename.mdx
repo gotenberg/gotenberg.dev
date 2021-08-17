@@ -1,0 +1,70 @@
+---
+id: result_filename
+title: Result Filename
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+All endpoints accept a form field named `resultFilename`.
+
+If provided, the API will return the resulting PDF file with the given filename.
+Otherwise a random filename is used.
+
+:::caution
+
+This feature does not work if the form field `webhookURL` is given.
+
+:::
+
+## Examples
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+{ label: 'Go', value: 'go', },
+{ label: 'PHP', value: 'php', },
+]
+}>
+<TabItem value="curl">
+
+```bash
+curl --request POST \
+     --url http://localhost:3000/convert/html \
+     --header 'Content-Type: multipart/form-data' \
+     --form files=@index.html \
+     --form resultFilename='foo.pdf'
+```
+
+</TabItem>
+<TabItem value="go">
+
+```go
+import "github.com/thecodingmachine/gotenberg-go-client/v7"
+
+c := &gotenberg.Client{Hostname: "http://localhost:3000"}
+index, _ := gotenberg.NewDocumentFromPath("index.html", "/path/to/file")
+req := gotenberg.NewHTMLRequest(index)
+req.ResultFilename("foo.pdf")
+resp, _ := c.Post(req)
+```
+
+</TabItem>
+<TabItem value="php">
+
+```php
+use TheCodingMachine\Gotenberg\Client;
+use TheCodingMachine\Gotenberg\DocumentFactory;
+use TheCodingMachine\Gotenberg\HTMLRequest;
+use TheCodingMachine\Gotenberg\Request;
+
+$client = new Client('http://localhost:3000', new \Http\Adapter\Guzzle6\Client());
+$index = DocumentFactory::makeFromPath('index.html', '/path/to/file');
+$request = new HTMLRequest($index);
+$request->setResultFilename('foo.pdf');
+$resp = $client->post($request);
+```
+
+</TabItem>
+</Tabs>
