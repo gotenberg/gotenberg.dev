@@ -1,5 +1,4 @@
 const lightCodeTheme = require("prism-react-renderer/themes/github");
-const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
@@ -15,7 +14,7 @@ module.exports = {
   themeConfig: {
     announcementBar: {
       id: "support_us",
-      content: `⭐️  &nbsp; If you like Gotenberg, give it a star on <a target="_blank" rel="noopener noreferrer" href="https://github.com/gotenberg/gotenberg">GitHub</a>! ⭐️`,
+      content: `⭐️  &nbsp; If you like Gotenberg, give it a star on <a target="_blank" rel="noopener noreferrer" href="https://github.com/gotenberg/gotenberg">GitHub</a>! &nbsp; ⭐️`,
     },
     navbar: {
       title: "Gotenberg",
@@ -28,7 +27,7 @@ module.exports = {
         {
           type: "doc",
           label: "Documentation",
-          docId: "intro"
+          docId: "overview",
         },
         {
           label: "Version 6.x",
@@ -60,15 +59,15 @@ module.exports = {
           items: [
             {
               label: "Get Started",
-              to: "/docs/intro",
+              to: "/docs/get-started/docker",
             },
             {
               label: "Modules",
-              to: "/docs/intro",
+              to: "/docs/modules/api",
             },
             {
               label: "Customize",
-              to: "/docs/intro",
+              to: "/docs/customize/ownership",
             },
             {
               label: "Version 6.x",
@@ -94,16 +93,16 @@ module.exports = {
           items: [
             {
               label: "TheCodingMachine",
-              href: "https://www.thecodingmachine.com/",
+              href: "https://www.thecodingmachine.com",
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Gotenberg, Inc.<br /> Built with <a href="docusaurus.io" target="_blank">Docusaurus</a>.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Gotenberg, Inc.<br /> Built with <a href="https://docusaurus.io" target="_blank">Docusaurus</a>.`,
     },
     prism: {
       theme: lightCodeTheme,
-      additionalLanguages: ['docker', 'php'],
+      additionalLanguages: ["docker", "php"],
     },
     colorMode: {
       // "light" | "dark"

@@ -45,12 +45,12 @@ html[data-theme="dark"] .docusaurus-highlight-code-line {
 
 .footer--dark {
   --ifm-footer-background-color: #20232a;
-  --ifm-footer-padding-vertical: 85px;
+  --ifm-footer-padding-vertical: 5rem;
 }
 
 .footer__logo {
-  width: 98px;
-  height: 98px;
+  width: 6.125rem;
+  height: 6.125rem;
 }
 
 .footer__copyright {

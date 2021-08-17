@@ -63,7 +63,7 @@ const ModuleList = [
           </p>
           <Link
             className="button button--secondary button--lg margin-bottom--lg"
-            to="/docs/intro"
+            to="/docs/modules/api"
           >
             Learn More
           </Link>
