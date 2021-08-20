@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./Hero.module.css";
 import clsx from "clsx";
 import Link from "@docusaurus/Link";
+import Logo from "../../static/img/logo_jed.png";
 
 export default function Hero() {
   return (
@@ -33,25 +34,13 @@ export default function Hero() {
               />{" "}
               <span className={styles.githubButtonText}>GitHub</span>
             </Link>
-            <p className="padding-top--md highlight">
+            <p className="padding-top--md">
               Available on both <strong>amd64</strong> and{" "}
               <strong>arm64</strong> architectures
             </p>
           </div>
           <div className="col col--6">
-            <div className={styles.outer}>
-              <span className={clsx(styles.dot, styles.red)} />
-              <span className={clsx(styles.dot, styles.amber)} />
-              <span className={clsx(styles.dot, styles.green)} />
-              <div className={styles.innerAsciiLogo}>
-                <img src="img/ascii.svg" alt="ASCII logo" />
-              </div>
-              <div className={styles.inner}>
-                <span className={styles.command}>
-                  $ docker run --rm -p 3000:3000 gotenberg/gotenberg:7
-                </span>
-              </div>
-            </div>
+            <img className={styles.logo} src={Logo} alt="Gotenberg Hero Logo" />
           </div>
         </div>
       </div>

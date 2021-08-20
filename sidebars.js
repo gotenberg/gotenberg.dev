@@ -13,8 +13,8 @@ module.exports = {
   "version-7.x": [
     {
       type: "doc",
-      id: "overview",
-      label: "Overview",
+      id: "about",
+      label: "About",
     },
     {
       type: "category",
@@ -34,7 +34,8 @@ module.exports = {
         "modules/chromium",
         "modules/libreoffice",
         "modules/pdf-engines",
-        "modules/logger",
+        "modules/logging",
+        "modules/more",
       ],
     },
     {
@@ -42,7 +43,8 @@ module.exports = {
       label: "Customize",
       items: [
         "customize/ownership",
-        "customize/fonts"
+        "customize/fonts",
+        "customize/new-modules",
       ],
     },
   ],

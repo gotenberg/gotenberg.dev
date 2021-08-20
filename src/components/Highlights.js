@@ -19,8 +19,8 @@ curl \\
 const LibreOfficeExample = `
 curl \\
 --request POST 'http://localhost:3000/forms/libreoffice/convert' \\
---form 'word=@"/path/to/file.docx"' \\
---form 'excel=@"/path/to/file.xlsx"' \\
+--form 'files=@"/path/to/file.docx"' \\
+--form 'files=@"/path/to/file.xlsx"' \\
 --form 'merge="true"' \\
 --form 'pdfFormat="PDF/A-1a"' \\
 -o my.pdf
@@ -29,10 +29,10 @@ curl \\
 const PDFEnginesExample = `
 curl \\
 --request POST 'http://localhost:3000/forms/pdfengines/merge' \\
---form 'pdf1=@"/path/to/file1.pdf"' \\
---form 'pdf2=@"/path/to/file2.pdf"' \\
---form 'pdf3=@"/path/to/file3.pdf"' \\
---form 'pdf4=@"/path/to/file4.pdf"' \\
+--form 'files=@"/path/to/file1.pdf"' \\
+--form 'files=@"/path/to/file2.pdf"' \\
+--form 'files=@"/path/to/file3.pdf"' \\
+--form 'files=@"/path/to/file4.pdf"' \\
 -o my.pdf
 `;
 
@@ -154,7 +154,7 @@ function Async() {
 }
 
 const RunExample = `
-docker run --rm -p 80:80 gotenberg/gotenberg:7 gotenberg --api-port=80 --api-process-timeout=10s --libreoffice-disable-routes=true --log-level=debug
+docker run --rm -p 80:80 gotenberg/gotenberg:7 gotenberg --api-port=80 --api-process-timeout=10s --libreoffice-disable-routes --log-level=debug
 `;
 
 function Platform() {
@@ -173,8 +173,7 @@ function Platform() {
             <div className="text--center">
               <p>
                 Gotenberg is a platform composed of modules; each module has
-                options, allowing you to customize your instances to your
-                flavor.
+                properties you may customize to your flavor.
               </p>
               <CodeBlock children={RunExample} />
             </div>

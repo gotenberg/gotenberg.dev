@@ -8,8 +8,7 @@ export default function Pulls() {
         <div className="row">
           <div className="col">
             <div className={styles.text}>
-              <span className="highlight">20+ million</span> pulls from Docker
-              Hub ❤️
+              <strong>20+ million</strong> pulls from Docker Hub ❤️
             </div>
           </div>
         </div>

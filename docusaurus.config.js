@@ -27,7 +27,7 @@ module.exports = {
         {
           type: "doc",
           label: "Documentation",
-          docId: "overview",
+          docId: "about",
         },
         {
           label: "Version 6.x",
@@ -78,6 +78,10 @@ module.exports = {
         {
           title: "More",
           items: [
+            {
+              label: "Follow @gulnap on twitter",
+              href: "https://twitter.com/gulnap",
+            },
             {
               label: "OpenAPI",
               href: "https://github.com/gotenberg/gotenberg",

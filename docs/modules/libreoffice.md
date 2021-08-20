@@ -1,4 +1,0 @@
----
-id: libreoffice
-title: LibreOffice
----

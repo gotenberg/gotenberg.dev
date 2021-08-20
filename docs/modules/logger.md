@@ -1,4 +1,0 @@
----
-id: logger
-title: Logger
----

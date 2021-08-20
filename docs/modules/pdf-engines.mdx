@@ -1,0 +1,125 @@
+---
+id: pdf-engines
+title: PDF Engines
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+The PDF Engines module gathers all engines that can manipulate PDF files.
+
+:::info
+
+It calls each engine until one successfully handles a task.
+
+:::
+
+## Properties
+
+```
+--pdfengines-engines        strings  Set the PDF engines - all by default
+--pdfengines-disable-routes bool     Disable the routes
+```
+
+## Routes
+
+Each route accepts `multipart/form-data` requests.
+
+### Merge
+
+`POST /forms/pdfengines/merge`
+
+This route accepts PDF files and merges them alphabetically.
+
+For instance:
+
+```bash {3-6}
+curl \
+--request POST 'http://localhost:3000/forms/pdfengines/merge' \
+--form 'files=@"/path/to/pdf1.pdf"' \
+--form 'files=@"/path/to/pdf2.pdf"' \
+--form 'files=@"/path/to/pdf3.pdf"' \
+--form 'files=@"/path/to/pdf4.pdf"' \
+-o my.pdf
+```
+
+<Tabs
+defaultValue="pdf_format"
+values={[
+{ label: 'PDF Format', value: 'pdf_format', },
+]
+}>
+<TabItem value="pdf_format">
+
+```
+pdfFormat string  The PDF format of the resulting PDF
+```
+
+For instance:
+
+```bash {7}
+curl \
+--request POST 'http://localhost:3000/forms/pdfengines/merge' \
+--form 'files=@"/path/to/pdf1.pdf"' \
+--form 'files=@"/path/to/pdf2.pdf"' \
+--form 'files=@"/path/to/pdf3.pdf"' \
+--form 'files=@"/path/to/pdf4.pdf"' \
+--form 'pdfFormat="PDF/A-1a"' \
+-o my.pdf
+```
+
+:::info
+
+After a merge, the PDF engines will convert the resulting PDF to a specific format.
+
+Check the available PDF formats:
+
+* [PDFtk](pdf-engines#pdftk)
+* [PDFcpu](pdf-engines#pdfcpu)
+* [unoconv](pdf-engines#unoconv)
+
+:::
+</TabItem>
+</Tabs>
+
+### Convert
+
+`POST /forms/pdfengines/convert`
+
+This route accepts PDF files and a form field `pdfFormat` for converting them into the specified format.
+
+For instance:
+
+```bash {7-8}
+curl \
+--request POST 'http://localhost:3000/forms/pdfengines/convert' \
+--form 'files=@"/path/to/pdf1.pdf"' \
+--form 'files=@"/path/to/pdf2.pdf"' \
+--form 'files=@"/path/to/pdf3.pdf"' \
+--form 'files=@"/path/to/pdf4.pdf"' \
+--form 'pdfFormat="PDF/A-1a"' \
+-o my.zip
+```
+
+## Engines
+
+### PDFtk
+
+This engine uses [PDFtk](https://gitlab.com/pdftk-java/pdftk)- give it a star ⭐️
+
+* ✅ Merge
+* ❌ Convert
+
+### PDFcpu
+
+This engine uses [PDFcpu](https://github.com/pdfcpu/pdfcpu) - give it a star ⭐️
+
+* ✅ Merge
+* ❌ Convert
+
+### unoconv
+
+This engine uses [unoconv](https://github.com/unoconv/unoconv) - give it a star ⭐️
+
+* ❌ Merge
+* ✅ Convert (format `PDF/A-1a`)

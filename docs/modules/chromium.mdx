@@ -1,0 +1,405 @@
+---
+id: chromium
+title: Chromium
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+The Chromium module interacts with the Chromium browser to convert HTML documents to PDF.
+
+:::info
+
+It starts a dedicated Chromium instance for each request.
+
+:::
+
+## Properties
+
+```
+--chromium-allow-list                string  Set the allowed URLs for Chromium using a regular expression
+--chromium-deny-list                 string  Set the denied URLs for Chromium using a regular expression
+--chromium-user-agent                string  Override the default User-Agent header
+--chromium-ignore-certificate-errors bool    Ignore the certificate errors
+--chromium-incognito                 bool    Start Chromium with incognito mode
+--chromium-disable-routes            bool    Disable the routes
+```
+
+## Routes
+
+Each route accepts `multipart/form-data` requests.
+
+They share the following form fields:
+
+<Tabs
+defaultValue="paper_props"
+values={[
+{ label: 'Paper Properties', value: 'paper_props', },
+{ label: 'Header & Footer', value: 'header_footer', },
+{ label: 'JavaScript', value: 'javascript', },
+{ label: 'Extra HTTP Headers', value: 'extra_http_headers', },
+{ label: 'Page Ranges', value: 'page_ranges', },
+{ label: 'PDF Format', value: 'pdf_format', },
+]
+}>
+<TabItem value="paper_props">
+
+```
+paperWidth        float  Paper width, in inches (default 8.5)
+paperHeight       float  Paper height, in inches (default 11)
+marginTop         float  Top margin, in inches (default 0.39)
+marginBottom      float  Bottom margin, in inches (default 0.39)
+marginLeft        float  Left margin, in inches (default 0.39)
+marginRight       float  Right margin, in inches (default 0.39)
+preferCssPageSize bool   Define whether to prefer page size as defined by CSS (default false)
+printBackground   bool   Print the background graphics (default false)
+landscape         bool   Set the paper orientation to landscape (default false)
+scale             float  The scale of the page rendering (default 1.0)
+```
+
+For instance:
+
+```bash {4-13}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/url' \
+--form 'url="https://my.url"' \
+--form 'paperWidth="8.27"' \
+--form 'paperHeight="11.69"' \
+--form 'marginTop="1"' \
+--form 'marginBottom="1"' \
+--form 'marginLeft="1"' \
+--form 'marginRight="1"' \
+--form 'preferCssPageSize="false"' \
+--form 'printBackground="true"' \
+--form 'landscape="true"' \
+--form 'scale="2.0"' \
+-o my.pdf
+```
+
+</TabItem>
+<TabItem value="header_footer">
+
+Each route accepts files named `header.html` and `footer.html`.
+
+For instance:
+
+```bash {4-5}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/url' \
+--form 'url="https://my.url"' \
+--form 'files=@"/path/to/header.html"' \
+--form 'files=@"/path/to/footer.html"' \
+-o my.pdf
+```
+
+Each of them has to be a **complete HTML document**:
+
+```html
+<html>
+<head>
+    <style>
+    body {
+        font-size: 8rem;
+        margin: 4rem auto;
+    }
+    </style>
+</head>
+<body>
+<p><span class="pageNumber"></span> of <span class="totalPages"></span></p>
+</body>
+</html>
+```
+
+:::tip
+
+The following classes allow you to inject printing values:
+
+* `date` - formatted print date.
+* `title` - document title.
+* `url` - document location.
+* `pageNumber` - current page number.
+* `totalPage` - total pages in the document.
+
+:::
+
+:::caution
+
+Make sure that:
+
+1. Margins top and bottom are large enough.
+2. The font size is big enough.
+
+:::
+
+:::caution
+
+There are some limitations:
+
+* No JavaScript.
+* The CSS properties are independent of the ones from the HTML document.
+* `footer.html` CSS properties override the ones from `header.html`.
+* Only fonts installed in the Docker image are loaded - see the [Fonts](../customize/fonts) chapter.
+* Images only work using a base64 encoded source - i.e., `data:image/png;base64, iVBORw0K...`.
+* `background-color` and `color` CSS properties require an additional `-webkit-print-color-adjust: exact` CSS property in order to work.
+* Assets are not loaded - see [HTML](#html) or [Markdown](#markdown) routes.
+
+:::
+
+</TabItem>
+<TabItem value="javascript">
+
+```
+waitDelay        duration  Duration to wait when loading an HTML document before converting it to PDF
+waitWindowStatus string    The window.status value to wait for before converting an HTML document to PDF
+```
+
+`waitDelay`
+
+When the page relies on JavaScript for rendering, and you don't have access to the page's code, you may want to wait a
+certain amount of time to make sure Chromium has fully rendered the page you're trying to generate.
+
+For instance:
+
+```bash {4}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/url' \
+--form 'url="https://my.url"' \
+--form 'waitDelay="5s"' \
+-o my.pdf
+```
+
+`waitWindowStatus`
+
+If you have access to the page's code, you may set the window status and tell Gotenberg to wait for a specific value.
+
+For instance:
+
+```js
+await promises()
+window.status = 'ready'
+```
+
+```bash {4}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/url' \
+--form 'url="https://my.url"' \
+--form 'waitWindowStatus="ready"' \
+-o my.pdf
+```
+
+:::tip
+
+Prefer this option over `waitDelay`.
+
+:::
+
+</TabItem>
+<TabItem value="extra_http_headers">
+
+```
+extraHttpHeaders string  HTTP headers to send by Chromium while loading the HTML document (JSON format)
+```
+
+For instance:
+
+```bash {4}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/url' \
+--form 'url="https://my.url"' \
+--form 'extraHttpHeaders="{\"MyHeader\": \"MyValue\"}"' \
+-o my.pdf
+```
+
+</TabItem>
+<TabItem value="page_ranges">
+
+```
+nativePageRanges string  Page ranges to print, e.g., '1-5, 8, 11-13' - empty means all pages
+```
+
+For instance:
+
+```bash {4}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/url' \
+--form 'url="https://my.url"' \
+--form 'nativePageRanges="1-5"' \
+-o my.pdf
+```
+
+</TabItem>
+<TabItem value="pdf_format">
+
+```
+pdfFormat string  The PDF format of the resulting PDF
+```
+
+For instance:
+
+```bash {4}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/url' \
+--form 'url="https://my.url"' \
+--form 'pdfFormat="PDF/A-1a"' \
+-o my.pdf
+```
+
+:::info
+
+After a Chromium conversion, the PDF engines will convert the resulting PDF to a specific format.
+
+Check the available PDF formats:
+
+* [PDFtk](pdf-engines#pdftk)
+* [PDFcpu](pdf-engines#pdfcpu)
+* [unoconv](pdf-engines#unoconv)
+
+:::
+
+</TabItem>
+</Tabs>
+
+### URL
+
+`POST /forms/chromium/convert/url`
+
+This route accepts a form field `url` with the URL of the page you want to convert to PDF.
+
+For instance:
+
+```bash {3}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/url' \
+--form 'url="https://my.url"' \
+--form 'marginTop="0"' \
+--form 'marginBottom="0"' \
+--form 'marginLeft="0"' \
+--form 'marginRight="0"' \
+-o my.pdf
+```
+
+:::tip
+
+When converting a website to PDF, you should remove all margins. If not, the resulting PDF might not contain all
+content from the page.
+
+:::
+
+### HTML
+
+`POST /forms/chromium/convert/html`
+
+This route accepts a file named `index.html`.
+
+For instance:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>My PDF</title>
+  </head>
+  <body>
+    <h1>Hello world!</h1>
+  </body>
+</html>
+```
+
+```bash {3}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/html' \
+--form 'files=@"/path/to/index.html"' \
+-o my.pdf
+```
+
+---
+
+You may also send additional files, like images, fonts, stylesheets, and so on.
+
+The only requirement is that their paths in the `index.html` file are on the root level.
+
+For instance, this will work:
+
+```html {9}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>My PDF</title>
+  </head>
+  <body>
+    <h1>Hello world!</h1>
+    <img src="img.png" />
+  </body>
+</html>
+```
+But this won't:
+
+```html {9}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>My PDF</title>
+  </head>
+  <body>
+    <h1>Hello world!</h1>
+    <img src="/foo/img.png" />
+  </body>
+</html>
+```
+
+```bash {4-6}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/html' \
+--form 'files=@"/path/to/index.html"' \
+--form 'files=@"/path/to/style.css"' \
+--form 'files=@"/path/to/img.png"' \
+--form 'files=@"/path/to/font.woff"' \
+-o my.pdf
+```
+
+:::tip
+
+Remote paths for images, fonts (e.g., [Google Fonts](https://fonts.google.com/)), etc., works too.
+
+:::
+
+:::info
+
+See the [Fonts](../customize/fonts) chapter if you want to install fonts in the Docker image.
+
+:::
+
+### Markdown
+
+`POST /forms/chromium/convert/markdown`
+
+This route accepts a file named `index.html` plus markdown files.
+
+It works like the [HTML](#html) route but with access to a Go template function `toHTML`. It converts a
+markdown file's content to HTML.
+
+For instance:
+
+```html {8}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>My PDF</title>
+  </head>
+  <body>
+    {{ toHTML "file.md" }}
+  </body>
+</html>
+```
+
+```bash {4}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/markdown' \
+--form 'files=@"/path/to/index.html"' \
+--form 'files=@"/path/to/file.md"' \
+-o my.pdf
+```

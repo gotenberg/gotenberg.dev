@@ -1,0 +1,356 @@
+---
+id: api
+title: API
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+The API module is an HTTP server. Other modules may add `multipart/form-data` routes, middlewares, and health checks.
+
+## Properties
+
+<Tabs
+defaultValue="port"
+values={[
+{ label: 'Port', value: 'port', },
+{ label: 'Timeout', value: 'timeout', },
+{ label: 'Root path', value: 'root_path', },
+{ label: 'Trace', value: 'trace', },
+{ label: 'Health', value: 'health', },
+{ label: 'Webhook', value: 'webhook', },
+]
+}>
+<TabItem value="port">
+
+```
+--api-port int  Set the port on which the API should listen (default 3000)
+```
+
+</TabItem>
+<TabItem value="timeout">
+
+```
+--api-read-timeout    duration  Set the maximum duration allowed to read a complete request, including the body (default 30s)
+--api-process-timeout duration  Set the maximum duration allowed to process a request (default 30s)
+--api-write-timeout   duration  Set the maximum duration before timing out writes of the response (default 30s)
+```
+
+</TabItem>
+<TabItem value="root_path">
+
+```
+--api-root-path string  Set the root path of the API - for service discovery via URL paths (default "/")
+```
+
+</TabItem>
+<TabItem value="trace">
+
+```
+--api-trace-header string  Set the header name to use for identifying requests (default "Gotenberg-Trace")
+```
+
+</TabItem>
+<TabItem value="health">
+
+```
+--api-disable-health-check-logging bool  Disable health check logging
+```
+
+</TabItem>
+<TabItem value="webhook">
+
+```
+--api-webhook-allow-list       string    Set the allowed URLs for the webhook feature using a regular expression
+--api-webhook-deny-list        string    Set the denied URLs for the webhook feature using a regular expression
+--api-webhook-error-allow-list string    Set the allowed URLs in case of an error for the webhook feature using a regular expression
+--api-webhook-error-deny-list  string    Set the denied URLs in case of an error for the webhook feature using a regular expression
+--api-webhook-max-retry        int       Set the maximum number of retries for the webhook feature (default 4)
+--api-webhook-retry-min-wait   duration  Set the minimum duration to wait before trying to call the webhook again (default 1s)
+--api-webhook-retry-max-wait   duration  Set the maximum duration to wait before trying to call the webhook again (default 30s)
+--api-disable-webhook          bool      Disable the webhook feature
+```
+
+</TabItem>
+</Tabs>
+
+## Routes
+
+### Health
+
+`GET /health`
+
+<Tabs
+defaultValue="success"
+values={[
+{ label: 'Success', value: 'success', },
+{ label: 'Error', value: 'error', },
+]
+}>
+<TabItem value="success">
+
+```
+Status: 200 OK
+
+Content-Type: application/json
+Gotenberg-Trace: {trace}
+
+Body:
+```
+
+```json
+{
+    "status": "up",
+    "details": {
+        "moduleX": {
+            "status": "up",
+            "timestamp": "2021-07-01T08:05:14.603364Z"
+        },
+        "moduleY": {
+            "status": "up",
+            "timestamp": "2021-07-01T08:05:14.603364Z"
+        },
+    }
+}
+```
+
+</TabItem>
+<TabItem value="error">
+
+```
+Status: 503 Service Unavailable
+
+Content-Type: application/json
+Gotenberg-Trace: {trace}
+
+Body:
+```
+
+```json
+{
+    "status": "down",
+    "details": {
+        "moduleX": {
+            "status": "up",
+            "timestamp": "2021-07-01T08:05:14.603364Z"
+        },
+        "moduleY": {
+            "status": "down",
+            "timestamp": "2021-07-01T08:05:14.603364Z",
+            "error": "An health check error"
+        },
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+:::info
+
+There are no health checks in the standard version of Gotenberg. The `details` key is therefore not present.
+
+:::
+
+### Modules
+
+`POST /forms/{module}/{handler}`
+
+The following modules provide `multipart/form-data` routes:
+
+* [Chromium](chromium)
+* [LibreOffice](libreoffice)
+* [PDF Engines](pdf-engines)
+
+<Tabs
+defaultValue="success"
+values={[
+{ label: 'Success', value: 'success', },
+{ label: 'Error', value: 'error', },
+]
+}>
+<TabItem value="success">
+
+```
+Status: 200 OK
+
+Content-Disposition: attachement; filename={output-filename.ext}
+Content-Type: {content-type}
+Content-Length: {content-length}
+Gotenberg-Trace: {trace}
+
+Body: {output-file}
+```
+
+</TabItem>
+<TabItem value="error">
+
+```
+Status: {status}
+
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+
+Body: {error}
+```
+
+</TabItem>
+</Tabs>
+
+## Middlewares
+
+### Trace <span class="badge badge--secondary">all routes</span>
+
+The trace, or request ID, identifies a request in the logs.
+
+By default, the API generates a *UUID* trace for each request. However, you may also specify the trace per request,
+thanks to the `Gotenberg-Trace` header.
+
+For instance:
+
+```bash {3}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/url' \
+--header 'Gotenberg-Trace: debug' \
+--form 'url="https://my.url"' \
+-o my.pdf
+```
+
+:::info
+
+The API adds a header `Gotenberg-Trace` to each response. If you're using the webhook feature, it also adds the header
+to each request to your callbacks.
+
+:::
+
+:::tip
+
+You may customize the trace header thanks to the `--api-trace-header` property.
+
+:::
+
+### Timeout <span class="badge badge--secondary">all routes</span>
+
+The API returns a `503 Service Unavailable` response if a request fails to finish before a given duration in one of
+these steps:
+
+1. The server is reading a request.
+2. A route handler is processing a request.
+3. A route handler keeps processing a request, even if the timeout duration has expired (hard timeout).
+4. The server is writing a response.
+
+:::tip
+
+You may customize the timeout durations thanks to the following properties:
+
+* `--api-read-timeout`
+* `--api-process-timeout`
+* `--api-write-timeout`
+
+:::
+
+### Output Filename <span class="badge badge--secondary">multipart</span>
+
+By default, the API generates a *UUID* filename. However, you may also specify the filename per request, thanks to
+the `Gotenberg-Output-Filename` header.
+
+For instance:
+
+```bash {3}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/url' \
+--header 'Gotenberg-Output-Filename: result' \
+--form 'url="https://my.url"' \
+-O -J
+```
+
+:::caution
+
+The API adds the file extension automatically; you don't have to set it.
+
+:::
+
+### Webhook <span class="badge badge--secondary">multipart</span>
+
+The webhook feature allows you to upload the output file to the destination of your choice thanks to the following
+headers:
+
+* `Gotenberg-Webhook-Url` - the callback to use - <span class="badge badge--danger">required</span>
+* `Gotenberg-Webhook-Error-Url` - the callback to use if error - <span class="badge badge--danger">required</span>
+* `Gotenberg-Webhook-Method` - the HTTP method to use (*POST*, *PATCH*, or *PUT* - default *POST*).
+* `Gotenberg-Webhook-Error-Method` - the HTTP method to use if error (*POST*, *PATCH*, or *PUT* - default *POST*).
+* `Gotenberg-Webhook-Extra-Http-Headers` - the extra HTTP headers to send to both URLs (JSON format).
+
+For instance:
+
+```bash {3-7}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/url' \
+--header 'Gotenberg-Webhook-Extra-Http-Headers: {"MyHeader": "MyValue"}' \
+--header 'Gotenberg-Webhook-Url: https://my.webhook.url' \
+--header 'Gotenberg-Webhook-Method: PUT' \
+--header 'Gotenberg-Webhook-Error-Url: https://my.webhook.error.url' \
+--header 'Gotenberg-Webhook-Error-Method: POST' \
+--form 'url="https://my.url"'
+```
+
+<Tabs
+defaultValue="response"
+values={[
+{ label: 'Response', value: 'response', },
+{ label: 'Error (headers validation)', value: 'error', },
+{ label: 'Callback Request', value: 'callback', },
+{ label: 'Callback Error Request', value: 'callback_error', },
+]
+}>
+<TabItem value="response">
+
+```
+Status: 204 No Content
+```
+
+</TabItem>
+<TabItem value="error">
+
+```
+Status: {status}
+
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+
+Body: {error}
+```
+
+</TabItem>
+<TabItem value="callback">
+
+```
+Content-Disposition: attachement; filename={output-filename.ext}
+Content-Type: {content-type}
+Content-Length: {content-length}
+Gotenberg-Trace: {trace}
+User-Agent: Gotenberg
+
+Body: {output-file}
+```
+
+</TabItem>
+<TabItem value="callback_error">
+
+```
+Content-Type: application/json; charset=UTF-8
+Gotenberg-Trace: {trace}
+User-Agent: Gotenberg
+
+Body:
+```
+
+```json
+{
+    "status": "{status}",
+    "message": "{message}"
+}
+```
+
+</TabItem>
+</Tabs>
