@@ -44,7 +44,7 @@ module.exports = {
       items: [
         "customize/ownership",
         "customize/fonts",
-        "customize/new-modules",
+        "customize/add-modules",
       ],
     },
   ],
