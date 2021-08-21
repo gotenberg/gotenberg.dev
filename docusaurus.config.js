@@ -12,6 +12,9 @@ module.exports = {
   organizationName: "gotenberg",
   projectName: "gotenberg.dev",
   themeConfig: {
+    gtag: {
+      trackingID: 'G-Q1MDM8KFVG',
+    },
     announcementBar: {
       id: "support_us",
       content: `⭐️  &nbsp; If you like Gotenberg, give it a star on <a target="_blank" rel="noopener noreferrer" href="https://github.com/gotenberg/gotenberg">GitHub</a>! &nbsp; ⭐️`,
@@ -147,4 +150,5 @@ module.exports = {
       },
     ],
   ],
+  plugins: ["@docusaurus/plugin-ideal-image"],
 };
