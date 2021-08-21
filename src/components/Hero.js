@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./Hero.module.css";
 import clsx from "clsx";
 import Link from "@docusaurus/Link";
-import useBaseUrl from '@docusaurus/useBaseUrl';
+import useBaseUrl from "@docusaurus/useBaseUrl";
 
 export default function Hero() {
   return (
@@ -40,7 +40,11 @@ export default function Hero() {
             </p>
           </div>
           <div className="col col--6">
-            <img className={styles.logo} src={useBaseUrl("/img/logo_jed.png")} alt="Gotenberg Hero Logo" />
+            <img
+              className={styles.logo}
+              src={useBaseUrl("/img/logo_jed.png")}
+              alt="Gotenberg Hero Logo"
+            />
           </div>
         </div>
       </div>

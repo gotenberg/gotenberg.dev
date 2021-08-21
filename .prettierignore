@@ -1,4 +1,5 @@
 .docusaurus
+.github
 build
 docs
 statics
