@@ -40,11 +40,11 @@ module.exports = {
           to: "/docs/6.x/introduction",
           position: "right",
         },
-        {
-          href: "https://github.com/gotenberg/gotenberg",
-          label: "OpenAPI",
-          position: "right",
-        },
+        // {
+        //   href: "https://github.com/gotenberg/gotenberg",
+        //   label: "OpenAPI",
+        //   position: "right",
+        // },
         {
           href: "https://github.com/gotenberg/gotenberg",
           label: "GitHub",
@@ -88,10 +88,10 @@ module.exports = {
               label: "Follow @gulnap on twitter",
               href: "https://twitter.com/gulnap",
             },
-            {
-              label: "OpenAPI",
-              href: "https://github.com/gotenberg/gotenberg",
-            },
+            // {
+            //   label: "OpenAPI",
+            //   href: "https://github.com/gotenberg/gotenberg",
+            // },
             {
               label: "GitHub",
               href: "https://github.com/gotenberg/gotenberg",
