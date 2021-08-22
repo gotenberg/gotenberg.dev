@@ -4,11 +4,9 @@ const lightCodeTheme = require("prism-react-renderer/themes/github");
 module.exports = {
   title: "Gotenberg",
   tagline: "A Docker-powered stateless API for PDF files",
-  url: "https://gotenberg.github.io",
-  baseUrl: "/gotenberg.dev/",
   trailingSlash: false,
-  /*url: "https://gotenberg.dev",*/
-  /*baseUrl: "/",*/
+  url: "https://gotenberg.dev",
+  baseUrl: "/",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.ico",
