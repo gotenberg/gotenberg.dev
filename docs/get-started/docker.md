@@ -19,7 +19,7 @@ To start a default Docker container of Gotenberg, run:
 docker run --rm -p 3000:3000 gotenberg/gotenberg:7
 ```
 
-Alternatively, using the historic registry from our sponsor [TheCodingMachine](https://www.thecodingmachine.com):
+Alternatively, using the historic Docker registry from our sponsor [TheCodingMachine](https://www.thecodingmachine.com):
 
 ```
 docker run --rm -p 3000:3000 thecodingmachine/gotenberg:7
