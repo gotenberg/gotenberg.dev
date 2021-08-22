@@ -18,7 +18,7 @@ It starts a dedicated Chromium instance for each request.
 
 ```
 --chromium-allow-list                string  Set the allowed URLs for Chromium using a regular expression
---chromium-deny-list                 string  Set the denied URLs for Chromium using a regular expression
+--chromium-deny-list                 string  Set the denied URLs for Chromium using a regular expression (default "^file:///[^tmp].*")
 --chromium-user-agent                string  Override the default User-Agent header
 --chromium-ignore-certificate-errors bool    Ignore the certificate errors
 --chromium-incognito                 bool    Start Chromium with incognito mode
