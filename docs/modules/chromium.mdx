@@ -64,7 +64,7 @@ curl \
 --request POST 'http://localhost:3000/forms/chromium/convert/url' \
 --form 'url="https://my.url"' \
 --form 'paperWidth="8.27"' \
---form 'paperHeight="11.69"' \
+--form 'paperHeight="11.7"' \
 --form 'marginTop="1"' \
 --form 'marginBottom="1"' \
 --form 'marginLeft="1"' \
@@ -75,6 +75,24 @@ curl \
 --form 'scale="2.0"' \
 -o my.pdf
 ```
+
+:::tip
+
+Examples of paper size (width x height):
+
+* `Letter` - 8.5 x 11 (default)
+* `Legal` - 8.5 x 14
+* `Tabloid` - 11 x 17
+* `Ledger` - 17 x 11
+* `A0` - 33.1 x 46.8
+* `A1` - 23.4 x 33.1
+* `A2` - 16.54 x 23.4
+* `A3` - 11.7 x 16.54
+* `A4` - 8.27 x 11.7
+* `A5` - 5.83 x 8.27
+* `A6` - 4.13 x 5.83
+
+:::
 
 </TabItem>
 <TabItem value="header_footer">
