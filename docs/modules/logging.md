@@ -15,5 +15,5 @@ The logger writes [structured logs](https://www.sumologic.com/glossary/structure
 
 ```
 --log-format string  Set log format - auto, json, or text (default "auto")
---log-level  string  Set the log level - error, warn, info, or debug (default "info").
+--log-level  string  Set the log level - error, warn, info, or debug (default "info")
 ```
