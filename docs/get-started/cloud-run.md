@@ -17,6 +17,15 @@ binary by default. However, some providers like Cloud Run from Google Cloud cann
 
 :::
 
+:::caution
+
+You should disable the [webhook feature](../modules/api#webhook-multipart) as it does not work on Cloud Run.
+
+Indeed, as a request ends early with this feature, Cloud Run might stop your container before Gotenberg calls your
+webhook.
+
+:::
+
 :::danger
 
 We don't recommend exposing your instances to the external world. In terms of security, you should consider Gotenberg
