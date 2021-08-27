@@ -25,7 +25,7 @@ If you wish to change those uid and gid, you will have to:
 
 - clone the project
 - re-build the image
-- publish the image in your own Docker registry
+- publish the image in your own Docker repository
 
 For instance:
 
