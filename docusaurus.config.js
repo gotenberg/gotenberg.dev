@@ -44,6 +44,11 @@ module.exports = {
         //   position: "right",
         // },
         {
+          href: "https://github.com/gotenberg/gotenberg/discussions",
+          label: "Help",
+          position: "right",
+        },
+        {
           href: "https://github.com/gotenberg/gotenberg",
           label: "GitHub",
           position: "right",
@@ -93,6 +98,10 @@ module.exports = {
             {
               label: "Awesome Gotenberg",
               href: "https://github.com/gotenberg/awesome-gotenberg",
+            },
+            {
+              label: "Help",
+              href: "https://github.com/gotenberg/gotenberg/discussions",
             },
             {
               label: "GitHub",
