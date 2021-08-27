@@ -91,6 +91,10 @@ module.exports = {
             //   href: "https://github.com/gotenberg/gotenberg",
             // },
             {
+              label: "Awesome Gotenberg",
+              href: "https://github.com/gotenberg/awesome-gotenberg",
+            },
+            {
               label: "GitHub",
               href: "https://github.com/gotenberg/gotenberg",
             },
