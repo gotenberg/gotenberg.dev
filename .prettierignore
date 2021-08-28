@@ -2,5 +2,5 @@
 .github
 build
 docs
-statics
+static
 versioned_docs
