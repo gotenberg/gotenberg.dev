@@ -6,8 +6,8 @@ title: 🔥 Live Demo
 Before pulling the Docker image, you may want to test Gotenberg first. For this purpose, we provide two live demo
 environments:
 
-* 🇺🇸 US - `https://live-demo-us.gotenberg.dev`
-* 🇩🇪 EU - `https://live-demo-eu.gotenberg.dev`
+* 🇺🇸 US (Oregon) - `https://live-demo-us.gotenberg.dev`
+* 🇪🇺 EU (Frankfurt) - `https://live-demo-eu.gotenberg.dev`
 
 For instance:
 
