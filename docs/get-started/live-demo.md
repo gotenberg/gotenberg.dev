@@ -18,7 +18,7 @@ curl \
 -o my.pdf
 ```
 
-:::caution
+:::info
 
 Each environment runs on a [Render](https://render.com) instance with `1GB` of RAM and `1` CPU.
 
