@@ -68,7 +68,7 @@ module.exports = {
           items: [
             {
               label: "Get Started",
-              to: "/docs/get-started/docker",
+              to: "/docs/get-started/live-demo",
             },
             {
               label: "Modules",

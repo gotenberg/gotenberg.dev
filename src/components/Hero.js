@@ -19,7 +19,7 @@ export default function Hero() {
                 "button button--primary button--lg",
                 styles.getStartedButton
               )}
-              to="/docs/get-started/docker"
+              to="/docs/get-started/live-demo"
             >
               Get Started
             </Link>
