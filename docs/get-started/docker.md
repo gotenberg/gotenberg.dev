@@ -3,7 +3,7 @@ id: docker
 title: Docker
 ---
 
-Gotenberg is available as a Docker image for both **amd64** and **arm64** architectures.
+Gotenberg is available as a Docker image for **amd64**, **arm64**, **armhf**, and **i386** architectures.
 
 :::info
 

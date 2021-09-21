@@ -20,7 +20,7 @@ module.exports = {
       type: "category",
       label: "Get Started",
       items: [
-          "get-started/live-demo",
+        "get-started/live-demo",
         "get-started/docker",
         "get-started/docker-compose",
         "get-started/kubernetes",
