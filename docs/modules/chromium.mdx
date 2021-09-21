@@ -26,12 +26,13 @@ platforms, the Docker images will differ, alas.
 ## Properties
 
 ```
---chromium-allow-list                string  Set the allowed URLs for Chromium using a regular expression
---chromium-deny-list                 string  Set the denied URLs for Chromium using a regular expression (default "^file:///[^tmp].*")
---chromium-user-agent                string  Override the default User-Agent header
---chromium-ignore-certificate-errors bool    Ignore the certificate errors
---chromium-incognito                 bool    Start Chromium with incognito mode
---chromium-disable-routes            bool    Disable the routes
+--chromium-allow-file-access-from-files bool    Allow file:// URIs to read other file:// URIs
+--chromium-allow-list                   string  Set the allowed URLs for Chromium using a regular expression
+--chromium-deny-list                    string  Set the denied URLs for Chromium using a regular expression (default "^file:///[^tmp].*")
+--chromium-user-agent                   string  Override the default User-Agent header
+--chromium-ignore-certificate-errors    bool    Ignore the certificate errors
+--chromium-incognito                    bool    Start Chromium with incognito mode
+--chromium-disable-routes               bool    Disable the routes
 ```
 
 ## Routes
