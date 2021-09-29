@@ -16,6 +16,11 @@ module.exports = {
     gtag: {
       trackingID: "G-Q1MDM8KFVG",
     },
+    algolia: {
+      apiKey: '863791982c7e46966430f1d125bb94ff',
+      indexName: 'gotenberg',
+      contextualSearch: true,
+    },
     announcementBar: {
       id: "support_us",
       content: `⭐️  &nbsp; If you like Gotenberg, give it a star on <a target="_blank" rel="noopener noreferrer" href="https://github.com/gotenberg/gotenberg">GitHub</a>! &nbsp; ⭐️`,
@@ -32,6 +37,10 @@ module.exports = {
           type: "doc",
           label: "Documentation",
           docId: "about",
+        },
+        {
+          type: 'search',
+          position: 'right',
         },
         {
           label: "Version 6.x",
