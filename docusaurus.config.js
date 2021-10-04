@@ -19,7 +19,7 @@ module.exports = {
     algolia: {
       apiKey: '863791982c7e46966430f1d125bb94ff',
       indexName: 'gotenberg',
-      //contextualSearch: true,
+      contextualSearch: true,
     },
     announcementBar: {
       id: "support_us",
