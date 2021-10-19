@@ -6,7 +6,7 @@ title: API
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The API module is an HTTP server. Other modules may add `multipart/form-data` routes, middlewares, and health checks.
+The API module is an HTTP/1 and HTTP/2 (H2C) server. Other modules may add routes, middlewares, and health checks.
 
 ## Properties
 
@@ -18,7 +18,6 @@ values={[
 { label: 'Root path', value: 'root_path', },
 { label: 'Trace', value: 'trace', },
 { label: 'Health', value: 'health', },
-{ label: 'Webhook', value: 'webhook', },
 ]
 }>
 <TabItem value="port">
@@ -56,20 +55,6 @@ values={[
 
 ```
 --api-disable-health-check-logging bool  Disable health check logging
-```
-
-</TabItem>
-<TabItem value="webhook">
-
-```
---api-webhook-allow-list       string    Set the allowed URLs for the webhook feature using a regular expression
---api-webhook-deny-list        string    Set the denied URLs for the webhook feature using a regular expression
---api-webhook-error-allow-list string    Set the allowed URLs in case of an error for the webhook feature using a regular expression
---api-webhook-error-deny-list  string    Set the denied URLs in case of an error for the webhook feature using a regular expression
---api-webhook-max-retry        int       Set the maximum number of retries for the webhook feature (default 4)
---api-webhook-retry-min-wait   duration  Set the minimum duration to wait before trying to call the webhook again (default 1s)
---api-webhook-retry-max-wait   duration  Set the maximum duration to wait before trying to call the webhook again (default 30s)
---api-disable-webhook          bool      Disable the webhook feature
 ```
 
 </TabItem>
@@ -155,7 +140,9 @@ There are no health checks in the standard version of Gotenberg. The `details` k
 
 ### Modules
 
-`POST /forms/{module}/{handler}`
+#### multipart/form-data
+
+`METHOD /forms/{module}/{handler}`
 
 The following modules provide `multipart/form-data` routes:
 
@@ -197,6 +184,16 @@ Body: {error}
 
 </TabItem>
 </Tabs>
+
+---
+
+#### Other routes
+
+`METHOD /{module}/{handler}`
+
+Currently, only the following module provides a non-`multipart/form-data` route:
+
+* [Prometheus](prometheus)
 
 ## Middlewares
 
@@ -271,93 +268,8 @@ The API adds the file extension automatically; you don't have to set it.
 
 :::
 
-### Webhook <span class="badge badge--secondary">multipart</span>
+### Modules
 
-The webhook feature allows you to upload the output file to the destination of your choice thanks to the following
-headers:
+Currently, only the following module provides a middleware:
 
-* `Gotenberg-Webhook-Url` - the callback to use - <span class="badge badge--danger">required</span>
-* `Gotenberg-Webhook-Error-Url` - the callback to use if error - <span class="badge badge--danger">required</span>
-* `Gotenberg-Webhook-Method` - the HTTP method to use (*POST*, *PATCH*, or *PUT* - default *POST*).
-* `Gotenberg-Webhook-Error-Method` - the HTTP method to use if error (*POST*, *PATCH*, or *PUT* - default *POST*).
-* `Gotenberg-Webhook-Extra-Http-Headers` - the extra HTTP headers to send to both URLs (JSON format).
-
-For instance:
-
-```bash {3-7}
-curl \
---request POST 'http://localhost:3000/forms/chromium/convert/url' \
---header 'Gotenberg-Webhook-Extra-Http-Headers: {"MyHeader": "MyValue"}' \
---header 'Gotenberg-Webhook-Url: https://my.webhook.url' \
---header 'Gotenberg-Webhook-Method: PUT' \
---header 'Gotenberg-Webhook-Error-Url: https://my.webhook.error.url' \
---header 'Gotenberg-Webhook-Error-Method: POST' \
---form 'url="https://my.url"'
-```
-
-<Tabs
-defaultValue="response"
-values={[
-{ label: 'Response', value: 'response', },
-{ label: 'Error (headers validation)', value: 'error', },
-{ label: 'Callback Request', value: 'callback', },
-{ label: 'Callback Error Request', value: 'callback_error', },
-]
-}>
-<TabItem value="response">
-
-```
-Status: 204 No Content
-```
-
-</TabItem>
-<TabItem value="error">
-
-```
-Status: {status}
-
-Content-Type: text/plain; charset=UTF-8
-Gotenberg-Trace: {trace}
-
-Body: {error}
-```
-
-</TabItem>
-<TabItem value="callback">
-
-```
-Content-Disposition: attachement; filename={output-filename.ext}
-Content-Type: {content-type}
-Content-Length: {content-length}
-Gotenberg-Trace: {trace}
-User-Agent: Gotenberg
-
-Body: {output-file}
-```
-
-</TabItem>
-<TabItem value="callback_error">
-
-```
-Content-Type: application/json; charset=UTF-8
-Gotenberg-Trace: {trace}
-User-Agent: Gotenberg
-
-Body:
-```
-
-```json
-{
-    "status": "{status}",
-    "message": "{message}"
-}
-```
-
-</TabItem>
-</Tabs>
-
-:::tip
-
-[PipeDream](https://pipedream.com/) provides an excellent platform if you wish to test the webhook feature.
-
-:::
+* [Webhook](webhook)

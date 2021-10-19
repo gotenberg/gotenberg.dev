@@ -35,6 +35,8 @@ module.exports = {
         "modules/chromium",
         "modules/libreoffice",
         "modules/pdf-engines",
+        "modules/webhook",
+        "modules/prometheus",
         "modules/logging",
         "modules/more",
       ],

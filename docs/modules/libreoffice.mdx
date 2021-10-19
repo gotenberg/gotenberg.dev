@@ -21,9 +21,7 @@ It starts a dedicated LibreOffice instance for each request.
 --libreoffice-disable-routes bool  Disable the routes
 ```
 
-## Routes
-
-### Convert
+## Route
 
 `POST /forms/libreoffice/convert`
 
@@ -246,3 +244,11 @@ Gotenberg merges the PDF files alphabetically.
 
 </TabItem>
 </Tabs>
+
+## Metric
+
+The LibreOffice module exposes the following metric:
+
+* `{namespace}_unoconv_active_instances_count` - current number of active LibreOffice instances.
+
+See [Prometheus](Prometheus) for more details.

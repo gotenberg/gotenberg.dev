@@ -17,6 +17,12 @@ binary by default. However, some providers like Cloud Run from Google Cloud cann
 
 :::
 
+:::tip
+
+Consider using HTTP/2 to bypass the [32 MB request size limit](https://cloud.google.com/run/quotas?hl=en).
+
+:::
+
 :::caution
 
 You should disable the [webhook feature](../modules/api#webhook-multipart) as it does not work on Cloud Run.
