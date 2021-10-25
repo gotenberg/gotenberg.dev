@@ -25,7 +25,7 @@ Consider using HTTP/2 to bypass the [32 MB request size limit](https://cloud.goo
 
 :::caution
 
-You should disable the [webhook feature](../modules/api#webhook-multipart) as it does not work on Cloud Run.
+You should disable the [webhook feature](../modules/webhook) as it does not work on Cloud Run.
 
 Indeed, as a request ends early with this feature, Cloud Run might stop your container before Gotenberg calls your
 webhook.
