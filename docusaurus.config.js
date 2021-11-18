@@ -17,7 +17,8 @@ module.exports = {
       trackingID: "G-Q1MDM8KFVG",
     },
     algolia: {
-      apiKey: '863791982c7e46966430f1d125bb94ff',
+      appId: 'JP2Q0HN2DE',
+      apiKey: '67f1a7e15197ecf88d4c85f39a2e1789',
       indexName: 'gotenberg',
       contextualSearch: true,
     },
