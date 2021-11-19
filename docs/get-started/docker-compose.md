@@ -47,7 +47,7 @@ as a database.
 
 :::
 
-## Modules' properties
+## Modules' Properties
 
 In the [Modules](../modules/api) chapters, we detail the many properties provided by Gotenberg's modules.
 
@@ -66,4 +66,12 @@ services:
     command:
       - "gotenberg"
       - "--my-property=foo"
+```
+
+## Update
+
+To update the `gotenberg` service to the latest version, run:
+
+```
+docker-compose pull gotenberg
 ```

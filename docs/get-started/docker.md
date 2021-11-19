@@ -38,7 +38,7 @@ as a database.
 
 :::
 
-## Modules' properties
+## Modules' Properties
 
 In the [Modules](../modules/api) chapters, we detail the many properties provided by Gotenberg's modules.
 
@@ -52,4 +52,10 @@ docker run --rm -p 3000:3000 gotenberg/gotenberg:7 \
        --my-property=foo
 ```
 
+## Update
 
+To update your local Docker image of Gotenberg to the latest version, run:
+
+```
+docker pull gotenberg/gotenberg:7
+```
