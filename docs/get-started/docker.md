@@ -47,7 +47,7 @@ You must set these properties using flags (i.e., `--my-property`).
 For instance:
 
 ```
-docker run --rm -p 3000:3000 thecodingmachine/gotenberg:7 \
+docker run --rm -p 3000:3000 gotenberg/gotenberg:7 \
        gotenberg \
        --my-property=foo
 ```
