@@ -29,13 +29,18 @@ platforms, the Docker images will differ, alas.
 --chromium-allow-file-access-from-files bool    Allow file:// URIs to read other file:// URIs
 --chromium-allow-list                   string  Set the allowed URLs for Chromium using a regular expression
 --chromium-deny-list                    string  Set the denied URLs for Chromium using a regular expression (default "^file:///[^tmp].*")
---chromium-user-agent                   string  Override the default User-Agent header
 --chromium-ignore-certificate-errors    bool    Ignore the certificate errors
 --chromium-disable-web-security         bool    Don't enforce the same-origin policy
 --chromium-incognito                    bool    Start Chromium with incognito mode
 --chromium-proxy-server                 string  Set the outbound proxy server; this switch only affects HTTP and HTTPS requests
 --chromium-disable-routes               bool    Disable the routes
 ```
+
+:::caution
+
+`--chromium-user-agent` flag is deprecated. Prefer the `userAgent` form field instead.
+
+:::
 
 ## Routes
 
@@ -44,17 +49,16 @@ Each route accepts `multipart/form-data` requests.
 They share the following form fields:
 
 <Tabs
-defaultValue="paper_props"
+defaultValue="page_props"
 values={[
-{ label: 'Paper Properties', value: 'paper_props', },
+{ label: 'Page Properties', value: 'page_props', },
 { label: 'Header & Footer', value: 'header_footer', },
 { label: 'JavaScript', value: 'javascript', },
-{ label: 'Extra HTTP Headers', value: 'extra_http_headers', },
-{ label: 'Page Ranges', value: 'page_ranges', },
+{ label: 'HTTP Headers', value: 'http_headers', },
 { label: 'PDF Format', value: 'pdf_format', },
 ]
 }>
-<TabItem value="paper_props">
+<TabItem value="page_props">
 
 ```
 paperWidth        float  Paper width, in inches (default 8.5)
@@ -67,11 +71,12 @@ preferCssPageSize bool   Define whether to prefer page size as defined by CSS (d
 printBackground   bool   Print the background graphics (default false)
 landscape         bool   Set the paper orientation to landscape (default false)
 scale             float  The scale of the page rendering (default 1.0)
+nativePageRanges  string  Page ranges to print, e.g., '1-5, 8, 11-13' - empty means all pages
 ```
 
 For instance:
 
-```bash {4-13}
+```bash {4-14}
 curl \
 --request POST 'http://localhost:3000/forms/chromium/convert/url' \
 --form 'url="https://my.url"' \
@@ -85,6 +90,7 @@ curl \
 --form 'printBackground="true"' \
 --form 'landscape="true"' \
 --form 'scale="2.0"' \
+--form 'nativePageRanges="1-5"' \
 -o my.pdf
 ```
 
@@ -224,36 +230,21 @@ Prefer this option over `waitDelay`.
 :::
 
 </TabItem>
-<TabItem value="extra_http_headers">
+<TabItem value="http_headers">
 
 ```
+userAgent        string  Override the default User-Agent header
 extraHttpHeaders string  HTTP headers to send by Chromium while loading the HTML document (JSON format)
 ```
 
 For instance:
 
-```bash {4}
+```bash {4-5}
 curl \
 --request POST 'http://localhost:3000/forms/chromium/convert/url' \
 --form 'url="https://my.url"' \
+--form 'userAgent="Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1"' \
 --form 'extraHttpHeaders="{\"MyHeader\": \"MyValue\"}"' \
--o my.pdf
-```
-
-</TabItem>
-<TabItem value="page_ranges">
-
-```
-nativePageRanges string  Page ranges to print, e.g., '1-5, 8, 11-13' - empty means all pages
-```
-
-For instance:
-
-```bash {4}
-curl \
---request POST 'http://localhost:3000/forms/chromium/convert/url' \
---form 'url="https://my.url"' \
---form 'nativePageRanges="1-5"' \
 -o my.pdf
 ```
 
