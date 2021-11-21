@@ -53,7 +53,7 @@ defaultValue="page_props"
 values={[
 { label: 'Page Properties', value: 'page_props', },
 { label: 'Header & Footer', value: 'header_footer', },
-{ label: 'JavaScript', value: 'javascript', },
+{ label: 'Wait', value: 'wait', },
 { label: 'HTTP Headers', value: 'http_headers', },
 { label: 'PDF Format', value: 'pdf_format', },
 ]
@@ -182,12 +182,18 @@ There are some limitations:
 :::
 
 </TabItem>
-<TabItem value="javascript">
+<TabItem value="wait">
 
 ```
-waitDelay        duration  Duration to wait when loading an HTML document before converting it to PDF
-waitWindowStatus string    The window.status value to wait for before converting an HTML document to PDF
+waitDelay          duration  Duration to wait when loading an HTML document before converting it to PDF
+waitForExpression  string    The JavaScript expression to wait before converting an HTML document to PDF until it returns true
 ```
+
+:::caution
+
+The form field `waitWindowStatus` is deprecated in favor of `waitForExpression`.
+
+:::
 
 `waitDelay`
 
@@ -204,13 +210,14 @@ curl \
 -o my.pdf
 ```
 
-`waitWindowStatus`
+`waitForExpression`
 
-If you have access to the page's code, you may set the window status and tell Gotenberg to wait for a specific value.
+You may also wait until a given JavaScript expression returns true.
 
 For instance:
 
 ```js
+// Somewhere in the HTML document.
 await promises()
 window.status = 'ready'
 ```
@@ -219,7 +226,7 @@ window.status = 'ready'
 curl \
 --request POST 'http://localhost:3000/forms/chromium/convert/url' \
 --form 'url="https://my.url"' \
---form 'waitWindowStatus="ready"' \
+--form 'waitForExpression="window.status === '\''ready'\''"' \
 -o my.pdf
 ```
 
