@@ -12,7 +12,11 @@ If you wish to use more fonts, you will have to build a Docker image.
 ```docker
 FROM gotenberg/gotenberg:7
 
+USER root
+
 COPY /local/path/to/{font}.ttf /usr/local/share/fonts/{font}.ttf
+
+USER gotenberg
 ```
 
 Or, if you have many fonts:
@@ -20,7 +24,11 @@ Or, if you have many fonts:
 ```docker
 FROM gotenberg/gotenberg:7
 
+USER root
+
 COPY /local/path/to/fonts/* /usr/local/share/fonts/
+
+USER gotenberg
 ```
 
 ## `apt-get install`
