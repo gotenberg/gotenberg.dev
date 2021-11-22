@@ -55,6 +55,7 @@ values={[
 { label: 'Header & Footer', value: 'header_footer', },
 { label: 'Wait', value: 'wait', },
 { label: 'HTTP Headers', value: 'http_headers', },
+{ label: 'CSS', value: 'css', },
 { label: 'PDF Format', value: 'pdf_format', },
 ]
 }>
@@ -254,6 +255,29 @@ curl \
 --form 'extraHttpHeaders="{\"MyHeader\": \"MyValue\"}"' \
 -o my.pdf
 ```
+
+</TabItem>
+<TabItem value="css">
+
+```
+emulatedMediaType string  The media type to emulate, either "screen" or "print" - empty means "print"
+```
+
+For instance:
+
+```bash {4}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/url' \
+--form 'url="https://my.url"' \
+--form 'emulatedMediaType="screen"' \
+-o my.pdf
+```
+
+:::tip
+
+Some websites have dedicated CSS rules for print. Using "screen" allows you to force the "standard" CSS rules.
+
+:::
 
 </TabItem>
 <TabItem value="pdf_format">
