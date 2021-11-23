@@ -56,6 +56,7 @@ values={[
 { label: 'Header & Footer', value: 'header_footer', },
 { label: 'Wait', value: 'wait', },
 { label: 'HTTP Headers', value: 'http_headers', },
+{ label: 'JavaScript', value: 'javascript', },
 { label: 'CSS', value: 'css', },
 { label: 'PDF Format', value: 'pdf_format', },
 ]
@@ -255,6 +256,39 @@ curl \
 --form 'userAgent="Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1"' \
 --form 'extraHttpHeaders="{\"MyHeader\": \"MyValue\"}"' \
 -o my.pdf
+```
+
+</TabItem>
+<TabItem value="javascript">
+
+```
+failOnConsoleExceptions bool  Return a 409 Conflict response if there are exceptions in the Chromium console (default false)
+```
+
+For instance:
+
+```bash {4}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/html' \
+--form 'files=@"/path/to/index.html"' \
+--form 'failOnConsoleExceptions="true"'
+```
+
+```
+Status: 409 Conflict
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+
+Body:
+```
+
+```
+Chromium console exceptions:
+
+exception "Uncaught" (17:10): Error: Exception 1
+at file:///tmp/db09d2c8-31e3-4058-9923-c2705350f2b3/index.html:18:11;
+exception "Uncaught" (20:10): Error: Exception 2
+at file:///tmp/db09d2c8-31e3-4058-9923-c2705350f2b3/index.html:21:11:
 ```
 
 </TabItem>
