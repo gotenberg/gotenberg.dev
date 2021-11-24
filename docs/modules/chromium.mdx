@@ -384,6 +384,79 @@ content from the page.
 
 :::
 
+---
+
+Gotenberg auto-detects some files you may send in your request: `.woff2`, `.woff`, `.ttf`, `.css` and `.js`.
+
+It adds on the fly the corresponding `<link>` and `<script>` HTML elements inside the DOM of the URL you want to convert.
+
+For instance:
+
+```bash {4-6}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/url' \
+--form 'url="https://my.url"' \
+--form 'files=@"/path/to/font.woff"' \
+--form 'files=@"/path/to/style.css"' \
+--form 'files=@"/path/to/script.js"' \
+-o my.pdf
+```
+
+:::tip
+
+Gotenberg adds these HTML elements alphabetically, according to the filenames.
+
+:::
+
+:::caution
+
+`<script>` elements are not added if JavaScript is disabled via `--chromium-disable-javascript`.
+
+:::
+
+---
+
+The form fields `extraLinkTags` and `extraScriptTags` (JSON format) allows you to add remote paths and override the
+default alphabetical ordering.
+
+For instance:
+
+```bash {4-8}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/url' \
+--form 'url="https://my.url"' \
+--form 'files=@"/path/to/a.css"' \
+--form 'files=@"/path/to/b.css"' \
+--form 'files=@"/path/to/c.js"' \
+--form 'extraLinkTags="[{\"href\":\"b.css\"},{\"href\":\"a.css\"},{\"href\":\"https://my.cdn.css\"}]"' \
+--form 'extraScriptTags="[{\"src\":\"https://my.cdn.js\"},{\"href\":\"c.js\"}]"' \
+-o my.pdf
+```
+
+:::info
+
+For `<link>` elements, only the `href` attribute is available.
+
+:::
+
+:::info
+
+For `<script>` elements, only the `src` attribute is available.
+
+:::
+
+:::info
+
+Gotenberg adds the remaining files that it auto-detects after the assets from `extraLinkTags` and `extraScriptTags`.
+
+:::
+
+:::caution
+
+`<script>` elements are not added if JavaScript is disabled via `--chromium-disable-javascript`.
+
+:::
+
 ### HTML
 
 `POST /forms/chromium/convert/html`
