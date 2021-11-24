@@ -180,7 +180,7 @@ There are some limitations:
 * Only fonts installed in the Docker image are loaded - see the [Fonts](../customize/fonts) chapter.
 * Images only work using a base64 encoded source - i.e., `data:image/png;base64, iVBORw0K...`.
 * `background-color` and `color` CSS properties require an additional `-webkit-print-color-adjust: exact` CSS property in order to work.
-* Assets are not loaded - see [HTML](#html) or [Markdown](#markdown) routes.
+* Assets are not loaded (i.e., CSS files, scripts, fonts, etc.).
 
 :::
 
@@ -191,12 +191,6 @@ There are some limitations:
 waitDelay          duration  Duration to wait when loading an HTML document before converting it to PDF
 waitForExpression  string    The JavaScript expression to wait before converting an HTML document to PDF until it returns true
 ```
-
-:::caution
-
-The form field `waitWindowStatus` is deprecated in favor of `waitForExpression`.
-
-:::
 
 `waitDelay`
 
@@ -236,6 +230,18 @@ curl \
 :::tip
 
 Prefer this option over `waitDelay`.
+
+:::
+
+:::caution
+
+The form field `waitWindowStatus` is deprecated in favor of `waitForExpression`.
+
+:::
+
+:::caution
+
+These form fields do not work if JavaScript is disabled via `--chromium-disable-javascript`.
 
 :::
 
@@ -290,6 +296,12 @@ at file:///tmp/db09d2c8-31e3-4058-9923-c2705350f2b3/index.html:18:11;
 exception "Uncaught" (20:10): Error: Exception 2
 at file:///tmp/db09d2c8-31e3-4058-9923-c2705350f2b3/index.html:21:11:
 ```
+
+:::caution
+
+This form field does not work if JavaScript is disabled via `--chromium-disable-javascript`.
+
+:::
 
 </TabItem>
 <TabItem value="css">
