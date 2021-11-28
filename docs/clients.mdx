@@ -1,0 +1,190 @@
+---
+id: clients
+title: Clients
+---
+
+A curated list of clients for interacting with Gotenberg in various programming languages.
+
+:::tip
+
+Do you want to add your own client in this list? Open a pull request in the [gotenberg/awesome-gotenberg](https://github.com/gotenberg/awesome-gotenberg)
+repository ♥️
+
+:::
+
+## PHP
+
+[gotenberg/gotenberg-php](https://github.com/gotenberg/gotenberg-php) is a PHP client for Gotenberg.
+
+Here's some quick examples:
+
+```php
+use Gotenberg\Gotenberg;
+
+// Converts a target URL to PDF and saves it to a given directory.
+$filename = Gotenberg::save(
+    Gotenberg::chromium($apiUrl)->url('https://my.url'),
+    $pathToSavingDirectory
+);
+```
+
+```php
+use Gotenberg\Gotenberg;
+use Gotenberg\Stream;
+
+// Converts Office documents to PDF and merges them.
+$response = Gotenberg::send(
+    Gotenberg::libreOffice($apiUrl)
+        ->merge()
+        ->convert(
+            Stream::path($pathToDocx),
+            Stream::path($pathToXlsx)
+        )
+);
+```
+
+This package can be installed with Composer:
+
+```
+composer require gotenberg/gotenberg-php
+```
+
+We use PSR-7 HTTP message interfaces (i.e., `RequestInterface` and `ResponseInterface`) and the PSR-18 HTTP client
+interface (i.e., `ClientInterface`).
+
+For the latter, you may need an adapter in order to use your favorite client library. Check the available adapters:
+
+* https://docs.php-http.org/en/latest/clients.html
+
+If you're not sure which adapter you should use, consider using the `php-http/guzzle7-adapter`:
+
+```
+composer require php-http/guzzle7-adapter
+```
+
+Head to the [documentation](https://github.com/gotenberg/gotenberg-php) to learn how to use it 🚀
+
+:::info
+
+If you like `gotenberg/gotenberg-php`, give it a star on [GitHub](https://github.com/gotenberg/gotenberg-php)! ⭐
+
+:::
+
+## JavaScript / TypeScript
+
+:::caution
+
+Gotenberg **7.x** support is [underway](https://github.com/yumauri/gotenberg-js-client/issues/32).  If you want to use
+this package with the latest version of Gotenberg, consider helping the authors ♥️
+
+:::
+
+[yumauri/gotenberg-js-client](https://github.com/yumauri/gotenberg-js-client) is a JavaScript / TypeScript client for Gotenberg.
+
+Here's a quick examples:
+
+```js
+import { pipe, gotenberg, convert, html, please } from 'gotenberg-js-client'
+
+const toPDF = pipe(
+  gotenberg('http://localhost:3000'),
+  convert,
+  html,
+  please
+)
+
+// --- 8< ---
+
+// convert file from disk
+const pdf = await toPDF('file://index.html')
+
+// or convert stream
+const pdf = await toPDF(fs.createReadStream('index.html'))
+
+// or convert string!
+const pdf = await toPDF('<html>...</html>')
+
+// library returns NodeJS.ReadableStream,
+// so you can save it to file, if you want, for example
+pdf.pipe(fs.createWriteStream('index.pdf'))
+
+// or you can send it as response in Express application
+app.get('/pdf', function (req, res) {
+  //...
+  pdf.pipe(res)
+})
+```
+
+This package can be installed with `yarn`:
+
+```
+yarn add gotenberg-js-client
+```
+
+Or using `npm`:
+
+```
+npm install --save gotenberg-js-client
+```
+
+Head to the [documentation](https://github.com/yumauri/gotenberg-js-client) to learn how to use it 🚀
+
+:::info
+
+If you like `yumauri/gotenberg-js-client`, give it a star on [GitHub](https://github.com/yumauri/gotenberg-js-client)! ⭐
+
+:::
+
+## C#
+
+:::caution
+
+Gotenberg **7.x** support is [underway](https://github.com/ChangemakerStudios/GotenbergSharpApiClient/issues/29).
+If you want to use this package with the latest version of Gotenberg, consider helping the authors ♥️
+
+:::
+
+[ChangemakerStudios/GotenbergSharpApiClient](https://github.com/ChangemakerStudios/GotenbergSharpApiClient) is a
+C# client for Gotenberg.
+
+Here's a quick example:
+
+```csharp
+[HttpGet]
+public async Task<ActionResult> HtmlToPdf([FromServices] GotenbergSharpClient sharpClient)
+{
+ var builder = new HtmlRequestBuilder()
+     .AddDocument(doc =>
+         doc.SetBody(GetBody()).SetFooter(GetFooter())
+     ).WithDimensions(dims =>
+     {
+         dims.SetPaperSize(PaperSizes.A3)
+             .SetMargins(Margins.None)
+             .SetScale(.99);
+     }).WithAsyncAssets(async assets => assets.AddItem("some-image.jpg", await GetImageBytes()))
+     .ConfigureRequest(config =>
+     {
+         config.ChromeRpccBufferSize(1024)
+             .PageRanges("1");
+     });
+
+ var req = await builder.BuildAsync();
+ var result = await sharpClient.HtmlToPdfAsync(req);
+
+ return this.File(result, "application/pdf", "gotenbergFromHtml.pdf");
+}
+```
+
+This package can be installed with `nuget`:
+
+```powershell
+PM> Install-Package Gotenberg.Sharp.Api.Client
+```
+
+Head to the [documentation](https://github.com/ChangemakerStudios/GotenbergSharpApiClient) to learn how to use it 🚀
+
+:::info
+
+If you like `ChangemakerStudios/GotenbergSharpApiClient`, give it a star on [GitHub](https://github.com/ChangemakerStudios/GotenbergSharpApiClient)! ⭐
+
+:::

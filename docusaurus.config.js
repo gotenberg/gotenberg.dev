@@ -17,9 +17,9 @@ module.exports = {
       trackingID: "G-Q1MDM8KFVG",
     },
     algolia: {
-      appId: 'JP2Q0HN2DE',
-      apiKey: '67f1a7e15197ecf88d4c85f39a2e1789',
-      indexName: 'gotenberg',
+      appId: "JP2Q0HN2DE",
+      apiKey: "67f1a7e15197ecf88d4c85f39a2e1789",
+      indexName: "gotenberg",
       contextualSearch: true,
     },
     announcementBar: {
@@ -40,8 +40,8 @@ module.exports = {
           docId: "about",
         },
         {
-          type: 'search',
-          position: 'right',
+          type: "search",
+          position: "right",
         },
         {
           label: "Version 6.x",
@@ -133,7 +133,7 @@ module.exports = {
     },
     prism: {
       theme: lightCodeTheme,
-      additionalLanguages: ["docker", "php"],
+      additionalLanguages: ["docker", "php", "csharp", "powershell"],
     },
     colorMode: {
       // "light" | "dark"

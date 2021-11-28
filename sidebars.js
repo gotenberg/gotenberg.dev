@@ -50,5 +50,10 @@ module.exports = {
         "customize/add-modules",
       ],
     },
+    {
+      type: "doc",
+      id: "clients",
+      label: "Clients",
+    },
   ],
 };
