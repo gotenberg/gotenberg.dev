@@ -122,12 +122,14 @@ Each route accepts files named `header.html` and `footer.html`.
 
 For instance:
 
-```bash {4-5}
+```bash {4-7}
 curl \
 --request POST 'http://localhost:3000/forms/chromium/convert/url' \
 --form 'url="https://my.url"' \
 --form 'files=@"/path/to/header.html"' \
 --form 'files=@"/path/to/footer.html"' \
+--form 'marginTop="1"' \
+--form 'marginBottom="1"' \
 -o my.pdf
 ```
 
