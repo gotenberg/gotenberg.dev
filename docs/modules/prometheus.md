@@ -26,6 +26,6 @@ This route exposes the metrics from other modules.
 
 The following modules provide metrics:
 
-* [Chromium](chromium)
-* [LibreOffice](libreoffice)
-* [PDF Engines](pdf-engines)
+* [Chromium](chromium#metric)
+* [LibreOffice](libreoffice#metrics)
+* [PDF Engines](pdf-engines#metrics)

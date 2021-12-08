@@ -9,17 +9,19 @@ import TabItem from '@theme/TabItem';
 The LibreOffice module interacts with [LibreOffice](https://www.libreoffice.org/) to convert documents to PDF, 
 thanks to [unoconv](https://github.com/unoconv/unoconv).
 
-:::info
-
-It starts a dedicated LibreOffice instance for each conversion.
-
-:::
-
 ## Properties
 
 ```
 --libreoffice-disable-routes bool  Disable the routes
+--unoconv-disable-listener   bool  Do not start a unoconv listener - save resources in detriment of performance
 ```
+
+:::info
+
+If `--unoconv-disable-listener` is set to true, Gotenberg starts a dedicated LibreOffice instance for each conversion.
+It also impacts the performance of the [unoconv](pdf-engines#unoconv) PDF engine.
+
+:::
 
 ## Route
 
@@ -246,10 +248,12 @@ Gotenberg merges the PDF files alphabetically.
 </TabItem>
 </Tabs>
 
-## Metric
+## Metrics
 
-The LibreOffice module exposes the following metric:
+The LibreOffice module exposes the following metrics:
 
-* `{namespace}_unoconv_active_instances_count` - current number of active LibreOffice instances.
+* `{namespace}_unoconv_active_instances_count` - current number of active unoconv instances.
+* `{namespace}_unoconv_listener_active_instances_count` - current number of active unoconv listener instances.
+* `{namespace}_unoconv_listener_queue_length` - current number of processes in the queue.
 
 See [Prometheus](Prometheus) for more details.

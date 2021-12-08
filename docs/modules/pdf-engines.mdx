@@ -19,6 +19,7 @@ It calls each engine until one successfully handles a task.
 ```
 --pdfengines-engines        strings  Set the PDF engines and their order - all by default
 --pdfengines-disable-routes bool     Disable the routes
+--unoconv-disable-listener  bool     Do not start a unoconv listener - save resources in detriment of performance
 ```
 
 :::tip
@@ -147,9 +148,12 @@ This engine uses [unoconv](https://github.com/unoconv/unoconv) - give it a star 
 
 ## Metrics
 
-The PDF Engines module exposes the following metric:
+The PDF Engines module exposes the following metrics:
 
 * `{namespace}_pdftk_active_instances_count` - current number of active PDFtk instances.
 * `{namespace}_qpdf_active_instances_count` - current number of active QPDF instances.
+* `{namespace}_unoconv_active_instances_count` - current number of active unoconv instances.
+* `{namespace}_unoconv_listener_active_instances_count` - current number of active unoconv listener instances.
+* `{namespace}_unoconv_listener_queue_length` - current number of processes in the queue.
 
 See [Prometheus](Prometheus) for more details.
