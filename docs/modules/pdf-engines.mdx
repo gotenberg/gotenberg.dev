@@ -21,6 +21,15 @@ It calls each engine until one successfully handles a task.
 --pdfengines-disable-routes bool     Disable the routes
 ```
 
+:::tip
+
+If you don't need all PDF engines, you may select only those you're interested in.
+
+For instance `--pdfengines-engines=pdftk,unoconv-pdfengine` selects [PDFtk](#pdftk) as the first
+engine, and [unoconv](#unoconv) as the second.
+
+:::
+
 ## Routes
 
 Each route accepts `multipart/form-data` requests.
@@ -76,6 +85,7 @@ Check the available PDF formats:
 
 * [PDFtk](pdf-engines#pdftk)
 * [PDFcpu](pdf-engines#pdfcpu)
+* [QPDF](pdf-engines#qpdf)
 * [unoconv](pdf-engines#unoconv)
 
 :::
@@ -119,6 +129,14 @@ This engine uses [PDFtk](https://gitlab.com/pdftk-java/pdftk) - give it a star �
 
 This engine uses [PDFcpu](https://github.com/pdfcpu/pdfcpu) - give it a star ⭐️
 
+### QPDF
+
+* Module name: `qpdf`
+* ✅ Merge
+* ❌ Convert
+
+This engine uses [QPDF](https://github.com/qpdf/qpdf) - give it a star ⭐️
+
 ### unoconv
 
 * Module name: `unoconv-pdfengine`
@@ -127,10 +145,11 @@ This engine uses [PDFcpu](https://github.com/pdfcpu/pdfcpu) - give it a star ⭐
 
 This engine uses [unoconv](https://github.com/unoconv/unoconv) - give it a star ⭐️
 
-## Metric
+## Metrics
 
 The PDF Engines module exposes the following metric:
 
 * `{namespace}_pdftk_active_instances_count` - current number of active PDFtk instances.
+* `{namespace}_qpdf_active_instances_count` - current number of active QPDF instances.
 
 See [Prometheus](Prometheus) for more details.
