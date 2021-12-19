@@ -11,16 +11,49 @@ the destination of your choice.
 
 ## Properties
 
+<Tabs
+defaultValue="security"
+values={[
+{ label: 'Security', value: 'security', },
+{ label: 'Retry', value: 'retry', },
+{ label: 'Timeout', value: 'timeout', },
+{ label: 'Disable', value: 'disable', },
+]
+}>
+<TabItem value="security">
+
 ```
---webhook-allow-list       string    Set the allowed URLs for the webhook feature using a regular expression
---webhook-deny-list        string    Set the denied URLs for the webhook feature using a regular expression
---webhook-error-allow-list string    Set the allowed URLs in case of an error for the webhook feature using a regular expression
---webhook-error-deny-list  string    Set the denied URLs in case of an error for the webhook feature using a regular expression
---webhook-max-retry        int       Set the maximum number of retries for the webhook feature (default 4)
---webhook-retry-min-wait   duration  Set the minimum duration to wait before trying to call the webhook again (default 1s)
---webhook-retry-max-wait   duration  Set the maximum duration to wait before trying to call the webhook again (default 30s)
---webhook-disable          bool      Disable the webhook feature
+--webhook-allow-list       string  Set the allowed URLs for the webhook feature using a regular expression
+--webhook-deny-list        string  Set the denied URLs for the webhook feature using a regular expression
+--webhook-error-allow-list string  Set the allowed URLs in case of an error for the webhook feature using a regular expression
+--webhook-error-deny-list  string  Set the denied URLs in case of an error for the webhook feature using a regular expression
 ```
+
+</TabItem>
+<TabItem value="retry">
+
+```
+--webhook-max-retry       int       Set the maximum number of retries for the webhook feature (default 4)
+--webhook-retry-min-wait  duration  Set the minimum duration to wait before trying to call the webhook again (default 1s)
+--webhook-retry-max-wait  duration  Set the maximum duration to wait before trying to call the webhook again (default 30s)
+```
+
+</TabItem>
+<TabItem value="timeout">
+
+```
+--webhook-client-timeout  duration  Set the time limit for requests to the webhook (default 30s)
+```
+
+</TabItem>
+<TabItem value="disable">
+
+```
+--webhook-disable bool  Disable the webhook feature
+```
+
+</TabItem>
+</Tabs>
 
 :::caution
 

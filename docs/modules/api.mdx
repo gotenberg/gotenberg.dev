@@ -31,10 +31,15 @@ values={[
 <TabItem value="timeout">
 
 ```
---api-read-timeout    duration  Set the maximum duration allowed to read a complete request, including the body (default 30s)
---api-process-timeout duration  Set the maximum duration allowed to process a request (default 30s)
---api-write-timeout   duration  Set the maximum duration before timing out writes of the response (default 30s)
+--api-timeout duration  Set the time limit for requests (default 30s)
 ```
+
+:::caution
+
+The properties `--api-read-timeout`, `--api-process-timeout` and `--api-write-timeout` are deprecated in favor of
+`--api-timeout`.
+
+:::
 
 </TabItem>
 <TabItem value="root_path">
@@ -229,21 +234,19 @@ You may customize the trace header thanks to the `--api-trace-header` property.
 
 ### Timeout <span class="badge badge--secondary">all routes</span>
 
-The API returns a `503 Service Unavailable` response if a request fails to finish before a given duration in one of
-these steps:
-
-1. The server is reading a request.
-2. A route handler is processing a request.
-3. A route handler keeps processing a request, even if the timeout duration has expired (hard timeout).
-4. The server is writing a response.
+The API returns a `503 Service Unavailable` response if a request fails to finish before a given duration.
 
 :::tip
 
-You may customize the timeout durations thanks to the following properties:
+You may customize the time limit thanks to the `--api-timeout` property.
 
-* `--api-read-timeout`
-* `--api-process-timeout`
-* `--api-write-timeout`
+:::
+
+:::info
+
+The API will close the socket if it fails to read the request body before the time limit. It will also close the socket
+if the API fails to write the response after a duration equal to two times the time limit. However, this scenario is
+unlikely.
 
 :::
 

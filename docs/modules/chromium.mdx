@@ -25,17 +25,56 @@ platforms, the Docker images will differ, alas.
 
 ## Properties
 
+<Tabs
+defaultValue="security"
+values={[
+{ label: 'Security', value: 'security', },
+{ label: 'Incognito', value: 'incognito', },
+{ label: 'Proxy Server', value: 'proxy_server', },
+{ label: 'JavaScript', value: 'javascript', },
+{ label: 'Disable', value: 'disable', },
+]
+}>
+<TabItem value="security">
+
 ```
 --chromium-allow-file-access-from-files bool    Allow file:// URIs to read other file:// URIs
 --chromium-allow-list                   string  Set the allowed URLs for Chromium using a regular expression
 --chromium-deny-list                    string  Set the denied URLs for Chromium using a regular expression (default "^file:///[^tmp].*")
 --chromium-ignore-certificate-errors    bool    Ignore the certificate errors
 --chromium-disable-web-security         bool    Don't enforce the same-origin policy
---chromium-incognito                    bool    Start Chromium with incognito mode
---chromium-proxy-server                 string  Set the outbound proxy server; this switch only affects HTTP and HTTPS requests
---chromium-disable-javascript           bool    Disable JavaScript
---chromium-disable-routes               bool    Disable the routes
 ```
+
+</TabItem>
+<TabItem value="incognito">
+
+```
+--chromium-incognito bool  Start Chromium with incognito mode
+```
+
+</TabItem>
+<TabItem value="proxy_server">
+
+```
+--chromium-proxy-server string  Set the outbound proxy server; this switch only affects HTTP and HTTPS requests
+```
+
+</TabItem>
+<TabItem value="javascript">
+
+```
+--chromium-disable-javascript bool  Disable JavaScript
+```
+
+</TabItem>
+<TabItem value="disable">
+
+```
+--chromium-disable-routes bool  Disable the routes
+```
+
+</TabItem>
+</Tabs>
 
 :::caution
 
