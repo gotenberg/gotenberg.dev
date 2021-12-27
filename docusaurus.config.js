@@ -129,7 +129,7 @@ module.exports = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Gotenberg, Inc.<br /> Built with <a href="https://docusaurus.io" target="_blank">Docusaurus</a>.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Julien Neuhart.<br /> Built with <a href="https://docusaurus.io" target="_blank">Docusaurus</a>.`,
     },
     prism: {
       theme: lightCodeTheme,
