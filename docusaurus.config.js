@@ -13,9 +13,6 @@ module.exports = {
   organizationName: "gotenberg",
   projectName: "gotenberg.dev",
   themeConfig: {
-    gtag: {
-      trackingID: "G-Q1MDM8KFVG",
-    },
     algolia: {
       appId: "JP2Q0HN2DE",
       apiKey: "67f1a7e15197ecf88d4c85f39a2e1789",
@@ -170,6 +167,9 @@ module.exports = {
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
+        },
+        gtag: {
+          trackingID: "G-Q1MDM8KFVG",
         },
       },
     ],

@@ -12,14 +12,26 @@ thanks to [unoconv](https://github.com/unoconv/unoconv).
 ## Properties
 
 ```
---libreoffice-disable-routes bool  Disable the routes
---unoconv-disable-listener   bool  Do not start a unoconv listener - save resources in detriment of performance
+--libreoffice-disable-routes     bool      Disable the routes
+--uno-listener-start-timeout     duration  Time limit for starting the LibreOffice listener (default 10s)
+--uno-listener-restart-threshold int       Conversions limit after which the LibreOffice listener is restarted - 0 means no long-running LibreOffice listener (default 10)
 ```
 
 :::info
 
-If `--unoconv-disable-listener` is set to true, Gotenberg starts a dedicated LibreOffice instance for each conversion.
-It also impacts the performance of the [unoconv](pdf-engines#unoconv) PDF engine.
+The LibreOffice listener is also restarted if it is unhealthy before and after a conversion.
+
+:::
+
+:::caution
+
+The `--uno-*` properties also impact the performance of the [UNO](pdf-engines#uno) PDF engine.
+
+:::
+
+:::caution
+
+The property `--unoconv-disable-listener` is deprecated in favor of `--uno-listener-restart-threshold` with 0 as value.
 
 :::
 
@@ -175,8 +187,8 @@ The page ranges are applied to all files independently.
 <TabItem value="pdf_format">
 
 ```
-nativePdfA1aFormat bool    Use unoconv to convert the resulting PDF to the 'PDF/A-1a' format
-pdfFormat          string  The PDF format of the resulting PDF
+nativePdfFormat string  Use unoconv to convert the resulting PDF to the given PDF format
+pdfFormat       string  The PDF format of the resulting PDF
 ```
 
 :::caution
@@ -185,15 +197,21 @@ You cannot use both form fields.
 
 :::
 
-`nativePdfA1aFormat`
+`nativePdfFormat`
 
 ```bash {4}
 curl \
 --request POST 'http://localhost:3000/forms/libreoffice/convert' \
 --form 'files=@"/path/to/file.docx"' \
---form 'nativePdfA1aFormat="true"' \
+--form 'nativePdfFormat="PDF/A-1a"' \
 -o my.pdf
 ```
+
+:::caution
+
+The form field `nativePdfA1aFormat` is deprecated in favor of `nativePdfFormat`.
+
+:::
 
 `pdfFormat`
 
@@ -214,7 +232,7 @@ Check the available PDF formats:
 * [PDFtk](pdf-engines#pdftk)
 * [PDFcpu](pdf-engines#pdfcpu)
 * [QPDF](pdf-engines#qpdf)
-* [unoconv](pdf-engines#unoconv)
+* [UNO](pdf-engines#uno)
 
 :::
 
@@ -248,12 +266,30 @@ Gotenberg merges the PDF files alphabetically.
 </TabItem>
 </Tabs>
 
+## Health Check
+
+If there is a long-running LibreOffice listener and it is unhealthy, the [health route](api#health) returns a
+`503 Service Unvailable` response.
+
+:::info
+
+A restarting LibreOffice listener is considered healthy.
+
+:::
+
 ## Metrics
 
 The LibreOffice module exposes the following metrics:
 
 * `{namespace}_unoconv_active_instances_count` - current number of active unoconv instances.
-* `{namespace}_unoconv_listener_active_instances_count` - current number of active unoconv listener instances.
-* `{namespace}_unoconv_listener_queue_length` - current number of processes in the queue.
+* `{namespace}_libreoffice_listener_active_instances_count` - current number of active LibreOffice listener instances.
+* `{namespace}_libreoffice_listener_queue_length` - current number of processes in the LibreOffice listener queue.
+
+:::caution
+
+The metrics `unoconv_listener_active_instances_count` and `unoconv_listener_queue_length`
+are deprecated in favor of `libreoffice_listener_active_instances_count` and `libreoffice_listener_queue_length`.
+
+:::
 
 See [Prometheus](Prometheus) for more details.

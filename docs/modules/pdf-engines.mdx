@@ -19,15 +19,22 @@ It calls each engine until one successfully handles a task.
 ```
 --pdfengines-engines        strings  Set the PDF engines and their order - all by default
 --pdfengines-disable-routes bool     Disable the routes
---unoconv-disable-listener  bool     Do not start a unoconv listener - save resources in detriment of performance
+--uno-listener-start-timeout     duration  Time limit for starting the LibreOffice listener (default 10s)
+--uno-listener-restart-threshold int       Operations limit after which the LibreOffice listener is restarted - 0 means no long-running LibreOffice listener (default 10)
 ```
 
 :::tip
 
 If you don't need all PDF engines, you may select only those you're interested in.
 
-For instance `--pdfengines-engines=pdftk,unoconv-pdfengine` selects [PDFtk](#pdftk) as the first
-engine, and [unoconv](#unoconv) as the second.
+For instance `--pdfengines-engines=pdftk,uno-pdfengine` selects [PDFtk](#pdftk) as the first
+engine, and [UNO](#uno) as the second.
+
+:::
+
+:::caution
+
+The `--uno-*` properties also impact the performance of the [LibreOffice](libreoffice) module.
 
 :::
 
@@ -87,7 +94,7 @@ Check the available PDF formats:
 * [PDFtk](pdf-engines#pdftk)
 * [PDFcpu](pdf-engines#pdfcpu)
 * [QPDF](pdf-engines#qpdf)
-* [unoconv](pdf-engines#unoconv)
+* [UNO](pdf-engines#uno)
 
 :::
 </TabItem>
@@ -138,11 +145,11 @@ This engine uses [PDFcpu](https://github.com/pdfcpu/pdfcpu) - give it a star ⭐
 
 This engine uses [QPDF](https://github.com/qpdf/qpdf) - give it a star ⭐️
 
-### unoconv
+### UNO
 
-* Module name: `unoconv-pdfengine`
+* Module name: `uno-pdfengine`
 * ❌ Merge
-* ✅ Convert (format `PDF/A-1a`)
+* ✅ Convert (formats: `PDF/A-1a`, `PDF/A-2b`, `PDF/A-3b`)
 
 This engine uses [unoconv](https://github.com/unoconv/unoconv) - give it a star ⭐️
 
@@ -153,7 +160,14 @@ The PDF Engines module exposes the following metrics:
 * `{namespace}_pdftk_active_instances_count` - current number of active PDFtk instances.
 * `{namespace}_qpdf_active_instances_count` - current number of active QPDF instances.
 * `{namespace}_unoconv_active_instances_count` - current number of active unoconv instances.
-* `{namespace}_unoconv_listener_active_instances_count` - current number of active unoconv listener instances.
-* `{namespace}_unoconv_listener_queue_length` - current number of processes in the queue.
+* `{namespace}_libreoffice_listener_active_instances_count` - current number of active LibreOffice listener instances.
+* `{namespace}_libreoffice_listener_queue_length` - current number of processes in the LibreOffice listener queue.
+
+:::caution
+
+The metrics `unoconv_listener_active_instances_count` and `unoconv_listener_queue_length`
+are deprecated in favor of `libreoffice_listener_active_instances_count` and `libreoffice_listener_queue_length`.
+
+:::
 
 See [Prometheus](Prometheus) for more details.
