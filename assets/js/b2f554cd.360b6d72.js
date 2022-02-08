@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkgotenberg_dev=self.webpackChunkgotenberg_dev||[]).push([[1477],{10:function(e){e.exports={blogPosts:[]}}}]);
