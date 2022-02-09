@@ -17,9 +17,19 @@ thanks to [unoconv](https://github.com/unoconv/unoconv).
 --uno-listener-restart-threshold int       Conversions limit after which the LibreOffice listener is restarted - 0 means no long-running LibreOffice listener (default 10)
 ```
 
+:::tip
+
+By default, a long-running LibreOffice listener handles the conversions. This stateful mode allows for faster unitary
+conversion, but there is a lock mechanism as a single LibreOffice listener cannot perform parallel operations.
+
+In other words, under heavy load, you should consider scaling up your number of Gotenberg instances or switch the LibreOffice
+module to a stateless mode with `--uno-listener-restart-threshold=0` (i.e., a dedicated LibreOffice listener per conversion).
+
+:::
+
 :::info
 
-The LibreOffice listener is also restarted if it is unhealthy before and after a conversion.
+Gotenberg restarts the long-running LibreOffice listener if it is unhealthy before and after a conversion.
 
 :::
 
@@ -268,12 +278,14 @@ Gotenberg merges the PDF files alphabetically.
 
 ## Health Check
 
-If there is a long-running LibreOffice listener and it is unhealthy, the [health route](api#health) returns a
-`503 Service Unvailable` response.
+If `--uno-listener-restart-threshold=0` (i.e., stateless mode), there is no health check.
+
+In stateful mode, the [health route](api#health) returns a `503 Service Unvailable` response if the long-running
+LibreOffice listener is unhealthy.
 
 :::info
 
-A restarting LibreOffice listener is considered healthy.
+Gotenberg considers a restarting long-running LibreOffice listener healthy.
 
 :::
 
