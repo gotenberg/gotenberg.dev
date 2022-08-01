@@ -20,6 +20,8 @@
   --ifm-background-surface-color: #f9f9f9;
   --ifm-footer-link-color: white;
   --ifm-footer-link-hover-color: white;
+
+  --docusaurus-highlighted-code-line-bg: rgb(204, 204, 204);
 }
 
 .docusaurus-highlight-code-line {
