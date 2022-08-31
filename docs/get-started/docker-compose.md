@@ -68,6 +68,13 @@ services:
       - "--my-property=foo"
 ```
 
+:::caution
+
+Do not redefine the entrypoint, but override the command instead. See this
+[issue](https://github.com/gotenberg/gotenberg/issues/480#issuecomment-1232064017) for more details.
+
+:::
+
 ## Update
 
 To update the `gotenberg` service to the latest version, run:

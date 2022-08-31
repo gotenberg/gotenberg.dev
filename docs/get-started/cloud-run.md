@@ -32,6 +32,13 @@ webhook.
 
 :::
 
+:::caution
+
+Do not redefine the entrypoint, but override the command instead. See this
+[issue](https://github.com/gotenberg/gotenberg/issues/480#issuecomment-1232064017) for more details.
+
+:::
+
 :::danger
 
 We don't recommend exposing your instances to the external world. In terms of security, you should consider Gotenberg

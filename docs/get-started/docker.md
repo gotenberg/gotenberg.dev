@@ -52,6 +52,13 @@ docker run --rm -p 3000:3000 gotenberg/gotenberg:7 \
        --my-property=foo
 ```
 
+:::caution
+
+Do not redefine the entrypoint, but override the command instead. See this
+[issue](https://github.com/gotenberg/gotenberg/issues/480#issuecomment-1232064017) for more details.
+
+:::
+
 ## Update
 
 To update your local Docker image of Gotenberg to the latest version, run:

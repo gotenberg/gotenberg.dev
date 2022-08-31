@@ -19,6 +19,13 @@ Make sure to provide enough memory and CPU requests (for instance, `512Mi` and `
 
 :::
 
+:::caution
+
+Do not redefine the entrypoint, but override the command instead. See this 
+[issue](https://github.com/gotenberg/gotenberg/issues/480#issuecomment-1232064017) for more details.
+
+:::
+
 :::tip
 
 The more resources you grant to the pod, the more responsive the API will be.
