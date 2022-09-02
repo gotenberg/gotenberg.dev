@@ -334,3 +334,19 @@ are deprecated in favor of `libreoffice_listener_active_instances_count` and `li
 :::
 
 See [Prometheus](Prometheus) for more details.
+
+## Troubleshooting
+
+### Filename contains non-Latin characters
+
+`convert to PDF: unoconv PDF: unix process error: wait for unix process: exit status 6`
+
+Make sure the filename is *UTF-8* encoded. See issue [#427](https://github.com/gotenberg/gotenberg/issues/427) for more
+details.
+
+### Troublesome `.pptx` file
+
+If you keep getting `500 Internal Server Error` while trying to convert a `.pptx` file, a common workaround is to
+increase the memory and CPU available to Gotenberg. See issue [#465](https://github.com/gotenberg/gotenberg/issues/465)
+for more details.
+
