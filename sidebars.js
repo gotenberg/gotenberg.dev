@@ -51,9 +51,9 @@ module.exports = {
       ],
     },
     {
-      type: "doc",
-      id: "clients",
-      label: "Clients",
+      type: "link",
+      label: "Awesome",
+      href: "https://github.com/gotenberg/awesome-gotenberg",
     },
   ],
 };
