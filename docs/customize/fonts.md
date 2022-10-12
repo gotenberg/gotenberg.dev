@@ -38,7 +38,9 @@ FROM gotenberg/gotenberg:7
 
 USER root
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends my-fonts-package
+RUN DEBIAN_FRONTEND=noninteractive apt-get update \
+    && apt-get install -y -qq --no-install-recommends my-fonts-package \
+    && apt-get clean
 
 USER gotenberg
 ```
