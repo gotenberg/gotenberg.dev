@@ -589,3 +589,11 @@ The Chromium module exposes the following metric:
 * `{namespace}_chromium_active_instances_count` - current number of active Chromium instances.
 
 See [Prometheus](Prometheus) for more details.
+
+## Troubleshooting
+
+### PDF files size too large
+
+Using webfonts significantly increases the PDF file size. When using a custom font, see the
+[Fonts](../customize/fonts) chapter on how to install them in the Docker container instead.
+See issue [#521](https://github.com/gotenberg/gotenberg/issues/521) for more details.
