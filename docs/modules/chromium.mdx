@@ -113,6 +113,7 @@ marginLeft        float   Left margin, in inches (default 0.39)
 marginRight       float   Right margin, in inches (default 0.39)
 preferCssPageSize bool    Define whether to prefer page size as defined by CSS (default false)
 printBackground   bool    Print the background graphics (default false)
+omitBackground    bool    Hide the default white background and allow generating PDFs with transparency (default false)
 landscape         bool    Set the paper orientation to landscape (default false)
 scale             float   The scale of the page rendering (default 1.0)
 nativePageRanges  string  Page ranges to print, e.g., '1-5, 8, 11-13' - empty means all pages
@@ -132,6 +133,7 @@ curl \
 --form 'marginRight="1"' \
 --form 'preferCssPageSize="false"' \
 --form 'printBackground="true"' \
+--form 'omitBackground="true"' \
 --form 'landscape="true"' \
 --form 'scale="2.0"' \
 --form 'nativePageRanges="1-5"' \
@@ -153,6 +155,20 @@ Examples of paper size (width x height):
 * `A4` - 8.27 x 11.7
 * `A5` - 5.83 x 8.27
 * `A6` - 4.13 x 5.83
+
+:::
+
+:::info
+
+The rules regarding the `printBackground` and `omitBackground` form fields are the following:
+
+* If `printBackground` is set to *false*, no background is printed.
+* If `printBackground` is set to *true*:
+  * If the HTML document has a background, that background is used.
+  * If not:
+    * If `omitBackground` is set to *true*, the default background is transparent.
+    * If not, the default white background is used.
+
 
 :::
 
@@ -224,6 +240,7 @@ There are some limitations:
 * Images only work using a base64 encoded source - i.e., `data:image/png;base64, iVBORw0K...`.
 * `background-color` and `color` CSS properties require an additional `-webkit-print-color-adjust: exact` CSS property in order to work.
 * Assets are not loaded (i.e., CSS files, scripts, fonts, etc.).
+* Background form fields do not apply.
 
 :::
 
