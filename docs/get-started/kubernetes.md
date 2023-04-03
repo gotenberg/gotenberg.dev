@@ -32,6 +32,13 @@ The more resources you grant to the pod, the more responsive the API will be.
 
 :::
 
+:::tip
+
+A community Helm chart is available at [MaikuMori/helm-charts](https://github.com/MaikuMori/helm-charts) and on 
+[ArtifactHub](https://artifacthub.io/packages/helm/maikumori/gotenberg)
+
+:::
+
 :::danger
 
 We don't recommend exposing your instances to the external world. In terms of security, you should consider Gotenberg
