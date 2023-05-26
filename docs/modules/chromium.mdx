@@ -29,7 +29,7 @@ platforms, the Docker images will differ, alas.
 defaultValue="security"
 values={[
 { label: 'Security', value: 'security', },
-{ label: 'Incognito', value: 'incognito', },
+{ label: 'Health Check', value: 'healthcheck', },
 { label: 'Network', value: 'network', },
 { label: 'JavaScript', value: 'javascript', },
 { label: 'Disable', value: 'disable', },
@@ -44,13 +44,14 @@ values={[
 --chromium-deny-list                    string  Set the denied URLs for Chromium using a regular expression (default "^file:///[^tmp].*")
 --chromium-ignore-certificate-errors    bool    Ignore the certificate errors
 --chromium-disable-web-security         bool    Don't enforce the same-origin policy
+--chromium-incognito                    bool    Start Chromium with incognito mode
 ```
 
 </TabItem>
-<TabItem value="incognito">
+<TabItem value="healthcheck">
 
 ```
---chromium-incognito bool  Start Chromium with incognito mode
+--chromium-failed-starts-threshold int  Set the number of consecutive failed starts after which the module is considered unhealthy - 0 means ignore (default 5)
 ```
 
 </TabItem>
@@ -408,9 +409,6 @@ After a Chromium conversion, the PDF engines will convert the resulting PDF to a
 
 Check the available PDF formats:
 
-* [PDFtk](pdf-engines#pdftk)
-* [PDFcpu](pdf-engines#pdfcpu)
-* [QPDF](pdf-engines#qpdf)
 * [UNO](pdf-engines#UNO)
 
 :::
@@ -598,11 +596,19 @@ curl \
 -o my.pdf
 ```
 
+## Health Check
+
+If `--chromium-failed-starts-threshold=0`, there is no health check.
+
+The [health route](api#health) returns a `503 Service Unvailable` response if the failed starts
+threshold has been reached.
+
 ## Metric
 
 The Chromium module exposes the following metric:
 
 * `{namespace}_chromium_active_instances_count` - current number of active Chromium instances.
+* `{namespace}_chromium_failed_starts_count` - current number of Chromium consecutive starting failures.
 
 See [Prometheus](Prometheus) for more details.
 
