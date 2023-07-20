@@ -14,6 +14,7 @@ The logger writes [structured logs](https://www.sumologic.com/glossary/structure
 ## Properties
 
 ```
---log-format string  Set log format - auto, json, or text (default "auto")
---log-level  string  Set the log level - error, warn, info, or debug (default "info")
+--log-format        string  Specify the format of logging. Options include auto, json, or text (default "auto")
+--log-level         string  Choose the level of logging detail. Options include error, warn, info, or debug (default "info")
+--log-fields-prefix string  Prepend a specified prefix to each field in the logs
 ```
