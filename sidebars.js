@@ -12,43 +12,33 @@
 module.exports = {
   "version-7.x": [
     {
+      type: "category",
+      label: "Getting Started",
+      collapsible: false,
+      items: [
+        "getting-started/introduction",
+        "getting-started/installation"
+      ],
+    },
+    {
       type: "doc",
-      id: "about",
-      label: "About",
+      id: "routes",
+      label: "Routes",
     },
     {
-      type: "category",
-      label: "Get Started",
-      items: [
-        "get-started/live-demo",
-        "get-started/docker",
-        "get-started/docker-compose",
-        "get-started/kubernetes",
-        "get-started/cloud-run",
-      ],
+      type: "doc",
+      id: "webhook",
+      label: "Webhook",
     },
     {
-      type: "category",
-      label: "Modules",
-      items: [
-        "modules/api",
-        "modules/chromium",
-        "modules/libreoffice",
-        "modules/pdf-engines",
-        "modules/webhook",
-        "modules/prometheus",
-        "modules/logging",
-        "modules/more",
-      ],
+      type: "doc",
+      id: "configuration",
+      label: "Configuration",
     },
     {
-      type: "category",
-      label: "Customize",
-      items: [
-        "customize/ownership",
-        "customize/fonts",
-        "customize/add-modules",
-      ],
+      type: "doc",
+      id: "troubleshooting",
+      label: "Troubleshooting",
     },
     {
       type: "link",

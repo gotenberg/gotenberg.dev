@@ -1,0 +1,129 @@
+---
+id: webhook
+title: Webhook
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+The webhook feature enables Gotenberg to upload the output file originating from *multipart/form-data* routes to a
+selected destination. Upon employing the webhook feature, the API promptly returns a *204 No Content response*, and the
+entire process is carried out asynchronously.
+
+It uses the following HTTP headers:
+
+| Header                               | Description                                                  | Default                                           |
+| ------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------- |
+| Gotenberg-Webhook-Url                | The callback to use.                                         | <span class="badge badge--danger">required</span> |
+| Gotenberg-Webhook-Error-Url          | The callback to use if error.                                | <span class="badge badge--danger">required</span> |
+| Gotenberg-Webhook-Method             | The HTTP method to use (*POST*, *PATCH*, or *PUT*).          | POST                                              |
+| Gotenberg-Webhook-Error-Method       | The HTTP method to use if error (*POST*, *PATCH*, or *PUT*). | POST                                              |
+| Gotenberg-Webhook-Extra-Http-Headers | The extra HTTP headers to send to both URLs (JSON format).   | None                                              |
+
+Checkout the [Webhook module configuration](configuration#webhook) to tailor the Webhook feature to your needs.
+
+:::info
+
+[PipeDream](http://pipedream.com/?via=julien) provides an excellent platform if you wish to test the webhook feature.
+
+:::
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {3-7}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/url' \
+--header 'Gotenberg-Webhook-Extra-Http-Headers: {"MyHeader": "MyValue"}' \
+--header 'Gotenberg-Webhook-Url: https://my.webhook.url' \
+--header 'Gotenberg-Webhook-Method: PUT' \
+--header 'Gotenberg-Webhook-Error-Url: https://my.webhook.error.url' \
+--header 'Gotenberg-Webhook-Error-Method: POST' \
+--form 'url="https://my.url"'
+```
+
+</TabItem>
+</Tabs>
+
+<Tabs
+defaultValue="204"
+values={[
+{ label: '204 No Content', value: '204', },
+{ label: '400 Bad Request', value: '400', },
+{ label: '403 Forbidden', value: '403', },
+{ label: 'Callback Request', value: 'callback', },
+{ label: 'Callback Error Request', value: 'callback_error', },
+]
+}>
+<TabItem value="204">
+
+```
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+```
+
+</TabItem>
+<TabItem value="400">
+
+This errors happens if one ore more headers are invalid.
+
+```
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+```
+
+</TabItem>
+<TabItem value="403">
+
+This error happens when the one of given URLs is not authorized.
+
+See the [Webhook module configuration](configuration#webhook) for more details.
+
+```
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: Invalid '{header_key}' header value: '{url}' does not match the authorized URLs
+```
+
+</TabItem>
+<TabItem value="callback">
+
+```
+Content-Disposition: attachement; filename={output-filename.ext}
+Content-Type: {content-type}
+Content-Length: {content-length}
+Gotenberg-Trace: {trace}
+User-Agent: Gotenberg
+Body: {output-file}
+```
+
+:::info
+
+You may customize the `Content-Disposition` header thanks to [output filename header](routes#output-filename).
+
+:::
+
+</TabItem>
+<TabItem value="callback_error">
+
+```
+Content-Type: application/json; charset=UTF-8
+Gotenberg-Trace: {trace}
+User-Agent: Gotenberg
+```
+
+```json
+{
+    "status": "{status}",
+    "message": "{message}"
+}
+```
+
+</TabItem>
+</Tabs>

@@ -1,0 +1,1380 @@
+---
+id: routes
+title: Routes
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Most routes within Gotenberg are designed to accept *multipart/form-data* requests and generate one or more PDF files.
+This guide will assist you in understanding their usage.
+
+## Convert with Chromium
+
+The next routes leverage the capabilities of the Chromium browser to effectively transform a diverse range of HTML
+documents into PDFs.
+
+There are three *multipart/form-data* routes available:
+
+1. [URL into PDF](#url-into-pdf)
+2. [HTML file into PDF](#html-file-into-pdf)
+3. [Markdown file(s) into PDF](#markdown-files-into-pdf)
+
+Each route accepts common form fields and form files:
+
+* [Page Properties](#page-properties-chromium)
+* [Header & Footer](#header--footer)
+* [Wait Before Rendering](#wait-before-rendering)
+* [Emulated Media Type](#emulated-media-type)
+* [Custom HTTP Headers](#custom-http-headers)
+* [Console Exceptions](#console-exceptions)
+* [PDF/A](#pdfa-chromium)
+
+Checkout the [Chromium module configuration](configuration#chromium) to tailor the Chromium behavior to your needs.
+
+### URL into PDF <span class="badge badge--secondary">route</span>
+
+This *multipart/form-data* route converts a web page into PDF.
+
+```
+POST /forms/chromium/convert/url
+```
+
+It accepts the following specific form field:
+
+| Key | Description                                   |                                                   |
+| --- | --------------------------------------------- | ------------------------------------------------- |
+| url | URL of the page you want to convert into PDF. | <span class="badge badge--danger">required</span> |
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {3}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/url' \
+--form 'url="https://my.url"' \
+-o my.pdf
+```
+
+</TabItem>
+</Tabs>
+
+<Tabs
+defaultValue="200"
+values={[
+{ label: '200 OK', value: '200', },
+{ label: '400 Bad Request', value: '400', },
+{ label: '403 Forbidden', value: '403', },
+{ label: '503 Service Unavailable', value: '503', },
+]
+}>
+<TabItem value="200">
+
+```
+Content-Disposition: attachement; filename={output-filename.pdf}
+Content-Type: {content-type}
+Content-Length: {content-length}
+Gotenberg-Trace: {trace}
+Body: {output-file}
+```
+
+* See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
+* See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
+
+</TabItem>
+<TabItem value="400">
+
+This errors happens if one ore more form fields are invalid.
+
+```
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+```
+
+</TabItem>
+<TabItem value="403">
+
+This error happens when the given URL is not authorized.
+
+See the [Chromium module configuration](configuration#chromium) for more details.
+
+```
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: '{url}' does not match the authorized URLs
+```
+
+</TabItem>
+<TabItem value="503">
+
+If a request doesn't complete within a specified duration, the API will respond with a *503 Service Unavailable* status.
+
+See the [API module configuration](configuration#api) for more details.
+
+```
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: Service Unavailable
+```
+
+</TabItem>
+</Tabs>
+
+### HTML file into PDF <span class="badge badge--secondary">route</span>
+
+This *multipart/form-data* route converts an HTML file into PDF.
+
+```
+POST /forms/chromium/convert/html
+```
+
+It accepts the following specific form file:
+
+| Key        | Description                        |                                                    |
+| ---------- | ---------------------------------- | -------------------------------------------------- |
+| index.html | The HTML file to convert into PDF. | <span class="badge badge--danger">required</span>  |
+
+For instance:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>My PDF</title>
+  </head>
+  <body>
+    <h1>Hello world!</h1>
+  </body>
+</html>
+```
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {3}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/html' \
+--form 'files=@"/path/to/index.html"' \
+-o my.pdf
+```
+
+</TabItem>
+</Tabs>
+
+<Tabs
+defaultValue="200"
+values={[
+{ label: '200 OK', value: '200', },
+{ label: '400 Bad Request', value: '400', },
+{ label: '503 Service Unavailable', value: '503', },
+]
+}>
+<TabItem value="200">
+
+```
+Content-Disposition: attachement; filename={output-filename.pdf}
+Content-Type: {content-type}
+Content-Length: {content-length}
+Gotenberg-Trace: {trace}
+Body: {output-file}
+```
+
+* See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
+* See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
+
+</TabItem>
+<TabItem value="400">
+
+This errors happens if one ore more form fields are invalid.
+
+```
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+```
+
+</TabItem>
+<TabItem value="503">
+
+If a request doesn't complete within a specified duration, the API will respond with a *503 Service Unavailable* status.
+
+See the [API module configuration](configuration#api) for more details.
+
+```
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: Service Unavailable
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+You may also send additional files, like images, fonts, stylesheets, and so on.
+
+The only requirement is that their paths in the `index.html` file are on the root level.
+
+For instance, this will work:
+
+```html {9}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>My PDF</title>
+  </head>
+  <body>
+    <h1>Hello world!</h1>
+    <img src="img.png" />
+  </body>
+</html>
+```
+
+But this won't:
+
+```html {9}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>My PDF</title>
+  </head>
+  <body>
+    <h1>Hello world!</h1>
+    <img src="/foo/img.png" />
+  </body>
+</html>
+```
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {4}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/html' \
+--form 'files=@"/path/to/index.html"' \
+--form 'files=@"/path/to/img.png"' \
+-o my.pdf
+```
+
+</TabItem>
+</Tabs>
+
+:::info
+
+Remote paths for images, fonts (e.g., [Google Fonts](https://fonts.google.com/)), etc., work too.
+
+:::
+
+### Markdown file(s) into PDF <span class="badge badge--secondary">route</span>
+
+This *multipart/form-data* route converts Markdown file(s) into PDF.
+
+```
+POST /forms/chromium/convert/markdown
+```
+
+It accepts the following specific form files:
+
+| Key        | Description                                    |                                                   |
+| ---------- | ---------------------------------------------- | ------------------------------------------------- |
+| index.html | The HTML file that wraps the markdown content. | <span class="badge badge--danger">required</span> |
+| *.md       | At least one markdown file.                    | <span class="badge badge--danger">required</span> |
+
+It works like the [HTML](#html) route but with access to a Go template function `toHTML`. This function converts a
+markdown file's content into HTML.
+
+```html {8}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>My PDF</title>
+  </head>
+  <body>
+    {{ toHTML "file.md" }}
+  </body>
+</html>
+```
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {4}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/markdown' \
+--form 'files=@"/path/to/index.html"' \
+--form 'files=@"/path/to/file.md"' \
+-o my.pdf
+```
+
+</TabItem>
+</Tabs>
+
+<Tabs
+defaultValue="200"
+values={[
+{ label: '200 OK', value: '200', },
+{ label: '400 Bad Request', value: '400', },
+{ label: '503 Service Unavailable', value: '503', },
+]
+}>
+<TabItem value="200">
+
+```
+Content-Disposition: attachement; filename={output-filename.pdf}
+Content-Type: {content-type}
+Content-Length: {content-length}
+Gotenberg-Trace: {trace}
+Body: {output-file}
+```
+
+* See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
+* See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
+
+</TabItem>
+<TabItem value="400">
+
+This errors happens if one ore more form fields are invalid.
+
+```
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+```
+
+</TabItem>
+<TabItem value="503">
+
+If a request doesn't complete within a specified duration, the API will respond with a *503 Service Unavailable* status.
+
+See the [API module configuration](configuration#api) for more details.
+
+```
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: Service Unavailable
+```
+
+</TabItem>
+</Tabs>
+
+### Page Properties {#page-properties-chromium}
+
+Each route accepts the following form fields:
+
+| Key               | Description                                                                    | Default   |
+| ----------------- | ------------------------------------------------------------------------------ | --------- |
+| paperWidth        | Paper width, in inches.                                                        | 8.5       |
+| paperHeight       | Paper height, in inches.                                                       | 11        |
+| marginTop         | Top margin, in inches.                                                         | 0.39      |
+| marginBottom      | Bottom margin, in inches.                                                      | 0.39      |
+| marginLeft        | Left margin, in inches.                                                        | 0.39      |
+| marginRight       | Right margin, in inches.                                                       | 0.39      |
+| preferCssPageSize | Define whether to prefer page size as defined by CSS.                          | false     |
+| printBackground   | Print the background graphics.                                                 | false     |
+| omitBackground    | Hide the default white background and allow generating PDFs with transparency. | false     |
+| landscape         | Set the paper orientation to landscape.                                        | false     |
+| scale             | The scale of the page rendering.                                               | 1.0       |
+| nativePageRanges  | Page ranges to print, e.g., '1-5, 8, 11-13' - empty means all pages.           | All pages |
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {4-15}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/url' \
+--form 'url="https://my.url"' \
+--form 'paperWidth="8.27"' \
+--form 'paperHeight="11.7"' \
+--form 'marginTop="1"' \
+--form 'marginBottom="1"' \
+--form 'marginLeft="1"' \
+--form 'marginRight="1"' \
+--form 'preferCssPageSize="false"' \
+--form 'printBackground="true"' \
+--form 'omitBackground="true"' \
+--form 'landscape="true"' \
+--form 'scale="2.0"' \
+--form 'nativePageRanges="1-5"' \
+-o my.pdf
+```
+
+</TabItem>
+</Tabs>
+
+:::info
+
+Examples of paper size (width x height):
+
+* `Letter` - 8.5 x 11 (default)
+* `Legal` - 8.5 x 14
+* `Tabloid` - 11 x 17
+* `Ledger` - 17 x 11
+* `A0` - 33.1 x 46.8
+* `A1` - 23.4 x 33.1
+* `A2` - 16.54 x 23.4
+* `A3` - 11.7 x 16.54
+* `A4` - 8.27 x 11.7
+* `A5` - 5.83 x 8.27
+* `A6` - 4.13 x 5.83
+
+:::
+
+:::info
+
+The rules regarding the `printBackground` and `omitBackground` form fields are the following:
+
+* If `printBackground` is set to *false*, no background is printed.
+* If `printBackground` is set to *true*:
+    * If the HTML document has a background, that background is used.
+    * If not:
+        * If `omitBackground` is set to *true*, the default background is transparent.
+        * If not, the default white background is used.
+
+:::
+
+### Header & Footer
+
+Each route accepts the following form files:
+
+| Key         | Description                      | Default |
+| ----------- | -------------------------------- | ------- |
+| header.html | HTML file containing the header. | None    |
+| footer.html | HTML file containing the footer. | None    |
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {4-7}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/url' \
+--form 'url="https://my.url"' \
+--form 'files=@"/path/to/header.html"' \
+--form 'files=@"/path/to/footer.html"' \
+--form 'marginTop="1"' \
+--form 'marginBottom="1"' \
+-o my.pdf
+```
+
+</TabItem>
+</Tabs>
+
+Each of them has to be a **complete HTML document**:
+
+```html
+<html>
+<head>
+    <style>
+    body {
+        font-size: 8rem;
+        margin: 4rem auto;
+    }
+    </style>
+</head>
+<body>
+<p><span class="pageNumber"></span> of <span class="totalPages"></span></p>
+</body>
+</html>
+```
+
+:::info
+
+The following classes allow you to inject printing values:
+
+* `date` - formatted print date.
+* `title` - document title.
+* `url` - document location.
+* `pageNumber` - current page number.
+* `totalPages` - total pages in the document.
+
+:::
+
+:::caution
+
+Make sure that:
+
+1. Margins top and bottom are large enough (`marginTop` and `marginBottom` form fields).
+2. The font size is big enough.
+
+:::
+
+:::caution
+
+There are some limitations:
+
+* No JavaScript.
+* The CSS properties are independent of the ones from the HTML document.
+* `footer.html` CSS properties override the ones from `header.html`.
+* Only fonts installed in the Docker image are loaded - see the [fonts configuration section](configuration#fonts).
+* Images only work using a base64 encoded source - i.e., `data:image/png;base64, iVBORw0K...`.
+* `background-color` and `color` CSS properties require an additional `-webkit-print-color-adjust: exact` CSS property in order to work.
+* Assets are not loaded (i.e., CSS files, scripts, fonts, etc.).
+* Background form fields do not apply.
+
+:::
+
+### Wait Before Rendering
+
+Each route accepts the following form fields:
+
+| Key                | Description                                                                                            | Default |
+| ------------------ |------------------------------------------------------------------------------------------------------- | ------- |
+| waitDelay          | Duration (e.g, '5s') to wait when loading an HTML document before converting it into PDF.              | None    |
+| waitForExpression  | The JavaScript expression to wait before converting an HTML document into PDF until it returns *true*. | None    |
+
+:::info
+
+These form fields do not work if JavaScript is disabled via `--chromium-disable-javascript`.
+
+See the [Chromium module configuration](configuration#chromium) for more details.
+
+:::
+
+**waitDelay**
+
+When the page relies on JavaScript for rendering, and you don't have access to the page's code, you may want to wait a
+certain amount of time to make sure Chromium has fully rendered the page you're trying to generate.
+
+<Tabs
+defaultValue="curl"
+values={[
+    { label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {4}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/url' \
+--form 'url="https://my.url"' \
+--form 'waitDelay="5s"' \
+-o my.pdf
+```
+
+</TabItem>
+</Tabs>
+
+**waitForExpression**
+
+A more reliable option than the previous form field:
+
+```js
+// Somewhere in the HTML document.
+await promises()
+window.status = 'ready'
+```
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {4}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/url' \
+--form 'url="https://my.url"' \
+--form 'waitForExpression="window.status === '\''ready'\''"' \
+-o my.pdf
+```
+
+</TabItem>
+</Tabs>
+
+### Emulated Media Type
+
+Each route accepts the following form field:
+
+| Key               | Description                                                                  | Default |
+| ----------------- | ---------------------------------------------------------------------------- | ------- |
+| emulatedMediaType | The media type to emulate, either "screen" or "print" - empty means "print". | print   |
+
+Some websites have dedicated CSS rules for print. Using "screen" allows you to force the "standard" CSS rules.
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {4}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/url' \
+--form 'url="https://my.url"' \
+--form 'emulatedMediaType="screen"' \
+-o my.pdf
+```
+
+</TabItem>
+</Tabs>
+
+### Custom HTTP Headers
+
+Each route accepts the following form fields:
+
+| Key              | Description                                                                     | Default |
+| ---------------- |-------------------------------------------------------------------------------- | ------- |
+| userAgent        | Override the default `User-Agent` header.                                       | None    |
+| extraHttpHeaders | HTTP headers to send by Chromium while loading the HTML document (JSON format). | None    |
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {4-5}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/url' \
+--form 'url="https://my.url"' \
+--form 'userAgent="Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1"' \
+--form 'extraHttpHeaders="{\"MyHeader\": \"MyValue\"}"' \
+-o my.pdf
+```
+
+</TabItem>
+</Tabs>
+
+### Console Exceptions
+
+Each route accepts the following form field:
+
+| Key                     | Description                                                                       | Default |
+| ----------------------- |---------------------------------------------------------------------------------- | ------- |
+| failOnConsoleExceptions | Return a *409 Conflict* response if there are exceptions in the Chromium console. | false   |
+
+:::info
+
+This form field does not work if JavaScript is disabled via `--chromium-disable-javascript`.
+
+See the [Chromium module configuration](configuration#chromium) for more details.
+
+:::
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {4}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/html' \
+--form 'files=@"/path/to/index.html"' \
+--form 'failOnConsoleExceptions="true"'
+```
+
+</TabItem>
+</Tabs>
+
+<Tabs
+defaultValue="409"
+values={[
+{ label: '409 Conflict', value: '409', },
+]
+}>
+<TabItem value="409">
+
+```
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body:
+
+Chromium console exceptions:
+
+exception "Uncaught" (17:10): Error: Exception 1
+at file:///tmp/db09d2c8-31e3-4058-9923-c2705350f2b3/index.html:18:11;
+exception "Uncaught" (20:10): Error: Exception 2
+at file:///tmp/db09d2c8-31e3-4058-9923-c2705350f2b3/index.html:21:11:
+```
+
+</TabItem>
+</Tabs>
+
+### PDF/A {#pdfa-chromium}
+
+Each route accepts the following form field:
+
+| Key       | Description                                            | Default |
+| --------- |------------------------------------------------------- | ------- |
+| pdfFormat | Convert the resulting PDF into the given PDF/A format. | None    |
+
+At present, the following formats are available:
+
+* `PDF/A-1a`
+* `PDF/A-2b`
+* `PDF/A-3b`
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {4}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/url' \
+--form 'url="https://my.url"' \
+--form 'pdfFormat="PDF/A-1a"' \
+-o my.pdf
+```
+
+</TabItem>
+</Tabs>
+
+## Convert with LibreOffice
+
+The next route leverage the capabilities of LibreOffice to effectively transform a diverse range of Office documents
+(Word, Excel, PowerPoint, etc.) into PDFs.
+
+Checkout the [LibreOffice module configuration](configuration#libreoffice) to tailor the LibreOffice behavior to your needs.
+
+### Office documents into PDFs <span class="badge badge--secondary">route</span>
+
+This *multipart/form-data* route convert one or more Office documents into PDF.
+
+```
+POST /forms/libreoffice/convert
+```
+
+Currently, the following extensions are supported:
+
+`.bib`&nbsp
+`.doc`&nbsp
+`.xml`&nbsp
+`.docx`&nbsp
+`.fodt`&nbsp
+`.html`&nbsp
+`.ltx`&nbsp
+`.txt`&nbsp
+`.odt`&nbsp
+`.ott`&nbsp
+`.pdb`&nbsp
+`.pdf`&nbsp
+`.psw`&nbsp
+`.rtf`&nbsp
+`.sdw`&nbsp
+`.stw`&nbsp
+`.sxw`&nbsp
+`.uot`&nbsp
+`.vor`&nbsp
+`.wps`&nbsp
+`.epub`&nbsp
+`.png`&nbsp
+`.bmp`&nbsp
+`.emf`&nbsp
+`.eps`&nbsp
+`.fodg`&nbsp
+`.gif`&nbsp
+`.jpg`&nbsp
+`.met`&nbsp
+`.odd`&nbsp
+`.otg`&nbsp
+`.pbm`&nbsp
+`.pct`&nbsp
+`.pgm`&nbsp
+`.ppm`&nbsp
+`.ras`&nbsp
+`.std`&nbsp
+`.svg`&nbsp
+`.svm`&nbsp
+`.swf`&nbsp
+`.sxd`&nbsp
+`.sxw`&nbsp
+`.tiff`&nbsp
+`.xhtml`&nbsp
+`.xpm`&nbsp
+`.fodp`&nbsp
+`.potm`&nbsp
+`.pot`&nbsp
+`.pptx`&nbsp
+`.pps`&nbsp
+`.ppt`&nbsp
+`.pwp`&nbsp
+`.sda`&nbsp
+`.sdd`&nbsp
+`.sti`&nbsp
+`.sxi`&nbsp
+`.uop`&nbsp
+`.wmf`&nbsp
+`.csv`&nbsp
+`.dbf`&nbsp
+`.dif`&nbsp
+`.fods`&nbsp
+`.ods`&nbsp
+`.ots`&nbsp
+`.pxl`&nbsp
+`.sdc`&nbsp
+`.slk`&nbsp
+`.stc`&nbsp
+`.sxc`&nbsp
+`.uos`&nbsp
+`.xls`&nbsp
+`.xlt`&nbsp
+`.xlsx`&nbsp
+`.tif`&nbsp
+`.jpeg`&nbsp
+`.odp`&nbsp
+`.odg`&nbsp
+`.dotx`&nbsp
+`.xltx`
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {3-4}
+curl \
+--request POST 'http://localhost:3000/forms/libreoffice/convert' \
+--form 'files=@"/path/to/file.docx"' \
+-o my.pdf
+```
+
+</TabItem>
+</Tabs>
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {3-5}
+curl \
+--request POST 'http://localhost:3000/forms/libreoffice/convert' \
+--form 'files=@"/path/to/file.docx"' \
+--form 'files=@"/path/to/file.xlsx"' \
+-o my.zip
+```
+
+</TabItem>
+</Tabs>
+
+<Tabs
+defaultValue="200"
+values={[
+{ label: '200 OK', value: '200', },
+{ label: '400 Bad Request', value: '400', },
+{ label: '503 Service Unavailable', value: '503', },
+]
+}>
+<TabItem value="200">
+
+```
+Content-Disposition: attachement; filename={output-filename.ext}
+Content-Type: {content-type}
+Content-Length: {content-length}
+Gotenberg-Trace: {trace}
+Body: {output-file}
+```
+
+* See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
+* See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
+
+</TabItem>
+<TabItem value="400">
+
+This errors happens if one ore more form fields are invalid.
+
+```
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+```
+
+</TabItem>
+<TabItem value="503">
+
+If a request doesn't complete within a specified duration, the API will respond with a *503 Service Unavailable* status.
+
+See the [API module configuration](configuration#api) for more details.
+
+```
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: Service Unavailable
+```
+
+</TabItem>
+</Tabs>
+
+### Page Properties {#page-properties-libreoffice}
+
+The route also accepts the following form fields:
+
+| Key              | Description                                                | Default   |
+| ---------------- |----------------------------------------------------------- | --------- |
+| landscape        | Set the paper orientation to landscape.                    | false     |
+| nativePageRanges | Page ranges to print, e.g., '1-4' - empty means all pages. | All pages |
+
+:::info
+
+If multiple files are provided, the page ranges will be applied independently to each file.
+
+:::
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {4-5}
+curl \
+--request POST 'http://localhost:3000/forms/libreoffice/convert' \
+--form 'files=@"/path/to/file.docx"' \
+--form 'landscape="true"' \
+--form 'nativePageRanges="1-5"' \
+-o my.pdf
+```
+
+</TabItem>
+</Tabs>
+
+### PDF/A {#pdfa-libreoffice}
+
+The route also accepts the following form field:
+
+| Key             | Description                                            | Default |
+| --------------- |------------------------------------------------------- | ------- |
+| nativePdfFormat | Convert the resulting PDF into the given PDF/A format. | None    |
+
+At present, the following formats are available:
+
+* `PDF/A-1a`
+* `PDF/A-2b`
+* `PDF/A-3b`
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {4}
+curl \
+--request POST 'http://localhost:3000/forms/libreoffice/convert' \
+--form 'files=@"/path/to/file.docx"' \
+--form 'nativePdfFormat="PDF/A-1a"' \
+-o my.pdf
+```
+
+</TabItem>
+</Tabs>
+
+## Convert into PDF/A <span class="badge badge--secondary">route</span>
+
+This *multipart/form-data* route transform one or more PDF file into the requested PDF/A format.
+
+```
+POST /forms/pdfengines/convert`
+```
+
+It accepts the following form files and form field:
+
+| Key       | Description                                            |                                                   |
+| --------- | ------------------------------------------------------ | ------------------------------------------------- |
+| *.pdf     | At least one PDF file.                                 | <span class="badge badge--danger">required</span> |
+| pdfFormat | Convert the resulting PDF into the given PDF/A format. | <span class="badge badge--danger">required</span> |
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {4-5}
+curl \
+--request POST 'http://localhost:3000/forms/pdfengines/convert' \
+--form 'files=@"/path/to/pdf.pdf"' \
+--form 'pdfFormat="PDF/A-1a"' \
+-o my.pdf
+```
+
+</TabItem>
+</Tabs>
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {7-8}
+curl \
+--request POST 'http://localhost:3000/forms/pdfengines/convert' \
+--form 'files=@"/path/to/pdf1.pdf"' \
+--form 'files=@"/path/to/pdf2.pdf"' \
+--form 'files=@"/path/to/pdf3.pdf"' \
+--form 'files=@"/path/to/pdf4.pdf"' \
+--form 'pdfFormat="PDF/A-1a"' \
+-o my.zip
+```
+
+</TabItem>
+</Tabs>
+
+<Tabs
+defaultValue="200"
+values={[
+{ label: '200 OK', value: '200', },
+{ label: '400 Bad Request', value: '400', },
+{ label: '503 Service Unavailable', value: '503', },
+]
+}>
+<TabItem value="200">
+
+```
+Content-Disposition: attachement; filename={output-filename.ext}
+Content-Type: {content-type}
+Content-Length: {content-length}
+Gotenberg-Trace: {trace}
+Body: {output-file}
+```
+
+* See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
+* See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
+
+</TabItem>
+<TabItem value="400">
+
+This errors happens if one ore more form fields are invalid.
+
+```
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+```
+
+</TabItem>
+<TabItem value="503">
+
+If a request doesn't complete within a specified duration, the API will respond with a *503 Service Unavailable* status.
+
+See the [API module configuration](configuration#api) for more details.
+
+```
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: Service Unavailable
+```
+
+</TabItem>
+</Tabs>
+
+## Merge PDFs <span class="badge badge--secondary">route</span>
+
+This *multipart/form-data* route accepts PDF files and merges them alphabetically.
+
+```
+POST /forms/pdfengines/merge
+```
+
+| Key       | Description                                            |                                                   |
+| --------- | ------------------------------------------------------ | ------------------------------------------------- |
+| *.pdf     | PDF files.                                             | <span class="badge badge--danger">required</span> |
+| pdfFormat | Convert the resulting PDF into the given PDF/A format. |                                                   |
+
+At present, the following formats are available:
+
+* `PDF/A-1a`
+* `PDF/A-2b`
+* `PDF/A-3b`
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {3-6}
+curl \
+--request POST 'http://localhost:3000/forms/pdfengines/merge' \
+--form 'files=@"/path/to/pdf1.pdf"' \
+--form 'files=@"/path/to/pdf2.pdf"' \
+--form 'files=@"/path/to/pdf3.pdf"' \
+--form 'files=@"/path/to/pdf4.pdf"' \
+-o my.pdf
+```
+
+</TabItem>
+</Tabs>
+
+<Tabs
+defaultValue="200"
+values={[
+{ label: '200 OK', value: '200', },
+{ label: '400 Bad Request', value: '400', },
+{ label: '503 Service Unavailable', value: '503', },
+]
+}>
+<TabItem value="200">
+
+```
+Content-Disposition: attachement; filename={output-filename.pdf}
+Content-Type: {content-type}
+Content-Length: {content-length}
+Gotenberg-Trace: {trace}
+Body: {output-file}
+```
+
+* See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
+* See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
+
+</TabItem>
+<TabItem value="400">
+
+This errors happens if one ore more form fields are invalid.
+
+```
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+```
+
+</TabItem>
+<TabItem value="503">
+
+If a request doesn't complete within a specified duration, the API will respond with a *503 Service Unavailable* status.
+
+See the [API module configuration](configuration#api) for more details.
+
+```
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: Service Unavailable
+```
+
+</TabItem>
+</Tabs>
+
+## Health Check <span class="badge badge--secondary">route</span>
+
+```
+GET /health
+```
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {3-6}
+curl --request GET 'http://localhost:3000/health'
+```
+
+</TabItem>
+</Tabs>
+
+<Tabs
+defaultValue="200"
+values={[
+{ label: '200 OK', value: '200', },
+{ label: '503 Service Unavailable', value: '503', },
+]
+}>
+<TabItem value="200">
+
+```json
+{
+    "status": "up",
+    "details": {
+        "chromium": {
+            "status": "up",
+            "timestamp": "2021-07-01T08:05:14.603364Z"
+        },
+        "uno": {
+            "status": "up",
+            "timestamp": "2021-07-01T08:05:14.603364Z"
+        }
+    }
+}
+```
+
+</TabItem>
+<TabItem value="503">
+
+```json
+{
+    "status": "down",
+    "details": {
+        "chromium": {
+            "status": "up",
+            "timestamp": "2021-07-01T08:05:14.603364Z"
+        },
+        "uno": {
+            "status": "down",
+            "timestamp": "2021-07-01T08:05:14.603364Z",
+            "error": "long-running LibreOffice listener unhealthy"
+        }
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+The `details` entry gathers the health checks from modules:
+
+* The Chromium module checks if it has not reached a consecutive starting failures number.
+* The UNO module checks if the long-running LibreOffice listener is healthy.
+
+:::info
+
+Depending on the configuration of the modules, these checks may not be executed.
+
+See the [Chromium module configuration](configuration#chromium) and the
+[Libreoffice module configuration](configuration#libreoffice) for more information.
+
+:::
+
+## Metrics <span class="badge badge--secondary">route</span>
+
+This route exposes the metrics from other modules using the [Prometheus](https://prometheus.io/) format.
+
+```
+GET /prometheus/metrics
+```
+
+Currently, the metrics include:
+
+| Metric                                                                                              | Description                                                    |
+| --------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| <span class="badge badge--secondary">{namespace}_chromium_active_instances_count</span>             | Current number of active Chromium instances.                   |
+| <span class="badge badge--secondary">{namespace}_chromium_failed_starts_count</span>                | Current number of Chromium consecutive starting failures.      |
+| <span class="badge badge--secondary">{namespace}_unoconv_active_instances_count</span>              | Current number of active unoconv instances.                    |
+| <span class="badge badge--secondary">{namespace}_libreoffice_listener_active_instances_count</span> | Current number of active LibreOffice listener instances.       |
+| <span class="badge badge--secondary">{namespace}_libreoffice_listener_queue_length</span>           | Current number of processes in the LibreOffice listener queue. |
+| <span class="badge badge--secondary">{namespace}_pdftk_active_instances_count</span>                | Current number of active PDFtk instances.                      |
+| <span class="badge badge--secondary">{namespace}_qpdf_active_instances_count</span>                 | Current number of active QPDF instances.                       |
+
+See the [Prometheus module configuration](configuration#prometheus) for more information.
+
+## Request Tracing
+
+A trace, or request ID, serves to identify a specific request in the logs.
+
+By default, the API assigns a unique UUID trace to every request. However, you also have the option to specify the trace
+for each request using the `Gotenberg-Trace` header.
+
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {3}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/url' \
+--header 'Gotenberg-Trace: debug' \
+--form 'url="https://my.url"' \
+-o my.pdf
+```
+
+</TabItem>
+</Tabs>
+
+The API also incorporates a `Gotenberg-Trace` header into each response. If you're utilizing the [webhook feature](webhook),
+this header will also be added to each request made to your callbacks.
+
+:::info
+
+The `--api-trace-header` flag allows you to configure the header key. See the [API module configuration](configuration#api) for more details.
+
+:::
+
+## Output Filename
+
+By default, for *multipart/form-data* endpoints, the API generates a response with a UUID filename.
+However, you have the option to specify the filename for each request using the `Gotenberg-Output-Filename` header.
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {3}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/url' \
+--header 'Gotenberg-Output-Filename: my_filename' \
+--form 'url="https://my.url"' \
+-O -J
+```
+
+</TabItem>
+</Tabs>
+
+:::info
+
+The API automatically appends the file extension, so there's no need for you to set it manually.
+
+:::

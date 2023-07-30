@@ -1,0 +1,284 @@
+---
+id: configuration
+title: Configuration
+---
+
+The Docker image internally employs a binary that offers flags to configure its multiple modules. This guide contains a
+comprehensive list of flags that you can use to fine-tune Gotenberg according to your specific requirements.
+
+## API
+
+The API module is an HTTP/1 and HTTP/2 (H2C) server.
+
+The following flags allow you to configure the API module:
+
+| Flag                                                                            | Description                                                                                           | Default         |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | --------------- |
+| <span class="badge badge--secondary">--api-port</span>                         | Set the port on which the API should listen.                                                           | 3000            |
+| <span class="badge badge--secondary">--api-port-from-envt</span>               | Set the environment variable with the port on which the API should listen - override the default port. | None            |
+| <span class="badge badge--secondary">--api-timeout</span>                      | Set the time limit for requests.                                                                       | 30s             |
+| <span class="badge badge--secondary">--api-root-path</span>                    | Set the root path of the API - for service discovery via URL paths.                                    | /               |
+| <span class="badge badge--secondary">--api-trace-header</span>                 | Set the header name to use for identifying requests.                                                   | Gotenberg-Trace |
+| <span class="badge badge--secondary">--api-disable-health-check-logging</span> | Disable health check logging.                                                                          | false           |
+
+## Chromium
+
+The Chromium module interacts with the Chromium browser to convert HTML documents to PDF.
+
+The following flags allow you to configure the Chromium module:
+
+| Flag                                                                                 | Description                                                                                | Default             |
+| ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------- |
+| <span class="badge badge--secondary">--chromium-allow-file-access-from-files</span> | Allow file:// URIs to read other file:// URIs.                                              | false               |
+| <span class="badge badge--secondary">--chromium-allow-insecure-localhost</span>     | Ignore TLS/SSL errors on localhost.                                                         | false               |
+| <span class="badge badge--secondary">--chromium-allow-list</span>                   | Set the allowed URLs for Chromium using a regular expression.                               | All                 |
+| <span class="badge badge--secondary">--chromium-deny-list</span>                    | Set the denied URLs for Chromium using a regular expression.                                | `^file:///[^tmp].*` |
+| <span class="badge badge--secondary">--chromium-ignore-certificate-errors</span>    | Ignore the certificate errors.                                                              | false               |
+| <span class="badge badge--secondary">--chromium-disable-web-security</span>         | Don't enforce the same-origin policy.                                                       | false               |
+| <span class="badge badge--secondary">--chromium-incognito</span>                    | Start Chromium with incognito mode.                                                         | false               |
+| <span class="badge badge--secondary">--chromium-failed-starts-threshold</span>      | Set the number of consecutive failed starts after which the module is considered unhealthy. | 5                   |
+| <span class="badge badge--secondary">--chromium-host-resolver-rules</span>          | Set custom mappings to the host resolver.                                                   | None                |
+| <span class="badge badge--secondary">--chromium-proxy-server</span>                 | Set the outbound proxy server; this switch only affects HTTP and HTTPS requests.            | None                |
+| <span class="badge badge--secondary">--chromium-disable-javascript</span>           | Disable JavaScript.                                                                         | false               |
+| <span class="badge badge--secondary">--chromium-disable-routes</span>               | Disable the routes.                                                                         | false               |
+
+:::info
+
+It starts a dedicated Chromium instance for each conversion.
+
+:::
+
+:::info
+
+If `--chromium-failed-starts-threshold=0`, there is no health check for this module.
+
+:::
+
+:::caution
+
+The `amd64` Docker image uses Google Chrome stable, while other architectures use an earlier version of Chromium.
+
+:::
+
+## LibreOffice
+
+The LibreOffice module interacts with [LibreOffice](https://www.libreoffice.org/) to convert numerous documents to PDF,
+thanks to [unoconv](https://github.com/unoconv/unoconv).
+
+The following flags allow you to configure the LibreOffice module:
+
+| Flag                                                                         | Description                                                          | Default |
+| ---------------------------------------------------------------------------- | -------------------------------------------------------------------- | ------- |
+| <span class="badge badge--secondary">--libreoffice-disable-routes</span>     | Disable the route.                                                   | false   |
+| <span class="badge badge--secondary">--uno-listener-start-timeout</span>     | Time limit for starting the LibreOffice listener.                    | 10s     |
+| <span class="badge badge--secondary">--uno-listener-restart-threshold</span> | Conversions limit after which the LibreOffice listener is restarted. | 10      |
+
+### Stateful or Stateless
+
+By default, a long-running LibreOffice listener handles the conversions. This stateful mode allows for faster unitary
+conversion, but there is a lock mechanism as a single LibreOffice listener cannot perform parallel operations.
+
+In other words, under heavy load, you should consider scaling up your number of Gotenberg instances or switch the LibreOffice
+module to a stateless mode with `--uno-listener-restart-threshold=0` (i.e., a dedicated LibreOffice listener per conversion).
+
+:::info
+
+Gotenberg restarts the long-running LibreOffice listener if it is unhealthy before and after a conversion.
+
+:::
+
+:::info
+
+If `--uno-listener-restart-threshold=0` (i.e., stateless mode), there is no health check for this module.
+
+:::
+
+:::caution
+
+The `--uno-*` properties also impact the performance of the UNO PDF engine (see [PDF Engines](#pdf-engines)).
+
+:::
+
+### Switch Language
+
+By default, LibreOffice uses the English language when it converts documents to PDF. You may override this behavior by
+building your own Docker image.
+
+For instance, with the German language:
+
+```docker
+FROM gotenberg/gotenberg:7
+
+USER root
+
+RUN apt-get update -qq &&\
+    DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends -t bullseye-backports libreoffice-l10n-de &&\
+    sed -i '/de_DE.UTF-8/s/^# //g' /etc/locale.gen &&\
+    locale-gen &&\
+    # Cleanup.
+    # Note: the Debian image does automatically a clean after each install thanks to a hook.
+    # Therefore, there is no need for apt-get clean.
+    # See https://stackoverflow.com/a/24417119/3248473.
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+ENV LANG de_DE.UTF-8
+ENV LANGUAGE de_DE:de
+ENV LC_ALL de_DE.UTF-8
+
+USER gotenberg
+```
+
+## PDF Engines
+
+The PDF Engines module gathers all engines that can manipulate PDF files. It calls each engine until one successfully
+handles a task. A PDF engine is an external tool that Gotenberg leverages to perform a specific task, such as merging
+PDF files.
+
+Currently, Gotenberg supports the following PDF engines:
+
+| Engine                                       | Merge | Convert into PDF/A | Name          |
+| -------------------------------------------- |------ | ------------------ | ------------- |
+| [PDFtk](https://gitlab.com/pdftk-java/pdftk) | ✅    | ❌                 | pdtk          |
+| [PDFcpu](https://github.com/pdfcpu/pdfcpu)   | ✅    | ❌                 | pdcpu         |
+| [QPDF](https://github.com/qpdf/qpdf)         | ✅    | ❌                 | qpdf          |
+| [UNO](https://github.com/unoconv/unoconv)    | ❌    | ✅                 | uno-pdfengine |
+
+The following flags allow you to configure the PDF Engines module:
+
+| Flag                                                                    | Description                          | Default |
+| ----------------------------------------------------------------------- | ------------------------------------ | ------- |
+| <span class="badge badge--secondary">--pdfengines-engines</span>        | Set the PDF engines and their order. | All     |
+| <span class="badge badge--secondary">--pdfengines-disable-routes</span> | Disable the routes.                  | false   |
+
+:::info
+
+For instance, the value *"pdftk,uno-pdfengine"* selects PDFtk as the first engine, and UNO as the second.
+
+:::
+
+## Webhook
+
+The webhook feature enables Gotenberg to upload the output file originating from *multipart/form-data* routes to a
+selected destination.
+
+The following flags allow you to configure the Webhook module:
+
+| Flag                                                                   | Description                                                                                  | Default |
+| ---------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------- |
+| <span class="badge badge--secondary">--webhook-allow-list</span>       | Set the allowed URLs for the webhook feature using a regular expression.                     | All     |
+| <span class="badge badge--secondary">--webhook-deny-list</span>        | Set the denied URLs for the webhook feature using a regular expression.                      | None    |
+| <span class="badge badge--secondary">--webhook-error-allow-list</span> | Set the allowed URLs in case of an error for the webhook feature using a regular expression. | All     |
+| <span class="badge badge--secondary">--webhook-error-deny-list</span>  | Set the denied URLs in case of an error for the webhook feature using a regular expression.  | None    |
+| <span class="badge badge--secondary">--webhook-max-retry</span>        | Set the maximum number of retries for the webhook feature.                                   | 4       |
+| <span class="badge badge--secondary">--webhook-retry-min-wait</span>   | Set the minimum duration to wait before trying to call the webhook again.                    | 1s      |
+| <span class="badge badge--secondary">--webhook-retry-max-wait</span>   | Set the maximum duration to wait before trying to call the webhook again.                    | 30s     |
+| <span class="badge badge--secondary">--webhook-client-timeout</span>   | Set the time limit for requests to the webhook.                                              | 30s     |
+| <span class="badge badge--secondary">--webhook-disable</span>          | Disable the webhook feature.                                                                 | false   |
+
+## Prometheus
+
+The Prometheus module collects metrics from other modules and exposes an HTTP endpoint that can be scraped by
+[Prometheus](https://prometheus.io/).
+
+The following flags allow you to configure the Prometheus module:
+
+| Flag                                                                           | Description                                       | Default   |
+| ------------------------------------------------------------------------------ | ------------------------------------------------- | --------- |
+| <span class="badge badge--secondary">--prometheus-collect-interval</span>      | Set the interval for collecting modules' metrics. | 1s        |
+| <span class="badge badge--secondary">--prometheus-namespace</span>             | Set the namespace of modules' metrics.            | gotenberg |
+| <span class="badge badge--secondary">--prometheus-disable-collect</span>       | Disable the collect of metrics.                   | false     |
+| <span class="badge badge--secondary">--prometheus-disable-route-logging</span> | Disable the route logging.                        | false     |
+
+## Logging
+
+Gotenberg employs a logger that generates structured logs. Structured logs are formatted in a standardized,
+machine-readable way, making them extremely beneficial for centralized log management.
+
+The following flags allow you to configure the logger:
+
+| Flag                                                            | Description                                                                      | Default |
+| --------------------------------------------------------------- | -------------------------------------------------------------------------------- | ------- |
+| <span class="badge badge--secondary">--log-format</span>        | Specify the format of logging. Options include auto, json, or text.              | auto    |
+| <span class="badge badge--secondary">--log-level</span>         | Choose the level of logging detail. Options include error, warn, info, or debug. | info    |
+| <span class="badge badge--secondary">--log-fields-prefix</span> | Prepend a specified prefix to each field in the logs.                            | None    |
+
+## Graceful Shutdown
+
+To ensure running tasks have sufficient time to complete, Gotenberg waits for a specific duration before initiating the
+shutdown process. It may stop earlier if all tasks have completed.
+
+The following flag allows you to configure this duration:
+
+| Flag                                                                               | Description                         | Default |
+| ---------------------------------------------------------------------------------- | ----------------------------------- | ------- |
+| <span class="badge badge--secondary">--gotenberg-graceful-shutdown-duration</span> | Set the graceful shutdown duration. | 30s     |
+
+## Docker Image
+
+### Fonts
+
+The default Docker image is pre-packaged with an extensive assortment of fonts, including Asian ones. If your application
+requires additional or specific fonts not included in this collection, you'll need to construct a tailored Docker image
+to incorporate those fonts.
+
+**Via .tff files**
+
+```docker
+FROM gotenberg/gotenberg:7
+
+USER root
+
+COPY /local/path/to/{font}.ttf /usr/local/share/fonts/{font}.ttf
+
+USER gotenberg
+```
+
+Or, if you have many fonts:
+
+```docker
+FROM gotenberg/gotenberg:7
+
+USER root
+
+COPY /local/path/to/fonts/* /usr/local/share/fonts/
+
+USER gotenberg
+```
+
+---
+
+**Via .deb packages**
+
+```docker
+FROM gotenberg/gotenberg:7
+
+USER root
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends my-fonts-package
+
+USER gotenberg
+```
+
+---
+
+:::info
+
+You could also mount a volume containing your fonts to */usr/local/share/fonts/* as suggested in this
+[comment](https://github.com/gotenberg/gotenberg/issues/602#issue-1580360200).
+
+:::
+
+### Ownership
+
+The Docker image employs a specific non-root user, named *gotenberg*, with a User ID (uid) and Group ID (gid) of **1001**.
+If you want to change these identifiers, you will have to build a custom Docker image:
+
+```docker
+FROM gotenberg/gotenberg:7
+
+USER root
+
+RUN usermod -u {uid} -g {gid} gotenberg
+
+USER gotenberg
+```
