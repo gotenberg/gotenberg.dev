@@ -19,9 +19,9 @@ export default function Hero() {
                 "button button--primary button--lg",
                 styles.getStartedButton
               )}
-              to="/docs/get-started/live-demo"
+              to="/docs/getting-started/introduction"
             >
-              Get Started
+              Getting started
             </Link>
             <Link
               className="button button--secondary button--lg"

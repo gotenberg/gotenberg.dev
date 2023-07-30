@@ -34,7 +34,7 @@ module.exports = {
         {
           type: "doc",
           label: "Documentation",
-          docId: "about",
+          docId: "getting-started/introduction",
         },
         {
           type: "search",
@@ -45,11 +45,6 @@ module.exports = {
           to: "/docs/6.x/introduction",
           position: "right",
         },
-        // {
-        //   href: "https://github.com/gotenberg/gotenberg",
-        //   label: "OpenAPI",
-        //   position: "right",
-        // },
         {
           href: "https://github.com/gotenberg/gotenberg/discussions",
           label: "Help",
@@ -74,16 +69,16 @@ module.exports = {
           title: "Documentation",
           items: [
             {
-              label: "Get Started",
-              to: "/docs/get-started/live-demo",
+              label: "Getting started",
+              to: "/docs/getting-started/introduction",
             },
             {
-              label: "Modules",
-              to: "/docs/modules/api",
+              label: "Routes",
+              to: "/docs/routes",
             },
             {
-              label: "Customize",
-              to: "/docs/customize/ownership",
+              label: "Configuration",
+              to: "/docs/configuration",
             },
             {
               label: "Version 6.x",
@@ -98,10 +93,6 @@ module.exports = {
               label: "Follow @gulnap on twitter",
               href: "https://twitter.com/gulnap",
             },
-            // {
-            //   label: "OpenAPI",
-            //   href: "https://github.com/gotenberg/gotenberg",
-            // },
             {
               label: "Awesome Gotenberg",
               href: "https://github.com/gotenberg/awesome-gotenberg",
@@ -130,7 +121,7 @@ module.exports = {
     },
     prism: {
       theme: lightCodeTheme,
-      additionalLanguages: ["docker", "php", "csharp", "powershell"],
+      additionalLanguages: ["docker", "powershell"],
     },
     colorMode: {
       // "light" | "dark"

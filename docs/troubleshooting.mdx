@@ -1,0 +1,62 @@
+---
+id: troubleshooting
+title: Troubleshooting
+---
+
+This page comprises a selection of frequently encountered problems and their corresponding solutions associated with
+Gotenberg. Given the wide array of tools integrated within Gotenberg, it can sometimes be challenging to pinpoint the
+root of an issue.
+
+However, should you encounter an issue not addressed here, kindly take the following steps:
+
+1. Verify whether your issue has already been discussed or identified within the [GitHub issues](https://github.com/gotenberg/gotenberg/issues)
+or the [GitHub discussions](https://github.com/gotenberg/gotenberg/discussions).
+2. If it hasn't been addressed, feel free to open a new issue or initiate a discussion, based on the nature of your
+predicament.
+
+## Chromium
+
+Gotenberg internally employs the same protocol as [Puppeteer](https://pptr.dev/) for communication with Chromium.
+Therefore, it may be useful to include "puppeteer" as a keyword when searching for solutions to your issue. More often
+than not, you're likely to find an answer to your problem.
+
+### Oversized PDF Files
+
+The usage of webfonts tends to considerably enlarge the PDF file size. If you wish to use a custom font, please refer
+to the [fonts configuration section](configuration#fonts) to learn how to install them directly into the Docker container.
+
+For additional details, see issue [#521](https://github.com/gotenberg/gotenberg/issues/521).
+
+### Dealing with Timeouts
+
+If you are experiencing timeouts (i.e., *503 Service Unavailable*), consider the following steps to troubleshoot your issue:
+
+1. Assess whether your Gotenberg instance is overloaded. If this is the case, consider increasing the number of instances.
+2. Ensure that the page you are attempting to convert doesn't require resources inaccessible from the Gotenberg instance.
+3. Consider increasing the API timeout. See the [API module configuration](configuration#api) for guidance.
+
+## LibreOffice
+
+### Filenames with Non-Latin Characters
+
+Ensure that filenames are encoded in *UTF-8*.
+
+For additional details, refer to issue [#427](https://github.com/gotenberg/gotenberg/issues/427).
+
+### Internal Server Error
+
+If you consistently encounter a *500 Internal Server Error* while attempting to convert an Office document, a common
+solution is to boost the memory and CPU resources allocated to Gotenberg.
+
+For additional details, refer to issue [#465](https://github.com/gotenberg/gotenberg/issues/465).
+
+### Dealing with Timeouts
+
+If you are experiencing timeouts (i.e., *503 Service Unavailable*), consider the following steps to resolve your issue:
+
+1. Check if your Gotenberg instance is overloaded. If so, consider increasing the number of instances or enhancing the
+memory and CPU resources allocated to Gotenberg.
+2. Consider increasing the API timeout. Refer to the [API module configuration](configuration#api) for guidance.
+3. Consider increasing the LibreOffice listener startup timeout. Refer to the
+[LibreOffice module configuration](configuration#libreoffice) for guidance.
+
