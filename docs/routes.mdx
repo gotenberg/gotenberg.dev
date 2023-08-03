@@ -983,6 +983,34 @@ curl \
 </TabItem>
 </Tabs>
 
+### Merge {#merge-libreoffice}
+
+The route also accepts the following form fields:
+
+| Key   | Description               | Default |
+| ----- |-------------------------- | ------- |
+| merge | Merge the resulting PDFs. | false   |
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {5-6}
+curl \
+--request POST 'http://localhost:3000/forms/libreoffice/convert' \
+--form 'files=@"/path/to/file.docx"' \
+--form 'files=@"/path/to/file.xlsx"' \
+--form 'merge="true"' \
+-o my.pdf
+```
+
+</TabItem>
+</Tabs>
+
 ### PDF/A {#pdfa-libreoffice}
 
 The route also accepts the following form field:
