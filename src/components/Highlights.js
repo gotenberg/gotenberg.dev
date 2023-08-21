@@ -155,7 +155,7 @@ function Async() {
 }
 
 const RunExample = `
-docker run --rm -p 80:80 gotenberg/gotenberg:7 gotenberg --api-port=80 --api-process-timeout=10s --libreoffice-disable-routes --log-level=debug
+docker run --rm -p 80:80 gotenberg/gotenberg:7 gotenberg --api-port=80 --api-timeout=10s --libreoffice-disable-routes --log-level=debug
 `;
 
 function Platform() {
