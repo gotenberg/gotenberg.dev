@@ -90,10 +90,6 @@ module.exports = {
           title: "More",
           items: [
             {
-              label: "Follow @gulnap on twitter",
-              href: "https://twitter.com/gulnap",
-            },
-            {
               label: "Awesome Gotenberg",
               href: "https://github.com/gotenberg/awesome-gotenberg",
             },
