@@ -1,4 +1,5 @@
-const lightCodeTheme = require("prism-react-renderer/themes/github");
+const {themes} = require('prism-react-renderer');
+const lightTheme = themes.github;
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
@@ -116,7 +117,7 @@ module.exports = {
       copyright: `Copyright © ${new Date().getFullYear()} Julien Neuhart.<br /> Built with <a href="https://docusaurus.io" target="_blank">Docusaurus</a>.`,
     },
     prism: {
-      theme: lightCodeTheme,
+      theme: lightTheme,
       additionalLanguages: ["docker", "powershell"],
     },
     colorMode: {

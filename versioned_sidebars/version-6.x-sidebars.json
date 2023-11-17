@@ -2,82 +2,82 @@
   "version-6.x": [
     {
       "type": "doc",
-      "id": "version-6.x/introduction",
+      "id": "introduction",
       "label": "Introduction"
     },
     {
       "type": "doc",
-      "id": "version-6.x/install",
+      "id": "install",
       "label": "Install"
     },
     {
       "type": "doc",
-      "id": "version-6.x/clients",
+      "id": "clients",
       "label": "Clients"
     },
     {
       "type": "doc",
-      "id": "version-6.x/environment_variables",
+      "id": "environment_variables",
       "label": "Environment Variables"
     },
     {
       "type": "doc",
-      "id": "version-6.x/html",
+      "id": "html",
       "label": "HTML"
     },
     {
       "type": "doc",
-      "id": "version-6.x/url",
+      "id": "url",
       "label": "URL"
     },
     {
       "type": "doc",
-      "id": "version-6.x/markdown",
+      "id": "markdown",
       "label": "Markdown"
     },
     {
       "type": "doc",
-      "id": "version-6.x/office",
+      "id": "office",
       "label": "Office"
     },
     {
       "type": "doc",
-      "id": "version-6.x/merge",
+      "id": "merge",
       "label": "Merge"
     },
     {
       "type": "doc",
-      "id": "version-6.x/timeout",
+      "id": "timeout",
       "label": "Timeout"
     },
     {
       "type": "doc",
-      "id": "version-6.x/webhook",
+      "id": "webhook",
       "label": "Webhook"
     },
     {
       "type": "doc",
-      "id": "version-6.x/result_filename",
+      "id": "result_filename",
       "label": "Result Filename"
     },
     {
       "type": "doc",
-      "id": "version-6.x/scalability",
+      "id": "scalability",
       "label": "Scalability"
     },
     {
       "type": "doc",
-      "id": "version-6.x/ping",
+      "id": "ping",
       "label": "Ping"
     },
     {
       "type": "doc",
-      "id": "version-6.x/fonts",
+      "id": "fonts",
       "label": "Fonts"
     },
     {
       "type": "doc",
-      "id": "version-6.x/links",
+      "id": "links",
       "label": "Links"
     }
   ]
