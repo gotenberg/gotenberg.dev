@@ -15,7 +15,11 @@ module.exports = {
       type: "category",
       label: "Getting Started",
       collapsible: false,
-      items: ["getting-started/introduction", "getting-started/installation"],
+      items: [
+        "getting-started/introduction",
+        "getting-started/installation",
+        "getting-started/clients",
+      ],
     },
     {
       type: "doc",
