@@ -1,4 +1,4 @@
-const {themes} = require('prism-react-renderer');
+const { themes } = require("prism-react-renderer");
 const lightTheme = themes.github;
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */

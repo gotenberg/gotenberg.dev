@@ -25,79 +25,57 @@ The following flags allow you to configure the API module:
 
 The Chromium module interacts with the Chromium browser to convert HTML documents to PDF.
 
-The following flags allow you to configure the Chromium module:
+By default, a long-running Chromium browser handles the conversions. This stateful mode allows for faster unitary
+conversion, but there is a lock mechanism as a Chromium browser cannot perform parallel operations.
 
-| Flag                                                                                 | Description                                                                                | Default             |
-| ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------- |
-| <span class="badge badge--secondary">--chromium-allow-file-access-from-files</span> | Allow file:// URIs to read other file:// URIs.                                              | false               |
-| <span class="badge badge--secondary">--chromium-allow-insecure-localhost</span>     | Ignore TLS/SSL errors on localhost.                                                         | false               |
-| <span class="badge badge--secondary">--chromium-allow-list</span>                   | Set the allowed URLs for Chromium using a regular expression.                               | All                 |
-| <span class="badge badge--secondary">--chromium-deny-list</span>                    | Set the denied URLs for Chromium using a regular expression.                                | `^file:///[^tmp].*` |
-| <span class="badge badge--secondary">--chromium-ignore-certificate-errors</span>    | Ignore the certificate errors.                                                              | false               |
-| <span class="badge badge--secondary">--chromium-disable-web-security</span>         | Don't enforce the same-origin policy.                                                       | false               |
-| <span class="badge badge--secondary">--chromium-incognito</span>                    | Start Chromium with incognito mode.                                                         | false               |
-| <span class="badge badge--secondary">--chromium-failed-starts-threshold</span>      | Set the number of consecutive failed starts after which the module is considered unhealthy. | 5                   |
-| <span class="badge badge--secondary">--chromium-host-resolver-rules</span>          | Set custom mappings to the host resolver.                                                   | None                |
-| <span class="badge badge--secondary">--chromium-proxy-server</span>                 | Set the outbound proxy server; this switch only affects HTTP and HTTPS requests.            | None                |
-| <span class="badge badge--secondary">--chromium-disable-javascript</span>           | Disable JavaScript.                                                                         | false               |
-| <span class="badge badge--secondary">--chromium-disable-routes</span>               | Disable the routes.                                                                         | false               |
-
-:::info
-
-It starts a dedicated Chromium instance for each conversion.
-
-:::
-
-:::info
-
-If `--chromium-failed-starts-threshold=0`, there is no health check for this module.
-
-:::
+In other words, under heavy load, you should consider scaling up your number of Gotenberg instances.
 
 :::caution
 
-The `amd64` Docker image uses Google Chrome stable, while other architectures use an earlier version of Chromium.
+The `amd64` Docker image uses Google Chrome stable, while other architectures use Chromium.
+
+The `armhf` Docker image uses an earlier version of Chromium. See [#709](https://github.com/gotenberg/gotenberg/issues/709)
+for more details.
 
 :::
+
+The following flags allow you to configure the Chromium module:
+
+| Flag                                                                                | Description                                                                                                                           | Default             |
+| ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
+| <span class="badge badge--secondary">--chromium-restart-after</span>                | Number of conversions after which Chromium will automatically restart. Set to 0 to disable this feature.                              | 0                   |
+| <span class="badge badge--secondary">--chromium-auto-start</span>                   | Automatically launch Chromium upon initialization if set to true; otherwise, Chromium will start at the time of the first conversion. | false               |
+| <span class="badge badge--secondary">--chromium-start-timeout</span>                | Maximum duration to wait for Chromium to start or restart.                                                                            | 10s                 |
+| <span class="badge badge--secondary">--chromium-allow-file-access-from-files</span> | Allow file:// URIs to read other file:// URIs.                                                                                        | false               |
+| <span class="badge badge--secondary">--chromium-allow-insecure-localhost</span>     | Ignore TLS/SSL errors on localhost.                                                                                                   | false               |
+| <span class="badge badge--secondary">--chromium-allow-list</span>                   | Set the allowed URLs for Chromium using a regular expression.                                                                         | All                 |
+| <span class="badge badge--secondary">--chromium-deny-list</span>                    | Set the denied URLs for Chromium using a regular expression.                                                                          | `^file:///[^tmp].*` |
+| <span class="badge badge--secondary">--chromium-ignore-certificate-errors</span>    | Ignore the certificate errors.                                                                                                        | false               |
+| <span class="badge badge--secondary">--chromium-disable-web-security</span>         | Don't enforce the same-origin policy.                                                                                                 | false               |
+| <span class="badge badge--secondary">--chromium-incognito</span>                    | Start Chromium with incognito mode.                                                                                                   | false               |
+| <span class="badge badge--secondary">--chromium-host-resolver-rules</span>          | Set custom mappings to the host resolver.                                                                                             | None                |
+| <span class="badge badge--secondary">--chromium-proxy-server</span>                 | Set the outbound proxy server; this switch only affects HTTP and HTTPS requests.                                                      | None                |
+| <span class="badge badge--secondary">--chromium-disable-javascript</span>           | Disable JavaScript.                                                                                                                   | false               |
+| <span class="badge badge--secondary">--chromium-disable-routes</span>               | Disable the routes.                                                                                                                   | false               |
 
 ## LibreOffice
 
 The LibreOffice module interacts with [LibreOffice](https://www.libreoffice.org/) to convert numerous documents to PDF,
 thanks to [unoconv](https://github.com/unoconv/unoconv).
 
+By default, a long-running LibreOffice instance handles the conversions. This stateful mode allows for faster unitary
+conversion, but there is a lock mechanism as a single LibreOffice instance cannot perform parallel operations.
+
+In other words, under heavy load, you should consider scaling up your number of Gotenberg instances
+
 The following flags allow you to configure the LibreOffice module:
 
-| Flag                                                                         | Description                                                          | Default |
-| ---------------------------------------------------------------------------- | -------------------------------------------------------------------- | ------- |
-| <span class="badge badge--secondary">--libreoffice-disable-routes</span>     | Disable the route.                                                   | false   |
-| <span class="badge badge--secondary">--uno-listener-start-timeout</span>     | Time limit for starting the LibreOffice listener.                    | 10s     |
-| <span class="badge badge--secondary">--uno-listener-restart-threshold</span> | Conversions limit after which the LibreOffice listener is restarted. | 10      |
-
-### Stateful or Stateless
-
-By default, a long-running LibreOffice listener handles the conversions. This stateful mode allows for faster unitary
-conversion, but there is a lock mechanism as a single LibreOffice listener cannot perform parallel operations.
-
-In other words, under heavy load, you should consider scaling up your number of Gotenberg instances or switch the LibreOffice
-module to a stateless mode with `--uno-listener-restart-threshold=0` (i.e., a dedicated LibreOffice listener per conversion).
-
-:::info
-
-Gotenberg restarts the long-running LibreOffice listener if it is unhealthy before and after a conversion.
-
-:::
-
-:::info
-
-If `--uno-listener-restart-threshold=0` (i.e., stateless mode), there is no health check for this module.
-
-:::
-
-:::caution
-
-The `--uno-*` properties also impact the performance of the UNO PDF engine (see [PDF Engines](#pdf-engines)).
-
-:::
+| Flag                                                                     | Description                                                                                                                                 | Default |
+| ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| <span class="badge badge--secondary">--libreoffice-restart-after</span>  | Number of conversions after which LibreOffice will automatically restart. Set to 0 to disable this feature.                                 | 10      |
+| <span class="badge badge--secondary">--libreoffice-auto-start</span>     | Automatically launch LibreOffice upon initialization if set to true; otherwise, LibreOffice will start at the time of the first conversion. | false   |
+| <span class="badge badge--secondary">--libreoffice-start-timeout</span>  | Maximum duration to wait for LibreOffice to start or restart.                                                                               | 10s     |
+| <span class="badge badge--secondary">--libreoffice-disable-routes</span> | Disable the route.                                                                                                                          | false   |
 
 ### Switch Language
 
@@ -112,7 +90,7 @@ FROM gotenberg/gotenberg:7
 USER root
 
 RUN apt-get update -qq &&\
-    DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends -t bullseye-backports libreoffice-l10n-de &&\
+    DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends -t bookworm-backports libreoffice-l10n-de &&\
     sed -i '/de_DE.UTF-8/s/^# //g' /etc/locale.gen &&\
     locale-gen &&\
     # Cleanup.
@@ -136,12 +114,12 @@ PDF files.
 
 Currently, Gotenberg supports the following PDF engines:
 
-| Engine                                       | Merge | Convert into PDF/A | Name          |
-| -------------------------------------------- |------ | ------------------ | ------------- |
-| [PDFtk](https://gitlab.com/pdftk-java/pdftk) | ✅    | ❌                 | pdtk          |
-| [PDFcpu](https://github.com/pdfcpu/pdfcpu)   | ✅    | ❌                 | pdcpu         |
-| [QPDF](https://github.com/qpdf/qpdf)         | ✅    | ❌                 | qpdf          |
-| [UNO](https://github.com/unoconv/unoconv)    | ❌    | ✅                 | uno-pdfengine |
+| Engine                                       | Merge | Convert into PDF/A | Name                  |
+| -------------------------------------------- |------ | ------------------ | --------------------- |
+| [PDFtk](https://gitlab.com/pdftk-java/pdftk) | ✅    | ❌                 | pdtk                  |
+| [PDFcpu](https://github.com/pdfcpu/pdfcpu)   | ✅    | ❌                 | pdcpu                 |
+| [QPDF](https://github.com/qpdf/qpdf)         | ✅    | ❌                 | qpdf                  |
+| [UNO](https://github.com/unoconv/unoconv)    | ❌    | ✅                 | libreoffice-pdfengine |
 
 The following flags allow you to configure the PDF Engines module:
 
@@ -152,7 +130,7 @@ The following flags allow you to configure the PDF Engines module:
 
 :::info
 
-For instance, the value *"pdftk,uno-pdfengine"* selects PDFtk as the first engine, and UNO as the second.
+For instance, the value *"pdftk,libreoffice-pdfengine"* selects PDFtk as the first engine, and UNO as the second.
 
 :::
 

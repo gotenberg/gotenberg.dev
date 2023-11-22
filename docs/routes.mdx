@@ -28,7 +28,7 @@ Each route accepts common form fields and form files:
 * [Emulated Media Type](#emulated-media-type)
 * [Custom HTTP Headers](#custom-http-headers)
 * [Console Exceptions](#console-exceptions)
-* [PDF/A](#pdfa-chromium)
+* [PDF/A & PDF/UA](#pdfa-chromium)
 
 Checkout the [Chromium module configuration](configuration#chromium) to tailor the Chromium behavior to your needs.
 
@@ -594,8 +594,9 @@ A more reliable option than the previous form field:
 
 ```js
 // Somewhere in the HTML document.
+var globalVar = 'notReady'
 await promises()
-window.status = 'ready'
+window.globalVar = 'ready'
 ```
 
 <Tabs
@@ -610,7 +611,7 @@ values={[
 curl \
 --request POST 'http://localhost:3000/forms/chromium/convert/url' \
 --form 'url="https://my.url"' \
---form 'waitForExpression="window.status === '\''ready'\''"' \
+--form 'waitForExpression="window.globalVar === '\''ready'\''"' \
 -o my.pdf
 ```
 
@@ -733,15 +734,16 @@ at file:///tmp/db09d2c8-31e3-4058-9923-c2705350f2b3/index.html:21:11:
 </TabItem>
 </Tabs>
 
-### PDF/A {#pdfa-chromium}
+### PDF/A & PDF/UA {#pdfa-chromium}
 
-Each route accepts the following form field:
+Each route accepts the following form fields:
 
-| Key       | Description                                            | Default |
-| --------- |------------------------------------------------------- | ------- |
-| pdfFormat | Convert the resulting PDF into the given PDF/A format. | None    |
+| Key   | Description                                                | Default |
+| ----- | ---------------------------------------------------------- | ------- |
+| pdfa  | Convert the resulting PDF into the given PDF/A format.     | None    |
+| pdfua | Enable PDF for Universal Access for optimal accessibility. | false   |
 
-At present, the following formats are available:
+At present, the following PDF/A formats are available:
 
 * `PDF/A-1a`
 * `PDF/A-2b`
@@ -755,11 +757,12 @@ values={[
 }>
 <TabItem value="curl">
 
-```bash {4}
+```bash {4-5}
 curl \
 --request POST 'http://localhost:3000/forms/chromium/convert/url' \
 --form 'url="https://my.url"' \
---form 'pdfFormat="PDF/A-1a"' \
+--form 'pdfa="PDF/A-1a"' \
+--form 'pdfua="true' \
 -o my.pdf
 ```
 
@@ -1011,15 +1014,16 @@ curl \
 </TabItem>
 </Tabs>
 
-### PDF/A {#pdfa-libreoffice}
+### PDF/A & PDF/UA {#pdfa-libreoffice}
 
-The route also accepts the following form field:
+The route also accepts the following form fields:
 
-| Key             | Description                                            | Default |
-| --------------- |------------------------------------------------------- | ------- |
-| nativePdfFormat | Convert the resulting PDF into the given PDF/A format. | None    |
+| Key   | Description                                                | Default |
+| ----- | ---------------------------------------------------------- | ------- |
+| pdfa  | Convert the resulting PDF into the given PDF/A format.     | None    |
+| pdfua | Enable PDF for Universal Access for optimal accessibility. | false   |
 
-At present, the following formats are available:
+At present, the following PDF/A formats are available:
 
 * `PDF/A-1a`
 * `PDF/A-2b`
@@ -1033,31 +1037,41 @@ values={[
 }>
 <TabItem value="curl">
 
-```bash {4}
+```bash {4-5}
 curl \
 --request POST 'http://localhost:3000/forms/libreoffice/convert' \
 --form 'files=@"/path/to/file.docx"' \
---form 'nativePdfFormat="PDF/A-1a"' \
+--form 'pdfa="PDF/A-1a"' \
+--form 'pdfua="true"' \
 -o my.pdf
 ```
 
 </TabItem>
 </Tabs>
 
-## Convert into PDF/A <span class="badge badge--secondary">route</span>
+## Convert into PDF/A & PDF/UA <span class="badge badge--secondary">route</span>
 
-This *multipart/form-data* route transform one or more PDF file into the requested PDF/A format.
+This *multipart/form-data* route transform one or more PDF files into the requested PDF/A format and/or PDF/UA.
 
 ```
-POST /forms/pdfengines/convert`
+POST /forms/pdfengines/convert
 ```
 
-It accepts the following form files and form field:
+It accepts the following form files and form fields:
 
-| Key       | Description                                            |                                                   |
-| --------- | ------------------------------------------------------ | ------------------------------------------------- |
-| *.pdf     | At least one PDF file.                                 | <span class="badge badge--danger">required</span> |
-| pdfFormat | Convert the resulting PDF into the given PDF/A format. | <span class="badge badge--danger">required</span> |
+| Key       | Description                                                | Default                                           |
+| --------- | ---------------------------------------------------------- | ------------------------------------------------- |
+| *.pdf     | At least one PDF file.                                     | <span class="badge badge--danger">required</span> |
+| pdfa      | Convert the resulting PDF into the given PDF/A format.     | None*                                             |
+| pdfua     | Enable PDF for Universal Access for optimal accessibility. | false*                                            |
+
+Note that at least one of the form field must be provided.\*
+
+At present, the following PDF/A formats are available:
+
+* `PDF/A-1a`
+* `PDF/A-2b`
+* `PDF/A-3b`
 
 <Tabs
 defaultValue="curl"
@@ -1067,11 +1081,12 @@ values={[
 }>
 <TabItem value="curl">
 
-```bash {4-5}
+```bash {4-6}
 curl \
 --request POST 'http://localhost:3000/forms/pdfengines/convert' \
 --form 'files=@"/path/to/pdf.pdf"' \
---form 'pdfFormat="PDF/A-1a"' \
+--form 'pdfa="PDF/A-1a"' \
+--form 'pdfua="true"' \
 -o my.pdf
 ```
 
@@ -1086,14 +1101,15 @@ values={[
 }>
 <TabItem value="curl">
 
-```bash {7-8}
+```bash {7-9}
 curl \
 --request POST 'http://localhost:3000/forms/pdfengines/convert' \
 --form 'files=@"/path/to/pdf1.pdf"' \
 --form 'files=@"/path/to/pdf2.pdf"' \
 --form 'files=@"/path/to/pdf3.pdf"' \
 --form 'files=@"/path/to/pdf4.pdf"' \
---form 'pdfFormat="PDF/A-1a"' \
+--form 'pdfa="PDF/A-1a"' \
+--form 'pdfua="true"' \
 -o my.zip
 ```
 
@@ -1156,12 +1172,13 @@ This *multipart/form-data* route accepts PDF files and merges them alphabeticall
 POST /forms/pdfengines/merge
 ```
 
-| Key       | Description                                            |                                                   |
-| --------- | ------------------------------------------------------ | ------------------------------------------------- |
-| *.pdf     | PDF files.                                             | <span class="badge badge--danger">required</span> |
-| pdfFormat | Convert the resulting PDF into the given PDF/A format. |                                                   |
+| Key       | Description                                                | Default                                           |
+| --------- | ---------------------------------------------------------- | ------------------------------------------------- |
+| *.pdf     | PDF files.                                                 | <span class="badge badge--danger">required</span> |
+| pdfa      | Convert the resulting PDF into the given PDF/A format.     | None                                              |
+| pdfua     | Enable PDF for Universal Access for optimal accessibility. | false                                             |
 
-At present, the following formats are available:
+At present, the following PDF/A formats are available:
 
 * `PDF/A-1a`
 * `PDF/A-2b`
@@ -1293,10 +1310,10 @@ values={[
             "status": "up",
             "timestamp": "2021-07-01T08:05:14.603364Z"
         },
-        "uno": {
+        "libreoffice": {
             "status": "down",
             "timestamp": "2021-07-01T08:05:14.603364Z",
-            "error": "long-running LibreOffice listener unhealthy"
+            "error": "LibreOffice is unhealthy"
         }
     }
 }
@@ -1307,17 +1324,8 @@ values={[
 
 The `details` entry gathers the health checks from modules:
 
-* The Chromium module checks if it has not reached a consecutive starting failures number.
-* The UNO module checks if the long-running LibreOffice listener is healthy.
-
-:::info
-
-Depending on the configuration of the modules, these checks may not be executed.
-
-See the [Chromium module configuration](configuration#chromium) and the
-[Libreoffice module configuration](configuration#libreoffice) for more information.
-
-:::
+* The Chromium module checks if the Chromium browser is heallthy.
+* The LibreOffice module checks if the LibreOffice instance is healthy.
 
 ## Metrics <span class="badge badge--secondary">route</span>
 
@@ -1329,15 +1337,13 @@ GET /prometheus/metrics
 
 Currently, the metrics include:
 
-| Metric                                                                                                | Description                                                    |
-| ----------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| <span class="badge badge--secondary">\{namespace\}_chromium_active_instances_count</span>             | Current number of active Chromium instances.                   |
-| <span class="badge badge--secondary">\{namespace\}_chromium_failed_starts_count</span>                | Current number of Chromium consecutive starting failures.      |
-| <span class="badge badge--secondary">\{namespace\}_unoconv_active_instances_count</span>              | Current number of active unoconv instances.                    |
-| <span class="badge badge--secondary">\{namespace\}_libreoffice_listener_active_instances_count</span> | Current number of active LibreOffice listener instances.       |
-| <span class="badge badge--secondary">\{namespace\}_libreoffice_listener_queue_length</span>           | Current number of processes in the LibreOffice listener queue. |
-| <span class="badge badge--secondary">\{namespace\}_pdftk_active_instances_count</span>                | Current number of active PDFtk instances.                      |
-| <span class="badge badge--secondary">\{namespace\}_qpdf_active_instances_count</span>                 | Current number of active QPDF instances.                       |
+| Metric                                                                                    | Description                                                              |
+| ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| <span class="badge badge--secondary">\{namespace\}_chromium_requests_queue_size</span>    | Current number of Chromium conversion requests waiting to be treated.    |
+| <span class="badge badge--secondary">\{namespace\}_chromium_restarts_count</span>         | Current number of Chromium restarts.                                     |
+| <span class="badge badge--secondary">\{namespace\}_libreoffice_requests_queue_size</span> | Current number of LibreOffice conversion requests waiting to be treated. |
+| <span class="badge badge--secondary">\{namespace\}_libreoffice_restarts_count</span>      | Current number of LibreOffice restarts.                                  |
+
 
 See the [Prometheus module configuration](configuration#prometheus) for more information.
 

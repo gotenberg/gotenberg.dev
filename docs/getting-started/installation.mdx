@@ -3,8 +3,6 @@ id: installation
 title: Installation
 ---
 
-<script async type="text/javascript" src="//cdn.carbonads.com/carbon.js?serve=CWYI4KQL&placement=gotenbergdev" id="_carbonads_js"></script>
-
 This guide is not intended to provide a comprehensive tour of Docker and its orchestrators. Rather, it's designed to
 be concise enough to assist beginners in getting started while helping power users sidestep potential pitfalls.
 
@@ -145,6 +143,7 @@ There are a few limitations to be aware of:
 
 1. Consider using HTTP/2 to bypass the [32MB request size limit](https://cloud.google.com/run/quotas?hl=en).
 2. Consider disabling the [webhook feature](/docs/configuration#webhook) as it does not work on Cloud Run.
+3. Consider enabling auto-start for [Chromium](/docs/configuration#chromium) and/or [LibreOffice](/docs/configuration#libreoffice).
 
 ## Modules Configuration
 
@@ -183,4 +182,5 @@ Do not redefine the Gotenberg Docker image default entrypoint, but override the 
 
 ## What's next?
 
-Now that you have Gotenberg up and running, you can start using it. Read the [routes guide](/docs/routes) to learn more.
+Now that you have Gotenberg up and running, you can start using it. Install a custom [client](clients) or
+read the [routes guide](/docs/routes) to learn more.
