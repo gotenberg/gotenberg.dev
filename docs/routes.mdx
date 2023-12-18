@@ -745,7 +745,7 @@ Each route accepts the following form fields:
 
 At present, the following PDF/A formats are available:
 
-* `PDF/A-1a`
+* `PDF/A-1b`
 * `PDF/A-2b`
 * `PDF/A-3b`
 
@@ -761,7 +761,7 @@ values={[
 curl \
 --request POST 'http://localhost:3000/forms/chromium/convert/url' \
 --form 'url="https://my.url"' \
---form 'pdfa="PDF/A-1a"' \
+--form 'pdfa="PDF/A-1b"' \
 --form 'pdfua="true' \
 -o my.pdf
 ```
@@ -1025,7 +1025,7 @@ The route also accepts the following form fields:
 
 At present, the following PDF/A formats are available:
 
-* `PDF/A-1a`
+* `PDF/A-1b`
 * `PDF/A-2b`
 * `PDF/A-3b`
 
@@ -1041,7 +1041,7 @@ values={[
 curl \
 --request POST 'http://localhost:3000/forms/libreoffice/convert' \
 --form 'files=@"/path/to/file.docx"' \
---form 'pdfa="PDF/A-1a"' \
+--form 'pdfa="PDF/A-1b"' \
 --form 'pdfua="true"' \
 -o my.pdf
 ```
@@ -1069,7 +1069,7 @@ Note that at least one of the form field must be provided.\*
 
 At present, the following PDF/A formats are available:
 
-* `PDF/A-1a`
+* `PDF/A-1b`
 * `PDF/A-2b`
 * `PDF/A-3b`
 
@@ -1085,7 +1085,7 @@ values={[
 curl \
 --request POST 'http://localhost:3000/forms/pdfengines/convert' \
 --form 'files=@"/path/to/pdf.pdf"' \
---form 'pdfa="PDF/A-1a"' \
+--form 'pdfa="PDF/A-1b"' \
 --form 'pdfua="true"' \
 -o my.pdf
 ```
@@ -1108,7 +1108,7 @@ curl \
 --form 'files=@"/path/to/pdf2.pdf"' \
 --form 'files=@"/path/to/pdf3.pdf"' \
 --form 'files=@"/path/to/pdf4.pdf"' \
---form 'pdfa="PDF/A-1a"' \
+--form 'pdfa="PDF/A-1b"' \
 --form 'pdfua="true"' \
 -o my.zip
 ```
@@ -1180,7 +1180,7 @@ POST /forms/pdfengines/merge
 
 At present, the following PDF/A formats are available:
 
-* `PDF/A-1a`
+* `PDF/A-1b`
 * `PDF/A-2b`
 * `PDF/A-3b`
 

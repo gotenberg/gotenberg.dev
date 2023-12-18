@@ -22,7 +22,7 @@ curl \\
 --form 'files=@"/path/to/file.docx"' \\
 --form 'files=@"/path/to/file.xlsx"' \\
 --form 'merge="true"' \\
---form 'pdfa="PDF/A-1a"' \\
+--form 'pdfa="PDF/A-1b"' \\
 -o my.pdf
 `;
 

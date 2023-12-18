@@ -37,11 +37,17 @@ If you are experiencing timeouts (i.e., *503 Service Unavailable*), consider the
 
 ## LibreOffice
 
-### Filenames with Non-Latin Characters
+### PDF/A-1a
 
-Ensure that filenames are encoded in *UTF-8*.
+Beginning with version 7.6, LibreOffice has discontinued support for `PDF/A-1a`.
 
-For additional details, refer to issue [#427](https://github.com/gotenberg/gotenberg/issues/427).
+Previously, LibreOffice claimed to generate `PDF/A-1a` files, a claim that held true for straightforward documents.
+However, in many instances, the software was actually producing `PDF/A-1b` files.
+
+Due to specific metadata, some validators incorrectly identified these documents as compliant with `PDF/A-1a` standards,
+despite this not being the case.
+
+For additional details, refer to this LibreOffice [commit](https://git.libreoffice.org/core/+/c4b12d06698402984b3ffdbd2c139f261fa35ca1%5E%21).
 
 ### Internal Server Error
 
