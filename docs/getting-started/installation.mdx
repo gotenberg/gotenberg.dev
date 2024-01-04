@@ -47,13 +47,13 @@ At present, the restrictions are:
 To start a default Docker container of Gotenberg, run:
 
 ```
-docker run --rm -p 3000:3000 gotenberg/gotenberg:7
+docker run --rm -p 3000:3000 gotenberg/gotenberg:8
 ```
 
 Alternatively, using the historic Docker repository from our sponsor [TheCodingMachine](https://www.thecodingmachine.com):
 
 ```
-docker run --rm -p 3000:3000 thecodingmachine/gotenberg:7
+docker run --rm -p 3000:3000 thecodingmachine/gotenberg:8
 ```
 
 :::info
@@ -73,7 +73,7 @@ services:
   # Your other services.
 
   gotenberg:
-    image: gotenberg/gotenberg:7
+    image: gotenberg/gotenberg:8
 ```
 
 :::info
@@ -95,7 +95,7 @@ services:
   # Your other services.
 
   gotenberg:
-    image: gotenberg/gotenberg:7
+    image: gotenberg/gotenberg:8
     ports:
       - "3000:3000"
 ```
@@ -130,13 +130,13 @@ If cost-efficiency is a priority for you, [Cloud Run](https://cloud.google.com/r
 We have a dedicated Docker image tag specifically for this provider:
 
 ```
-gotenberg/gotenberg:7-cloudrun
+gotenberg/gotenberg:8-cloudrun
 ```
 
 Alternatively, using the historic Docker repository from our sponsor [TheCodingMachine](https://www.thecodingmachine.com):
 
 ```
-thecodingmachine/gotenberg:7-cloudrun
+thecodingmachine/gotenberg:8-cloudrun
 ```
 
 There are a few limitations to be aware of:
@@ -155,7 +155,7 @@ To set one or more flags, it's necessary to override the Docker image's default 
 For example, with the Docker CLI:
 
 ```
-docker run --rm -p 3000:3000 gotenberg/gotenberg:7 gotenberg --my-module-property=foo
+docker run --rm -p 3000:3000 gotenberg/gotenberg:8 gotenberg --my-module-property=foo
 ```
 
 Or with Docker Compose:
@@ -167,7 +167,7 @@ services:
   # Your other services.
 
   gotenberg:
-    image: gotenberg/gotenberg:7
+    image: gotenberg/gotenberg:8
     command:
       - "gotenberg"
       - "--my-module-property=foo"
