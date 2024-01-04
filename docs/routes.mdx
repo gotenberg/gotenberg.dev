@@ -14,22 +14,6 @@ This guide will assist you in understanding their usage.
 The next routes leverage the capabilities of the Chromium browser to effectively transform a diverse range of HTML
 documents into PDFs.
 
-There are three *multipart/form-data* routes available:
-
-1. [URL into PDF](#url-into-pdf)
-2. [HTML file into PDF](#html-file-into-pdf)
-3. [Markdown file(s) into PDF](#markdown-files-into-pdf)
-
-Each route accepts common form fields and form files:
-
-* [Page Properties](#page-properties-chromium)
-* [Header & Footer](#header--footer)
-* [Wait Before Rendering](#wait-before-rendering)
-* [Emulated Media Type](#emulated-media-type)
-* [Custom HTTP Headers](#custom-http-headers)
-* [Console Exceptions](#console-exceptions)
-* [PDF/A & PDF/UA](#pdfa-chromium)
-
 Checkout the [Chromium module configuration](configuration#chromium) to tailor the Chromium behavior to your needs.
 
 ### URL into PDF <span class="badge badge--secondary">route</span>
@@ -462,7 +446,7 @@ The rules regarding the `printBackground` and `omitBackground` form fields are t
 
 :::
 
-### Header & Footer
+### Header & Footer {#header-footer-chromium}
 
 Each route accepts the following form files:
 
@@ -547,7 +531,7 @@ There are some limitations:
 
 :::
 
-### Wait Before Rendering
+### Wait Before Rendering {#wait-before-rendering-chromium}
 
 Each route accepts the following form fields:
 
@@ -618,7 +602,7 @@ curl \
 </TabItem>
 </Tabs>
 
-### Emulated Media Type
+### Emulated Media Type {#emulated-media-type-chromium}
 
 Each route accepts the following form field:
 
@@ -647,7 +631,7 @@ curl \
 </TabItem>
 </Tabs>
 
-### Custom HTTP Headers
+### Custom HTTP Headers {#custom-http-headers-chromium}
 
 Each route accepts the following form fields:
 
@@ -676,7 +660,55 @@ curl \
 </TabItem>
 </Tabs>
 
-### Console Exceptions
+### Invalid HTTP Status Codes {#invalid-http-status-codes-chromium}
+
+Each route accepts the following form field:
+
+| Key                   | Description                                                                                    | Default     |
+| ----------------------|----------------------------------------------------------------------------------------------- | ----------- |
+| failOnHttpStatusCodes | Return a *409 Conflict* response if the HTTP status code from the main page is not acceptable. | \[499,599\] |
+
+A `X99` entry means every HTTP status codes between `X00` and `X99` (e.g., 499 means every HTTP status codes between 400 and 499).
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {4}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/url' \
+--form 'url="https://httpstat.us/400"' \
+--form 'failOnHttpStatusCodes="[499]"' \
+-o my.pdf
+```
+
+</TabItem>
+</Tabs>
+
+<Tabs
+defaultValue="409"
+values={[
+{ label: '409 Conflict', value: '409', },
+]
+}>
+<TabItem value="409">
+
+```
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body:
+
+Invalid HTTP status code from the main page: 400: Bad Request
+```
+
+</TabItem>
+</Tabs>
+
+### Console Exceptions {#console-exceptions-chromium}
 
 Each route accepts the following form field:
 
@@ -704,7 +736,8 @@ values={[
 curl \
 --request POST 'http://localhost:3000/forms/chromium/convert/html' \
 --form 'files=@"/path/to/index.html"' \
---form 'failOnConsoleExceptions="true"'
+--form 'failOnConsoleExceptions="true"' \
+-o my.pdf
 ```
 
 </TabItem>
@@ -729,6 +762,38 @@ exception "Uncaught" (17:10): Error: Exception 1
 at file:///tmp/db09d2c8-31e3-4058-9923-c2705350f2b3/index.html:18:11;
 exception "Uncaught" (20:10): Error: Exception 2
 at file:///tmp/db09d2c8-31e3-4058-9923-c2705350f2b3/index.html:21:11:
+```
+
+</TabItem>
+</Tabs>
+
+### Performance Mode {#performance-mode-chromium}
+
+Each route accepts the following form field:
+
+| Key                  | Description                                  | Default |
+| -------------------- |--------------------------------------------- | ------- |
+| skipNetworkIdleEvent | Do not wait for Chromium network to be idle. | false   |
+
+
+Gotenberg, by default, waits for the network idle event to ensure that the majority of the page is rendered during
+conversion. However, this often significantly slows down the conversion process. Setting this form field to true can
+greatly enhance the conversion speed.
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {4}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/convert/html' \
+--form 'files=@"/path/to/index.html"' \
+--form 'skipNetworkIdleEvent="true"' \
+-o my.pdf
 ```
 
 </TabItem>
@@ -764,6 +829,61 @@ curl \
 --form 'pdfa="PDF/A-1b"' \
 --form 'pdfua="true' \
 -o my.pdf
+```
+
+</TabItem>
+</Tabs>
+
+### Screenshots <span class="badge badge--secondary">route</span>
+
+You can capture full-page screenshots using the following three routes, which function similarly to their PDF equivalents:
+
+```
+POST /forms/chromium/screenshot/url
+```
+
+```
+POST /forms/chromium/screenshot/html
+```
+
+```
+POST /forms/chromium/screenshot/makdown
+```
+
+These routes accept the following form fields:
+
+| Key              | Description                                                                           | Default |
+| ---------------- | ------------------------------------------------------------------------------------- | ------- |
+| format           | The image compression format, either "png", "jpeg" or "webp".                         | png     |
+| quality          | The compression quality from range 0 to 100 (jpeg only).                              | 100     |
+| omitBackground   | Hide the default white background and allow generating screenshots with transparency. | false   |
+| optimizeForSpeed | Define whether to optimize image encoding for speed, not for resulting size.          | false   |
+
+The following features are also available:
+
+* [Wait Before Rendering](#wait-before-rendering-chromium)
+* [Emulated Media Type](#emulated-media-type-chromium)
+* [Custom HTTP headers](#custom-http-headers-chromium)
+* [Invalid HTTP Status Codes](#invalid-http-status-codes-chromium)
+* [Console Exceptions](#console-exceptions-chromium)
+* [Performance Mode](#performance-mode-chromium)
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {4-7}
+curl \
+--request POST 'http://localhost:3000/forms/chromium/screenshot/html' \
+--form 'files=@"/path/to/index.html"' \
+--form 'format="jpeg"' \
+--form 'quality="100"' \
+--form 'optimizeForSpeed="true"' \
+-o my.jpeg
 ```
 
 </TabItem>

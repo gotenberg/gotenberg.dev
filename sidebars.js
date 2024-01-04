@@ -10,7 +10,7 @@
  */
 
 module.exports = {
-  "version-7.x": [
+  "version-8.x": [
     {
       type: "category",
       label: "Getting Started",
@@ -45,6 +45,11 @@ module.exports = {
       type: "link",
       label: "Awesome",
       href: "https://github.com/gotenberg/awesome-gotenberg",
+    },
+    {
+      type: "link",
+      label: "Upgrade from 7.x",
+      href: "https://github.com/gotenberg/gotenberg/releases/tag/v8.0.0",
     },
   ],
 };
