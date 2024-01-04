@@ -682,8 +682,7 @@ values={[
 curl \
 --request POST 'http://localhost:3000/forms/chromium/convert/url' \
 --form 'url="https://httpstat.us/400"' \
---form 'failOnHttpStatusCodes="[499]"' \
--o my.pdf
+--form 'failOnHttpStatusCodes="[499]"'
 ```
 
 </TabItem>
@@ -736,8 +735,7 @@ values={[
 curl \
 --request POST 'http://localhost:3000/forms/chromium/convert/html' \
 --form 'files=@"/path/to/index.html"' \
---form 'failOnConsoleExceptions="true"' \
--o my.pdf
+--form 'failOnConsoleExceptions="true"'
 ```
 
 </TabItem>
