@@ -38,13 +38,13 @@ values={[
 
 ```bash {3-7}
 curl \
---request POST 'http://localhost:3000/forms/chromium/convert/url' \
+--request POST http://localhost:3000/forms/chromium/convert/url \
 --header 'Gotenberg-Webhook-Extra-Http-Headers: {"MyHeader": "MyValue"}' \
 --header 'Gotenberg-Webhook-Url: https://my.webhook.url' \
 --header 'Gotenberg-Webhook-Method: PUT' \
 --header 'Gotenberg-Webhook-Error-Url: https://my.webhook.error.url' \
 --header 'Gotenberg-Webhook-Error-Method: POST' \
---form 'url="https://my.url"'
+--form url=https://my.url
 ```
 
 </TabItem>

@@ -27,7 +27,7 @@ POST /forms/chromium/convert/url
 It accepts the following specific form field:
 
 | Key | Description                                   |                                                   |
-| --- | --------------------------------------------- | ------------------------------------------------- |
+|-----|-----------------------------------------------|---------------------------------------------------|
 | url | URL of the page you want to convert into PDF. | <span class="badge badge--danger">required</span> |
 
 <Tabs
@@ -40,8 +40,8 @@ values={[
 
 ```bash {3}
 curl \
---request POST 'http://localhost:3000/forms/chromium/convert/url' \
---form 'url="https://my.url"' \
+--request POST http://localhost:3000/forms/chromium/convert/url \
+--form url=https://my.url \
 -o my.pdf
 ```
 
@@ -120,9 +120,9 @@ POST /forms/chromium/convert/html
 
 It accepts the following specific form file:
 
-| Key        | Description                        |                                                    |
-| ---------- | ---------------------------------- | -------------------------------------------------- |
-| index.html | The HTML file to convert into PDF. | <span class="badge badge--danger">required</span>  |
+| Key        | Description                        |                                                   |
+|------------|------------------------------------|---------------------------------------------------|
+| index.html | The HTML file to convert into PDF. | <span class="badge badge--danger">required</span> |
 
 For instance:
 
@@ -149,8 +149,8 @@ values={[
 
 ```bash {3}
 curl \
---request POST 'http://localhost:3000/forms/chromium/convert/html' \
---form 'files=@"/path/to/index.html"' \
+--request POST http://localhost:3000/forms/chromium/convert/html \
+--form files=@/path/to/index.html \
 -o my.pdf
 ```
 
@@ -253,9 +253,9 @@ values={[
 
 ```bash {4}
 curl \
---request POST 'http://localhost:3000/forms/chromium/convert/html' \
---form 'files=@"/path/to/index.html"' \
---form 'files=@"/path/to/img.png"' \
+--request POST http://localhost:3000/forms/chromium/convert/html \
+--form files=@/path/to/index.html \
+--form files=@/path/to/img.png \
 -o my.pdf
 ```
 
@@ -279,7 +279,7 @@ POST /forms/chromium/convert/markdown
 It accepts the following specific form files:
 
 | Key        | Description                                    |                                                   |
-| ---------- | ---------------------------------------------- | ------------------------------------------------- |
+|------------|------------------------------------------------|---------------------------------------------------|
 | index.html | The HTML file that wraps the markdown content. | <span class="badge badge--danger">required</span> |
 | *.md       | At least one markdown file.                    | <span class="badge badge--danger">required</span> |
 
@@ -309,9 +309,9 @@ values={[
 
 ```bash {4}
 curl \
---request POST 'http://localhost:3000/forms/chromium/convert/markdown' \
---form 'files=@"/path/to/index.html"' \
---form 'files=@"/path/to/file.md"' \
+--request POST http://localhost:3000/forms/chromium/convert/markdown \
+--form files=@/path/to/index.html \
+--form files=@/path/to/file.md \
 -o my.pdf
 ```
 
@@ -371,7 +371,7 @@ Body: Service Unavailable
 Each route accepts the following form fields:
 
 | Key               | Description                                                                    | Default   |
-| ----------------- | ------------------------------------------------------------------------------ | --------- |
+|-------------------|--------------------------------------------------------------------------------|-----------|
 | paperWidth        | Paper width, in inches.                                                        | 8.5       |
 | paperHeight       | Paper height, in inches.                                                       | 11        |
 | marginTop         | Top margin, in inches.                                                         | 0.39      |
@@ -395,20 +395,20 @@ values={[
 
 ```bash {4-15}
 curl \
---request POST 'http://localhost:3000/forms/chromium/convert/url' \
---form 'url="https://my.url"' \
---form 'paperWidth="8.27"' \
---form 'paperHeight="11.7"' \
---form 'marginTop="1"' \
---form 'marginBottom="1"' \
---form 'marginLeft="1"' \
---form 'marginRight="1"' \
---form 'preferCssPageSize="false"' \
---form 'printBackground="true"' \
---form 'omitBackground="true"' \
---form 'landscape="true"' \
---form 'scale="2.0"' \
---form 'nativePageRanges="1-5"' \
+--request POST http://localhost:3000/forms/chromium/convert/url \
+--form url=https://my.url \
+--form paperWidth=8.27 \
+--form paperHeight=11.7 \
+--form marginTop=1 \
+--form marginBottom=1 \
+--form marginLeft=1 \
+--form marginRight=1 \
+--form preferCssPageSize=false \
+--form printBackground=true \
+--form omitBackground=true \
+--form landscape=true \
+--form scale=2.0 \
+--form nativePageRanges=1-5 \
 -o my.pdf
 ```
 
@@ -465,10 +465,10 @@ values={[
 
 ```bash {4-5}
 curl \
---request POST 'http://localhost:3000/forms/chromium/convert/url' \
---form 'url="https://my.url"' \
---form 'files=@"/path/to/header.html"' \
---form 'files=@"/path/to/footer.html"' \
+--request POST http://localhost:3000/forms/chromium/convert/url \
+--form url=https://my.url \
+--form files=@/path/to/header.html \
+--form files=@/path/to/footer.html \
 -o my.pdf
 ```
 
@@ -524,10 +524,10 @@ There are some limitations:
 
 Each route accepts the following form fields:
 
-| Key                | Description                                                                                            | Default |
-| ------------------ |------------------------------------------------------------------------------------------------------- | ------- |
-| waitDelay          | Duration (e.g, '5s') to wait when loading an HTML document before converting it into PDF.              | None    |
-| waitForExpression  | The JavaScript expression to wait before converting an HTML document into PDF until it returns *true*. | None    |
+| Key               | Description                                                                                            | Default |
+|-------------------|--------------------------------------------------------------------------------------------------------|---------|
+| waitDelay         | Duration (e.g, '5s') to wait when loading an HTML document before converting it into PDF.              | None    |
+| waitForExpression | The JavaScript expression to wait before converting an HTML document into PDF until it returns *true*. | None    |
 
 :::info
 
@@ -552,9 +552,9 @@ values={[
 
 ```bash {4}
 curl \
---request POST 'http://localhost:3000/forms/chromium/convert/url' \
---form 'url="https://my.url"' \
---form 'waitDelay="5s"' \
+--request POST http://localhost:3000/forms/chromium/convert/url \
+--form url=https://my.url \
+--form waitDelay=5s \
 -o my.pdf
 ```
 
@@ -582,9 +582,9 @@ values={[
 
 ```bash {4}
 curl \
---request POST 'http://localhost:3000/forms/chromium/convert/url' \
---form 'url="https://my.url"' \
---form 'waitForExpression="window.globalVar === '\''ready'\''"' \
+--request POST http://localhost:3000/forms/chromium/convert/url \
+--form url=https://my.url \
+--form 'waitForExpression=window.status === '\''ready'\''' \
 -o my.pdf
 ```
 
@@ -596,7 +596,7 @@ curl \
 Each route accepts the following form field:
 
 | Key               | Description                                                                  | Default |
-| ----------------- | ---------------------------------------------------------------------------- | ------- |
+|-------------------|------------------------------------------------------------------------------|---------|
 | emulatedMediaType | The media type to emulate, either "screen" or "print" - empty means "print". | print   |
 
 Some websites have dedicated CSS rules for print. Using "screen" allows you to force the "standard" CSS rules.
@@ -611,9 +611,9 @@ values={[
 
 ```bash {4}
 curl \
---request POST 'http://localhost:3000/forms/chromium/convert/url' \
---form 'url="https://my.url"' \
---form 'emulatedMediaType="screen"' \
+--request POST http://localhost:3000/forms/chromium/convert/url \
+--form url=https://my.url \
+--form emulatedMediaType=screen \
 -o my.pdf
 ```
 
@@ -622,11 +622,10 @@ curl \
 
 ### Custom HTTP Headers {#custom-http-headers-chromium}
 
-Each route accepts the following form fields:
+Each route accepts the following form field:
 
 | Key              | Description                                                                     | Default |
-| ---------------- |-------------------------------------------------------------------------------- | ------- |
-| userAgent        | Override the default `User-Agent` header.                                       | None    |
+|------------------|---------------------------------------------------------------------------------|---------|
 | extraHttpHeaders | HTTP headers to send by Chromium while loading the HTML document (JSON format). | None    |
 
 <Tabs
@@ -639,10 +638,9 @@ values={[
 
 ```bash {4-5}
 curl \
---request POST 'http://localhost:3000/forms/chromium/convert/url' \
---form 'url="https://my.url"' \
---form 'userAgent="Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1"' \
---form 'extraHttpHeaders="{\"MyHeader\": \"MyValue\"}"' \
+--request POST http://localhost:3000/forms/chromium/convert/url \
+--form url=https://my.url \
+--form 'extraHttpHeaders={"X-Header":"value"}' \
 -o my.pdf
 ```
 
@@ -654,7 +652,7 @@ curl \
 Each route accepts the following form field:
 
 | Key                   | Description                                                                                    | Default     |
-| ----------------------|----------------------------------------------------------------------------------------------- | ----------- |
+|-----------------------|------------------------------------------------------------------------------------------------|-------------|
 | failOnHttpStatusCodes | Return a *409 Conflict* response if the HTTP status code from the main page is not acceptable. | \[499,599\] |
 
 A `X99` entry means every HTTP status codes between `X00` and `X99` (e.g., 499 means every HTTP status codes between 400 and 499).
@@ -669,9 +667,9 @@ values={[
 
 ```bash {4}
 curl \
---request POST 'http://localhost:3000/forms/chromium/convert/url' \
---form 'url="https://httpstat.us/400"' \
---form 'failOnHttpStatusCodes="[499]"'
+--request POST http://localhost:3000/forms/chromium/convert/url \
+--form url=https://httpstat.us/400 \
+--form 'failOnHttpStatusCodes=[499]'
 ```
 
 </TabItem>
@@ -701,7 +699,7 @@ Invalid HTTP status code from the main page: 400: Bad Request
 Each route accepts the following form field:
 
 | Key                     | Description                                                                       | Default |
-| ----------------------- |---------------------------------------------------------------------------------- | ------- |
+|-------------------------|-----------------------------------------------------------------------------------|---------|
 | failOnConsoleExceptions | Return a *409 Conflict* response if there are exceptions in the Chromium console. | false   |
 
 :::info
@@ -722,9 +720,9 @@ values={[
 
 ```bash {4}
 curl \
---request POST 'http://localhost:3000/forms/chromium/convert/html' \
---form 'files=@"/path/to/index.html"' \
---form 'failOnConsoleExceptions="true"'
+--request POST http://localhost:3000/forms/chromium/convert/html \
+--form files=@/path/to/index.html \
+--form failOnConsoleExceptions=true
 ```
 
 </TabItem>
@@ -759,9 +757,8 @@ at file:///tmp/db09d2c8-31e3-4058-9923-c2705350f2b3/index.html:21:11:
 Each route accepts the following form field:
 
 | Key                  | Description                                  | Default |
-| -------------------- |--------------------------------------------- | ------- |
+|----------------------|----------------------------------------------|---------|
 | skipNetworkIdleEvent | Do not wait for Chromium network to be idle. | false   |
-
 
 Gotenberg, by default, waits for the network idle event to ensure that the majority of the page is rendered during
 conversion. However, this often significantly slows down the conversion process. Setting this form field to true can
@@ -777,9 +774,9 @@ values={[
 
 ```bash {4}
 curl \
---request POST 'http://localhost:3000/forms/chromium/convert/html' \
---form 'files=@"/path/to/index.html"' \
---form 'skipNetworkIdleEvent="true"' \
+--request POST http://localhost:3000/forms/chromium/convert/html \
+--form files=@/path/to/index.html \
+--form skipNetworkIdleEvent=true \
 -o my.pdf
 ```
 
@@ -791,7 +788,7 @@ curl \
 Each route accepts the following form fields:
 
 | Key   | Description                                                | Default |
-| ----- | ---------------------------------------------------------- | ------- |
+|-------|------------------------------------------------------------|---------|
 | pdfa  | Convert the resulting PDF into the given PDF/A format.     | None    |
 | pdfua | Enable PDF for Universal Access for optimal accessibility. | false   |
 
@@ -811,10 +808,10 @@ values={[
 
 ```bash {4-5}
 curl \
---request POST 'http://localhost:3000/forms/chromium/convert/url' \
---form 'url="https://my.url"' \
---form 'pdfa="PDF/A-1b"' \
---form 'pdfua="true' \
+--request POST http://localhost:3000/forms/chromium/convert/url \
+--form url=https://my.url \
+--form pdfa=PDF/A-1b \
+--form pdfua=true \
 -o my.pdf
 ```
 
@@ -840,7 +837,7 @@ POST /forms/chromium/screenshot/markdown
 These routes accept the following form fields:
 
 | Key              | Description                                                                           | Default |
-| ---------------- | ------------------------------------------------------------------------------------- | ------- |
+|------------------|---------------------------------------------------------------------------------------|---------|
 | format           | The image compression format, either "png", "jpeg" or "webp".                         | png     |
 | quality          | The compression quality from range 0 to 100 (jpeg only).                              | 100     |
 | omitBackground   | Hide the default white background and allow generating screenshots with transparency. | false   |
@@ -865,11 +862,11 @@ values={[
 
 ```bash {4-7}
 curl \
---request POST 'http://localhost:3000/forms/chromium/screenshot/html' \
---form 'files=@"/path/to/index.html"' \
---form 'format="jpeg"' \
---form 'quality="100"' \
---form 'optimizeForSpeed="true"' \
+--request POST http://localhost:3000/forms/chromium/screenshot/html \
+--form files=@/path/to/index.html \
+--form format=jpeg \
+--form quality=100 \
+--form optimizeForSpeed=true \
 -o my.jpeg
 ```
 
@@ -983,8 +980,8 @@ values={[
 
 ```bash {3-4}
 curl \
---request POST 'http://localhost:3000/forms/libreoffice/convert' \
---form 'files=@"/path/to/file.docx"' \
+--request POST http://localhost:3000/forms/libreoffice/convert \
+--form files=@/path/to/file.docx \
 -o my.pdf
 ```
 
@@ -1001,9 +998,9 @@ values={[
 
 ```bash {3-5}
 curl \
---request POST 'http://localhost:3000/forms/libreoffice/convert' \
---form 'files=@"/path/to/file.docx"' \
---form 'files=@"/path/to/file.xlsx"' \
+--request POST http://localhost:3000/forms/libreoffice/convert \
+--form files=@/path/to/file.docx \
+--form files=@/path/to/file.xlsx \
 -o my.zip
 ```
 
@@ -1063,7 +1060,7 @@ Body: Service Unavailable
 The route also accepts the following form fields:
 
 | Key              | Description                                                | Default   |
-| ---------------- |----------------------------------------------------------- | --------- |
+|------------------|------------------------------------------------------------|-----------|
 | landscape        | Set the paper orientation to landscape.                    | false     |
 | nativePageRanges | Page ranges to print, e.g., '1-4' - empty means all pages. | All pages |
 
@@ -1083,10 +1080,10 @@ values={[
 
 ```bash {4-5}
 curl \
---request POST 'http://localhost:3000/forms/libreoffice/convert' \
---form 'files=@"/path/to/file.docx"' \
---form 'landscape="true"' \
---form 'nativePageRanges="1-5"' \
+--request POST http://localhost:3000/forms/libreoffice/convert \
+--form files=@/path/to/file.docx \
+--form landscape=true \
+--form nativePageRanges=1-5 \
 -o my.pdf
 ```
 
@@ -1098,7 +1095,7 @@ curl \
 The route also accepts the following form fields:
 
 | Key   | Description               | Default |
-| ----- |-------------------------- | ------- |
+|-------|---------------------------|---------|
 | merge | Merge the resulting PDFs. | false   |
 
 <Tabs
@@ -1111,10 +1108,10 @@ values={[
 
 ```bash {5-6}
 curl \
---request POST 'http://localhost:3000/forms/libreoffice/convert' \
---form 'files=@"/path/to/file.docx"' \
---form 'files=@"/path/to/file.xlsx"' \
---form 'merge="true"' \
+--request POST http://localhost:3000/forms/libreoffice/convert \
+--form files=@/path/to/file.docx \
+--form files=@/path/to/file.xlsx \
+--form merge=true \
 -o my.pdf
 ```
 
@@ -1126,7 +1123,7 @@ curl \
 The route also accepts the following form fields:
 
 | Key   | Description                                                | Default |
-| ----- | ---------------------------------------------------------- | ------- |
+|-------|------------------------------------------------------------|---------|
 | pdfa  | Convert the resulting PDF into the given PDF/A format.     | None    |
 | pdfua | Enable PDF for Universal Access for optimal accessibility. | false   |
 
@@ -1146,10 +1143,10 @@ values={[
 
 ```bash {4-5}
 curl \
---request POST 'http://localhost:3000/forms/libreoffice/convert' \
---form 'files=@"/path/to/file.docx"' \
---form 'pdfa="PDF/A-1b"' \
---form 'pdfua="true"' \
+--request POST http://localhost:3000/forms/libreoffice/convert \
+--form files=@/path/to/file.docx \
+--form pdfa=PDF/A-1b \
+--form pdfua=true \
 -o my.pdf
 ```
 
@@ -1166,11 +1163,11 @@ POST /forms/pdfengines/convert
 
 It accepts the following form files and form fields:
 
-| Key       | Description                                                | Default                                           |
-| --------- | ---------------------------------------------------------- | ------------------------------------------------- |
-| *.pdf     | At least one PDF file.                                     | <span class="badge badge--danger">required</span> |
-| pdfa      | Convert the resulting PDF into the given PDF/A format.     | None*                                             |
-| pdfua     | Enable PDF for Universal Access for optimal accessibility. | false*                                            |
+| Key   | Description                                                | Default                                           |
+|-------|------------------------------------------------------------|---------------------------------------------------|
+| *.pdf | At least one PDF file.                                     | <span class="badge badge--danger">required</span> |
+| pdfa  | Convert the resulting PDF into the given PDF/A format.     | None*                                             |
+| pdfua | Enable PDF for Universal Access for optimal accessibility. | false*                                            |
 
 Note that at least one of the form field must be provided.\*
 
@@ -1190,10 +1187,10 @@ values={[
 
 ```bash {4-6}
 curl \
---request POST 'http://localhost:3000/forms/pdfengines/convert' \
---form 'files=@"/path/to/pdf.pdf"' \
---form 'pdfa="PDF/A-1b"' \
---form 'pdfua="true"' \
+--request POST http://localhost:3000/forms/pdfengines/convert \
+--form files=@/path/to/pdf.pdf \
+--form pdfa=PDF/A-1b \
+--form pdfua=true \
 -o my.pdf
 ```
 
@@ -1210,13 +1207,13 @@ values={[
 
 ```bash {7-9}
 curl \
---request POST 'http://localhost:3000/forms/pdfengines/convert' \
---form 'files=@"/path/to/pdf1.pdf"' \
---form 'files=@"/path/to/pdf2.pdf"' \
---form 'files=@"/path/to/pdf3.pdf"' \
---form 'files=@"/path/to/pdf4.pdf"' \
---form 'pdfa="PDF/A-1b"' \
---form 'pdfua="true"' \
+--request POST http://localhost:3000/forms/pdfengines/convert \
+--form files=@/path/to/pdf1.pdf \
+--form files=@/path/to/pdf2.pdf \
+--form files=@/path/to/pdf3.pdf \
+--form files=@/path/to/pdf4.pdf \
+--form pdfa=PDF/A-1b \
+--form pdfua=true \
 -o my.zip
 ```
 
@@ -1279,11 +1276,11 @@ This *multipart/form-data* route accepts PDF files and merges them alphabeticall
 POST /forms/pdfengines/merge
 ```
 
-| Key       | Description                                                | Default                                           |
-| --------- | ---------------------------------------------------------- | ------------------------------------------------- |
-| *.pdf     | PDF files.                                                 | <span class="badge badge--danger">required</span> |
-| pdfa      | Convert the resulting PDF into the given PDF/A format.     | None                                              |
-| pdfua     | Enable PDF for Universal Access for optimal accessibility. | false                                             |
+| Key   | Description                                                | Default                                           |
+|-------|------------------------------------------------------------|---------------------------------------------------|
+| *.pdf | PDF files.                                                 | <span class="badge badge--danger">required</span> |
+| pdfa  | Convert the resulting PDF into the given PDF/A format.     | None                                              |
+| pdfua | Enable PDF for Universal Access for optimal accessibility. | false                                             |
 
 At present, the following PDF/A formats are available:
 
@@ -1301,11 +1298,11 @@ values={[
 
 ```bash {3-6}
 curl \
---request POST 'http://localhost:3000/forms/pdfengines/merge' \
---form 'files=@"/path/to/pdf1.pdf"' \
---form 'files=@"/path/to/pdf2.pdf"' \
---form 'files=@"/path/to/pdf3.pdf"' \
---form 'files=@"/path/to/pdf4.pdf"' \
+--request POST http://localhost:3000/forms/pdfengines/merge \
+--form files=@/path/to/pdf1.pdf \
+--form files=@/path/to/pdf2.pdf \
+--form files=@/path/to/pdf3.pdf \
+--form files=@/path/to/pdf4.pdf \
 -o my.pdf
 ```
 
@@ -1375,7 +1372,7 @@ values={[
 <TabItem value="curl">
 
 ```bash {3-6}
-curl --request GET 'http://localhost:3000/health'
+curl --request GET http://localhost:3000/health
 ```
 
 </TabItem>
@@ -1445,12 +1442,11 @@ GET /prometheus/metrics
 Currently, the metrics include:
 
 | Metric                                                                                    | Description                                                              |
-| ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+|-------------------------------------------------------------------------------------------|--------------------------------------------------------------------------|
 | <span class="badge badge--secondary">\{namespace\}_chromium_requests_queue_size</span>    | Current number of Chromium conversion requests waiting to be treated.    |
 | <span class="badge badge--secondary">\{namespace\}_chromium_restarts_count</span>         | Current number of Chromium restarts.                                     |
 | <span class="badge badge--secondary">\{namespace\}_libreoffice_requests_queue_size</span> | Current number of LibreOffice conversion requests waiting to be treated. |
 | <span class="badge badge--secondary">\{namespace\}_libreoffice_restarts_count</span>      | Current number of LibreOffice restarts.                                  |
-
 
 See the [Prometheus module configuration](configuration#prometheus) for more information.
 
@@ -1460,7 +1456,6 @@ A trace, or request ID, serves to identify a specific request in the logs.
 
 By default, the API assigns a unique UUID trace to every request. However, you also have the option to specify the trace
 for each request using the `Gotenberg-Trace` header.
-
 
 <Tabs
 defaultValue="curl"
@@ -1472,9 +1467,9 @@ values={[
 
 ```bash {3}
 curl \
---request POST 'http://localhost:3000/forms/chromium/convert/url' \
+--request POST http://localhost:3000/forms/chromium/convert/url \
 --header 'Gotenberg-Trace: debug' \
---form 'url="https://my.url"' \
+--form url=https://my.url \
 -o my.pdf
 ```
 
@@ -1505,9 +1500,9 @@ values={[
 
 ```bash {3}
 curl \
---request POST 'http://localhost:3000/forms/chromium/convert/url' \
+--request POST http://localhost:3000/forms/chromium/convert/url \
 --header 'Gotenberg-Output-Filename: my_filename' \
---form 'url="https://my.url"' \
+--form url=https://my.url \
 -O -J
 ```
 
