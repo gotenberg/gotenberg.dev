@@ -451,7 +451,7 @@ The rules regarding the `printBackground` and `omitBackground` form fields are t
 Each route accepts the following form files:
 
 | Key         | Description                      | Default |
-| ----------- | -------------------------------- | ------- |
+|-------------|----------------------------------|---------|
 | header.html | HTML file containing the header. | None    |
 | footer.html | HTML file containing the footer. | None    |
 
@@ -463,14 +463,12 @@ values={[
 }>
 <TabItem value="curl">
 
-```bash {4-7}
+```bash {4-5}
 curl \
 --request POST 'http://localhost:3000/forms/chromium/convert/url' \
 --form 'url="https://my.url"' \
 --form 'files=@"/path/to/header.html"' \
 --form 'files=@"/path/to/footer.html"' \
---form 'marginTop="1"' \
---form 'marginBottom="1"' \
 -o my.pdf
 ```
 
@@ -484,8 +482,8 @@ Each of them has to be a **complete HTML document**:
 <head>
     <style>
     body {
-        font-size: 8rem;
-        margin: 4rem auto;
+        font-size: 12px;
+        margin: auto 20px;
     }
     </style>
 </head>
@@ -504,15 +502,6 @@ The following classes allow you to inject printing values:
 * `url` - document location.
 * `pageNumber` - current page number.
 * `totalPages` - total pages in the document.
-
-:::
-
-:::caution
-
-Make sure that:
-
-1. Margins top and bottom are large enough (`marginTop` and `marginBottom` form fields).
-2. The font size is big enough.
 
 :::
 
