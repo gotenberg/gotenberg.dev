@@ -8,31 +8,31 @@ import clsx from "clsx";
 
 const ChromiumExample = `
 curl \\
---request POST 'http://localhost:3000/forms/chromium/convert/url' \\
---form 'url="https://my.url"' \\
---form 'landscape="true"' \\
---form 'marginTop="1"' \\
---form 'marginBottom="1"' \\
+--request POST http://localhost:3000/forms/chromium/convert/url \\
+--form url=https://my.url \\
+--form landscape=true \\
+--form marginTop=1 \\
+--form marginBottom=1 \\
 -o my.pdf
 `;
 
 const LibreOfficeExample = `
 curl \\
---request POST 'http://localhost:3000/forms/libreoffice/convert' \\
---form 'files=@"/path/to/file.docx"' \\
---form 'files=@"/path/to/file.xlsx"' \\
---form 'merge="true"' \\
---form 'pdfa="PDF/A-1b"' \\
+--request POST http://localhost:3000/forms/libreoffice/convert \\
+--form files=@/path/to/file.docx \\
+--form files=@/path/to/file.xlsx \\
+--form merge=true \\
+--form pdfa=PDF/A-1b \\
 -o my.pdf
 `;
 
 const PDFEnginesExample = `
 curl \\
---request POST 'http://localhost:3000/forms/pdfengines/merge' \\
---form 'files=@"/path/to/file1.pdf"' \\
---form 'files=@"/path/to/file2.pdf"' \\
---form 'files=@"/path/to/file3.pdf"' \\
---form 'files=@"/path/to/file4.pdf"' \\
+--request POST http://localhost:3000/forms/pdfengines/merge \\
+--form files=@/path/to/file1.pdf \\
+--form files=@/path/to/file2.pdf \\
+--form files=@/path/to/file3.pdf \\
+--form files=@/path/to/file4.pdf \\
 -o my.pdf
 `;
 
@@ -113,13 +113,13 @@ function Modules() {
 
 const WebhookExample = `
 curl \\
---request POST 'http://localhost:3000/forms/chromium/convert/url' \\
+--request POST http://localhost:3000/forms/chromium/convert/url \\
 --header 'Gotenberg-Webhook-Extra-Http-Headers: {"MyHeader": "MyValue"}' \\
 --header 'Gotenberg-Webhook-Url: https://my.webhook.url' \\
 --header 'Gotenberg-Webhook-Method: PUT' \\
 --header 'Gotenberg-Webhook-Error-Url: https://my.webhook.error.url' \\
 --header 'Gotenberg-Webhook-Error-Method: POST' \\
---form 'url="https://my.url"'
+--form url=https://my.url
 `;
 
 function Async() {
