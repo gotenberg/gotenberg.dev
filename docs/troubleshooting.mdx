@@ -49,6 +49,7 @@ If you are experiencing timeouts (i.e., *503 Service Unavailable*), consider the
 1. Assess whether your Gotenberg instance is overloaded. If this is the case, consider increasing the number of instances.
 2. Ensure that the page you are attempting to convert doesn't require resources inaccessible from the Gotenberg instance.
 3. Consider increasing the API timeout. See the [API module configuration](configuration#api) for guidance.
+4. Optionally, consider defining a maximum queue size to abort requests sooner. Refer to the [Chromium module configuration](configuration#chromium) for guidance.
 
 ## LibreOffice
 
@@ -88,5 +89,7 @@ If you are experiencing timeouts (i.e., *503 Service Unavailable*), consider the
 memory and CPU resources allocated to Gotenberg.
 2. Consider increasing the API timeout. Refer to the [API module configuration](configuration#api) for guidance.
 3. Consider increasing the LibreOffice instance startup timeout. Refer to the
+[LibreOffice module configuration](configuration#libreoffice) for guidance.
+4. Optionally, consider defining a maximum queue size to abort requests sooner. Refer to the
 [LibreOffice module configuration](configuration#libreoffice) for guidance.
 
