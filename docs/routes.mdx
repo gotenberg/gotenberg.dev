@@ -1094,9 +1094,15 @@ curl \
 
 The route also accepts the following form fields:
 
-| Key   | Description               | Default |
-|-------|---------------------------|---------|
-| merge | Merge the resulting PDFs. | false   |
+| Key   | Description                                | Default |
+|-------|--------------------------------------------|---------|
+| merge | Merge alphanumerically the resulting PDFs. | false   |
+
+:::info
+
+Alphanumerically means numbers first, then letters in alphabetical order.
+
+:::
 
 <Tabs
 defaultValue="curl"
@@ -1270,7 +1276,13 @@ Body: Service Unavailable
 
 ## Merge PDFs <span class="badge badge--secondary">route</span>
 
-This *multipart/form-data* route accepts PDF files and merges them alphabetically.
+This *multipart/form-data* route accepts PDF files and merges them alphanumerically.
+
+:::info
+
+Alphanumerically means numbers first, then letters in alphabetical order.
+
+:::
 
 ```
 POST /forms/pdfengines/merge
