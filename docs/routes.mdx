@@ -372,6 +372,7 @@ Each route accepts the following form fields:
 
 | Key               | Description                                                                    | Default   |
 |-------------------|--------------------------------------------------------------------------------|-----------|
+| singlePage        | Define whether to print the entire content in one single page.                 | false     |
 | paperWidth        | Paper width, in inches.                                                        | 8.5       |
 | paperHeight       | Paper height, in inches.                                                       | 11        |
 | marginTop         | Top margin, in inches.                                                         | 0.39      |
@@ -414,6 +415,13 @@ curl \
 
 </TabItem>
 </Tabs>
+
+:::info
+
+If the `singlePage` form field is set to true, it automatically overrides the values from the `paperHeight` and
+`nativePageRanges` form fields.
+
+:::
 
 :::info
 
@@ -791,6 +799,12 @@ Each route accepts the following form fields:
 |-------|------------------------------------------------------------|---------|
 | pdfa  | Convert the resulting PDF into the given PDF/A format.     | None    |
 | pdfua | Enable PDF for Universal Access for optimal accessibility. | false   |
+
+:::info
+
+Chromium generates tagged PDFs by default.
+
+:::
 
 At present, the following PDF/A formats are available:
 
