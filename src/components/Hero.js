@@ -42,7 +42,7 @@ export default function Hero() {
           <div className="col col--6">
             <img
               className={styles.logo}
-              src={useBaseUrl("/img/logo_jed.png")}
+              src={useBaseUrl("/img/logo_jed.jpg")}
               alt="Gotenberg Hero Logo"
             />
           </div>
