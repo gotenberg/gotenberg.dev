@@ -26,7 +26,7 @@ The following flags allow you to configure the API module:
 
 The Chromium module interacts with the Chromium browser to convert HTML documents to PDF.
 
-A long-running Chromium browser manages the conversions in a stateful mode, enabling quicker single conversions.
+A single Chromium browser manages the conversions in a stateful mode, enabling quicker single conversions.
 However, due to a lock mechanism, a Chromium browser cannot execute parallel operations.
 
 During periods of heavy load, incoming requests will accumulate in the queue until they are processed, time out, or the
@@ -72,7 +72,7 @@ The following flags allow you to configure the Chromium module:
 The LibreOffice module interacts with [LibreOffice](https://www.libreoffice.org/) to convert numerous documents to PDF,
 thanks to [unoconv](https://github.com/unoconv/unoconv).
 
-A long-running LibreOffice instance manages the conversions in a stateful mode, enabling quicker single conversions.
+A single LibreOffice instance manages the conversions in a stateful mode, enabling quicker single conversions.
 However, due to a lock mechanism, a LibreOffice instance cannot execute parallel operations.
 
 During periods of heavy load, incoming requests will accumulate in the queue until they are processed, time out, or the
