@@ -26,10 +26,13 @@ The following flags allow you to configure the API module:
 
 The Chromium module interacts with the Chromium browser to convert HTML documents to PDF.
 
-By default, a long-running Chromium browser handles the conversions. This stateful mode allows for faster unitary
-conversion, but there is a lock mechanism as a Chromium browser cannot perform parallel operations.
+A long-running Chromium browser manages the conversions in a stateful mode, enabling quicker single conversions.
+However, due to a lock mechanism, a Chromium browser cannot execute parallel operations.
 
-In other words, under heavy load, you should consider scaling up your number of Gotenberg instances.
+During periods of heavy load, incoming requests will accumulate in the queue until they are processed, time out, or the
+queue reaches its maximum capacity. In the latter case, the request will be terminated prematurely.
+
+To maintain performance under heavy load, consider increasing the number of Gotenberg instances.
 
 :::caution
 
@@ -67,10 +70,13 @@ The following flags allow you to configure the Chromium module:
 The LibreOffice module interacts with [LibreOffice](https://www.libreoffice.org/) to convert numerous documents to PDF,
 thanks to [unoconv](https://github.com/unoconv/unoconv).
 
-By default, a long-running LibreOffice instance handles the conversions. This stateful mode allows for faster unitary
-conversion, but there is a lock mechanism as a single LibreOffice instance cannot perform parallel operations.
+A long-running LibreOffice instance manages the conversions in a stateful mode, enabling quicker single conversions.
+However, due to a lock mechanism, a LibreOffice instance cannot execute parallel operations.
 
-In other words, under heavy load, you should consider scaling up your number of Gotenberg instances
+During periods of heavy load, incoming requests will accumulate in the queue until they are processed, time out, or the
+queue reaches its maximum capacity. In the latter case, the request will be terminated prematurely.
+
+To maintain performance under heavy load, consider increasing the number of Gotenberg instances.
 
 The following flags allow you to configure the LibreOffice module:
 
