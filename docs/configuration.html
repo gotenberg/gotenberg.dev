@@ -10,7 +10,7 @@
 
 
 <link rel="search" type="application/opensearchdescription+xml" title="Gotenberg" href="/opensearch.xml"><link rel="stylesheet" href="/assets/css/styles.94a0d38b.css">
-<script src="/assets/js/runtime~main.d7ca4426.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.5f09e1d4.js" defer="defer"></script>
 <script src="/assets/js/main.101f437d.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -22,9 +22,11 @@ comprehensive list of flags that you can use to fine-tune Gotenberg according to
 <table><thead><tr><th>Flag</th><th>Description</th><th>Default</th></tr></thead><tbody><tr><td><span class="badge badge--secondary">--api-port</span></td><td>Set the port on which the API should listen.</td><td>3000</td></tr><tr><td><span class="badge badge--secondary">--api-port-from-env</span></td><td>Set the environment variable with the port on which the API should listen - override the default port.</td><td>None</td></tr><tr><td><span class="badge badge--secondary">--api-start-timeout</span></td><td>Set the time limit for the API to start.</td><td>30s</td></tr><tr><td><span class="badge badge--secondary">--api-timeout</span></td><td>Set the time limit for requests.</td><td>30s</td></tr><tr><td><span class="badge badge--secondary">--api-root-path</span></td><td>Set the root path of the API - for service discovery via URL paths.</td><td>/</td></tr><tr><td><span class="badge badge--secondary">--api-trace-header</span></td><td>Set the header name to use for identifying requests.</td><td>Gotenberg-Trace</td></tr><tr><td><span class="badge badge--secondary">--api-disable-health-check-logging</span></td><td>Disable health check logging.</td><td>false</td></tr></tbody></table>
 <h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="chromium">Chromium<a href="#chromium" class="hash-link" aria-label="Direct link to Chromium" title="Direct link to Chromium">​</a></h2>
 <p>The Chromium module interacts with the Chromium browser to convert HTML documents to PDF.</p>
-<p>By default, a long-running Chromium browser handles the conversions. This stateful mode allows for faster unitary
-conversion, but there is a lock mechanism as a Chromium browser cannot perform parallel operations.</p>
-<p>In other words, under heavy load, you should consider scaling up your number of Gotenberg instances.</p>
+<p>A long-running Chromium browser manages the conversions in a stateful mode, enabling quicker single conversions.
+However, due to a lock mechanism, a Chromium browser cannot execute parallel operations.</p>
+<p>During periods of heavy load, incoming requests will accumulate in the queue until they are processed, time out, or the
+queue reaches its maximum capacity. In the latter case, the request will be terminated prematurely.</p>
+<p>To maintain performance under heavy load, consider increasing the number of Gotenberg instances.</p>
 <div class="theme-admonition theme-admonition-caution admonition_xJq3 alert alert--warning"><div class="admonitionHeading_Gvgb"><span class="admonitionIcon_Rf37"><svg viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 0 0 0 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 0 0 .01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"></path></svg></span>caution</div><div class="admonitionContent_BuS1"><p>The <code>amd64</code> Docker image uses Google Chrome stable, while other architectures use Chromium.</p><p>The <code>armhf</code> Docker image uses an earlier version of Chromium. See <a href="https://github.com/gotenberg/gotenberg/issues/709" target="_blank" rel="noopener noreferrer">#709</a>
 for more details.</p></div></div>
 <p>The following flags allow you to configure the Chromium module:</p>
@@ -32,11 +34,13 @@ for more details.</p></div></div>
 <h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="libreoffice">LibreOffice<a href="#libreoffice" class="hash-link" aria-label="Direct link to LibreOffice" title="Direct link to LibreOffice">​</a></h2>
 <p>The LibreOffice module interacts with <a href="https://www.libreoffice.org/" target="_blank" rel="noopener noreferrer">LibreOffice</a> to convert numerous documents to PDF,
 thanks to <a href="https://github.com/unoconv/unoconv" target="_blank" rel="noopener noreferrer">unoconv</a>.</p>
-<p>By default, a long-running LibreOffice instance handles the conversions. This stateful mode allows for faster unitary
-conversion, but there is a lock mechanism as a single LibreOffice instance cannot perform parallel operations.</p>
-<p>In other words, under heavy load, you should consider scaling up your number of Gotenberg instances</p>
+<p>A long-running LibreOffice instance manages the conversions in a stateful mode, enabling quicker single conversions.
+However, due to a lock mechanism, a LibreOffice instance cannot execute parallel operations.</p>
+<p>During periods of heavy load, incoming requests will accumulate in the queue until they are processed, time out, or the
+queue reaches its maximum capacity. In the latter case, the request will be terminated prematurely.</p>
+<p>To maintain performance under heavy load, consider increasing the number of Gotenberg instances.</p>
 <p>The following flags allow you to configure the LibreOffice module:</p>
-<table><thead><tr><th>Flag</th><th>Description</th><th>Default</th></tr></thead><tbody><tr><td><span class="badge badge--secondary">--libreoffice-restart-after</span></td><td>Number of conversions after which LibreOffice will automatically restart. Set to 0 to disable this feature.</td><td>10</td></tr><tr><td><span class="badge badge--secondary">--libreoffice-max-queue-size</span></td><td>Maximum request queue size for LibreOffice. Set to 0 to disable this feature.</td><td>0</td></tr><tr><td><span class="badge badge--secondary">--libreoffice-auto-start</span></td><td>Automatically launch LibreOffice upon initialization if set to true; otherwise, LibreOffice will start at the time of the first conversion.</td><td>false</td></tr><tr><td><span class="badge badge--secondary">--libreoffice-start-timeout</span></td><td>Maximum duration to wait for LibreOffice to start or restart.</td><td>20s</td></tr><tr><td><span class="badge badge--secondary">--libreoffice-disable-routes</span></td><td>Disable the route.</td><td>false</td></tr></tbody></table>
+<table><thead><tr><th>Flag</th><th>Description</th><th>Default</th></tr></thead><tbody><tr><td><span class="badge badge--secondary">--libreoffice-restart-after</span></td><td>Number of conversions after which LibreOffice will automatically restart. Set to 0 to disable this feature.</td><td>10</td></tr><tr><td><span class="badge badge--secondary">--libreoffice-max-queue-size</span></td><td>Maximum request queue size for LibreOffice. Set to 0 to disable this feature.</td><td>0</td></tr><tr><td><span class="badge badge--secondary">--libreoffice-auto-start</span></td><td>Automatically launch LibreOffice upon initialization if set to true; otherwise, LibreOffice will start at the time of the first conversion.</td><td>false</td></tr><tr><td><span class="badge badge--secondary">--libreoffice-start-timeout</span></td><td>Maximum duration to wait for LibreOffice to start or restart.</td><td>20s</td></tr><tr><td><span class="badge badge--secondary">--libreoffice-disable-routes</span></td><td>Disable the routes.</td><td>false</td></tr></tbody></table>
 <h3 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="switch-language">Switch Language<a href="#switch-language" class="hash-link" aria-label="Direct link to Switch Language" title="Direct link to Switch Language">​</a></h3>
 <p>By default, LibreOffice uses the English language when it converts documents to PDF. You may override this behavior by
 building your own Docker image.</p>
