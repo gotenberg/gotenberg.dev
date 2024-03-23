@@ -370,21 +370,21 @@ Body: Service Unavailable
 
 Each route accepts the following form fields:
 
-| Key               | Description                                                                    | Default   |
-|-------------------|--------------------------------------------------------------------------------|-----------|
-| singlePage        | Define whether to print the entire content in one single page.                 | false     |
-| paperWidth        | Paper width, in inches.                                                        | 8.5       |
-| paperHeight       | Paper height, in inches.                                                       | 11        |
-| marginTop         | Top margin, in inches.                                                         | 0.39      |
-| marginBottom      | Bottom margin, in inches.                                                      | 0.39      |
-| marginLeft        | Left margin, in inches.                                                        | 0.39      |
-| marginRight       | Right margin, in inches.                                                       | 0.39      |
-| preferCssPageSize | Define whether to prefer page size as defined by CSS.                          | false     |
-| printBackground   | Print the background graphics.                                                 | false     |
-| omitBackground    | Hide the default white background and allow generating PDFs with transparency. | false     |
-| landscape         | Set the paper orientation to landscape.                                        | false     |
-| scale             | The scale of the page rendering.                                               | 1.0       |
-| nativePageRanges  | Page ranges to print, e.g., '1-5, 8, 11-13' - empty means all pages.           | All pages |
+| Key               | Description                                                                                                               | Default   |
+|-------------------|---------------------------------------------------------------------------------------------------------------------------|-----------|
+| singlePage        | Define whether to print the entire content in one single page.                                                            | false     |
+| paperWidth        | Specify paper width using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.      | 8.5       |
+| paperHeight       | Specify paper height using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.     | 11        |
+| marginTop         | Specify top margin width using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified. | 0.39      |
+| marginBottom      | Specify bottom margin using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.    | 0.39      |
+| marginLeft        | Specify left margin using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.      | 0.39      |
+| marginRight       | Specify right margin using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.     | 0.39      |
+| preferCssPageSize | Define whether to prefer page size as defined by CSS.                                                                     | false     |
+| printBackground   | Print the background graphics.                                                                                            | false     |
+| omitBackground    | Hide the default white background and allow generating PDFs with transparency.                                            | false     |
+| landscape         | Set the paper orientation to landscape.                                                                                   | false     |
+| scale             | The scale of the page rendering.                                                                                          | 1.0       |
+| nativePageRanges  | Page ranges to print, e.g., '1-5, 8, 11-13' - empty means all pages.                                                      | All pages |
 
 <Tabs
 defaultValue="curl"
