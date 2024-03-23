@@ -1118,10 +1118,11 @@ Body: Service Unavailable
 
 The route also accepts the following form fields:
 
-| Key              | Description                                                | Default   |
-|------------------|------------------------------------------------------------|-----------|
-| landscape        | Set the paper orientation to landscape.                    | false     |
-| nativePageRanges | Page ranges to print, e.g., '1-4' - empty means all pages. | All pages |
+| Key              | Description                                                                               | Default   |
+|------------------|-------------------------------------------------------------------------------------------|-----------|
+| landscape        | Set the paper orientation to landscape.                                                   | false     |
+| nativePageRanges | Page ranges to print, e.g., '1-4' - empty means all pages.                                | All pages |
+| exportFormFields | Set either to export the form fields or have the inputted/selected content of the fields. | true      |
 
 :::info
 
@@ -1137,12 +1138,13 @@ values={[
 }>
 <TabItem value="curl">
 
-```bash {4-5}
+```bash {4-6}
 curl \
 --request POST http://localhost:3000/forms/libreoffice/convert \
 --form files=@/path/to/file.docx \
 --form landscape=true \
 --form nativePageRanges=1-5 \
+--form exportFormFields=false \
 -o my.pdf
 ```
 
