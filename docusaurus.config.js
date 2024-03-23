@@ -122,7 +122,7 @@ module.exports = {
     },
     prism: {
       theme: lightTheme,
-      additionalLanguages: ["docker", "powershell"],
+      additionalLanguages: ["docker", "powershell", "json"],
     },
     colorMode: {
       // "light" | "dark"
