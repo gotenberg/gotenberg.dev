@@ -628,6 +628,55 @@ curl \
 </TabItem>
 </Tabs>
 
+### Cookies {#cookies-chromium}
+
+Each route accepts the following form field:
+
+| Key     | Description                                                | Default |
+|---------|------------------------------------------------------------|---------|
+| cookies | Cookies to store in the Chromium cookie jar (JSON format). | None    |
+
+:::info
+
+Cookies are set to automatically expire after a specified duration, determined by the request time limit. Additionally,
+you have the option to clear cookies after each conversion.
+
+For further details, refer to the [API module configuration](configuration#api) and the
+[Chromium module configuration](configuration#chromium) sections.
+
+:::
+
+This form field is a JSON-formatted array with items accepting the following keys:
+
+| Key      | Description                                    | Default                                           |
+|----------|------------------------------------------------|---------------------------------------------------|
+| name     | Cookie name.                                   | <span class="badge badge--danger">required</span> |
+| value    | Cookie value.                                  | <span class="badge badge--danger">required</span> |
+| domain   | Cookie domain.                                 | <span class="badge badge--danger">required</span> |
+| path     | Cookie path.                                   | None                                              |
+| secure   | Set the cookie to secure if true.              | None                                              |
+| httpOnly | Set the cookie as HTTP-only if true.           | None                                              |
+| sameSite | Accepted values are "Strict", "Lax" or "None". | None (empty)                                      |
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {4}
+curl \
+--request POST http://localhost:3000/forms/chromium/convert/url \
+--form url=https://my.url \
+--form 'cookies=[{"name":"yummy_cookie","value":"choco","domain":"theyummycookie.com"}]' \
+-o my.pdf
+```
+
+</TabItem>
+</Tabs>
+
 ### Custom HTTP Headers {#custom-http-headers-chromium}
 
 Each route accepts the following form field:
@@ -644,7 +693,7 @@ values={[
 }>
 <TabItem value="curl">
 
-```bash {4-5}
+```bash {4}
 curl \
 --request POST http://localhost:3000/forms/chromium/convert/url \
 --form url=https://my.url \
@@ -889,6 +938,7 @@ The following features are also available:
 
 * [Wait Before Rendering](#wait-before-rendering-chromium)
 * [Emulated Media Type](#emulated-media-type-chromium)
+* [Cookies](#cookies-chromium)
 * [Custom HTTP headers](#custom-http-headers-chromium)
 * [Invalid HTTP Status Codes](#invalid-http-status-codes-chromium)
 * [Console Exceptions](#console-exceptions-chromium)
