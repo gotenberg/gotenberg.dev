@@ -1157,6 +1157,7 @@ The route also accepts the following form fields:
 | landscape        | Set the paper orientation to landscape.                                                      | false     |
 | nativePageRanges | Page ranges to print, e.g., '1-4' - empty means all pages.                                   | All pages |
 | exportFormFields | Set whether to export the form fields or to use the inputted/selected content of the fields. | true      |
+| singlePageSheets | Set whether to render the entire spreadsheet as a single page.                               | false     |
 
 :::info
 
@@ -1179,6 +1180,25 @@ curl \
 --form landscape=true \
 --form nativePageRanges=1-5 \
 --form exportFormFields=false \
+-o my.pdf
+```
+
+</TabItem>
+</Tabs>
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {4}
+curl \
+--request POST http://localhost:3000/forms/libreoffice/convert \
+--form files=@/path/to/file.xlsx \
+--form singlePageSheets=true \
 -o my.pdf
 ```
 
