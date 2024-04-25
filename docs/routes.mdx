@@ -1785,7 +1785,7 @@ values={[
 }>
 <TabItem value="curl">
 
-```bash {3-6}
+```bash
 curl --request GET http://localhost:3000/health
 ```
 
@@ -1842,7 +1842,7 @@ values={[
 
 The `details` entry gathers the health checks from modules:
 
-* The Chromium module checks if the Chromium browser is heallthy.
+* The Chromium module checks if the Chromium browser is healthy.
 * The LibreOffice module checks if the LibreOffice instance is healthy.
 
 ## Metrics <span class="badge badge--secondary">route</span>
@@ -1863,6 +1863,54 @@ Currently, the metrics include:
 | <span class="badge badge--secondary">\{namespace\}_libreoffice_restarts_count</span>      | Current number of LibreOffice restarts.                                  |
 
 See the [Prometheus module configuration](configuration#prometheus) for more information.
+
+## Version <span class="badge badge--secondary">route</span>
+
+```
+GET /version
+```
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash
+curl --request GET http://localhost:3000/version
+```
+
+</TabItem>
+</Tabs>
+
+<Tabs
+defaultValue="200"
+values={[
+{ label: '200 OK', value: '200', },
+]
+}>
+<TabItem value="200">
+
+```
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body:
+
+8.5.0
+```
+
+</TabItem>
+</Tabs>
+
+:::info
+
+Custom variants of Gotenberg may not print a strict semver version.
+
+For instance, the live demo prints `8.5.0-live-demo-snapshot`.
+
+:::
 
 ## Request Tracing
 
