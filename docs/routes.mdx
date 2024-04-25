@@ -911,7 +911,7 @@ curl \
 
 ### Screenshots <span class="badge badge--secondary">route</span>
 
-You can capture full-page screenshots using the following three routes, which function similarly to their PDF equivalents:
+You can capture screenshots using the following three routes, which function similarly to their PDF equivalents:
 
 ```
 POST /forms/chromium/screenshot/url
@@ -929,6 +929,9 @@ These routes accept the following form fields:
 
 | Key              | Description                                                                           | Default |
 |------------------|---------------------------------------------------------------------------------------|---------|
+| width            | The device screen width in pixels.                                                    | 800     |
+| height           | The device screen height in pixels.                                                   | 600     |
+| clip             | Define whether to clip the screenshot according to the device dimensions.             | false   |
 | format           | The image compression format, either "png", "jpeg" or "webp".                         | png     |
 | quality          | The compression quality from range 0 to 100 (jpeg only).                              | 100     |
 | omitBackground   | Hide the default white background and allow generating screenshots with transparency. | false   |
