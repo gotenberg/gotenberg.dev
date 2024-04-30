@@ -592,7 +592,7 @@ values={[
 curl \
 --request POST http://localhost:3000/forms/chromium/convert/url \
 --form url=https://my.url \
---form 'waitForExpression=window.status === '\''ready'\''' \
+--form 'waitForExpression=window.globalVar === '\''ready'\''' \
 -o my.pdf
 ```
 
