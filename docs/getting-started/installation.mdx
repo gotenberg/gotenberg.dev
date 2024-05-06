@@ -67,8 +67,6 @@ The API will be available at [http://localhost:3000](http://localhost:3000).
 Incorporating Gotenberg into your Docker Compose services stack is as straightforward as:
 
 ```yaml title="docker-compose.yml"
-version: "3"
-
 services:
   # Your other services.
 
@@ -89,8 +87,6 @@ This means your other services can interact with Gotenberg using [gotenberg:3000
 If you want to expose the API to your *localhost*, consider adding a `ports` section:
 
 ```yaml title="docker-compose.yml"
-version: "3"
-
 services:
   # Your other services.
 
@@ -161,8 +157,6 @@ docker run --rm -p 3000:3000 gotenberg/gotenberg:8 gotenberg --my-module-propert
 Or with Docker Compose:
 
 ```yaml title="docker-compose.yml"
-version: "3"
-
 services:
   # Your other services.
 
