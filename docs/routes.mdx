@@ -1260,6 +1260,36 @@ curl \
 </TabItem>
 </Tabs>
 
+
+### Images {#images-libreoffice}
+
+The route accepts the following form fields:
+
+| Key                      | Description                                                                               | Default |
+|--------------------------|-------------------------------------------------------------------------------------------|---------|
+| losslessImageCompression | Allow turning lossless compression on or off to tweak image conversion performance.       | false   |
+| reduceImageResolution    | Allow turning on or off image resolution reduction to tweak image conversion performance. | true    |
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {4-5}
+curl \
+--request POST http://localhost:3000/forms/libreoffice/convert \
+--form files=@/path/to/file.docx \
+--form losslessImageCompression=true \
+--form reduceImageResolution=false \
+-o my.pdf
+```
+
+</TabItem>
+</Tabs>
+
 ### Merge {#merge-libreoffice}
 
 The route also accepts the following form fields:
