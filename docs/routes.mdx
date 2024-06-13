@@ -679,11 +679,12 @@ curl \
 
 ### Custom HTTP Headers {#custom-http-headers-chromium}
 
-Each route accepts the following form field:
+Each route accepts the following form fields:
 
-| Key              | Description                                                                     | Default |
-|------------------|---------------------------------------------------------------------------------|---------|
-| extraHttpHeaders | HTTP headers to send by Chromium while loading the HTML document (JSON format). | None    |
+| Key              | Description                                                                           | Default |
+|------------------|---------------------------------------------------------------------------------------|---------|
+| userAgent        | Override the default *User-Agent* HTTP header.                                        | None    |
+| extraHttpHeaders | Extra HTTP headers to send by Chromium while loading the HTML document (JSON format). | None    |
 
 <Tabs
 defaultValue="curl"
@@ -693,10 +694,11 @@ values={[
 }>
 <TabItem value="curl">
 
-```bash {4}
+```bash {4-5}
 curl \
 --request POST http://localhost:3000/forms/chromium/convert/url \
 --form url=https://my.url \
+--form 'userAgent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)"' \
 --form 'extraHttpHeaders={"X-Header":"value"}' \
 -o my.pdf
 ```
