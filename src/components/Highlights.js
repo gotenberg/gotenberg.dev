@@ -193,7 +193,7 @@ function Platform() {
               </p>
               <Link
                 className="button button--secondary button--lg"
-                to="https://pkg.go.dev/github.com/gotenberg/gotenberg/v7"
+                to="https://pkg.go.dev/github.com/gotenberg/gotenberg/v8"
               >
                 Go Reference
               </Link>
