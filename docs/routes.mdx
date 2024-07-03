@@ -1207,12 +1207,25 @@ Body: Service Unavailable
 
 The route also accepts the following form fields:
 
-| Key              | Description                                                                                  | Default   |
-|------------------|----------------------------------------------------------------------------------------------|-----------|
-| landscape        | Set the paper orientation to landscape.                                                      | false     |
-| nativePageRanges | Page ranges to print, e.g., '1-4' - empty means all pages.                                   | All pages |
-| exportFormFields | Set whether to export the form fields or to use the inputted/selected content of the fields. | true      |
-| singlePageSheets | Set whether to render the entire spreadsheet as a single page.                               | false     |
+| Key                             | Description                                                                                                                                                                   | Default   |
+|---------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|
+| landscape                       | Set the paper orientation to landscape.                                                                                                                                       | false     |
+| nativePageRanges                | Page ranges to print, e.g., '1-4' - empty means all pages.                                                                                                                    | All pages |
+| exportFormFields                | Specify whether form fields are exported as widgets or only their fixed print representation is exported.                                                                     | true      |
+| allowDuplicateFieldNames        | Specify whether multiple form fields exported are allowed to have the same field name.                                                                                        | false     |
+| exportBookmarks                 | Specify if bookmarks are exported to PDF.                                                                                                                                     | true      |
+| exportBookmarksToPdfDestination | Specify that the bookmarks contained in the source LibreOffice file should be exported to the PDF file as Named Destination.                                                  | false     |
+| exportPlaceholders              | Export the placeholders fields visual markings only. The exported placeholder is ineffective.                                                                                 | false     |
+| exportNotes                     | Specify if notes are exported to PDF.                                                                                                                                         | false     |
+| exportNotesPages                | Specify if notes pages are exported to PDF. Notes pages are available in Impress documents only.                                                                              | false     |
+| exportOnlyNotesPages            | Specify, if the form field *exportNotesPages* is set to true, if only notes pages are exported to PDF.                                                                        | false     |
+| exportNotesInMargin             | Specify if notes in margin are exported to PDF.                                                                                                                               | false     |
+| convertOooTargetToPdfTarget     | Specify that the target documents with .od[tpgs] extension, will have that extension changed to .pdf when the link is exported to PDF. The source document remains untouched. | false     |
+| exportLinksRelativeFsys         | Specify that the file system related hyperlinks (file:// protocol) present in the document will be exported as relative to the source document location.                      | false     |
+| exportHiddenSlides              | Export, for LibreOffice Impress, slides that are not included in slide shows.                                                                                                 | false     |
+| skipEmptyPages                  | Specify that automatically inserted empty pages are suppressed. This option is active only if storing Writer documents.                                                       | false     |
+| addOriginalDocumentAsStream     | Specify that a stream is inserted to the PDF file which contains the original document for archiving purposes.                                                                | false     |
+| singlePageSheets                | Ignore each sheet’s paper size, print ranges and shown/hidden status and puts every sheet (even hidden sheets) on exactly one page.                                           | false     |
 
 :::info
 
@@ -1265,10 +1278,12 @@ curl \
 
 The route accepts the following form fields:
 
-| Key                      | Description                                                                               | Default |
-|--------------------------|-------------------------------------------------------------------------------------------|---------|
-| losslessImageCompression | Allow turning lossless compression on or off to tweak image conversion performance.       | false   |
-| reduceImageResolution    | Allow turning on or off image resolution reduction to tweak image conversion performance. | true    |
+| Key                      | Description                                                                                                                                                              | Default |
+|--------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
+| losslessImageCompression | Specify if images are exported to PDF using a lossless compression format like PNG or compressed using the JPEG format.                                                  | false   |
+| quality                  | Specify the quality of the JPG export. A higher value produces a higher-quality image and a larger file. Between 1 and 100.                                              | 90      |
+| reduceImageResolution    | Specify if the resolution of each image is reduced to the resolution specified by the form field *maxImageResolution*.                                                   | false   |
+| maxImageResolution       | If the form field *reduceImageResolution* is set to true, tell if all images will be reduced to the given value in DPI. Possible values are: 75, 150, 300, 600 and 1200. | 300     |
 
 <Tabs
 defaultValue="curl"
@@ -1278,12 +1293,14 @@ values={[
 }>
 <TabItem value="curl">
 
-```bash {4-5}
+```bash {4-7}
 curl \
 --request POST http://localhost:3000/forms/libreoffice/convert \
 --form files=@/path/to/file.docx \
 --form losslessImageCompression=true \
---form reduceImageResolution=false \
+--form quality=50 \
+--form reduceImageResolution=true \
+--form maxImageResolution=150 \
 -o my.pdf
 ```
 
