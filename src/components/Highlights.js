@@ -205,10 +205,51 @@ function Platform() {
   );
 }
 
+function Sponsors() {
+  return (
+    <section className={clsx(styles.section, styles.darker)}>
+      <div className="container">
+        <div className="row">
+          <div className="col">
+            <h2>They sponsor Gotenberg</h2>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col">
+            <p className="text--center">
+              <a href="https://thecodingmachine.com" target="_blank">
+                <img
+                  src="https://user-images.githubusercontent.com/8983173/130324668-9d6e7b35-53a3-49c7-a574-38190d2bd6b0.png"
+                  alt="TheCodingMachine Logo"
+                  width="429"
+                  height="210"
+                />
+              </a>
+            </p>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col">
+            <div className="text--right">
+              <p className={styles.wantMore}>
+                Sponsorships help maintaining and improving Gotenberg -{" "}
+                <a href="https://github.com/sponsors/gulien" target="_blank">
+                  become a sponsor
+                </a>
+                .
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function Highlights() {
   return (
     <span>
-      {Modules()} {Async()} {Platform()}
+      {Modules()} {Async()} {Platform()} {Sponsors()}
     </span>
   );
 }

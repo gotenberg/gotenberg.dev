@@ -115,6 +115,10 @@ module.exports = {
               label: "TheCodingMachine",
               href: "https://www.thecodingmachine.com",
             },
+            {
+              label: "Become a sponsor",
+              href: "https://github.com/sponsors/gulien",
+            },
           ],
         },
       ],
