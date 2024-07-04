@@ -230,7 +230,7 @@ function Sponsors() {
                 target="_blank"
               >
                 <img
-                  src="https://github.com/gotenberg/gotenberg/assets/8983173/7d58bdeb-cff0-419b-bcc4-787b4d70d6de"
+                  src="https://github.com/gotenberg/gotenberg/assets/8983173/bbdee0ad-9739-46a9-90d0-aa28846170ca"
                   alt="Zolsec Logo"
                   width="429"
                   height="210"
