@@ -225,6 +225,17 @@ function Sponsors() {
                   height="210"
                 />
               </a>
+              <a
+                href="https://zolsec.com?utm_source=gotenberg_github&utm_medium=website"
+                target="_blank"
+              >
+                <img
+                  src="https://github.com/gotenberg/gotenberg/assets/8983173/7d58bdeb-cff0-419b-bcc4-787b4d70d6de"
+                  alt="Zolsec Logo"
+                  width="429"
+                  height="210"
+                />
+              </a>
             </p>
           </div>
         </div>
