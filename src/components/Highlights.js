@@ -246,8 +246,8 @@ function Sponsors() {
                 Sponsorships help maintaining and improving Gotenberg -{" "}
                 <a href="https://github.com/sponsors/gulien" target="_blank">
                   become a sponsor
-                </a>
-                .
+                </a>{" "}
+                ❤️
               </p>
             </div>
           </div>
