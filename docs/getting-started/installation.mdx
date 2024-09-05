@@ -110,6 +110,8 @@ When detailing the pod's deployment specification, remember to include:
 
 ```yaml
 securityContext:
+  readOnlyRootFilesystem: false
+  allowPrivilegeEscalation: false
   privileged: false
   runAsUser: 1001
 ```
