@@ -141,7 +141,7 @@ Using the Google Cloud CLI:
 
 ```
 gcloud run deploy {deployment_name} \
---memory=1Gi
+--memory=1Gi \
 --image=gotenberg/gotenberg:8-cloudrun \
 --args=gotenberg \
 --args="--api-port-from-env=PORT" \
