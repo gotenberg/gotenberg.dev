@@ -892,6 +892,12 @@ list of available metadata.
 
 :::
 
+:::caution
+
+Writing metadata may compromise PDF/A compliance.
+
+:::
+
 <Tabs
 defaultValue="curl"
 values={[
@@ -976,6 +982,13 @@ The next route leverage the capabilities of LibreOffice to effectively transform
 (Word, Excel, PowerPoint, etc.) into PDFs.
 
 Checkout the [LibreOffice module configuration](configuration#libreoffice) to tailor the LibreOffice behavior to your needs.
+
+:::tip
+
+This route mainly targets Office documents, but you can also use it to manipulate PDFs, for instance by compressing
+images.
+
+:::
 
 ### Office documents into PDFs <span class="badge badge--secondary">route</span>
 
@@ -1274,7 +1287,7 @@ curl \
 </Tabs>
 
 
-### Images {#images-libreoffice}
+### Compress {#compress-libreoffice}
 
 The route accepts the following form fields:
 
@@ -1300,7 +1313,7 @@ curl \
 --form losslessImageCompression=false \
 --form quality=50 \
 --form reduceImageResolution=true \
---form maxImageResolution=150 \
+--form maxImageResolution=75 \
 -o my.pdf
 ```
 
@@ -1388,6 +1401,12 @@ The route accepts the following form field:
 
 Not all metadata are writable. Consider taking a look at https://exiftool.org/TagNames/XMP.html#pdf for an (exhaustive?)
 list of available metadata.
+
+:::
+
+:::caution
+
+Writing metadata may compromise PDF/A compliance.
 
 :::
 
@@ -1640,6 +1659,12 @@ It accepts the following form files and form field:
 
 Not all metadata are writable. Consider taking a look at https://exiftool.org/TagNames/XMP.html#pdf for an (exhaustive?)
 list of available metadata.
+
+:::
+
+:::caution
+
+Writing metadata may compromise PDF/A compliance.
 
 :::
 
