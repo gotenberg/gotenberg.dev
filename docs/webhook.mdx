@@ -81,14 +81,14 @@ Body: {error}
 </TabItem>
 <TabItem value="403">
 
-This error happens when the one of given URLs is not authorized.
+This error happens if at least one of the given URLs is not authorized.
 
 See the [Webhook module configuration](configuration#webhook) for more details.
 
 ```
 Content-Type: text/plain; charset=UTF-8
 Gotenberg-Trace: {trace}
-Body: Invalid '{header_key}' header value: '{url}' does not match the authorized URLs
+Body: Forbidden
 ```
 
 </TabItem>
