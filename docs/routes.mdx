@@ -2057,3 +2057,95 @@ curl \
 The API automatically appends the file extension, so there's no need for you to set it manually.
 
 :::
+
+## Download From
+
+All *multipart/form-data* endpoints accept the following form field:
+
+| Key          | Description                                | Default |
+|--------------|--------------------------------------------|---------|
+| downloadFrom | URLs to download files from (JSON format). | None    |
+
+:::info
+
+This form field does not work if this feature is disabled via `--api-disable-download-from`.
+
+For further details, refer to the [API module configuration](configuration#api).
+
+:::
+
+This form field is a JSON-formatted array with items accepting the following keys:
+
+| Key              | Description                                                                                      | Default                                           |
+|------------------|--------------------------------------------------------------------------------------------------|---------------------------------------------------|
+| url              | URL of the file. It **MUST** return a *Content-Disposition* header with a *filename* parameter. | <span class="badge badge--danger">required</span> |
+| extraHttpHeaders | The extra HTTP headers to send to the URL (JSON format).                                         | None                                              |
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {3}
+curl \
+--request POST http://localhost:3000/forms/libreoffice/convert \
+--form 'downloadFrom=[{"url":"http://url/to/file.com","extraHttpHeaders":{"X-Header": "value"}}]' \
+-o my.pdf
+```
+
+</TabItem>
+</Tabs>
+
+<Tabs
+defaultValue="requests"
+values={[
+{ label: 'Requests', value: 'requests', },
+{ label: '400 Bad Request', value: '400', },
+{ label: '403 Forbidden', value: '403', },
+]
+}>
+<TabItem value="requests">
+
+```
+GET http://url/to/file.com
+Gotenberg-Trace: {trace}
+User-Agent: Gotenberg
+X-Header: value
+```
+
+</TabItem>
+<TabItem value="400">
+
+This errors happens if at least one entry is invalid.
+
+```
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+```
+
+</TabItem>
+<TabItem value="403">
+
+This error happens if at least one of the given URLs is not authorized.
+
+See the [API module configuration](configuration#api) for more details.
+
+```
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: Forbidden
+```
+
+</TabItem>
+</Tabs>
+
+:::warning
+
+Currently, a [bug](https://github.com/golang/go/issues/69551) is preventing Gotenberg to parse an empty mediatype.
+If you're using AWS S3, make sure to set the *Content-Disposition* header with the *attachment* value in the S3 metadata.
+
+:::
