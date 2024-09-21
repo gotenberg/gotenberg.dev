@@ -2093,7 +2093,7 @@ This form field is a JSON-formatted array with items accepting the following key
 
 | Key              | Description                                                                                      | Default                                           |
 |------------------|--------------------------------------------------------------------------------------------------|---------------------------------------------------|
-| url              | URL of the file. It **MUST** return a *Content-Disposition* header with a *filename* parameter. | <span class="badge badge--danger">required</span> |
+| url              | URL of the file. It **MUST** return a `Content-Disposition` header with a *filename* parameter. | <span class="badge badge--danger">required</span> |
 | extraHttpHeaders | The extra HTTP headers to send to the URL (JSON format).                                         | None                                              |
 
 <Tabs
@@ -2161,6 +2161,6 @@ Body: Forbidden
 :::warning
 
 Currently, a [bug](https://github.com/golang/go/issues/69551) is preventing Gotenberg to parse an empty mediatype.
-If you're using AWS S3, make sure to set the *Content-Disposition* header with the *attachment* value in the S3 metadata.
+If you're using AWS S3, make sure to set the `Content-Disposition` header with the *attachment* value in the S3 metadata.
 
 :::
