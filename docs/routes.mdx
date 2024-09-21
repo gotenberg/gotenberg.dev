@@ -1859,6 +1859,10 @@ Body: Service Unavailable
 GET /health
 ```
 
+```
+HEAD /health
+```
+
 <Tabs
 defaultValue="curl"
 values={[
@@ -1869,6 +1873,10 @@ values={[
 
 ```bash
 curl --request GET http://localhost:3000/health
+```
+
+```bash
+curl --request HEAD http://localhost:3000/health
 ```
 
 </TabItem>
@@ -1926,6 +1934,12 @@ The `details` entry gathers the health checks from modules:
 
 * The Chromium module checks if the Chromium browser is healthy.
 * The LibreOffice module checks if the LibreOffice instance is healthy.
+
+:::info
+
+The body will be empty with the `HEAD` method.
+
+:::
 
 ## Metrics <span class="badge badge--secondary">route</span>
 
