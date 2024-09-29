@@ -820,15 +820,20 @@ at file:///tmp/db09d2c8-31e3-4058-9923-c2705350f2b3/index.html:21:11:
 
 ### Performance Mode {#performance-mode-chromium}
 
+:::info
+
+Since Gotenberg *8.11.0*, `true` is the default value.
+
+:::
+
 Each route accepts the following form field:
 
 | Key                  | Description                                  | Default |
 |----------------------|----------------------------------------------|---------|
-| skipNetworkIdleEvent | Do not wait for Chromium network to be idle. | false   |
+| skipNetworkIdleEvent | Do not wait for Chromium network to be idle. | true    |
 
-Gotenberg, by default, waits for the network idle event to ensure that the majority of the page is rendered during
-conversion. However, this often significantly slows down the conversion process. Setting this form field to true can
-greatly enhance the conversion speed.
+By default, Gotenberg does not wait for the network idle event, significantly speeding up the conversion process.
+Although Chromium triggers this event heuristically, it is often — if not always — fired too late for page rendering.
 
 <Tabs
 defaultValue="curl"
@@ -842,7 +847,7 @@ values={[
 curl \
 --request POST http://localhost:3000/forms/chromium/convert/html \
 --form files=@/path/to/index.html \
---form skipNetworkIdleEvent=true \
+--form skipNetworkIdleEvent=false \
 -o my.pdf
 ```
 
