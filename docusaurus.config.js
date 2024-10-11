@@ -99,6 +99,10 @@ module.exports = {
               href: "https://github.com/gotenberg/awesome-gotenberg",
             },
             {
+              label: "Gotenberg PHP",
+              href: "https://github.com/gotenberg/gotenberg-php",
+            },
+            {
               label: "Help",
               href: "https://github.com/gotenberg/gotenberg/discussions",
             },
@@ -114,6 +118,10 @@ module.exports = {
             {
               label: "TheCodingMachine",
               href: "https://www.thecodingmachine.com",
+            },
+            {
+              label: "Zolsec",
+              href: "https://zolsec.com/?utm_source=gotenberg_github&utm_medium=website",
             },
             {
               label: "Become a sponsor",
