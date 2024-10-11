@@ -688,10 +688,10 @@ curl \
 
 Each route accepts the following form fields:
 
-| Key              | Description                                                                           | Default |
-|------------------|---------------------------------------------------------------------------------------|---------|
-| userAgent        | Override the default *User-Agent* HTTP header.                                        | None    |
-| extraHttpHeaders | Extra HTTP headers to send by Chromium while loading the HTML document (JSON format). | None    |
+| Key              | Description                                           | Default |
+|------------------|-------------------------------------------------------|---------|
+| userAgent        | Override the default `User-Agent` HTTP header.        | None    |
+| extraHttpHeaders | Extra HTTP headers to send by Chromium (JSON format). | None    |
 
 <Tabs
 defaultValue="curl"
@@ -706,9 +706,20 @@ curl \
 --request POST http://localhost:3000/forms/chromium/convert/url \
 --form url=https://my.url \
 --form 'userAgent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)"' \
---form 'extraHttpHeaders={"X-Header":"value"}' \
+--form-string 'extraHttpHeaders={"X-Header":"value","X-Scoped-Header":"value;scope=https?:\\/\\/([a-zA-Z0-9-]+\\.)*domain\\.com\\/.*"}' \
 -o my.pdf
 ```
+
+:::info
+
+You can add an optional *scope* token to a header value to restrict its application using a regular expression.
+
+For example, `"X-Scoped-Header":"value;scope=https?:\\/\\/([a-zA-Z0-9-]+\\.)*domain\\.com\\/.*"` will apply the
+`X-Scoped-Header` only to requests directed at domain.com and its subdomains.
+
+Note that the *scope* token is only processed by Gotenberg and is never sent with the header value.
+
+:::
 
 </TabItem>
 </Tabs>
