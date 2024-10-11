@@ -48,6 +48,11 @@ module.exports = {
     },
     {
       type: "link",
+      label: "Gotenberg PHP",
+      href: "https://github.com/gotenberg/gotenberg-php",
+    },
+    {
+      type: "link",
       label: "Upgrade from 7.x",
       href: "https://github.com/gotenberg/gotenberg/releases/tag/v8.0.0",
     },
