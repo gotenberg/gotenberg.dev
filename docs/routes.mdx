@@ -831,12 +831,6 @@ at file:///tmp/db09d2c8-31e3-4058-9923-c2705350f2b3/index.html:21:11:
 
 ### Performance Mode {#performance-mode-chromium}
 
-:::info
-
-Since Gotenberg *8.11.0*, `true` is the default value.
-
-:::
-
 Each route accepts the following form field:
 
 | Key                  | Description                                  | Default |
@@ -845,6 +839,12 @@ Each route accepts the following form field:
 
 By default, Gotenberg does not wait for the network idle event, significantly speeding up the conversion process.
 Although Chromium triggers this event heuristically, it is often — if not always — fired too late for page rendering.
+
+:::warning
+
+Prior to Gotenberg *8.11.0*, `false` was the default value.
+
+:::
 
 <Tabs
 defaultValue="curl"
