@@ -145,14 +145,17 @@ Currently, Gotenberg supports the following PDF engines:
 
 The following flags allow you to configure the PDF Engines module:
 
-| Flag                                                                    | Description                          | Default |
-|-------------------------------------------------------------------------|--------------------------------------|---------|
-| <span class="badge badge--secondary">--pdfengines-engines</span>        | Set the PDF engines and their order. | All     |
-| <span class="badge badge--secondary">--pdfengines-disable-routes</span> | Disable the routes.                  | false   |
+| Flag                                                                            | Description                                                        | Default               |
+|---------------------------------------------------------------------------------|--------------------------------------------------------------------|-----------------------|
+| <span class="badge badge--secondary">--pdfengines-merge-engines</span>          | Set the PDF engines and their order for the merge feature.         | qpdf,pdfcpu,pdftk     |
+| <span class="badge badge--secondary">--pdfengines-convert-engines</span>        | Set the PDF engines and their order for the convert feature.       | libreoffice-pdfengine |
+| <span class="badge badge--secondary">--pdfengines-read-metadata-engines</span>  | Set the PDF engines and their order for the read metadata feature. | exiftool              |
+| <span class="badge badge--secondary">--pdfengines-write-metadata-engines</span> | Set the PDF engines and their order for the read metadata feature. | exiftool              |
+| <span class="badge badge--secondary">--pdfengines-disable-routes</span>         | Disable the routes.                                                | false                 |
 
-:::info
+:::warning
 
-For instance, the value *"pdftk,libreoffice-pdfengine"* selects PDFtk as the first engine, and UNO as the second.
+As of Gotenberg *8.13.0*, the flag `--pdfengines-engines` has been deprecated.
 
 :::
 
