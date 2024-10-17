@@ -205,13 +205,20 @@ The following flags allow you to configure the logger:
 ## Graceful Shutdown
 
 To ensure running tasks have sufficient time to complete, Gotenberg waits for a specific duration before initiating the
-shutdown process. It may stop earlier if all tasks have completed.
+shutdown process.
 
 The following flag allows you to configure this duration:
 
 | Flag                                                                               | Description                         | Default |
 |------------------------------------------------------------------------------------|-------------------------------------|---------|
 | <span class="badge badge--secondary">--gotenberg-graceful-shutdown-duration</span> | Set the graceful shutdown duration. | 30s     |
+
+:::info
+
+When using the [webhook feature](webhook), ensure that this duration is equal to or longer than the API timeout period.
+This way, you can confirm that all asynchronous processes complete before Gotenberg begins its shutdown sequence.
+
+:::
 
 ## Docker Image
 
