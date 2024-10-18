@@ -10,7 +10,7 @@
 
 
 <link rel="search" type="application/opensearchdescription+xml" title="Gotenberg" href="/opensearch.xml"><link rel="stylesheet" href="/assets/css/styles.f49c29d0.css">
-<script src="/assets/js/runtime~main.b4789dfd.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.60561bc0.js" defer="defer"></script>
 <script src="/assets/js/main.989c8761.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -41,9 +41,9 @@ to the <a href="/docs/configuration#fonts">fonts configuration section</a> to le
 </ul>
 <h3 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="printing-failed--32000">Printing Failed (-32000)<a href="#printing-failed--32000" class="hash-link" aria-label="Direct link to Printing Failed (-32000)" title="Direct link to Printing Failed (-32000)">​</a></h3>
 <p>When converting large documents, this error may appear in your logs. Increasing Gotenberg&#x27;s memory allocation is a
-commonly suggested solution.</p>
+commonly suggested solution, but it may not be enough. This is a <a href="https://issues.chromium.org/issues/40842550" target="_blank" rel="noopener noreferrer">known bug</a> in Chromium.</p>
 <p>For additional details, refer to issue <a href="https://github.com/gotenberg/gotenberg/issues/788" target="_blank" rel="noopener noreferrer">#788</a>.</p>
-<h3 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="timeouts-chromium">Dealing with Timeouts<a href="#timeouts-chromium" class="hash-link" aria-label="Direct link to Dealing with Timeouts" title="Direct link to Dealing with Timeouts">  ​</a></h3>
+<h3 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="timeouts-chromium">Dealing with Timeouts<a href="#timeouts-chromium" class="hash-link" aria-label="Direct link to Dealing with Timeouts" title="Direct link to Dealing with Timeouts">​</a></h3>
 <p>If you are experiencing timeouts (i.e., <em>503 Service Unavailable</em>), consider the following steps to troubleshoot your issue:</p>
 <ol>
 <li>Assess whether your Gotenberg instance is overloaded. If this is the case, consider increasing the number of instances.</li>
