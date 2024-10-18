@@ -38,7 +38,7 @@ Startup failures can happen due to several factors. Here are some known solution
 ### Printing Failed (-32000)
 
 When converting large documents, this error may appear in your logs. Increasing Gotenberg's memory allocation is a
-commonly suggested solution.
+commonly suggested solution, but it may not be enough. This is a [known bug](https://issues.chromium.org/issues/40842550) in Chromium.
 
 For additional details, refer to issue [#788](https://github.com/gotenberg/gotenberg/issues/788).
 
