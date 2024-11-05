@@ -94,6 +94,7 @@ the main page:
 * `net::ERR_ADDRESS_UNREACHABLE`
 * `net::ERR_BLOCKED_BY_CLIENT`
 * `net::ERR_BLOCKED_BY_RESPONSE`
+* `net::ERR_FILE_NOT_FOUND`
 
 </TabItem>
 <TabItem value="403">
@@ -216,6 +217,7 @@ the main page:
 * `net::ERR_ADDRESS_UNREACHABLE`
 * `net::ERR_BLOCKED_BY_CLIENT`
 * `net::ERR_BLOCKED_BY_RESPONSE`
+* `net::ERR_FILE_NOT_FOUND`
 
 </TabItem>
 <TabItem value="503">
@@ -398,6 +400,7 @@ the main page:
 * `net::ERR_ADDRESS_UNREACHABLE`
 * `net::ERR_BLOCKED_BY_CLIENT`
 * `net::ERR_BLOCKED_BY_RESPONSE`
+* `net::ERR_FILE_NOT_FOUND`
 
 </TabItem>
 <TabItem value="503">
@@ -770,9 +773,10 @@ Note that the *scope* token is only processed by Gotenberg and is never sent wit
 
 Each route accepts the following form field:
 
-| Key                   | Description                                                                                    | Default     |
-|-----------------------|------------------------------------------------------------------------------------------------|-------------|
-| failOnHttpStatusCodes | Return a *409 Conflict* response if the HTTP status code from the main page is not acceptable. | \[499,599\] |
+| Key                           | Description                                                                                            | Default     |
+|-------------------------------|--------------------------------------------------------------------------------------------------------|-------------|
+| failOnHttpStatusCodes         | Return a *409 Conflict* response if the HTTP status code from the main page is not acceptable.         | \[499,599\] |
+| failOnResourceHttpStatusCodes | Return a *409 Conflict* response if the HTTP status code from at least one resource is not acceptable. | None        |
 
 An *X99* entry means every HTTP status codes between *X00* and *X99* (e.g., 499 means every HTTP status codes between 400 and 499).
 
@@ -809,6 +813,72 @@ Body:
 
 Invalid HTTP status code from the main page: 400: Bad Request
 ```
+
+</TabItem>
+</Tabs>
+
+### Network Errors {#network-errors-chromium}
+
+Gotenberg returns a *400 Bad Request* if it encounters any of the following network errors while attempting to load
+the main page:
+
+* `net::ERR_CONNECTION_CLOSED`
+* `net::ERR_CONNECTION_RESET`
+* `net::ERR_CONNECTION_REFUSED`
+* `net::ERR_CONNECTION_ABORTED`
+* `net::ERR_CONNECTION_FAILED`
+* `net::ERR_NAME_NOT_RESOLVED`
+* `net::ERR_INTERNET_DISCONNECTED`
+* `net::ERR_ADDRESS_UNREACHABLE`
+* `net::ERR_BLOCKED_BY_CLIENT`
+* `net::ERR_BLOCKED_BY_RESPONSE`
+* `net::ERR_FILE_NOT_FOUND`
+
+If you want a similar behavior for resources too, you may use the following form field:
+
+| Key                         | Description                                                                       | Default |
+|-----------------------------|-----------------------------------------------------------------------------------|---------|
+| failOnResourceLoadingFailed | Return a *409 Conflict* response if Chromium fails to load at least one resource. | false   |
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {4}
+curl \
+--request POST http://localhost:3000/forms/chromium/convert/html \
+--form files=@/path/to/index.html \
+--form failOnResourceLoadingFailed=true
+```
+
+</TabItem>
+</Tabs>
+
+<Tabs
+defaultValue="409"
+values={[
+{ label: '409 Conflict', value: '409', },
+]
+}>
+<TabItem value="409">
+
+```
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body:
+
+Chromium failed to load resources: resource Stylesheet: net::ERR_FILE_NOT_FOUND; resource Image: net::ERR_CONNECTION_REFUSED
+```
+
+:::info
+
+It's currently not possible to have more details about the exact resource that is failing.
+
+:::
 
 </TabItem>
 </Tabs>
