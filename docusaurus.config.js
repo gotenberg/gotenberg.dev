@@ -20,18 +20,19 @@ module.exports = {
       indexName: "gotenberg",
       contextualSearch: true,
     },
-    // announcementBar: {
-    //   id: "support_us",
-    //   content: `⭐️  &nbsp; If you like Gotenberg, give it a star on <a target="_blank" rel="noopener noreferrer" href="https://github.com/gotenberg/gotenberg">GitHub</a>! &nbsp; ⭐️`,
-    // },
     announcementBar: {
-      id: "gotenberg_8",
-      content: `🎉️ <strong><a target="_blank" rel="noopener noreferrer" href="https://github.com/gotenberg/gotenberg/releases/tag/v8.0.0">Gotenberg 8</a> is now out!</strong> 🥳️`,
+      id: "support_us",
+      content: `⭐️  &nbsp; If you like Gotenberg, give it a star on <a target="_blank" rel="noopener noreferrer" href="https://github.com/gotenberg/gotenberg">GitHub</a>! &nbsp; ⭐️`,
     },
+    // announcementBar: {
+    //   id: "gotenberg_8",
+    //   content: `🎉️ <strong><a target="_blank" rel="noopener noreferrer" href="https://github.com/gotenberg/gotenberg/releases/tag/v8.0.0">Gotenberg 8</a> is now out!</strong> 🥳️`,
+    // },
     navbar: {
       title: "Gotenberg",
       logo: {
         alt: "Gotenberg Logo",
+
         src: "img/logo.png",
       },
       hideOnScroll: true,
