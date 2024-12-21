@@ -978,6 +978,70 @@ curl \
 </TabItem>
 </Tabs>
 
+### Split {#split-chromium}
+
+Each route accepts the following form fields:
+
+| Key        | Description                                                                                                                        | Default |
+|------------|------------------------------------------------------------------------------------------------------------------------------------|---------|
+| splitMode  | Either *intervals* or *pages*.                                                                                                     | None    |
+| splitSpan  | Either the intervals or the page ranges to extract, depending on the selected mode.                                                | None    |
+| splitUnify | Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with *pages* mode. | false   |
+
+:::caution
+
+Gotenberg currently does not validate the `splitSpan` value if `splitMode` is *pages*, as it depends on the selected
+engine for the split feature:
+
+* [pdfcpu](https://pdfcpu.io/core/trim)
+* [QPDF](https://qpdf.readthedocs.io/en/stable/cli.html#page-ranges)
+* [PDFtk](https://www.pdflabs.com/docs/pdftk-man-page/#dest-op-cat)
+
+See also the [PDF Engines module configuration](configuration#pdf-engines) for more details.
+
+:::
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {4-6}
+curl \
+--request POST http://localhost:3000/forms/chromium/convert/url \
+--form url=https://my.url \
+--form splitMode=intervals \
+--form splitSpan=1 \
+-o my.zip
+```
+
+</TabItem>
+</Tabs>
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {4-7}
+curl \
+--request POST http://localhost:3000/forms/chromium/convert/url \
+--form url=https://my.url \
+--form splitMode=pages \
+--form splitSpan=1-2 \
+--form splitUnify=true \
+-o my.pdf
+```
+
+</TabItem>
+</Tabs>
+
 ### PDF/A & PDF/UA {#pdfa-chromium}
 
 Each route accepts the following form fields:
@@ -1491,6 +1555,70 @@ curl \
 </TabItem>
 </Tabs>
 
+### Split {#split-libreoffice}
+
+The route accepts the following form fields:
+
+| Key        | Description                                                                                                                        | Default |
+|------------|------------------------------------------------------------------------------------------------------------------------------------|---------|
+| splitMode  | Either *intervals* or *pages*.                                                                                                     | None    |
+| splitSpan  | Either the intervals or the page ranges to extract, depending on the selected mode.                                                | None    |
+| splitUnify | Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with *pages* mode. | false   |
+
+:::caution
+
+Gotenberg currently does not validate the `splitSpan` value if `splitMode` is *pages*, as it depends on the selected
+engine for the split feature:
+
+* [pdfcpu](https://pdfcpu.io/core/trim)
+* [QPDF](https://qpdf.readthedocs.io/en/stable/cli.html#page-ranges)
+* [PDFtk](https://www.pdflabs.com/docs/pdftk-man-page/#dest-op-cat)
+
+See also the [PDF Engines module configuration](configuration#pdf-engines) for more details.
+
+:::
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {4-6}
+curl \
+--request POST http://localhost:3000/forms/libreoffice/convert \
+--form files=@/path/to/file.docx \
+--form splitMode=intervals \
+--form splitSpan=1 \
+-o my.zip
+```
+
+</TabItem>
+</Tabs>
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {4-7}
+curl \
+--request POST http://localhost:3000/forms/libreoffice/convert \
+--form files=@/path/to/file.docx \
+--form splitMode=pages \
+--form splitSpan=1-2 \
+--form splitUnify=true \
+-o my.pdf
+```
+
+</TabItem>
+</Tabs>
+
 ### PDF/A & PDF/UA {#pdfa-libreoffice}
 
 The route also accepts the following form fields:
@@ -1995,7 +2123,7 @@ POST /forms/pdfengines/split
 | *.pdf      | At least one PDF file.                                                                                                             | <span class="badge badge--danger">required</span> |
 | splitMode  | Either *intervals* or *pages*.                                                                                                     | <span class="badge badge--danger">required</span> |
 | splitSpan  | Either the intervals or the page ranges to extract, depending on the selected mode.                                                | <span class="badge badge--danger">required</span> |
-| splitUnify | Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with "pages" mode. | false                                             |
+| splitUnify | Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with *pages* mode. | false                                             |
 
 :::caution
 
