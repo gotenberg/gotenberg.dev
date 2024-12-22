@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkgotenberg_dev=self.webpackChunkgotenberg_dev||[]).push([[483],{4483:(e,r,a)=>{a.r(r),a.d(r,{DocSearchModal:()=>c.He});var c=a(4443)}}]);
