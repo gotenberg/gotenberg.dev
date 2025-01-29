@@ -20,12 +20,17 @@ Gotenberg internally employs the same protocol as [Puppeteer](https://pptr.dev/)
 Therefore, it may be useful to include "puppeteer" as a keyword when searching for solutions to your issue. More often
 than not, you're likely to find an answer to your problem.
 
-### Oversized PDF Files
+### Large PDF Files Size
 
 The usage of webfonts tends to considerably enlarge the PDF file size. If you wish to use a custom font, please refer
 to the [fonts configuration section](configuration#fonts) to learn how to install them directly into the Docker container.
 
 For additional details, see issue [#521](https://github.com/gotenberg/gotenberg/issues/521).
+
+Alternatively, requesting a PDF/A format may also drastically increase the size of the resulting PDF
+(duplicated images, etc.).
+
+Refer to issue [#1077](https://github.com/gotenberg/gotenberg/issues/1077) for additional details.
 
 ### Trouble Starting
 
