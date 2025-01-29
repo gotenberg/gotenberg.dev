@@ -2123,6 +2123,9 @@ POST /forms/pdfengines/split
 | splitMode  | Either *intervals* or *pages*.                                                                                                     | <span class="badge badge--danger">required</span> |
 | splitSpan  | Either the intervals or the page ranges to extract, depending on the selected mode.                                                | <span class="badge badge--danger">required</span> |
 | splitUnify | Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with *pages* mode. | false                                             |
+| pdfa       | Convert the resulting PDF(s) into the given PDF/A format.                                                                          | None                                              |
+| pdfua      | Enable PDF for Universal Access for optimal accessibility.                                                                         | false                                             |
+| metadata   | The metadata to write (JSON format).                                                                                               | None                                              |
 
 :::caution
 
