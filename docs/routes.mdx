@@ -1693,6 +1693,33 @@ curl \
 </TabItem>
 </Tabs>
 
+### Flatten {#flatten-libreoffice}
+
+The route accepts the following form field:
+
+| Key     | Description                | Default |
+|---------|----------------------------|---------|
+| flatten | Flatten the resulting PDF. | false   |
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {4}
+curl \
+--request POST http://localhost:3000/forms/libreoffice/convert \
+--form files=@/path/to/file.docx \
+--form flatten=true \
+-o my.pdf
+```
+
+</TabItem>
+</Tabs>
+
 ## Convert into PDF/A & PDF/UA <span class="badge badge--secondary">route</span>
 
 This *multipart/form-data* route transforms one or more PDF files into the requested PDF/A format and/or PDF/UA.
@@ -2039,6 +2066,7 @@ POST /forms/pdfengines/merge
 | pdfa     | Convert the resulting PDF into the given PDF/A format.     | None                                              |
 | pdfua    | Enable PDF for Universal Access for optimal accessibility. | false                                             |
 | metadata | The metadata to write (JSON format).                       | None                                              |
+| flatten  | Flatten the resulting PDF.                                 | false                                             |
 
 <Tabs
 defaultValue="curl"
@@ -2126,6 +2154,7 @@ POST /forms/pdfengines/split
 | pdfa       | Convert the resulting PDF(s) into the given PDF/A format.                                                                          | None                                              |
 | pdfua      | Enable PDF for Universal Access for optimal accessibility.                                                                         | false                                             |
 | metadata   | The metadata to write (JSON format).                                                                                               | None                                              |
+| flatten    | Flatten the resulting PDF(s).                                                                                                      | false                                             |
 
 :::caution
 
@@ -2175,6 +2204,85 @@ curl \
 --form splitMode=pages \
 --form splitSpan=1-2 \
 --form splitUnify=true \
+-o my.pdf
+```
+
+</TabItem>
+</Tabs>
+
+<Tabs
+defaultValue="200"
+values={[
+{ label: '200 OK', value: '200', },
+{ label: '400 Bad Request', value: '400', },
+{ label: '503 Service Unavailable', value: '503', },
+]
+}>
+<TabItem value="200">
+
+```
+Content-Disposition: attachement; filename={output-filename.pdf}
+Content-Type: {content-type}
+Content-Length: {content-length}
+Gotenberg-Trace: {trace}
+Body: {output-file}
+```
+
+* See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
+* See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
+
+</TabItem>
+<TabItem value="400">
+
+This errors happens if one ore more form fields are invalid.
+
+```
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+```
+
+</TabItem>
+<TabItem value="503">
+
+If a request doesn't complete within a specified duration, the API will respond with a *503 Service Unavailable* status.
+
+See the [API module configuration](configuration#api) for more details.
+
+```
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: Service Unavailable
+```
+
+</TabItem>
+</Tabs>
+
+## Flatten PDFs <span class="badge badge--secondary">route</span>
+
+This *multipart/form-data* route flatten PDF files.
+
+```
+POST /forms/pdfengines/flatten
+```
+
+| Key   | Description            | Default                                           |
+|-------|------------------------|---------------------------------------------------|
+| *.pdf | At least one PDF file. | <span class="badge badge--danger">required</span> |
+
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash
+curl \
+--request POST http://localhost:3000/forms/pdfengines/flatten \
+--form files=@/path/to/pdf.pdf \
 -o my.pdf
 ```
 
