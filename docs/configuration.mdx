@@ -135,13 +135,13 @@ PDF files.
 
 Currently, Gotenberg supports the following PDF engines:
 
-| Engine                                       | Merge | Split | Convert into PDF/A & PDF/UA | Read/Write metadata | Name                  |
-|----------------------------------------------|-------|-------|-----------------------------|---------------------|-----------------------|
-| [ExifTool](https://exiftool.org/)            | ❌     | ❌     | ❌                           | ✅                   | exiftool              |
-| [PDFtk](https://gitlab.com/pdftk-java/pdftk) | ✅     | ✅     | ❌                           | ❌                   | pdtk                  |
-| [pdfcpu](https://github.com/pdfcpu/pdfcpu)   | ✅     | ✅     | ❌                           | ❌                   | pdfcpu                |
-| [QPDF](https://github.com/qpdf/qpdf)         | ✅     | ✅     | ❌                           | ❌                   | qpdf                  |
-| [UNO](https://github.com/unoconv/unoconv)    | ❌     | ❌     | ✅                           | ❌                   | libreoffice-pdfengine |
+| Engine                                       | Merge | Split | Flatten | Convert into PDF/A & PDF/UA | Read/Write metadata | Name                  |
+|----------------------------------------------|-------|-------|---------|-----------------------------|---------------------|-----------------------|
+| [ExifTool](https://exiftool.org/)            | ❌     | ❌     | ❌       | ❌                           | ✅                   | exiftool              |
+| [PDFtk](https://gitlab.com/pdftk-java/pdftk) | ✅     | ✅     | ❌       | ❌                           | ❌                   | pdtk                  |
+| [pdfcpu](https://github.com/pdfcpu/pdfcpu)   | ✅     | ✅     | ❌       | ❌                           | ❌                   | pdfcpu                |
+| [QPDF](https://github.com/qpdf/qpdf)         | ✅     | ✅     | ✅       | ❌                           | ❌                   | qpdf                  |
+| [UNO](https://github.com/unoconv/unoconv)    | ❌     | ❌     | ❌       | ✅                           | ❌                   | libreoffice-pdfengine |
 
 :::info
 
@@ -155,6 +155,7 @@ The following flags allow you to configure the PDF Engines module:
 |---------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|-----------------------|
 | <span class="badge badge--secondary">--pdfengines-merge-engines</span>          | Set the PDF engines and their order for the merge feature - empty means all.         | qpdf,pdfcpu,pdftk     |
 | <span class="badge badge--secondary">--pdfengines-split-engines</span>          | Set the PDF engines and their order for the split feature - empty means all.         | pdfcpu,qpdf,pdftk     |
+| <span class="badge badge--secondary">--pdfengines-flatten-engines</span>        | Set the PDF engines and their order for the flatten feature - empty means all.       | qpdf                  |
 | <span class="badge badge--secondary">--pdfengines-convert-engines</span>        | Set the PDF engines and their order for the convert feature - empty means all.       | libreoffice-pdfengine |
 | <span class="badge badge--secondary">--pdfengines-read-metadata-engines</span>  | Set the PDF engines and their order for the read metadata feature - empty means all. | exiftool              |
 | <span class="badge badge--secondary">--pdfengines-write-metadata-engines</span> | Set the PDF engines and their order for the read metadata feature - empty means all. | exiftool              |
