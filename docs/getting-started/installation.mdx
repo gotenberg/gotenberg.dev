@@ -66,7 +66,7 @@ The API will be available at [http://localhost:3000](http://localhost:3000).
 
 Incorporating Gotenberg into your Docker Compose services stack is as straightforward as:
 
-```yaml title="docker-compose.yml"
+```yaml title="compose.yaml"
 services:
   # Your other services.
 
@@ -86,7 +86,7 @@ This means your other services can interact with Gotenberg using [gotenberg:3000
 
 If you want to expose the API to your *localhost*, consider adding a `ports` section:
 
-```yaml title="docker-compose.yml"
+```yaml title="compose.yaml"
 services:
   # Your other services.
 
@@ -178,7 +178,7 @@ docker run --rm -p 3000:3000 gotenberg/gotenberg:8 gotenberg --my-module-propert
 
 Or with Docker Compose:
 
-```yaml title="docker-compose.yml"
+```yaml title="compose.yaml"
 services:
   # Your other services.
 
@@ -195,6 +195,28 @@ Do not redefine the Gotenberg Docker image default entrypoint, but override the 
 [issue](https://github.com/gotenberg/gotenberg/issues/480#issuecomment-1232064017) for more details.
 
 :::
+
+---
+
+Alternatively, you can set environment variables that directly correspond to the command-line flags.
+
+For example, with the Docker CLI:
+
+```
+docker run --rm -p 3000:3000 -e MY_MODULE_PROPERTY=foo gotenberg/gotenberg:8
+```
+
+Or with Docker Compose:
+
+```yaml title="compose.yaml"
+services:
+  # Your other services.
+
+  gotenberg:
+    image: gotenberg/gotenberg:8
+    environment:
+      MY_MODULE_PROPERTY: "foo"
+```
 
 ## What's next?
 
