@@ -146,7 +146,7 @@ function Async() {
             </p>
           </div>
           <div className="col col--6">
-            <CodeBlock className="bash" children={WebhookExample} />
+            <CodeBlock className="basg" children={WebhookExample} />
           </div>
         </div>
       </div>
@@ -232,6 +232,23 @@ function Sponsors() {
                 <img
                   src="https://github.com/gotenberg/gotenberg/assets/8983173/ccb60b48-a232-4d87-af51-390986fd0600"
                   alt="Zolsec Logo"
+                  width="429"
+                  height="210"
+                />
+              </a>
+            </p>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col">
+            <p className="text--center">
+              <a
+                href="https://pdfme.com?utm_source=gotenberg_github&utm_medium=website"
+                target="_blank"
+              >
+                <img
+                  src="https://github.com/user-attachments/assets/2a75dd40-ca18-4d34-acd5-5dd474595168"
+                  alt="pdfme Logo"
                   width="429"
                   height="210"
                 />

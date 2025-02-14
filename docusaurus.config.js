@@ -125,6 +125,10 @@ module.exports = {
               href: "https://zolsec.com/?utm_source=gotenberg_github&utm_medium=website",
             },
             {
+              label: "pdfme",
+              href: "https://pdfme.com?utm_source=gotenberg_github&utm_medium=website",
+            },
+            {
               label: "Become a sponsor",
               href: "https://github.com/sponsors/gulien",
             },
