@@ -4,7 +4,7 @@ const lightTheme = themes.github;
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
   title: "Gotenberg",
-  tagline: "A Docker-powered stateless API for PDF files",
+  tagline: "A containerized API for seamless PDF conversion",
   trailingSlash: false,
   url: "https://gotenberg.dev",
   baseUrl: "/",

@@ -7,8 +7,9 @@ import Highlights from "../components/Highlights";
 
 export default function Home() {
   const { siteConfig } = useDocusaurusContext();
+
   return (
-    <Layout title={siteConfig.title} description={siteConfig.tagLine}>
+    <Layout title={siteConfig.tagline} description={siteConfig.tagline}>
       <Hero />
       <main>
         <Pulls />
