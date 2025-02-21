@@ -11,7 +11,8 @@ export default function Hero() {
         <div className="row">
           <div className="col col--6">
             <h1>
-              A containerized API for seamless<br />
+              A containerized API for seamless
+              <br />
               <span className="highlight">PDF conversion</span>
             </h1>
             <Link
