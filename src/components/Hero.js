@@ -11,8 +11,8 @@ export default function Hero() {
         <div className="row">
           <div className="col col--6">
             <h1>
-              A Docker-powered stateless API <br />
-              <span className="highlight">for PDF files</span>
+              A containerized API for seamless<br />
+              <span className="highlight">PDF conversion</span>
             </h1>
             <Link
               className={clsx(
