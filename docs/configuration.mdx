@@ -12,8 +12,8 @@ To set one or more flags, it's necessary to override the Docker image's default 
 
 For example, with the Docker CLI:
 
-```
-docker run --rm -p 3000:3000 gotenberg/gotenberg:8 gotenberg --my-module-property=foo
+```bash
+docker run --rm -p "3000:3000" gotenberg/gotenberg:8 gotenberg --my-module-property=foo
 ```
 
 Or with Docker Compose:
@@ -42,8 +42,8 @@ Alternatively, you can set environment variables that directly correspond to the
 
 For example, with the Docker CLI:
 
-```
-docker run --rm -p 3000:3000 -e MY_MODULE_PROPERTY=foo gotenberg/gotenberg:8
+```bash
+docker run --rm -p "3000:3000" -e MY_MODULE_PROPERTY=foo gotenberg/gotenberg:8
 ```
 
 Or with Docker Compose:

@@ -40,17 +40,17 @@ const ModuleList = [
   {
     label: "Chromium",
     value: "chromium",
-    content: <CodeBlock className="bash" children={ChromiumExample} />,
+    content: <CodeBlock language="bash" children={ChromiumExample} />,
   },
   {
     label: "LibreOffice",
     value: "libreoffice",
-    content: <CodeBlock className="bash" children={LibreOfficeExample} />,
+    content: <CodeBlock language="bash" children={LibreOfficeExample} />,
   },
   {
     label: "PDF Engines",
     value: "pdfengines",
-    content: <CodeBlock className="bash" children={PDFEnginesExample} />,
+    content: <CodeBlock language="bash" children={PDFEnginesExample} />,
   },
   {
     label: "...",
@@ -146,7 +146,7 @@ function Async() {
             </p>
           </div>
           <div className="col col--6">
-            <CodeBlock className="basg" children={WebhookExample} />
+            <CodeBlock language="bash" children={WebhookExample} />
           </div>
         </div>
       </div>
@@ -155,7 +155,7 @@ function Async() {
 }
 
 const RunExample = `
-docker run --rm -p 80:80 gotenberg/gotenberg:8 gotenberg --api-port=80 --api-timeout=10s --libreoffice-disable-routes --log-level=debug
+docker run --rm -p "80:80" gotenberg/gotenberg:8 gotenberg --api-port=80 --api-timeout=10s --libreoffice-disable-routes --log-level=debug
 `;
 
 function Platform() {
@@ -176,7 +176,7 @@ function Platform() {
                 Gotenberg is a platform composed of modules; each module has
                 properties you may customize to your flavor.
               </p>
-              <CodeBlock children={RunExample} />
+              <CodeBlock language="bash" children={RunExample} />
             </div>
           </div>
         </div>

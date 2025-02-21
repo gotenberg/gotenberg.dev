@@ -46,14 +46,14 @@ At present, the restrictions are:
 
 To start a default Docker container of Gotenberg, run:
 
-```
-docker run --rm -p 3000:3000 gotenberg/gotenberg:8
+```bash
+docker run --rm -p "3000:3000" gotenberg/gotenberg:8
 ```
 
 Alternatively, using the historic Docker repository from our sponsor [TheCodingMachine](https://www.thecodingmachine.com):
 
-```
-docker run --rm -p 3000:3000 thecodingmachine/gotenberg:8
+```bash
+docker run --rm -p "3000:3000" thecodingmachine/gotenberg:8
 ```
 
 :::info
@@ -139,7 +139,7 @@ thecodingmachine/gotenberg:8-cloudrun
 
 Using the Google Cloud CLI:
 
-```
+```bash
 gcloud run deploy {deployment_name} \
 --memory=1Gi \
 --image=gotenberg/gotenberg:8-cloudrun \
