@@ -3,105 +3,72 @@ id: troubleshooting
 title: Troubleshooting
 ---
 
-This page comprises a selection of frequently encountered problems and their corresponding solutions associated with
-Gotenberg. Given the wide array of tools integrated within Gotenberg, it can sometimes be challenging to pinpoint the
-root of an issue.
+If you encounter an issue not covered here, please:
 
-However, should you encounter an issue not addressed here, kindly take the following steps:
+1. Check if it's already been reported on the [GitHub issues](https://github.com/gotenberg/gotenberg/issues) or [GitHub discussions](https://github.com/gotenberg/gotenberg/discussions).
+2. Open a new issue or start a discussion if needed.
 
-1. Verify whether your issue has already been discussed or identified within the [GitHub issues](https://github.com/gotenberg/gotenberg/issues)
-or the [GitHub discussions](https://github.com/gotenberg/gotenberg/discussions).
-2. If it hasn't been addressed, feel free to open a new issue or initiate a discussion, based on the nature of your
-predicament.
+---
 
 ## Chromium
 
-Gotenberg internally employs the same protocol as [Puppeteer](https://pptr.dev/) for communication with Chromium.
-Therefore, it may be useful to include "puppeteer" as a keyword when searching for solutions to your issue. More often
-than not, you're likely to find an answer to your problem.
+### Large PDF File Size
 
-### Large PDF Files Size
-
-The usage of webfonts tends to considerably enlarge the PDF file size. If you wish to use a custom font, please refer
-to the [fonts configuration section](configuration#fonts) to learn how to install them directly into the Docker container.
-
-For additional details, see issue [#521](https://github.com/gotenberg/gotenberg/issues/521).
+* Webfonts can significantly increase PDF sizes. For custom fonts, refer to the
+[fonts configuration section](configuration#fonts) ([Issue #521](https://github.com/gotenberg/gotenberg/issues/521)).
+* A bug in Chromium seems to duplicate images ([Issue #1077](https://github.com/gotenberg/gotenberg/issues/1077)).
 
 ### Trouble Starting
 
-Startup failures can happen due to several factors. Here are some known solutions:
-
-* Increase the start timeout. See the [Chromium module configuration](configuration#chromium) for guidance.
-* If you're using macOS, consider disabling the *Use Virtualization Framework* feature. For additional details, see issue
-[#792](https://github.com/gotenberg/gotenberg/issues/792).
+* Increase the startup timeout (see [Chromium module configuration](configuration#chromium)).
+* On macOS, consider disabling the *Use Virtualization Framework* ([Issue #792](https://github.com/gotenberg/gotenberg/issues/792)).
 
 ### Printing Failed (-32000)
 
-When converting large documents, this error may appear in your logs. Increasing Gotenberg's memory allocation is a
-commonly suggested solution, but it may not be enough. This is a [known bug](https://issues.chromium.org/issues/40842550) in Chromium.
-
-For additional details, refer to issue [#788](https://github.com/gotenberg/gotenberg/issues/788).
-
-Large header and/or footer may also be the root cause of this error.
+* This error may occur when converting large documents. Increasing memory might help, but note that it's a known
+[Chromium bug](https://issues.chromium.org/issues/40842550) ([Issue #788](https://github.com/gotenberg/gotenberg/issues/788)).
+* Also, large headers or footers can cause this error.
 
 ### Blank PDFs
 
-Before Gotenberg *8.11.0*, the `skipNetworkIdleEvent` form field defaulted to *false*.
-Now, by default, Gotenberg skips waiting for the network idle event, which speeds up the conversion process.
-However, if you have upgraded to a newer version and are experiencing blank PDFs, set this field to *false*.
+* For versions after *8.11.0*, set the `skipNetworkIdleEvent` field to *false*.
+* Consider upgrading to latest version to benefit from features like [Network Errors](routes#network-errors-chromium) or
+[Invalid HTTP Status Codes](routes#invalid-http-status-codes-chromium).
 
 ### Screenshots Repeated and Clipped
 
-Set the `skipNetworkIdleEvent` form field to *false*. See issue [#1065](https://github.com/gotenberg/gotenberg/issues/1065#issuecomment-2670882337).
+* Set the `skipNetworkIdleEvent` field to *false* to resolve this issue
+([Issue #1065](https://github.com/gotenberg/gotenberg/issues/1065#issuecomment-2670882337)).
 
-### Dealing with Timeouts {#timeouts-chromium}
+### Timeouts (503 Service Unavailable)
 
-If you are experiencing timeouts (i.e., *503 Service Unavailable*), consider the following steps to troubleshoot your issue:
+* Check if your Gotenberg instance is overloaded; add more instances if needed.
+* Ensure the target page’s resources are accessible.
+* Increase the API timeout ([API module configuration](configuration#api)).
+* Optionally, define a maximum queue size for faster request aborts ([Chromium module configuration](configuration#chromium)).
 
-1. Assess whether your Gotenberg instance is overloaded. If this is the case, consider increasing the number of instances.
-2. Ensure that the page you are attempting to convert doesn't require resources inaccessible from the Gotenberg instance.
-3. Consider increasing the API timeout. See the [API module configuration](configuration#api) for guidance.
-4. Optionally, consider defining a maximum queue size to abort requests sooner. Refer to the [Chromium module configuration](configuration#chromium) for guidance.
+---
 
 ## LibreOffice
 
 ### PDF/A-1a
 
-Beginning with version 7.6, LibreOffice has discontinued support for `PDF/A-1a`.
+* Starting with version 7.6, LibreOffice no longer supports *PDF/A-1a*. It previously generated *PDF/A-1b* files, though
+some validators misidentified them ([LibreOffice commit](https://git.libreoffice.org/core/+/c4b12d06698402984b3ffdbd2c139f261fa35ca1%5E%21)).
 
-Previously, LibreOffice claimed to generate `PDF/A-1a` files, a claim that held true for straightforward documents.
-However, in many instances, the software was actually producing `PDF/A-1b` files.
+### Internal Server Error (500)
 
-Due to specific metadata, some validators incorrectly identified these documents as compliant with `PDF/A-1a` standards,
-despite this not being the case.
-
-For additional details, refer to this LibreOffice [commit](https://git.libreoffice.org/core/+/c4b12d06698402984b3ffdbd2c139f261fa35ca1%5E%21).
-
-### Internal Server Error
-
-If you consistently encounter a *500 Internal Server Error* while attempting to convert an Office document, a common
-solution is to boost the memory and CPU resources allocated to Gotenberg.
-
-For additional details, refer to issue [#465](https://github.com/gotenberg/gotenberg/issues/465).
+* Try increasing Gotenberg’s memory and CPU resources ([Issue #465](https://github.com/gotenberg/gotenberg/issues/465)).
 
 ### Trouble Starting
 
-Startup failures can happen due to several factors. Here are some known solutions:
+* Increase the startup timeout ([LibreOffice module configuration](configuration#libreoffice)).
+* Debian users should use a current version of the distribution ([Issue #794](https://github.com/gotenberg/gotenberg/issues/794)).
+* For Synology and Paperless-ngx, consult [this configuration comment](https://github.com/gotenberg/gotenberg/issues/763#issuecomment-1890472047).
 
-* Increase the start timeout. See the [LibreOffice module configuration](configuration#libreoffice) for guidance.
-* For Debian users, it's recommended to use a current version of the distribution. For more information, refer to issue [#794](https://github.com/gotenberg/gotenberg/issues/794).
-* Users of Synology and Paperless-ngx should consult [this comment](https://github.com/gotenberg/gotenberg/issues/763#issuecomment-1890472047)
-for a proven configuration setup.
+### Timeouts (503 Service Unavailable)
 
-### Dealing with Timeouts {#timeouts-libreoffice}
-
-If you are experiencing timeouts (i.e., *503 Service Unavailable*), consider the following steps to resolve your issue:
-
-1. Check if your Gotenberg instance is overloaded. If so, consider increasing the number of instances or enhancing the
-memory and CPU resources allocated to Gotenberg.
-2. Consider increasing the API timeout. Refer to the [API module configuration](configuration#api) for guidance.
-3. Consider increasing the LibreOffice instance startup timeout. Refer to the
-[LibreOffice module configuration](configuration#libreoffice) for guidance.
-4. Optionally, consider defining a maximum queue size to abort requests sooner. Refer to the
-[LibreOffice module configuration](configuration#libreoffice) for guidance.
-
+* Check if your instance is overloaded; consider increasing instances or resource allocation.
+* Increase the API timeout ([API module configuration](configuration#api)).
+* Increase the LibreOffice startup timeout ([LibreOffice module configuration](configuration#libreoffice)).
+* Optionally, set a maximum queue size for quicker request aborts ([LibreOffice module configuration](configuration#libreoffice)).
