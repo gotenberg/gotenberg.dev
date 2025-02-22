@@ -6,9 +6,9 @@ title: Webhook
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The webhook feature enables Gotenberg to upload the output file originating from *multipart/form-data* routes to a
-selected destination. Upon employing the webhook feature, the API promptly returns a *204 No Content response*, and the
-entire process is carried out asynchronously.
+The webhook feature lets Gotenberg asynchronously upload output files from *multipart/form-data* routes to a specified destination.
+The API immediately returns a *204 No Content* response while the upload continues in the background.
+
 
 It uses the following HTTP headers:
 
