@@ -11,7 +11,7 @@
 
 
 <link rel="search" type="application/opensearchdescription+xml" title="Gotenberg" href="/opensearch.xml"><link rel="stylesheet" href="/assets/css/styles.b284254a.css">
-<script src="/assets/js/runtime~main.dce782d0.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.a494154f.js" defer="defer"></script>
 <script src="/assets/js/main.0c7c9977.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -68,7 +68,7 @@ This means your other services can interact with Gotenberg using <a href="http:/
 <li>At least <code>1Gi</code> of memory is required for a <a href="https://github.com/gotenberg/gotenberg/issues/950#issuecomment-2329228662" target="_blank" rel="noopener noreferrer">smooth experience</a>.</li>
 <li>By default, requests are sent to port <em>8080</em>, but you can configure Cloud Run to send requests to the port of your choice.
 Cloud Run injects the <code>PORT</code> environment variable into the ingress container.</li>
-<li>Map the log level with its corresponding severity in Cloud run.</li>
+<li>Map the log level with its corresponding severity in Cloud Run.</li>
 <li>The webhook feature does not work properly, as Cloud Run may stop the container if there is no HTTP activity, regardless
 of the asynchronous processes.</li>
 <li>Enabling Chromium and/or LibreOffice auto-start improves the readiness of Gotenberg in a serverless context.</li>
