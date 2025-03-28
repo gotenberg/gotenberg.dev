@@ -11,7 +11,7 @@
 
 
 <link rel="search" type="application/opensearchdescription+xml" title="Gotenberg" href="/opensearch.xml"><link rel="stylesheet" href="/assets/css/styles.b284254a.css">
-<script src="/assets/js/runtime~main.a494154f.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.020e3c50.js" defer="defer"></script>
 <script src="/assets/js/main.0c7c9977.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -85,7 +85,8 @@ selected destination.</p>
 <p>Gotenberg employs a logger that generates structured logs. Structured logs are formatted in a standardized,
 machine-readable way, making them extremely beneficial for centralized log management.</p>
 <p>The following flags allow you to configure the logger:</p>
-<table><thead><tr><th>Flag</th><th>Description</th><th>Default</th></tr></thead><tbody><tr><td><span class="badge badge--secondary">--log-format</span></td><td>Specify the format of logging. Options include auto, json, or text.</td><td>auto</td></tr><tr><td><span class="badge badge--secondary">--log-level</span></td><td>Choose the level of logging detail. Options include error, warn, info, or debug.</td><td>info</td></tr><tr><td><span class="badge badge--secondary">--log-fields-prefix</span></td><td>Prepend a specified prefix to each field in the logs.</td><td>None</td></tr><tr><td><span class="badge badge--secondary">--log-enable-gcp-severity</span></td><td>Enable Google Cloud Platform severity mapping.</td><td>None</td></tr></tbody></table>
+<table><thead><tr><th>Flag</th><th>Description</th><th>Default</th></tr></thead><tbody><tr><td><span class="badge badge--secondary">--log-format</span></td><td>Specify the format of logging. Options include auto, json, or text.</td><td>auto</td></tr><tr><td><span class="badge badge--secondary">--log-level</span></td><td>Choose the level of logging detail. Options include error, warn, info, or debug.</td><td>info</td></tr><tr><td><span class="badge badge--secondary">--log-fields-prefix</span></td><td>Prepend a specified prefix to each field in the logs.</td><td>None</td></tr><tr><td><span class="badge badge--secondary">--log-enable-gcp-severity</span></td><td>Enable Google Cloud Platform fields - namely: time, message, severity.</td><td>None</td></tr></tbody></table>
+<div class="theme-admonition theme-admonition-warning admonition_xJq3 alert alert--warning"><div class="admonitionHeading_Gvgb"><span class="admonitionIcon_Rf37"><svg viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 0 0 0 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 0 0 .01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"></path></svg></span>warning</div><div class="admonitionContent_BuS1"><p>As of Gotenberg <em>8.19.0</em>, the flag <code>--log-enable-gcp-severity</code> has been deprecated in favor of <code>--log-enable-gcp-fields</code>.</p></div></div>
 <h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="graceful-shutdown">Graceful Shutdown<a href="#graceful-shutdown" class="hash-link" aria-label="Direct link to Graceful Shutdown" title="Direct link to Graceful Shutdown">​</a></h2>
 <p>To ensure running tasks have sufficient time to complete, Gotenberg waits for a specific duration before initiating the
 shutdown process.</p>
