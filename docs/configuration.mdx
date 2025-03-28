@@ -263,7 +263,13 @@ The following flags allow you to configure the logger:
 | <span class="badge badge--secondary">--log-format</span>              | Specify the format of logging. Options include auto, json, or text.              | auto    |
 | <span class="badge badge--secondary">--log-level</span>               | Choose the level of logging detail. Options include error, warn, info, or debug. | info    |
 | <span class="badge badge--secondary">--log-fields-prefix</span>       | Prepend a specified prefix to each field in the logs.                            | None    |
-| <span class="badge badge--secondary">--log-enable-gcp-severity</span> | Enable Google Cloud Platform severity mapping.                                   | None    |
+| <span class="badge badge--secondary">--log-enable-gcp-severity</span> | Enable Google Cloud Platform fields - namely: time, message, severity.           | None    |
+
+:::warning
+
+As of Gotenberg *8.19.0*, the flag `--log-enable-gcp-severity` has been deprecated in favor of `--log-enable-gcp-fields`.
+
+:::
 
 ## Graceful Shutdown
 
