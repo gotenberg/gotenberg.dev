@@ -144,6 +144,7 @@ gcloud run deploy {deployment_name} \
 --memory=1Gi \
 --image=gotenberg/gotenberg:8-cloudrun \
 --args=gotenberg \
+--args="--gotenberg-build-debug-data=false"
 --args="--api-port-from-env=PORT" \
 --args="--log-enable-gcp-fields=true" \
 --args="--webhook-disable=true" \
@@ -152,6 +153,7 @@ gcloud run deploy {deployment_name} \
 ```
 
 * At least `1Gi` of memory is required for a [smooth experience](https://github.com/gotenberg/gotenberg/issues/950#issuecomment-2329228662).
+* Not building the debug data can drastically decrease startup time.
 * By default, requests are sent to port *8080*, but you can configure Cloud Run to send requests to the port of your choice.
 Cloud Run injects the `PORT` environment variable into the ingress container.
 * Log using fields supported by Cloud Run.
