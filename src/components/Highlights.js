@@ -260,7 +260,7 @@ function Sponsors() {
           <div className="col">
             <div className="text--right">
               <p className={styles.wantMore}>
-                Sponsorships help maintaining and improving Gotenberg -{" "}
+                Sponsorships help maintain and improve Gotenberg -{" "}
                 <a href="https://github.com/sponsors/gulien" target="_blank">
                   become a sponsor
                 </a>{" "}
