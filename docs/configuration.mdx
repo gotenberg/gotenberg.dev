@@ -273,7 +273,7 @@ As of Gotenberg *8.19.0*, the flag `--log-enable-gcp-severity` has been deprecat
 
 ## Graceful Shutdown
 
-To ensure running tasks have sufficient time to complete, Gotenberg waits for a specific duration before initiating the
+To ensure running tasks have enough time to complete, Gotenberg waits for a specific duration before initiating the
 shutdown process.
 
 The following flag allows you to configure this duration:
@@ -284,8 +284,9 @@ The following flag allows you to configure this duration:
 
 :::info
 
-When using the [webhook feature](webhook), ensure that this duration is equal to or longer than the API timeout period.
-This way, you can confirm that all asynchronous processes complete before Gotenberg begins its shutdown sequence.
+For Gotenberg versions prior to *8.21.0*, when using the [webhook feature](webhook), make sure this duration is equal to
+or longer than the API timeout. This ensures that all asynchronous processes finish before Gotenberg begins its shutdown
+sequence.
 
 :::
 
