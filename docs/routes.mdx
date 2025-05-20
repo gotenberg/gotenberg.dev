@@ -433,6 +433,7 @@ Each route accepts the following form fields:
 | marginRight             | Specify right margin using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.     | 0.39      |
 | preferCssPageSize       | Define whether to prefer page size as defined by CSS.                                                                     | false     |
 | generateDocumentOutline | Define whether the document outline should be embedded into the PDF.                                                      | false     |
+| generateTaggedPdf       | Define whether to generate tagged (accessible) PDF.                                                                       | false     |
 | printBackground         | Print the background graphics.                                                                                            | false     |
 | omitBackground          | Hide the default white background and allow generating PDFs with transparency.                                            | false     |
 | landscape               | Set the paper orientation to landscape.                                                                                   | false     |
@@ -1055,6 +1056,13 @@ Each route accepts the following form fields:
 |-------|------------------------------------------------------------|---------|
 | pdfa  | Convert the resulting PDF into the given PDF/A format.     | None    |
 | pdfua | Enable PDF for Universal Access for optimal accessibility. | false   |
+
+:::info
+
+As of Gotenberg *8.21.0*, using the `generateTaggedPdf` form field may yield better results if you're prioritizing
+accessibility over strict (and sometimes hacky) PDF/UA compliance.
+
+:::
 
 At present, the following PDF/A formats are available:
 
