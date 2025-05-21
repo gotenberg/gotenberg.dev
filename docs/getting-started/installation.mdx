@@ -104,21 +104,23 @@ The API will be available at [http://localhost:3000](http://localhost:3000).
 
 ## Kubernetes
 
-The Docker image employs a specific non-root user, named *gotenberg*, with a User ID (uid) and Group ID (gid) of **1001**.
+The Docker image runs as a non-root user named *gotenberg*, with a user ID (UID) and group ID (GID) of **1001**.
 
-When detailing the pod's deployment specification, remember to include:
+It also supports [arbitrary user IDs](https://docs.redhat.com/en/documentation/openshift_container_platform/4.15/html/images/creating-images#enable-images-for-source-to-image_create-images).
+
+When defining the pod’s deployment spec, make sure to include the following:
 
 ```yaml
 securityContext:
   readOnlyRootFilesystem: false
   allowPrivilegeEscalation: false
   privileged: false
-  runAsUser: 1001
+  runAsUser: 1001 # unless using an arbitrarily assigned user ID.
 ```
 
-Other than that, ensure to allocate sufficient memory and CPU resources (at least 512Mi for memory and 0.2 for CPU).
+Additionally, ensure the container has adequate resource allocations — at least 512Mi of memory and 0.2 CPU.
 
-A community Helm chart is also available at [MaikuMori/helm-charts](https://github.com/MaikuMori/helm-charts) and on
+A community-maintained Helm chart is also available at [MaikuMori/helm-charts](https://github.com/MaikuMori/helm-charts) and on
 [ArtifactHub](https://artifacthub.io/packages/helm/maikumori/gotenberg).
 
 ## Cloud Run

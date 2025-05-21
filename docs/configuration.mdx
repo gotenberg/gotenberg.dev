@@ -338,12 +338,8 @@ USER gotenberg
 
 ---
 
-:::info
-
 You could also mount a volume containing your fonts to */usr/local/share/fonts/* as suggested in this
 [comment](https://github.com/gotenberg/gotenberg/issues/602#issue-1580360200).
-
-:::
 
 ### Ownership
 
@@ -359,3 +355,9 @@ RUN usermod -u {uid} -g {gid} gotenberg
 
 USER gotenberg
 ```
+
+:::info
+
+The Docker image also supports [arbitrary user IDs](https://docs.redhat.com/en/documentation/openshift_container_platform/4.15/html/images/creating-images#enable-images-for-source-to-image_create-images).
+
+:::
