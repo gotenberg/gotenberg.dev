@@ -1130,6 +1130,33 @@ curl \
 </TabItem>
 </Tabs>
 
+### Flatten {#flatten-chromium}
+
+Each route accepts the following form field:
+
+| Key     | Description                | Default |
+|---------|----------------------------|---------|
+| flatten | Flatten the resulting PDF. | false   |
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {4}
+curl \
+--request POST http://localhost:3000/forms/chromium/convert \
+--form url=https://my.url \
+--form flatten=true \
+-o my.pdf
+```
+
+</TabItem>
+</Tabs>
+
 ### Screenshots <span class="badge badge--secondary">route</span>
 
 You can capture screenshots using the following three routes, which function similarly to their PDF equivalents:
