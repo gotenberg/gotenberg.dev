@@ -106,7 +106,11 @@ The API will be available at [http://localhost:3000](http://localhost:3000).
 
 The Docker image runs as a non-root user named *gotenberg*, with a user ID (UID) and group ID (GID) of **1001**.
 
-It also supports [arbitrary user IDs](https://docs.redhat.com/en/documentation/openshift_container_platform/4.15/html/images/creating-images#enable-images-for-source-to-image_create-images).
+:::info
+
+Since Gotenberg *8.21.0*, the image also supports [arbitrary user IDs (OpenShift)](https://docs.redhat.com/en/documentation/openshift_container_platform/4.15/html/images/creating-images#enable-images-for-source-to-image_create-images).
+
+:::
 
 When defining the pod’s deployment spec, make sure to include the following:
 
