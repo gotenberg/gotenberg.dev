@@ -121,10 +121,6 @@ module.exports = {
               href: "https://www.thecodingmachine.com",
             },
             {
-              label: "Zolsec",
-              href: "https://zolsec.com/?utm_source=gotenberg_github&utm_medium=website",
-            },
-            {
               label: "pdfme",
               href: "https://pdfme.com?utm_source=gotenberg_github&utm_medium=website",
             },

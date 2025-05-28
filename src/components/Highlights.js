@@ -226,12 +226,12 @@ function Sponsors() {
                 />
               </a>
               <a
-                href="https://zolsec.com?utm_source=gotenberg_github&utm_medium=website"
+                href="https://pdfme.com?utm_source=gotenberg_github&utm_medium=website"
                 target="_blank"
               >
                 <img
-                  src="https://github.com/gotenberg/gotenberg/assets/8983173/ccb60b48-a232-4d87-af51-390986fd0600"
-                  alt="Zolsec Logo"
+                  src="https://github.com/user-attachments/assets/2a75dd40-ca18-4d34-acd5-5dd474595168"
+                  alt="pdfme Logo"
                   width="429"
                   height="210"
                 />
@@ -239,7 +239,7 @@ function Sponsors() {
             </p>
           </div>
         </div>
-        <div className="row">
+        {/* <div className="row">
           <div className="col">
             <p className="text--center">
               <a
@@ -255,7 +255,7 @@ function Sponsors() {
               </a>
             </p>
           </div>
-        </div>
+        </div>*/}
         <div className="row">
           <div className="col">
             <div className="text--right">
