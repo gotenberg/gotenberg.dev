@@ -62,6 +62,16 @@ The API will be available at [http://localhost:3000](http://localhost:3000).
 
 :::
 
+:::caution
+
+Publishing container ports is insecure by default: When you publish a container port it becomes reachable from outside the Docker host and it might be reachable from the public even if your host has a firewall like UFW set up! See the docker docs here: [Published ports](https://docs.docker.com/engine/network/#published-ports).
+
+To restrict access to the host only (for example when using gotenberg internally or behind a reverse proxy), binding to the loopback address might be a better option:
+
+```bash
+docker run --rm -p "127.0.0.1:3000:3000" gotenberg/gotenberg:8
+```
+
 ## Docker Compose
 
 Incorporating Gotenberg into your Docker Compose services stack is as straightforward as:
@@ -84,7 +94,7 @@ This means your other services can interact with Gotenberg using [gotenberg:3000
 
 ---
 
-If you want to expose the API to your *localhost*, consider adding a `ports` section:
+If you want to expose the API on your host, consider adding a `ports` section:
 
 ```yaml title="compose.yaml"
 services:
@@ -94,6 +104,8 @@ services:
     image: gotenberg/gotenberg:8
     ports:
       - "3000:3000"
+      # or the more secure version (see note above)
+      # - "127.0.0.1:3000:3000"
 ```
 
 :::info
