@@ -68,6 +68,8 @@ Publishing container ports is insecure by default. Meaning, when you publish a c
 
 If you include the localhost IP address (127.0.0.1, or ::1) with the publish flag, only the Docker host and its containers can access the published container port.
 
+:::
+
 ```bash
 docker run --rm -p "127.0.0.1:3000:3000" gotenberg/gotenberg:8
 ```
@@ -103,9 +105,7 @@ services:
   gotenberg:
     image: gotenberg/gotenberg:8
     ports:
-      - "3000:3000"
-      # or the more secure version (see note above)
-      # - "127.0.0.1:3000:3000"
+      - "127.0.0.1:3000:3000"
 ```
 
 :::info
