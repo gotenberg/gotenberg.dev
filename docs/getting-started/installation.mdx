@@ -105,7 +105,9 @@ services:
   gotenberg:
     image: gotenberg/gotenberg:8
     ports:
-      - "127.0.0.1:3000:3000"
+      - "3000:3000"
+     # Or more secure:
+     # - "127.0.0.1:3000:3000"
 ```
 
 :::info
