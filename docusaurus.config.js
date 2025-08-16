@@ -47,11 +47,6 @@ module.exports = {
           position: "right",
         },
         {
-          label: "Version 6.x",
-          to: "/docs/6.x/introduction",
-          position: "right",
-        },
-        {
           href: "https://github.com/gotenberg/gotenberg/discussions",
           label: "Help",
           position: "right",
@@ -85,10 +80,6 @@ module.exports = {
             {
               label: "Configuration",
               to: "/docs/configuration",
-            },
-            {
-              label: "Version 6.x",
-              to: "/docs/6.x/introduction",
             },
           ],
         },
@@ -162,11 +153,6 @@ module.exports = {
             current: {
               label: "8.x",
               path: "",
-            },
-            "6.x": {
-              label: "6.x",
-              path: "6.x",
-              banner: "unmaintained",
             },
           },
         },
