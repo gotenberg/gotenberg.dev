@@ -157,31 +157,16 @@ Alternatively, using the historic Docker repository from our sponsor [TheCodingM
 thecodingmachine/gotenberg:8-cloudrun
 ```
 
-Using the Google Cloud CLI:
+This image is preconfigured for Cloud Run:
 
-```bash
-gcloud run deploy {deployment_name} \
---memory=1Gi \
---image=gotenberg/gotenberg:8-cloudrun \
---args=gotenberg \
---args="--gotenberg-build-debug-data=false"
---args="--api-port-from-env=PORT" \
---args="--log-enable-gcp-fields=true" \
---args="--webhook-disable=true" \
---args="--chromium-auto-start=true" \
---args="--libreoffice-auto-start=true"
-```
+* Uses the `PORT` environment variable provided by Cloud Run.
+* Logs in a format compatible with Cloud Run.
+* Auto-starts Chromium and LibreOffice for faster readiness.
+* Uses synchronous webhook mode, since Cloud Run may stop the container if there’s no HTTP activity.
 
-* At least `1Gi` of memory is required for a [smooth experience](https://github.com/gotenberg/gotenberg/issues/950#issuecomment-2329228662).
-* Not building the debug data can drastically decrease startup time.
-* By default, requests are sent to port *8080*, but you can configure Cloud Run to send requests to the port of your choice.
-Cloud Run injects the `PORT` environment variable into the ingress container.
-* Log using fields supported by Cloud Run.
-* The webhook feature does not work properly, as Cloud Run may stop the container if there is no HTTP activity, regardless
-of the asynchronous processes.
-* Enabling Chromium and/or LibreOffice auto-start improves the readiness of Gotenberg in a serverless context.
+:::tip
 
-:::info
+At least `1Gi` of memory is required for a [smooth experience](https://github.com/gotenberg/gotenberg/issues/950#issuecomment-2329228662).
 
 Consider using HTTP/2 to bypass the [32MB request size limit](https://cloud.google.com/run/quotas?hl=en).
 
