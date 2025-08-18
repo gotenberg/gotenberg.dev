@@ -172,6 +172,28 @@ Consider using HTTP/2 to bypass the [32MB request size limit](https://cloud.goog
 
 :::
 
+## AWS Lambda
+
+If cost-efficiency is a priority, [AWS Lambda](https://docs.aws.amazon.com/lambda) can be a good option.
+
+We provide a dedicated Docker image tag, available on both `linux/amd64` and `linux/arm64` architecures:
+
+```
+gotenberg/gotenberg:8-aws-lambda
+```
+
+Alternatively, using the historic Docker repository from our sponsor [TheCodingMachine](https://www.thecodingmachine.com):
+
+```
+thecodingmachine/gotenberg:8-aws-lambda
+```
+
+This image is preconfigured for AWS Lambda:
+
+* Uses the `AWS_LWA_PORT` environment variable to configure its port.
+* Auto-starts Chromium and LibreOffice for faster readiness.
+* Uses synchronous webhook mode, since AWS may stop the container if there’s no HTTP activity.
+
 ## What's next?
 
 Now that you have Gotenberg up and running, you can start using it. Install a custom [client](clients) or
