@@ -321,7 +321,7 @@ It accepts the following specific form files:
 | *.md       | At least one markdown file.                    | <span class="badge badge--danger">required</span> |
 
 It works like the [HTML](#html) route but with access to a Go template function `toHTML`. This function converts a
-markdown file's content into HTML.
+markdown file's content into HTML (with [MathJaX](https://www.mathjax.org/) support).
 
 ```html {8}
 <!doctype html>
