@@ -64,25 +64,25 @@ The API module is an HTTP/1 and HTTP/2 (with H2C support) server.
 
 The following flags allow you to configure the API module:
 
-| Flag                                                                           | Description                                                                                                                                    | Default         |
-|--------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|
-| <span class="badge badge--secondary">--api-port</span>                         | Set the port on which the API should listen.                                                                                                   | 3000            |
-| <span class="badge badge--secondary">--api-port-from-env</span>                | Set the environment variable with the port on which the API should listen - override the default port.                                         | None            |
-| <span class="badge badge--secondary">--api-bind-ip</span>                      | Set the IP address the API should bind to for incoming connections.                                                                            | 0.0.0.0         |
-| <span class="badge badge--secondary">--api-tls-cert-file</span>                | Path to the TLS/SSL certificate file - for HTTPS support.                                                                                      | None            |
-| <span class="badge badge--secondary">--api-tls-key-file</span>                 | Path to the TLS/SSL key file - for HTTPS support.                                                                                              | None            |
-| <span class="badge badge--secondary">--api-start-timeout</span>                | Set the time limit for the API to start.                                                                                                       | 30s             |
-| <span class="badge badge--secondary">--api-timeout</span>                      | Set the time limit for requests.                                                                                                               | 30s             |
-| <span class="badge badge--secondary">--api-body-limit</span>                   | Set the body limit for multipart/form-data requests - it accepts values like 5MB, 1GB, etc.                                                    | None            |
-| <span class="badge badge--secondary">--api-root-path</span>                    | Set the root path of the API - for service discovery via URL paths                                                                             | /               |
-| <span class="badge badge--secondary">--api-trace-header</span>                 | Set the header name to use for identifying requests.                                                                                           | Gotenberg-Trace |
-| <span class="badge badge--secondary">--api-enable-basic-auth</span>            | Enable basic authentication - will look for the GOTENBERG_API_BASIC_AUTH_USERNAME and GOTENBERG_API_BASIC_AUTH_PASSWORD environment variables. | false           |
-| <span class="badge badge--secondary">--api-download-from-allow-list</span>     | Set the allowed URLs for the download from feature using a regular expression.                                                                 | All             |
-| <span class="badge badge--secondary">--api-download-from-deny-list</span>      | Set the denied URLs for the download from feature using a regular expression.                                                                  | None            |
-| <span class="badge badge--secondary">--api-download-from-max-retry</span>      | Set the maximum number of retries for the download from feature.                                                                               | 4               |
-| <span class="badge badge--secondary">--api-disable-download-from</span>        | Disable the download from feature.                                                                                                             | false           |
-| <span class="badge badge--secondary">--api-disable-health-check-logging</span> | Disable health check logging.                                                                                                                  | false           |
-| <span class="badge badge--secondary">--api-enable-debug-route</span>           | Enable debug route.                                                                                                                            | false           |
+| Flag                                                                           | Environment variable                                                         | Description                                                                                                                                    | Default         |
+|--------------------------------------------------------------------------------|------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|
+| <span class="badge badge--secondary">--api-port</span>                         | <span class="badge badge--secondary">API_PORT</span>                         | Set the port on which the API should listen.                                                                                                   | 3000            |
+| <span class="badge badge--secondary">--api-port-from-env</span>                | <span class="badge badge--secondary">API_PORT_FROM_ENV</span>                | Set the environment variable with the port on which the API should listen - override the default port.                                         | None            |
+| <span class="badge badge--secondary">--api-bind-ip</span>                      | <span class="badge badge--secondary">API_BIND_IP</span>                      | Set the IP address the API should bind to for incoming connections.                                                                            | 0.0.0.0         |
+| <span class="badge badge--secondary">--api-tls-cert-file</span>                | <span class="badge badge--secondary">API_TLS_CERT_FILE</span>                | Path to the TLS/SSL certificate file - for HTTPS support.                                                                                      | None            |
+| <span class="badge badge--secondary">--api-tls-key-file</span>                 | <span class="badge badge--secondary">API_TLS_KEY_FILE</span>                 | Path to the TLS/SSL key file - for HTTPS support.                                                                                              | None            |
+| <span class="badge badge--secondary">--api-start-timeout</span>                | <span class="badge badge--secondary">API_START_TIMEOUT</span>                | Set the time limit for the API to start.                                                                                                       | 30s             |
+| <span class="badge badge--secondary">--api-timeout</span>                      | <span class="badge badge--secondary">API_TIMEOUT</span>                      | Set the time limit for requests.                                                                                                               | 30s             |
+| <span class="badge badge--secondary">--api-body-limit</span>                   | <span class="badge badge--secondary">API_BODY_LIMIT</span>                   | Set the body limit for multipart/form-data requests - it accepts values like 5MB, 1GB, etc.                                                    | None            |
+| <span class="badge badge--secondary">--api-root-path</span>                    | <span class="badge badge--secondary">API_ROOT_PATH</span>                    | Set the root path of the API - for service discovery via URL paths                                                                             | /               |
+| <span class="badge badge--secondary">--api-trace-header</span>                 | <span class="badge badge--secondary">API_TRACE_HEADER</span>                 | Set the header name to use for identifying requests.                                                                                           | Gotenberg-Trace |
+| <span class="badge badge--secondary">--api-enable-basic-auth</span>            | <span class="badge badge--secondary">API_ENABLE_BASIC_AUTH</span>            | Enable basic authentication - will look for the GOTENBERG_API_BASIC_AUTH_USERNAME and GOTENBERG_API_BASIC_AUTH_PASSWORD environment variables. | false           |
+| <span class="badge badge--secondary">--api-download-from-allow-list</span>     | <span class="badge badge--secondary">API_DOWNLOAD_FROM_ALLOW_LIST</span>     | Set the allowed URLs for the download from feature using a regular expression.                                                                 | All             |
+| <span class="badge badge--secondary">--api-download-from-deny-list</span>      | <span class="badge badge--secondary">API_DOWNLOAD_FROM_DENY_LIST</span>      | Set the denied URLs for the download from feature using a regular expression.                                                                  | None            |
+| <span class="badge badge--secondary">--api-download-from-max-retry</span>      | <span class="badge badge--secondary">API_DOWNLOAD_FROM_MAX_RETRY</span>      | Set the maximum number of retries for the download from feature.                                                                               | 4               |
+| <span class="badge badge--secondary">--api-disable-download-from</span>        | <span class="badge badge--secondary">API_DISABLE_DOWNLOAD_FROM</span>        | Disable the download from feature.                                                                                                             | false           |
+| <span class="badge badge--secondary">--api-disable-health-check-logging</span> | <span class="badge badge--secondary">API_DISABLE_HEALTH_CHECK_LOGGING</span> | Disable health check logging.                                                                                                                  | false           |
+| <span class="badge badge--secondary">--api-enable-debug-route</span>           | <span class="badge badge--secondary">API_ENABLE_DEBUG_ROUTE</span>           | Enable debug route.                                                                                                                            | false           |
 
 ## Chromium
 
@@ -105,25 +105,25 @@ Now all architectures use Chromium.
 
 The following flags allow you to configure the Chromium module:
 
-| Flag                                                                                | Description                                                                                                                           | Default                                 |
-|-------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------|
-| <span class="badge badge--secondary">--chromium-restart-after</span>                | Number of conversions after which Chromium will automatically restart. Set to 0 to disable this feature.                              | 10<span style={{color: 'red'}}>*</span> |
-| <span class="badge badge--secondary">--chromium-max-queue-size</span>               | Maximum request queue size for Chromium. Set to 0 to disable this feature.                                                            | 0                                       |
-| <span class="badge badge--secondary">--chromium-auto-start</span>                   | Automatically launch Chromium upon initialization if set to true; otherwise, Chromium will start at the time of the first conversion. | false                                   |
-| <span class="badge badge--secondary">--chromium-start-timeout</span>                | Maximum duration to wait for Chromium to start or restart.                                                                            | 20s                                     |
-| <span class="badge badge--secondary">--chromium-allow-file-access-from-files</span> | Allow file:// URIs to read other file:// URIs.                                                                                        | false                                   |
-| <span class="badge badge--secondary">--chromium-allow-insecure-localhost</span>     | Ignore TLS/SSL errors on localhost.                                                                                                   | false                                   |
-| <span class="badge badge--secondary">--chromium-allow-list</span>                   | Set the allowed URLs for Chromium using a regular expression.                                                                         | All                                     |
-| <span class="badge badge--secondary">--chromium-deny-list</span>                    | Set the denied URLs for Chromium using a regular expression.                                                                          | `^file:(?!//\/tmp/).*`                  |
-| <span class="badge badge--secondary">--chromium-ignore-certificate-errors</span>    | Ignore the certificate errors.                                                                                                        | false                                   |
-| <span class="badge badge--secondary">--chromium-disable-web-security</span>         | Don't enforce the same-origin policy.                                                                                                 | false                                   |
-| <span class="badge badge--secondary">--chromium-incognito</span>                    | Start Chromium with incognito mode.                                                                                                   | false                                   |
-| <span class="badge badge--secondary">--chromium-host-resolver-rules</span>          | Set custom mappings to the host resolver.                                                                                             | None                                    |
-| <span class="badge badge--secondary">--chromium-proxy-server</span>                 | Set the outbound proxy server; this switch only affects HTTP and HTTPS requests.                                                      | None                                    |
-| <span class="badge badge--secondary">--chromium-clear-cache</span>                  | Clear Chromium cache between each conversion.                                                                                         | false                                   |
-| <span class="badge badge--secondary">--chromium-clear-cookies</span>                | Clear Chromium cookies between each conversion.                                                                                       | false                                   |
-| <span class="badge badge--secondary">--chromium-disable-javascript</span>           | Disable JavaScript.                                                                                                                   | false                                   |
-| <span class="badge badge--secondary">--chromium-disable-routes</span>               | Disable the routes.                                                                                                                   | false                                   |
+| Flag                                                                                | Environment variable                                                              | Description                                                                                                                           | Default                                 |
+|-------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------|
+| <span class="badge badge--secondary">--chromium-restart-after</span>                | <span class="badge badge--secondary">CHROMIUM_RESTART_AFTER</span>                | Number of conversions after which Chromium will automatically restart. Set to 0 to disable this feature.                              | 10<span style={{color: 'red'}}>*</span> |
+| <span class="badge badge--secondary">--chromium-max-queue-size</span>               | <span class="badge badge--secondary">CHROMIUM_MAX_QUEUE_SIZE</span>               | Maximum request queue size for Chromium. Set to 0 to disable this feature.                                                            | 0                                       |
+| <span class="badge badge--secondary">--chromium-auto-start</span>                   | <span class="badge badge--secondary">CHROMIUM_AUTO_START</span>                   | Automatically launch Chromium upon initialization if set to true; otherwise, Chromium will start at the time of the first conversion. | false                                   |
+| <span class="badge badge--secondary">--chromium-start-timeout</span>                | <span class="badge badge--secondary">CHROMIUM_START_TIMEOUT</span>                | Maximum duration to wait for Chromium to start or restart.                                                                            | 20s                                     |
+| <span class="badge badge--secondary">--chromium-allow-file-access-from-files</span> | <span class="badge badge--secondary">CHROMIUM_ALLOW_FILE_ACCESS_FROM_FILES</span> | Allow file:// URIs to read other file:// URIs.                                                                                        | false                                   |
+| <span class="badge badge--secondary">--chromium-allow-insecure-localhost</span>     | <span class="badge badge--secondary">CHROMIUM_ALLOW_INSECURE_LOCALHOST</span>     | Ignore TLS/SSL errors on localhost.                                                                                                   | false                                   |
+| <span class="badge badge--secondary">--chromium-allow-list</span>                   | <span class="badge badge--secondary">CHROMIUM_ALLOW_LIST</span>                   | Set the allowed URLs for Chromium using a regular expression.                                                                         | All                                     |
+| <span class="badge badge--secondary">--chromium-deny-list</span>                    | <span class="badge badge--secondary">CHROMIUM_DENY_LIST</span>                    | Set the denied URLs for Chromium using a regular expression.                                                                          | `^file:(?!//\/tmp/).*`                  |
+| <span class="badge badge--secondary">--chromium-ignore-certificate-errors</span>    | <span class="badge badge--secondary">CHROMIUM_IGNORE_CERTIFICATE_ERRORS</span>    | Ignore the certificate errors.                                                                                                        | false                                   |
+| <span class="badge badge--secondary">--chromium-disable-web-security</span>         | <span class="badge badge--secondary">CHROMIUM_DISABLE_WEB_SECURITY</span>         | Don't enforce the same-origin policy.                                                                                                 | false                                   |
+| <span class="badge badge--secondary">--chromium-incognito</span>                    | <span class="badge badge--secondary">CHROMIUM_INCOGNITO</span>                    | Start Chromium with incognito mode.                                                                                                   | false                                   |
+| <span class="badge badge--secondary">--chromium-host-resolver-rules</span>          | <span class="badge badge--secondary">CHROMIUM_HOST_RESOLVER_RULES</span>          | Set custom mappings to the host resolver.                                                                                             | None                                    |
+| <span class="badge badge--secondary">--chromium-proxy-server</span>                 | <span class="badge badge--secondary">CHROMIUM_PROXY_SERVER</span>                 | Set the outbound proxy server; this switch only affects HTTP and HTTPS requests.                                                      | None                                    |
+| <span class="badge badge--secondary">--chromium-clear-cache</span>                  | <span class="badge badge--secondary">CHROMIUM_CLEAR_CACHE</span>                  | Clear Chromium cache between each conversion.                                                                                         | false                                   |
+| <span class="badge badge--secondary">--chromium-clear-cookies</span>                | <span class="badge badge--secondary">CHROMIUM_CLEAR_COOKIES</span>                | Clear Chromium cookies between each conversion.                                                                                       | false                                   |
+| <span class="badge badge--secondary">--chromium-disable-javascript</span>           | <span class="badge badge--secondary">CHROMIUM_DISABLE_JAVASCRIPT</span>           | Disable JavaScript.                                                                                                                   | false                                   |
+| <span class="badge badge--secondary">--chromium-disable-routes</span>               | <span class="badge badge--secondary">CHROMIUM_DISABLE_ROUTES</span>               | Disable the routes.                                                                                                                   | false                                   |
 
 <span style={{color: 'red'}}>\*</span>Prior to Gotenberg *8.15.2*, restarting Chromium resulted in zombie processes.
 
@@ -142,13 +142,13 @@ To maintain performance under a heavy load, consider increasing the number of Go
 
 The following flags allow you to configure the LibreOffice module:
 
-| Flag                                                                     | Description                                                                                                                                 | Default |
-|--------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|---------|
-| <span class="badge badge--secondary">--libreoffice-restart-after</span>  | Number of conversions after which LibreOffice will automatically restart. Set to 0 to disable this feature.                                 | 10      |
-| <span class="badge badge--secondary">--libreoffice-max-queue-size</span> | Maximum request queue size for LibreOffice. Set to 0 to disable this feature.                                                               | 0       |
-| <span class="badge badge--secondary">--libreoffice-auto-start</span>     | Automatically launch LibreOffice upon initialization if set to true; otherwise, LibreOffice will start at the time of the first conversion. | false   |
-| <span class="badge badge--secondary">--libreoffice-start-timeout</span>  | Maximum duration to wait for LibreOffice to start or restart.                                                                               | 20s     |
-| <span class="badge badge--secondary">--libreoffice-disable-routes</span> | Disable the routes.                                                                                                                         | false   |
+| Flag                                                                     | Environment variable                                                   | Description                                                                                                                                 | Default |
+|--------------------------------------------------------------------------|------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|---------|
+| <span class="badge badge--secondary">--libreoffice-restart-after</span>  | <span class="badge badge--secondary">LIBREOFFICE_RESTART_AFTER</span>  | Number of conversions after which LibreOffice will automatically restart. Set to 0 to disable this feature.                                 | 10      |
+| <span class="badge badge--secondary">--libreoffice-max-queue-size</span> | <span class="badge badge--secondary">LIBREOFFICE_MAX_QUEUE_SIZE</span> | Maximum request queue size for LibreOffice. Set to 0 to disable this feature.                                                               | 0       |
+| <span class="badge badge--secondary">--libreoffice-auto-start</span>     | <span class="badge badge--secondary">LIBREOFFICE_AUTO_START</span>     | Automatically launch LibreOffice upon initialization if set to true; otherwise, LibreOffice will start at the time of the first conversion. | false   |
+| <span class="badge badge--secondary">--libreoffice-start-timeout</span>  | <span class="badge badge--secondary">LIBREOFFICE_START_TIMEOUT</span>  | Maximum duration to wait for LibreOffice to start or restart.                                                                               | 20s     |
+| <span class="badge badge--secondary">--libreoffice-disable-routes</span> | <span class="badge badge--secondary">LIBREOFFICE_DISABLE_ROUTES</span> | Disable the routes.                                                                                                                         | false   |
 
 ### Switch Language
 
@@ -203,15 +203,15 @@ PDFtk and QPDF only supports the split mode *pages* with unification.
 
 The following flags allow you to configure the PDF Engines module:
 
-| Flag                                                                            | Description                                                                          | Default               |
-|---------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|-----------------------|
-| <span class="badge badge--secondary">--pdfengines-merge-engines</span>          | Set the PDF engines and their order for the merge feature - empty means all.         | qpdf,pdfcpu,pdftk     |
-| <span class="badge badge--secondary">--pdfengines-split-engines</span>          | Set the PDF engines and their order for the split feature - empty means all.         | pdfcpu,qpdf,pdftk     |
-| <span class="badge badge--secondary">--pdfengines-flatten-engines</span>        | Set the PDF engines and their order for the flatten feature - empty means all.       | qpdf                  |
-| <span class="badge badge--secondary">--pdfengines-convert-engines</span>        | Set the PDF engines and their order for the convert feature - empty means all.       | libreoffice-pdfengine |
-| <span class="badge badge--secondary">--pdfengines-read-metadata-engines</span>  | Set the PDF engines and their order for the read metadata feature - empty means all. | exiftool              |
-| <span class="badge badge--secondary">--pdfengines-write-metadata-engines</span> | Set the PDF engines and their order for the read metadata feature - empty means all. | exiftool              |
-| <span class="badge badge--secondary">--pdfengines-disable-routes</span>         | Disable the routes.                                                                  | false                 |
+| Flag                                                                            | Environment variable                                                          | Description                                                                          | Default               |
+|---------------------------------------------------------------------------------|-------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|-----------------------|
+| <span class="badge badge--secondary">--pdfengines-merge-engines</span>          | <span class="badge badge--secondary">PDFENGINES_MERGE_ENGINES</span>          | Set the PDF engines and their order for the merge feature - empty means all.         | qpdf,pdfcpu,pdftk     |
+| <span class="badge badge--secondary">--pdfengines-split-engines</span>          | <span class="badge badge--secondary">PDFENGINES_SPLIT_ENGINES</span>          | Set the PDF engines and their order for the split feature - empty means all.         | pdfcpu,qpdf,pdftk     |
+| <span class="badge badge--secondary">--pdfengines-flatten-engines</span>        | <span class="badge badge--secondary">PDFENGINES_FLATTEN_ENGINES</span>        | Set the PDF engines and their order for the flatten feature - empty means all.       | qpdf                  |
+| <span class="badge badge--secondary">--pdfengines-convert-engines</span>        | <span class="badge badge--secondary">PDFENGINES_CONVERT_ENGINES</span>        | Set the PDF engines and their order for the convert feature - empty means all.       | libreoffice-pdfengine |
+| <span class="badge badge--secondary">--pdfengines-read-metadata-engines</span>  | <span class="badge badge--secondary">PDFENGINES_READ_METADATA_ENGINES</span>  | Set the PDF engines and their order for the read metadata feature - empty means all. | exiftool              |
+| <span class="badge badge--secondary">--pdfengines-write-metadata-engines</span> | <span class="badge badge--secondary">PDFENGINES_WRITE_METADATA_ENGINES</span> | Set the PDF engines and their order for the read metadata feature - empty means all. | exiftool              |
+| <span class="badge badge--secondary">--pdfengines-disable-routes</span>         | <span class="badge badge--secondary">PDFENGINES_DISABLE_ROUTES</span>         | Disable the routes.                                                                  | false                 |
 
 :::warning
 
@@ -226,18 +226,18 @@ selected destination.
 
 The following flags allow you to configure the Webhook module:
 
-| Flag                                                                   | Description                                                                                  | Default |
-|------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|---------|
-| <span class="badge badge--secondary">--webhook-enable-sync-mode</span> | Enable synchronous mode for the webhook feature.                                             | false   |
-| <span class="badge badge--secondary">--webhook-allow-list</span>       | Set the allowed URLs for the webhook feature using a regular expression.                     | All     |
-| <span class="badge badge--secondary">--webhook-deny-list</span>        | Set the denied URLs for the webhook feature using a regular expression.                      | None    |
-| <span class="badge badge--secondary">--webhook-error-allow-list</span> | Set the allowed URLs in case of an error for the webhook feature using a regular expression. | All     |
-| <span class="badge badge--secondary">--webhook-error-deny-list</span>  | Set the denied URLs in case of an error for the webhook feature using a regular expression.  | None    |
-| <span class="badge badge--secondary">--webhook-max-retry</span>        | Set the maximum number of retries for the webhook feature.                                   | 4       |
-| <span class="badge badge--secondary">--webhook-retry-min-wait</span>   | Set the minimum duration to wait before trying to call the webhook again.                    | 1s      |
-| <span class="badge badge--secondary">--webhook-retry-max-wait</span>   | Set the maximum duration to wait before trying to call the webhook again.                    | 30s     |
-| <span class="badge badge--secondary">--webhook-client-timeout</span>   | Set the time limit for requests to the webhook.                                              | 30s     |
-| <span class="badge badge--secondary">--webhook-disable</span>          | Disable the webhook feature.                                                                 | false   |
+| Flag                                                                   | Environment variable                                                 | Description                                                                                  | Default |
+|------------------------------------------------------------------------|----------------------------------------------------------------------|----------------------------------------------------------------------------------------------|---------|
+| <span class="badge badge--secondary">--webhook-enable-sync-mode</span> | <span class="badge badge--secondary">WEBHOOK_ENABLE_SYNC_MODE</span> | Enable synchronous mode for the webhook feature.                                             | false   |
+| <span class="badge badge--secondary">--webhook-allow-list</span>       | <span class="badge badge--secondary">WEBHOOK_ALLOW_LIST</span>       | Set the allowed URLs for the webhook feature using a regular expression.                     | All     |
+| <span class="badge badge--secondary">--webhook-deny-list</span>        | <span class="badge badge--secondary">WEBHOOK_DENY_LIST</span>        | Set the denied URLs for the webhook feature using a regular expression.                      | None    |
+| <span class="badge badge--secondary">--webhook-error-allow-list</span> | <span class="badge badge--secondary">WEBHOOK_ERROR_ALLOW_LIST</span> | Set the allowed URLs in case of an error for the webhook feature using a regular expression. | All     |
+| <span class="badge badge--secondary">--webhook-error-deny-list</span>  | <span class="badge badge--secondary">WEBHOOK_ERROR_DENY_LIST</span>  | Set the denied URLs in case of an error for the webhook feature using a regular expression.  | None    |
+| <span class="badge badge--secondary">--webhook-max-retry</span>        | <span class="badge badge--secondary">WEBHOOK_MAX_RETRY</span>        | Set the maximum number of retries for the webhook feature.                                   | 4       |
+| <span class="badge badge--secondary">--webhook-retry-min-wait</span>   | <span class="badge badge--secondary">WEBHOOK_RETRY_MIN_WAIT</span>   | Set the minimum duration to wait before trying to call the webhook again.                    | 1s      |
+| <span class="badge badge--secondary">--webhook-retry-max-wait</span>   | <span class="badge badge--secondary">WEBHOOK_RETRY_MAX_WAIT</span>   | Set the maximum duration to wait before trying to call the webhook again.                    | 30s     |
+| <span class="badge badge--secondary">--webhook-client-timeout</span>   | <span class="badge badge--secondary">WEBHOOK_CLIENT_TIMEOUT</span>   | Set the time limit for requests to the webhook.                                              | 30s     |
+| <span class="badge badge--secondary">--webhook-disable</span>          | <span class="badge badge--secondary">WEBHOOK_DISABLE</span>          | Disable the webhook feature.                                                                 | false   |
 
 ## Prometheus
 
@@ -246,12 +246,12 @@ The Prometheus module collects metrics from other modules and exposes an HTTP en
 
 The following flags allow you to configure the Prometheus module:
 
-| Flag                                                                           | Description                                       | Default   |
-|--------------------------------------------------------------------------------|---------------------------------------------------|-----------|
-| <span class="badge badge--secondary">--prometheus-collect-interval</span>      | Set the interval for collecting modules' metrics. | 1s        |
-| <span class="badge badge--secondary">--prometheus-namespace</span>             | Set the namespace of modules' metrics.            | gotenberg |
-| <span class="badge badge--secondary">--prometheus-disable-collect</span>       | Disable the collect of metrics.                   | false     |
-| <span class="badge badge--secondary">--prometheus-disable-route-logging</span> | Disable the route logging.                        | false     |
+| Flag                                                                           | Environment variable                                                         | Description                                       | Default   |
+|--------------------------------------------------------------------------------|------------------------------------------------------------------------------|---------------------------------------------------|-----------|
+| <span class="badge badge--secondary">--prometheus-collect-interval</span>      | <span class="badge badge--secondary">PROMETHEUS_COLLECT_INTERVAL</span>      | Set the interval for collecting modules' metrics. | 1s        |
+| <span class="badge badge--secondary">--prometheus-namespace</span>             | <span class="badge badge--secondary">PROMETHEUS_NAMESPACE</span>             | Set the namespace of modules' metrics.            | gotenberg |
+| <span class="badge badge--secondary">--prometheus-disable-collect</span>       | <span class="badge badge--secondary">PROMETHEUS_DISABLE_COLLECT</span>       | Disable the collect of metrics.                   | false     |
+| <span class="badge badge--secondary">--prometheus-disable-route-logging</span> | <span class="badge badge--secondary">PROMETHEUS_DISABLE_ROUTE_LOGGING</span> | Disable the route logging.                        | false     |
 
 ## Logging
 
@@ -260,12 +260,12 @@ machine-readable way, making them extremely beneficial for centralized log manag
 
 The following flags allow you to configure the logger:
 
-| Flag                                                                | Description                                                                      | Default |
-|---------------------------------------------------------------------|----------------------------------------------------------------------------------|---------|
-| <span class="badge badge--secondary">--log-format</span>            | Specify the format of logging. Options include auto, json, or text.              | auto    |
-| <span class="badge badge--secondary">--log-level</span>             | Choose the level of logging detail. Options include error, warn, info, or debug. | info    |
-| <span class="badge badge--secondary">--log-fields-prefix</span>     | Prepend a specified prefix to each field in the logs.                            | None    |
-| <span class="badge badge--secondary">--log-enable-gcp-fields</span> | Enable Google Cloud Platform fields - namely: time, message, severity.           | None    |
+| Flag                                                                | Environment variable                                              | Description                                                                      | Default |
+|---------------------------------------------------------------------|-------------------------------------------------------------------|----------------------------------------------------------------------------------|---------|
+| <span class="badge badge--secondary">--log-format</span>            | <span class="badge badge--secondary">LOG_FORMAT</span>            | Specify the format of logging. Options include auto, json, or text.              | auto    |
+| <span class="badge badge--secondary">--log-level</span>             | <span class="badge badge--secondary">LOG_LEVEL</span>             | Choose the level of logging detail. Options include error, warn, info, or debug. | info    |
+| <span class="badge badge--secondary">--log-fields-prefix</span>     | <span class="badge badge--secondary">LOG_FIELDS_PREFIX</span>     | Prepend a specified prefix to each field in the logs.                            | None    |
+| <span class="badge badge--secondary">--log-enable-gcp-fields</span> | <span class="badge badge--secondary">LOG_ENABLE_GCP_FIELDS</span> | Enable Google Cloud Platform fields - namely: time, message, severity.           | None    |
 
 :::warning
 
@@ -280,9 +280,9 @@ shutdown process.
 
 The following flag allows you to configure this duration:
 
-| Flag                                                                               | Description                         | Default |
-|------------------------------------------------------------------------------------|-------------------------------------|---------|
-| <span class="badge badge--secondary">--gotenberg-graceful-shutdown-duration</span> | Set the graceful shutdown duration. | 30s     |
+| Flag                                                                               | Environment variable                                                             | Description                         | Default |
+|------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|-------------------------------------|---------|
+| <span class="badge badge--secondary">--gotenberg-graceful-shutdown-duration</span> | <span class="badge badge--secondary">GOTENBERG_GRACEFUL_SHUTDOWN_DURATION</span> | Set the graceful shutdown duration. | 30s     |
 
 :::info
 
@@ -296,9 +296,9 @@ sequence.
 
 The following flag allows you to hide the startup banner with:
 
-| Flag                                                                | Description      | Default |
-|---------------------------------------------------------------------|------------------|---------|
-| <span class="badge badge--secondary">--gotenberg-hide-banner</span> | Hide the banner. | false   |
+| Flag                                                                | Environment variable                                              | Description      | Default |
+|---------------------------------------------------------------------|-------------------------------------------------------------------|------------------|---------|
+| <span class="badge badge--secondary">--gotenberg-hide-banner</span> | <span class="badge badge--secondary">GOTENBERG_HIDE_BANNER</span> | Hide the banner. | false   |
 
 ## Docker Image
 
