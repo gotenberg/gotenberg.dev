@@ -143,8 +143,6 @@ A community-maintained Helm chart is also available at [MaikuMori/helm-charts](h
 
 ## Cloud Run
 
-If cost-efficiency is a priority for you, [Cloud Run](https://cloud.google.com/run) could be an appealing option.
-
 We have a dedicated Docker image tag specifically for this provider:
 
 ```
@@ -166,15 +164,13 @@ This image is preconfigured for Cloud Run:
 
 :::tip
 
-At least `1Gi` of memory is required for a [smooth experience](https://github.com/gotenberg/gotenberg/issues/950#issuecomment-2329228662).
+At least 1Gi of memory is required for a [smooth experience](https://github.com/gotenberg/gotenberg/issues/950#issuecomment-2329228662).
 
 Consider using HTTP/2 to bypass the [32MB request size limit](https://cloud.google.com/run/quotas?hl=en).
 
 :::
 
 ## AWS Lambda
-
-If cost-efficiency is a priority, [AWS Lambda](https://docs.aws.amazon.com/lambda) can be a good option.
 
 We provide a dedicated Docker image tag, available on both `linux/amd64` and `linux/arm64` architectures:
 
@@ -191,8 +187,26 @@ thecodingmachine/gotenberg:8-aws-lambda
 This image is preconfigured for AWS Lambda:
 
 * Uses the `AWS_LWA_PORT` environment variable to configure its port.
-* Auto-starts Chromium and LibreOffice for faster readiness.
+* Set `AWS_LWA_READINESS_CHECK_PATH` with the route `/health`.
+* Set `AWS_LWA_INVOKE_MODE` with the value `buffered`.
 * Uses synchronous webhook mode, since AWS may stop the container if there’s no HTTP activity.
+* See https://github.com/awslabs/aws-lambda-web-adapter for more AWS related options.
+
+:::tip
+
+The `buffered` invoke mode supports responses of up to 6MB only.
+
+For larger outputs, consider using the webhook feature to upload results to S3.
+
+:::
+
+:::info
+
+There is an [ongoing discussion](https://github.com/gotenberg/gotenberg/issues/540) about improving this mode.
+
+If you have feedback, please feel free to share it in the thread!
+
+:::
 
 ## What's next?
 
