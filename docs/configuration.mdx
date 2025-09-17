@@ -157,7 +157,7 @@ building your own Docker image.
 
 For instance, with the German language:
 
-**Gotenberg *8.22.0* and after**
+**Gotenberg *8.23.1* and after**
 
 ```docker
 FROM gotenberg/gotenberg:8
@@ -165,7 +165,7 @@ FROM gotenberg/gotenberg:8
 USER root
 
 RUN apt-get update -qq &&\
-    DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends libreoffice-l10n-de &&\
+    DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends -t trixie-backports libreoffice-l10n-de &&\
     sed -i '/de_DE.UTF-8/s/^# //g' /etc/locale.gen &&\
     locale-gen &&\
     # Cleanup.
