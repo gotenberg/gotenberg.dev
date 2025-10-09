@@ -37,7 +37,8 @@ export default function Hero() {
             </Link>
             <p className="padding-top--md">
               Available on <strong>amd64</strong>, <strong>arm64</strong>,{" "}
-              <strong>armhf</strong>, and <strong>i386</strong> architectures
+              <strong>armhf</strong>, <strong>i386</strong>, and{" "}
+              <strong>ppc64le</strong> architectures
             </p>
           </div>
           <div className="col col--6">
