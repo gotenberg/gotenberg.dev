@@ -1163,6 +1163,42 @@ curl \
 </TabItem>
 </Tabs>
 
+### Embedded Files {#embeds-chromium}
+
+This feature enables the creation of PDFs compatible with standards like [ZUGFeRD / Factur-X](https://fnfe-mpe.org/factur-x/), which require embedding XML invoices and other files within the PDF.
+
+Each route accepts the following form field to attach files to the generated PDF:
+
+| Key    | Description                                       | Default |
+|--------|---------------------------------------------------|---------|
+| embeds | Files to embed in the generated PDF (repeatable). | None    |
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {4-5}
+curl \
+--request POST http://localhost:3000/forms/chromium/convert/html \
+--form files=@index.html \
+--form embeds=@invoice.xml \
+--form embeds=@logo.png \
+-o my.pdf
+```
+
+</TabItem>
+</Tabs>
+
+:::info
+
+You can embed multiple files by repeating the `embeds` form field. All embedded files will be attached to the generated PDF and can be extracted using PDF readers that support file attachments.
+
+:::
+
 ### Screenshots <span class="badge badge--secondary">route</span>
 
 You can capture screenshots using the following three routes, which function similarly to their PDF equivalents:
@@ -1776,6 +1812,42 @@ curl \
 </TabItem>
 </Tabs>
 
+### Embedded Files {#embeds-libreoffice}
+
+This feature enables the creation of PDFs compatible with standards like [ZUGFeRD / Factur-X](https://fnfe-mpe.org/factur-x/), which require embedding XML invoices and other files within the PDF.
+
+Each route accepts the following form field to attach files to the generated PDF:
+
+| Key    | Description                                       | Default |
+|--------|---------------------------------------------------|---------|
+| embeds | Files to embed in the generated PDF (repeatable). | None    |
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {4-5}
+curl \
+--request POST http://localhost:3000/forms/libreoffice/convert \
+--form files=@/path/to/file.docx \
+--form embeds=@invoice.xml \
+--form embeds=@logo.png \
+-o my.pdf
+```
+
+</TabItem>
+</Tabs>
+
+:::info
+
+You can embed multiple files by repeating the `embeds` form field. All embedded files will be attached to the generated PDF and can be extracted using PDF readers that support file attachments.
+
+:::
+
 ## Convert into PDF/A & PDF/UA <span class="badge badge--secondary">route</span>
 
 This *multipart/form-data* route transforms one or more PDF files into the requested PDF/A format and/or PDF/UA.
@@ -2123,6 +2195,7 @@ POST /forms/pdfengines/merge
 | pdfua    | Enable PDF for Universal Access for optimal accessibility. | false                                             |
 | metadata | The metadata to write (JSON format).                       | None                                              |
 | flatten  | Flatten the resulting PDF.                                 | false                                             |
+| embeds   | Files to embed in the generated PDF (repeatable).          | None                                              |
 
 <Tabs
 defaultValue="curl"
@@ -2211,6 +2284,7 @@ POST /forms/pdfengines/split
 | pdfua      | Enable PDF for Universal Access for optimal accessibility.                                                                         | false                                             |
 | metadata   | The metadata to write (JSON format).                                                                                               | None                                              |
 | flatten    | Flatten the resulting PDF(s).                                                                                                      | false                                             |
+| embeds     | Files to embed in the generated PDF (repeatable).                                                                                  | None                                              |
 
 :::caution
 
@@ -2577,7 +2651,9 @@ This route is only available if the flag `--api-enable-debug-route` is set to *t
 
 :::
 
-## Embed files <span class="badge badge--secondary">route</span>
+## Embed Files <span class="badge badge--secondary">route</span>
+
+This feature enables the creation of PDFs compatible with standards like [ZUGFeRD / Factur-X](https://fnfe-mpe.org/factur-x/), which require embedding XML invoices and other files within the PDF.
 
 This *multipart/form-data* route accepts one or more PDF files and embeds files into them.
 
@@ -2733,7 +2809,7 @@ This form field is a JSON-formatted array with items accepting the following key
 |------------------|-------------------------------------------------------------------------------------------------|---------------------------------------------------|
 | url              | URL of the file. It **MUST** return a `Content-Disposition` header with a *filename* parameter. | <span class="badge badge--danger">required</span> |
 | extraHttpHeaders | The extra HTTP headers to send to the URL (JSON format).                                        | None                                              |
-| embedded         | Whether this file should be embedded in the PDF (see [Embedded Files](#embedded-files)).        | false                                             |
+| embedded         | Whether this file should be embedded in the PDF (see [Embed Files](#embed-files-route)).        | false                                             |
 
 <Tabs
 defaultValue="curl"
@@ -2801,49 +2877,5 @@ Body: Forbidden
 
 Currently, a [bug](https://github.com/golang/go/issues/69551) is preventing Gotenberg to parse an empty mediatype.
 If you're using AWS S3, make sure to set the `Content-Disposition` header with the *attachment* value in the S3 metadata.
-
-:::
-
-## Embedded Files
-
-The following *multipart/form-data* endpoints accept the `embeds` form field to attach files to the generated PDF:
-
-* `/forms/chromium/convert/html`
-* `/forms/chromium/convert/url`
-* `/forms/chromium/convert/markdown`
-* `/forms/libreoffice/convert`
-* `/forms/pdfengines/merge`
-* `/forms/pdfengines/split`
-* `/forms/pdfengines/embed`
-
-| Key    | Description                                       | Default |
-|--------|---------------------------------------------------|---------|
-| embeds | Files to embed in the generated PDF (repeatable). | None    |
-
-This feature enables the creation of PDFs compatible with standards like [ZUGFeRD / Factur-X](https://fnfe-mpe.org/factur-x/), which require embedding XML invoices and other files within the PDF.
-
-<Tabs
-defaultValue="curl"
-values={[
-{ label: 'cURL', value: 'curl', },
-]
-}>
-<TabItem value="curl">
-
-```bash {4-5}
-curl \
---request POST http://localhost:3000/forms/chromium/convert/html \
---form files=@index.html \
---form embeds=@invoice.xml \
---form embeds=@logo.png \
--o my.pdf
-```
-
-</TabItem>
-</Tabs>
-
-:::info
-
-You can embed multiple files by repeating the `embeds` form field. All embedded files will be attached to the generated PDF and can be extracted using PDF readers that support file attachments.
 
 :::
