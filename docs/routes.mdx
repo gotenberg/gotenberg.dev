@@ -2467,6 +2467,90 @@ Body: Service Unavailable
 </TabItem>
 </Tabs>
 
+## Embed Files <span class="badge badge--secondary">route</span>
+
+This feature enables the creation of PDFs compatible with standards like [ZUGFeRD / Factur-X](https://fnfe-mpe.org/factur-x/), which require embedding XML invoices and other files within the PDF.
+
+This *multipart/form-data* route accepts one or more PDF files and embeds files into them.
+
+```
+POST /forms/pdfengines/embed
+```
+
+It accepts the following specific form fields:
+
+| Key    | Description                             |                                                   |
+|--------|-----------------------------------------|---------------------------------------------------|
+| files  | PDF files to embed files into.          | <span class="badge badge--danger">required</span> |
+| embeds | Files to embed in the PDF (repeatable). | <span class="badge badge--danger">required</span> |
+
+<Tabs
+  defaultValue="curl"
+  values={[
+    { label: 'cURL', value: 'curl', },
+  ]
+  }>
+  <TabItem value="curl">
+
+    ```bash {3-5}
+    curl \
+    --request POST http://localhost:3000/forms/pdfengines/embed \
+    --form files=@invoice.pdf \
+    --form embeds=@data.xml \
+    --form embeds=@metadata.json \
+    -o my.pdf
+    ```
+
+  </TabItem>
+</Tabs>
+
+<Tabs
+defaultValue="200"
+values={[
+{ label: '200 OK', value: '200', },
+{ label: '400 Bad Request', value: '400', },
+{ label: '503 Service Unavailable', value: '503', },
+]
+}>
+<TabItem value="200">
+
+```
+Content-Disposition: attachement; filename={output-filename.pdf}
+Content-Type: {content-type}
+Content-Length: {content-length}
+Gotenberg-Trace: {trace}
+Body: {output-file}
+```
+
+* See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
+* See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
+
+</TabItem>
+<TabItem value="400">
+
+This errors happens if one ore more form fields are invalid.
+
+```
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+```
+
+</TabItem>
+<TabItem value="503">
+
+If a request doesn't complete within a specified duration, the API will respond with a *503 Service Unavailable* status.
+
+See the [API module configuration](configuration#api) for more details.
+
+```
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: Service Unavailable
+```
+</TabItem>
+</Tabs>
+
 ## Health Check <span class="badge badge--secondary">route</span>
 
 ```
@@ -2650,77 +2734,6 @@ See for instance https://demo.gotenberg.dev/debug.
 This route is only available if the flag `--api-enable-debug-route` is set to *true*.
 
 :::
-
-## Embed Files <span class="badge badge--secondary">route</span>
-
-This feature enables the creation of PDFs compatible with standards like [ZUGFeRD / Factur-X](https://fnfe-mpe.org/factur-x/), which require embedding XML invoices and other files within the PDF.
-
-This *multipart/form-data* route accepts one or more PDF files and embeds files into them.
-
-```
-POST /forms/pdfengines/embed
-```
-
-It accepts the following specific form fields:
-
-| Key    | Description                             |                                                   |
-|--------|-----------------------------------------|---------------------------------------------------|
-| files  | PDF files to embed files into.          | <span class="badge badge--danger">required</span> |
-| embeds | Files to embed in the PDF (repeatable). | <span class="badge badge--danger">required</span> |
-
-<Tabs
-defaultValue="curl"
-values={[
-{ label: 'cURL', value: 'curl', },
-]
-}>
-<TabItem value="curl">
-
-```bash {3-5}
-curl \
---request POST http://localhost:3000/forms/pdfengines/embed \
---form files=@invoice.pdf \
---form embeds=@data.xml \
---form embeds=@metadata.json \
--o my.pdf
-```
-
-</TabItem>
-</Tabs>
-
-<Tabs
-defaultValue="200"
-values={[
-{ label: '200 OK', value: '200', },
-{ label: '400 Bad Request', value: '400', },
-]
-}>
-<TabItem value="200">
-
-```
-Content-Disposition: attachement; filename={output-filename.pdf}
-Content-Type: {content-type}
-Content-Length: {content-length}
-Gotenberg-Trace: {trace}
-Body: {output-file}
-```
-
-* See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
-* See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
-
-</TabItem>
-<TabItem value="400">
-
-This errors happens if one ore more form fields are invalid.
-
-```
-Content-Type: text/plain; charset=UTF-8
-Gotenberg-Trace: {trace}
-Body: {error}
-```
-
-</TabItem>
-</Tabs>
 
 ## Request Tracing
 
