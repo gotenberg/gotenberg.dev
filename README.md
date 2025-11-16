@@ -19,7 +19,7 @@ This command starts a local development server and opens up a browser window. Mo
 ## Prettier
 
 ```bash
-npx prettier --write .
+npm run format
 ```
 
 This command formats the source code.
