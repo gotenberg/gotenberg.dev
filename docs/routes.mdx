@@ -790,12 +790,22 @@ Note that the *scope* token is only processed by Gotenberg and is never sent wit
 
 Each route accepts the following form field:
 
-| Key                           | Description                                                                                            | Default     |
-|-------------------------------|--------------------------------------------------------------------------------------------------------|-------------|
-| failOnHttpStatusCodes         | Return a *409 Conflict* response if the HTTP status code from the main page is not acceptable.         | \[499,599\] |
-| failOnResourceHttpStatusCodes | Return a *409 Conflict* response if the HTTP status code from at least one resource is not acceptable. | None        |
+| Key                             | Description                                                                                            | Default     |
+|---------------------------------|--------------------------------------------------------------------------------------------------------|-------------|
+| failOnHttpStatusCodes           | Return a *409 Conflict* response if the HTTP status code from the main page is not acceptable.         | \[499,599\] |
+| failOnResourceHttpStatusCodes   | Return a *409 Conflict* response if the HTTP status code from at least one resource is not acceptable. | None        |
+| ignoreResourceHttpStatusDomains | Exclude resources from `failOnResourceHttpStatusCodes` checks based on their hostname.                 | None        |
 
 An *X99* entry means every HTTP status codes between *X00* and *X99* (e.g., 499 means every HTTP status codes between 400 and 499).
+
+The `ignoreResourceHttpStatusDomains` option allows you to exclude specific domains from the resource HTTP status code checks.
+A match happens if the hostname equals the domain or is a subdomain of it (e.g., `browser.sentry-cdn.com` matches `sentry-cdn.com`).
+
+Values are normalized (trimmed, lowercased) and may be provided as:
+* `example.com`
+* `*.example.com` or `.example.com`
+* `example.com:443` (port is ignored)
+* `https://example.com/path` (scheme/path are ignored)
 
 <Tabs
 defaultValue="curl"
@@ -829,6 +839,27 @@ Gotenberg-Trace: {trace}
 Body:
 
 Invalid HTTP status code from the main page: 400: Bad Request
+```
+
+</TabItem>
+</Tabs>
+
+To ignore certain domains when checking resource HTTP status codes:
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {4-5}
+curl \
+--request POST http://localhost:3000/forms/chromium/convert/html \
+--form files=@/path/to/index.html \
+--form 'failOnResourceHttpStatusCodes=[499,599]' \
+--form 'ignoreResourceHttpStatusDomains=["sentry-cdn.com","analytics.example.com"]'
 ```
 
 </TabItem>
