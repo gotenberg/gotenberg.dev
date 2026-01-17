@@ -605,6 +605,7 @@ Each route accepts the following form fields:
 |-------------------|--------------------------------------------------------------------------------------------------------|---------|
 | waitDelay         | Duration (e.g, '5s') to wait when loading an HTML document before converting it into PDF.              | None    |
 | waitForExpression | The JavaScript expression to wait before converting an HTML document into PDF until it returns *true*. | None    |
+| waitForSelector   | Selector (e.g. '#id') to query before converting an HTML document into PDF until it matches a node.    | None    |
 
 :::info
 
@@ -662,6 +663,37 @@ curl \
 --request POST http://localhost:3000/forms/chromium/convert/url \
 --form url=https://my.url \
 --form 'waitForExpression=window.globalVar === '\''ready'\''' \
+-o my.pdf
+```
+
+</TabItem>
+</Tabs>
+
+**waitForSelector**
+
+Instead of waiting on an expression, you can wait until a node matching a selector query becomes visible on the page:
+
+```js
+// Somewhere in the HTML document
+await promises()
+const newText = document.createElement("p")
+newText.id = "special-id"
+document.insertBefore(newText, null)
+```
+
+<Tabs
+defaultValue="curl"
+values={[
+{ label: 'cURL', value: 'curl', },
+]
+}>
+<TabItem value="curl">
+
+```bash {4}
+curl \
+--request POST http://localhost:3000/forms/chromium/convert/url \
+--form url=https://my.url \
+--form 'waitForSelector=#special-id' \
 -o my.pdf
 ```
 
