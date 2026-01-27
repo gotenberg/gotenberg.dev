@@ -11,7 +11,7 @@
 
 
 <link rel="search" type="application/opensearchdescription+xml" title="Gotenberg" href="/opensearch.xml"><link rel="stylesheet" href="/assets/css/styles.2476c74a.css">
-<script src="/assets/js/runtime~main.85c256d7.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.3a33eac3.js" defer="defer"></script>
 <script src="/assets/js/main.d501228d.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -88,7 +88,7 @@ selected destination.</p>
 <p>The Prometheus module collects metrics from other modules and exposes an HTTP endpoint that can be scraped by
 <a href="https://prometheus.io/" target="_blank" rel="noopener noreferrer" class="">Prometheus</a>.</p>
 <p>The following flags allow you to configure the Prometheus module:</p>
-<table><thead><tr><th>Flag</th><th>Environment variable</th><th>Description</th><th>Default</th></tr></thead><tbody><tr><td><span class="badge badge--secondary">--prometheus-collect-interval</span></td><td><span class="badge badge--secondary">PROMETHEUS_COLLECT_INTERVAL</span></td><td>Set the interval for collecting modules&#x27; metrics.</td><td>1s</td></tr><tr><td><span class="badge badge--secondary">--prometheus-namespace</span></td><td><span class="badge badge--secondary">PROMETHEUS_NAMESPACE</span></td><td>Set the namespace of modules&#x27; metrics.</td><td>gotenberg</td></tr><tr><td><span class="badge badge--secondary">--prometheus-disable-collect</span></td><td><span class="badge badge--secondary">PROMETHEUS_DISABLE_COLLECT</span></td><td>Disable the collect of metrics.</td><td>false</td></tr><tr><td><span class="badge badge--secondary">--prometheus-disable-route-logging</span></td><td><span class="badge badge--secondary">PROMETHEUS_DISABLE_ROUTE_LOGGING</span></td><td>Disable the route logging.</td><td>false</td></tr></tbody></table>
+<table><thead><tr><th>Flag</th><th>Environment variable</th><th>Description</th><th>Default</th></tr></thead><tbody><tr><td><span class="badge badge--secondary">--prometheus-metrics-path</span></td><td><span class="badge badge--secondary">PROMETHEUS_METRICS_PATH</span></td><td>Set the metrics endpoint path.</td><td>/prometheus/metrics</td></tr><tr><td><span class="badge badge--secondary">--prometheus-collect-interval</span></td><td><span class="badge badge--secondary">PROMETHEUS_COLLECT_INTERVAL</span></td><td>Set the interval for collecting modules&#x27; metrics.</td><td>1s</td></tr><tr><td><span class="badge badge--secondary">--prometheus-namespace</span></td><td><span class="badge badge--secondary">PROMETHEUS_NAMESPACE</span></td><td>Set the namespace of modules&#x27; metrics.</td><td>gotenberg</td></tr><tr><td><span class="badge badge--secondary">--prometheus-disable-collect</span></td><td><span class="badge badge--secondary">PROMETHEUS_DISABLE_COLLECT</span></td><td>Disable the collect of metrics.</td><td>false</td></tr><tr><td><span class="badge badge--secondary">--prometheus-disable-route-logging</span></td><td><span class="badge badge--secondary">PROMETHEUS_DISABLE_ROUTE_LOGGING</span></td><td>Disable the route logging.</td><td>false</td></tr></tbody></table>
 <h2 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="logging">Logging<a href="#logging" class="hash-link" aria-label="Direct link to Logging" title="Direct link to Logging" translate="no">​</a></h2>
 <p>Gotenberg employs a logger that generates structured logs. Structured logs are formatted in a standardized,
 machine-readable way, making them extremely beneficial for centralized log management.</p>
