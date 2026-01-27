@@ -280,12 +280,13 @@ The Prometheus module collects metrics from other modules and exposes an HTTP en
 
 The following flags allow you to configure the Prometheus module:
 
-| Flag                                                                           | Environment variable                                                         | Description                                       | Default   |
-|--------------------------------------------------------------------------------|------------------------------------------------------------------------------|---------------------------------------------------|-----------|
-| <span class="badge badge--secondary">--prometheus-collect-interval</span>      | <span class="badge badge--secondary">PROMETHEUS_COLLECT_INTERVAL</span>      | Set the interval for collecting modules' metrics. | 1s        |
-| <span class="badge badge--secondary">--prometheus-namespace</span>             | <span class="badge badge--secondary">PROMETHEUS_NAMESPACE</span>             | Set the namespace of modules' metrics.            | gotenberg |
-| <span class="badge badge--secondary">--prometheus-disable-collect</span>       | <span class="badge badge--secondary">PROMETHEUS_DISABLE_COLLECT</span>       | Disable the collect of metrics.                   | false     |
-| <span class="badge badge--secondary">--prometheus-disable-route-logging</span> | <span class="badge badge--secondary">PROMETHEUS_DISABLE_ROUTE_LOGGING</span> | Disable the route logging.                        | false     |
+| Flag                                                                           | Environment variable                                                         | Description                                       | Default             |
+|--------------------------------------------------------------------------------|------------------------------------------------------------------------------|---------------------------------------------------|---------------------|
+| <span class="badge badge--secondary">--prometheus-metrics-path</span>          | <span class="badge badge--secondary">PROMETHEUS_METRICS_PATH</span>          | Set the metrics endpoint path.                    | /prometheus/metrics |
+| <span class="badge badge--secondary">--prometheus-collect-interval</span>      | <span class="badge badge--secondary">PROMETHEUS_COLLECT_INTERVAL</span>      | Set the interval for collecting modules' metrics. | 1s                  |
+| <span class="badge badge--secondary">--prometheus-namespace</span>             | <span class="badge badge--secondary">PROMETHEUS_NAMESPACE</span>             | Set the namespace of modules' metrics.            | gotenberg           |
+| <span class="badge badge--secondary">--prometheus-disable-collect</span>       | <span class="badge badge--secondary">PROMETHEUS_DISABLE_COLLECT</span>       | Disable the collect of metrics.                   | false               |
+| <span class="badge badge--secondary">--prometheus-disable-route-logging</span> | <span class="badge badge--secondary">PROMETHEUS_DISABLE_ROUTE_LOGGING</span> | Disable the route logging.                        | false               |
 
 ## Logging
 
