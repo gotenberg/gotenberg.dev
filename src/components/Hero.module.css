@@ -1,31 +1,181 @@
+/* Container: Subtle radial gradient for depth without being dark */
 .hero {
-  display: flex;
-  padding: 4rem 0;
-  text-align: center;
-  align-items: center;
-  vertical-align: center;
   position: relative;
-  background: #f9f9f9;
+  padding: 6rem 0;
+  overflow: hidden;
+  background: radial-gradient(50% 50% at 50% 50%, #ffffff 0%, #f0f9ff 100%);
+  border-bottom: 1px solid var(--ifm-border-color);
 }
 
-.hero h1 {
-  font-size: 3rem;
-  padding-bottom: 1rem;
+/* -------------------------------------------------------
+   TYPOGRAPHY
+   ------------------------------------------------------- */
+.title {
+  font-family: var(--ifm-font-family-base), sans-serif;
+  font-weight: 800;
+  font-size: 3.5rem;
+  line-height: 1.1;
+  color: #0f172a; /* Slate 900 */
+  margin-bottom: 1.5rem;
+  text-align: left;
 }
 
-.getStartedButton {
-  margin-right: 0.6rem;
+/* The magic gradient text effect */
+.highlight {
+  background: linear-gradient(90deg, #008ae6 0%, #29a1eb 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: #64748b; /* Slate 500 */
+  margin-bottom: 2.5rem;
+  text-align: left;
+  line-height: 1.6;
+}
+
+.subtitle strong {
+  color: #334155; /* Slate 700 */
+  font-weight: 600;
+  background-color: rgba(226, 232, 240, 0.5); /* Subtle badge background */
+  padding: 0.1rem 0.3rem;
+  border-radius: 4px;
+}
+
+/* -------------------------------------------------------
+   CRISP BUTTONS
+   ------------------------------------------------------- */
+.buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+/* Base style for both buttons */
+.btnCrisp {
+  font-weight: 600;
+  padding: 0.8rem 1.6rem;
+  border-radius: 8px; /* Slightly more rounded than default */
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  border: none;
+}
+
+/* Hover Effect: Lift up slightly */
+.btnCrisp:hover {
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+/* Primary Button (Blue) */
+.btnPrimary {
+  background-color: var(--ifm-color-primary);
+  color: white;
+  /* Soft blue shadow glow */
+  box-shadow: 0 4px 14px 0 rgba(0, 138, 230, 0.39);
+}
+
+.btnPrimary:hover {
+  background-color: var(--ifm-color-primary-dark);
+  box-shadow: 0 6px 20px rgba(0, 138, 230, 0.23);
+}
+
+/* Secondary Button (GitHub) */
+.btnSecondary {
+  background-color: #ffffff;
+  color: #0f172a;
+  border: 1px solid #e2e8f0;
+  /* Very subtle shadow */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.btnSecondary:hover {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+  color: #000;
+}
+
+.btnIcon {
+  margin-left: 8px;
+  transition: transform 0.2s ease;
+}
+
+.btnPrimary:hover .btnIcon {
+  transform: translateX(3px); /* Arrow moves forward on hover */
 }
 
 .githubIcon {
-  vertical-align: middle;
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  opacity: 0.8;
 }
 
 .githubButtonText {
-  vertical-align: middle;
+  font-weight: 600;
+}
+
+/* -------------------------------------------------------
+   IMAGE & LAYOUT
+   ------------------------------------------------------- */
+.heroImage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .logo {
-  width: 25rem;
-  height: 25rem;
+  max-width: 100%;
+  height: auto;
+  max-height: 400px;
+  /* Add a floating animation */
+  animation: float 6s ease-in-out infinite;
+  filter: drop-shadow(
+    0 20px 30px rgba(0, 0, 0, 0.1)
+  ); /* Soft shadow for the logo */
+}
+
+@keyframes float {
+  0% {
+    transform: translatey(0px);
+  }
+  50% {
+    transform: translatey(-15px);
+  }
+  100% {
+    transform: translatey(0px);
+  }
+}
+
+/* -------------------------------------------------------
+   RESPONSIVE
+   ------------------------------------------------------- */
+@media (max-width: 996px) {
+  .hero {
+    padding: 3rem 0;
+    text-align: center;
+  }
+
+  .title {
+    font-size: 2.5rem;
+    text-align: center;
+  }
+
+  .subtitle {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .buttons {
+    justify-content: center;
+  }
+
+  .logo {
+    margin-top: 3rem;
+    max-height: 250px;
+  }
 }

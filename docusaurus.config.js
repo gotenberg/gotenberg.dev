@@ -9,7 +9,12 @@ module.exports = {
   url: "https://gotenberg.dev",
   baseUrl: "/",
   onBrokenLinks: "throw",
-  onBrokenMarkdownLinks: "warn",
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: "warn",
+      onBrokenMarkdownImages: "throw",
+    },
+  },
   favicon: "img/favicon.ico",
   organizationName: "gotenberg",
   projectName: "gotenberg.dev",
@@ -22,7 +27,7 @@ module.exports = {
     },
     announcementBar: {
       id: "support_us",
-      content: `⭐️  &nbsp; If you like Gotenberg, give it a star on <a target="_blank" rel="noopener noreferrer" href="https://github.com/gotenberg/gotenberg">GitHub</a>! &nbsp; ⭐️`,
+      content: `If you like Gotenberg, give it a star on <a target="_blank" rel="noopener noreferrer" href="https://github.com/gotenberg/gotenberg">GitHub</a>!️`,
     },
     // announcementBar: {
     //   id: "gotenberg_8",
@@ -125,7 +130,7 @@ module.exports = {
       copyright: `Copyright © ${new Date().getFullYear()} Julien Neuhart.<br /> Built with <a href="https://docusaurus.io" target="_blank">Docusaurus</a>.`,
     },
     prism: {
-      theme: lightTheme,
+      theme: themes.nightOwl,
       additionalLanguages: ["bash", "docker", "json"],
     },
     colorMode: {

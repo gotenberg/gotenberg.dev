@@ -9,39 +9,65 @@ export default function Hero() {
     <header className={styles.hero}>
       <div className="container">
         <div className="row">
-          <div className="col col--6">
-            <h1>
+          <div className={clsx("col col--6", styles.heroContent)}>
+            <h1 className={styles.title}>
               A containerized API for seamless
               <br />
-              <span className="highlight">PDF conversion</span>
+              <span className={styles.highlight}>PDF conversion</span>
             </h1>
-            <Link
-              className={clsx(
-                "button button--primary button--lg",
-                styles.getStartedButton
-              )}
-              to="/docs/getting-started/introduction"
-            >
-              Getting started
-            </Link>
-            <Link
-              className="button button--secondary button--lg"
-              to="https://github.com/gotenberg/gotenberg"
-            >
-              <img
-                className={styles.githubIcon}
-                src={useBaseUrl("/img/github.svg")}
-                alt="GitHub Logo"
-              />{" "}
-              <span className={styles.githubButtonText}>GitHub</span>
-            </Link>
-            <p className="padding-top--md">
+
+            <p className={styles.subtitle}>
               Available on <strong>amd64</strong>, <strong>arm64</strong>,{" "}
               <strong>armhf</strong>, <strong>i386</strong>, and{" "}
-              <strong>ppc64le</strong> architectures
+              <strong>ppc64le</strong>
             </p>
+
+            <div className={styles.buttons}>
+              <Link
+                className={clsx(
+                  "button button--primary button--lg",
+                  styles.btnCrisp,
+                  styles.btnPrimary
+                )}
+                to="/docs/getting-started/introduction"
+              >
+                Getting started
+                {/* Tiny arrow icon for momentum */}
+                <svg
+                  width="13"
+                  height="12"
+                  viewBox="0 0 13 12"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className={styles.btnIcon}
+                >
+                  <path
+                    d="M0 6H11M11 6L6 1M11 6L6 11"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  />
+                </svg>
+              </Link>
+
+              <Link
+                className={clsx(
+                  "button button--secondary button--lg",
+                  styles.btnCrisp,
+                  styles.btnSecondary
+                )}
+                to="https://github.com/gotenberg/gotenberg"
+              >
+                <img
+                  className={styles.githubIcon}
+                  src={useBaseUrl("/img/github.svg")}
+                  alt="GitHub Logo"
+                />
+                <span className={styles.githubButtonText}>GitHub</span>
+              </Link>
+            </div>
           </div>
-          <div className="col col--6">
+
+          <div className={clsx("col col--6", styles.heroImage)}>
             <img
               className={styles.logo}
               src={useBaseUrl("/img/logo_jed.png")}

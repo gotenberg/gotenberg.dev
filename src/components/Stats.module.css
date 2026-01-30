@@ -1,0 +1,128 @@
+.section {
+  padding: 3rem 0;
+  position: relative;
+  /* Use a very subtle dot pattern background to connect sections */
+  background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+/* --- Card Base Styles --- */
+.card {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 1.2rem 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  height: 100%;
+}
+
+.linkWrapper {
+  text-decoration: none !important;
+  color: inherit !important;
+  display: block;
+}
+
+.linkWrapper:hover .card {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  margin-right: 1rem;
+  flex-shrink: 0;
+}
+
+.icon {
+  width: 26px;
+  height: 26px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+}
+
+.number {
+  font-family: var(--ifm-font-family-base);
+  font-weight: 800;
+  font-size: 1.4rem;
+  line-height: 1.1;
+  color: #0f172a;
+  margin-bottom: 0.1rem;
+}
+
+.label {
+  font-size: 0.9rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.highlight {
+  display: inline-block;
+  animation: heartbeat 2s infinite ease-in-out;
+}
+
+/* --- Color Themes --- */
+
+/* Blue (Docker) */
+.blue {
+  border-left: 4px solid #008ae6;
+}
+.blue .iconWrapper {
+  background-color: #f0f9ff;
+  color: #008ae6;
+}
+
+/* Yellow (GitHub) */
+.yellow {
+  border-left: 4px solid #eab308;
+}
+.yellow .iconWrapper {
+  background-color: #fefce8;
+  color: #ca8a04;
+}
+
+/* Teal (License) */
+.teal {
+  border-left: 4px solid #14b8a6;
+}
+.teal .iconWrapper {
+  background-color: #ccfbf1;
+  color: #0d9488;
+}
+
+/* Animation */
+@keyframes heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+/* Mobile: Stack nicely */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+}

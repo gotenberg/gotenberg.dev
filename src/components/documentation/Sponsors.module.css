@@ -1,0 +1,134 @@
+/* Container */
+.wrapper {
+  margin: 4rem 0 2rem;
+  padding-top: 2rem;
+  border-top: 1px dashed #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* --- 1. Primary Grid (Big Logos) --- */
+.sponsorGrid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+/* THE LINK RESET
+   We target 'a.cleanLink' inside '.wrapper' to beat Docusaurus specificity.
+*/
+.wrapper a.cleanLink {
+  border: none !important; /* Kill the border-bottom */
+  text-decoration: none !important; /* Kill the underline */
+  background: transparent !important; /* Kill the hover highlight */
+  display: flex;
+  align-items: center;
+  transition: opacity 0.2s ease;
+}
+
+/* Remove the specific Docusaurus 'text-decoration-line' if present */
+.wrapper a.cleanLink:hover {
+  opacity: 1;
+  background: transparent !important;
+  text-decoration: none !important;
+  border: none !important;
+}
+
+.logoPrimary {
+  height: 150px;
+  width: auto;
+  filter: grayscale(100%);
+  opacity: 0.6;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.wrapper a.cleanLink:hover .logoPrimary {
+  filter: grayscale(0);
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+/* --- 2. Meta Row (Infrastructure) --- */
+.metaRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: #94a3b8;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.infraGrid {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.logoSecondary {
+  height: 40px;
+  width: auto;
+  filter: grayscale(100%);
+  opacity: 0.5;
+  transition: all 0.2s ease;
+}
+
+.wrapper a.cleanLink:hover .logoSecondary {
+  filter: grayscale(0);
+  opacity: 1;
+}
+
+/* --- 3. CTA Button (New & Improved) --- */
+.ctaRow {
+  margin-top: 0.5rem;
+}
+
+/* Specific selector for the button to ensure no conflicts */
+.wrapper a.sponsorButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+
+  /* The "Soft Rose" Pill Look */
+  background-color: #fff1f2 !important; /* Force background */
+  color: #e11d48 !important; /* Force text color */
+  font-weight: 600;
+  font-size: 0.95rem;
+
+  padding: 0.6rem 1.5rem;
+  border-radius: 50px;
+  border: 1px solid #fecdd3 !important; /* Force border color */
+
+  text-decoration: none !important;
+  border-bottom: 1px solid #fecdd3 !important; /* Override global border-bottom */
+  transition: all 0.2s ease;
+}
+
+.wrapper a.sponsorButton:hover {
+  background-color: #ffe4e6 !important;
+  color: #be123c !important;
+  border-color: #fda4af !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(225, 29, 72, 0.15);
+  text-decoration: none !important;
+}
+
+.heart {
+  font-size: 1.1em;
+  transition: transform 0.2s;
+}
+
+.wrapper a.sponsorButton:hover .heart {
+  transform: scale(1.2);
+}
