@@ -37,7 +37,6 @@
 /* --- BENTO GRID (2x2) --- */
 .bentoGrid {
   display: grid;
-  /* Auto-fit with a min-width ensures it goes 1-col on mobile, 2-col on desktop */
   grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
   gap: 2rem;
   margin-bottom: 3rem;
@@ -53,6 +52,7 @@
   flex-direction: column;
   transition: transform 0.2s, box-shadow 0.2s;
   height: 100%;
+  min-width: 0;
 }
 
 .featureCard:hover {
@@ -192,12 +192,17 @@
   border-bottom: 1px solid #e2e8f0;
   background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
   background-size: 24px 24px;
+  /* Add overflow hidden to prevent children from stretching page width */
+  overflow: hidden;
 }
+
 .splitRow {
   display: grid;
+  /* Default: 2 columns on Desktop */
   grid-template-columns: 1fr 1fr;
   gap: 4rem;
   align-items: center;
+  max-width: 100%; /* Ensure it doesn't exceed container */
 }
 .badge {
   display: inline-block;
@@ -414,35 +419,58 @@
 }
 
 /* --- RESPONSIVE --- */
-/* Mobile Tweaks */
-@media (max-width: 768px) {
-  .logos {
-    gap: 2rem;
+/* 1. TABLET LAYOUT (Between 768px and 996px) */
+/* Stack content vertically, but KEEP the terminal visible */
+@media (max-width: 996px) {
+  .splitRow {
+    grid-template-columns: 1fr; /* Stack columns vertically */
+    gap: 3rem;
+    text-align: center; /* Center text for better vertical flow */
   }
-  .logoBig {
-    height: 70px;
+
+  .splitContent {
+    order: 1; /* Text on top */
+    margin: 0 auto;
+    width: 100%;
+    max-width: 700px;
   }
-  .logoSmall {
-    height: 35px;
+
+  .splitVisual {
+    order: 2; /* Terminal on bottom */
+    display: block; /* Ensure it is VISIBLE */
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: left; /* Reset text align for code inside */
+  }
+
+  /* Center the badges/capabilities */
+  .badge {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .capabilitiesGrid {
+    margin: 2rem auto 0;
+    text-align: left;
+    max-width: 500px;
+    grid-template-columns: 1fr 1fr; /* On tablet, we can fit 2 cols of capabilities */
+    gap: 1.5rem;
   }
 }
 
-@media (max-width: 996px) {
+/* 2. MOBILE LAYOUT (Below 768px) */
+/* Hide the terminal ONLY here */
+@media (max-width: 768px) {
   .bentoGrid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   }
-  .splitRow {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-  .splitContent {
-    order: 1;
-    text-align: center;
-  }
+
   .splitVisual {
-    order: 2;
+    display: none !important; /* POOF! Gone on mobile */
   }
+
   .capabilitiesGrid {
-    text-align: left;
+    grid-template-columns: 1fr; /* Stack capabilities on phone */
   }
 }
