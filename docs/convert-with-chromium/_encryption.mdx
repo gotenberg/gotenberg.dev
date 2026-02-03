@@ -1,0 +1,38 @@
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+
+## Encryption (PDF Engines)
+
+Secure your PDF by setting passwords that control access and permissions.
+
+- **User Password:** Required to **open** and view the PDF.
+- **Owner Password:** Required to **modify** permissions (e.g., printing, copying text, extracting pages).
+
+:::info PDF Engine Dependency
+The encryption strength (e.g., AES-256) depends on the configured PDF Engine (QPDF, pdfcpu, or PDFtk).
+:::
+
+<ApiEndpoint
+  formFields={[
+    {
+      name: "userPassword",
+      type: "string",
+      defaultValue: "None",
+      description: "The password required to open the PDF.",
+    },
+    {
+      name: "ownerPassword",
+      type: "string",
+      defaultValue: "None",
+      description:
+        "The password required to change permissions or edit the PDF.",
+    },
+  ]}
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form userPassword=my_user_password \\
+--form ownerPassword=my_owner_password \\
+${props.curlOutput}
+`}
+/>

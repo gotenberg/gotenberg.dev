@@ -1,0 +1,100 @@
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import CodeBlock from "@theme/CodeBlock";
+
+## Assets
+
+You can send local files - such as images, fonts, and stylesheets - alongside your HTML to create a rich document.
+
+<ApiEndpoint
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form files=@/path/to/img.png \\
+${props.curlOutput}
+`}
+/>
+
+When you upload files to Gotenberg, they are stored in a single temporary directory. Consequently, your HTML must reference these assets by **filename only**, regardless of their original folder structure on your machine.
+
+**Do not use absolute paths (`/img.png`) or subdirectories (`./assets/img.png`).**
+
+**✅ Correct Reference**
+
+Since `index.html` and `logo.png` sit side-by-side in the container:
+
+{props.isMarkdown ? (
+
+<CodeBlock language="html" title="index.html">
+  {`<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>My PDF</title>
+  </head>
+  <body>
+    {{ toHTML "file.md" }}
+    <img src="logo.png" />
+  </body>
+</html>`}
+</CodeBlock>
+) : (<CodeBlock language="html" title="index.html">
+  {`<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>My PDF</title>
+  </head>
+  <body>
+    <h1>Hello world!</h1>
+    <img src="logo.png" />
+  </body>
+</html>`}
+</CodeBlock>
+)}
+
+**❌ Incorrect Reference**
+
+Gotenberg does not recreate your local folder structure (e.g., images/) inside the container.
+
+{props.isMarkdown ? (
+
+<CodeBlock language="html" title="index.html">
+  {`<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>My PDF</title>
+  </head>
+  <body>
+    {{ toHTML "file.md" }}
+    <img src="/images/logo.png" />
+  </body>
+</html>`}
+</CodeBlock>
+) : (<CodeBlock language="html" title="index.html">
+  {`<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>My PDF</title>
+  </head>
+  <body>
+    <h1>Hello world!</h1>
+    <img src="/images/logo.png" />
+  </body>
+</html>`}
+</CodeBlock>
+)}
+
+:::info Remote Assets
+
+You can also use standard remote URLs for images and fonts (e.g., `<img src="https://my-cdn.com/logo.png" />` or Google Fonts). These are fetched by Chromium over the network during conversion.
+
+:::
+
+:::warning The Base Tag
+
+Avoid using the HTML \<base\> element. It alters how relative paths are resolved and often breaks the link between your HTML and the uploaded local assets.
+
+:::

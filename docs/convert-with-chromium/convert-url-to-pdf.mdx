@@ -1,0 +1,148 @@
+---
+id: convert-url-to-pdf
+title: Convert URL to PDF
+---
+
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import PaperDimensions from "./_paper_dimensions.mdx";
+import RenderingBehaviorPDF from "./_rendering_behavior/_rendering_behavior_pdf.mdx";
+import HttpNetworking from "./_http_networking.mdx";
+import Console from "./_console.mdx";
+import HeaderFooter from "./_header_footer.mdx";
+import StructureMetadata from "./_structure_metadata.mdx";
+import SplitPageRanges from "./_split_page_ranges.mdx";
+import PdfaPdfua from "./_pdfa_pdfua.mdx";
+import Encryption from "./_encryption.mdx";
+import Sponsors from "@site/src/components/documentation/Sponsors";
+
+Converts a target URL to PDF using Headless Chromium.
+
+This route works by simulating a standard browser navigation: it connects to the URL, executes the necessary JavaScript, loads assets (CSS, images, fonts), and captures the final state of the DOM as a PDF. It supports Single Page Applications (SPAs) and dynamic content rendering.
+
+## Basics
+
+<ApiEndpoint
+  method="POST"
+  path="/forms/chromium/convert/url"
+  headers={[
+    {
+      name: "Gotenberg-Output-Filename",
+      type: "string",
+      required: false,
+      description:
+        "The filename of the resulting file - Gotenberg automatically appends the file extension. Defaults to a random UUID filename.",
+    },
+  ]}
+  formFields={[
+    {
+      name: "url",
+      type: "string",
+      required: true,
+      description: "URL of the page to convert into PDF.",
+    },
+  ]}
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/chromium/convert/url \\
+--form url=https://my.url \\
+-o my.pdf`}
+  responses={[
+    {
+      status: 200,
+      message: "OK",
+      description: "The PDF file has been successfully created.",
+      body: `
+Content-Disposition: attachment; filename={output-filename.pdf}
+Content-Type: {content-type}
+Content-Length: {content-length}
+Gotenberg-Trace: {trace}
+Body: {output-file}
+      `,
+    },
+    {
+      status: 400,
+      message: "Bad Request",
+      description: "The request had one ore more invalid form fields.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+      `,
+    },
+    {
+      status: 503,
+      message: "Service Unavailable",
+      description:
+        "The request did not complete within the configured maximum duration.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: Service Unavailable
+      `,
+    },
+  ]}
+/>
+
+<PaperDimensions
+  method="POST"
+  path="/forms/chromium/convert/url"
+  curlFormData={`--form url=https://my.url \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<RenderingBehaviorPDF
+  method="POST"
+  path="/forms/chromium/convert/url"
+  curlFormData={`--form url=https://my.url \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<HttpNetworking
+  method="POST"
+  path="/forms/chromium/convert/url"
+  curlFormData={`--form url=https://my.url \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<Console
+  method="POST"
+  path="/forms/chromium/convert/url"
+  curlFormData={`--form url=https://my.url \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<HeaderFooter
+  method="POST"
+  path="/forms/chromium/convert/url"
+  curlFormData={`--form url=https://my.url \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<StructureMetadata
+  method="POST"
+  path="/forms/chromium/convert/url"
+  curlFormData={`--form url=https://my.url \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<SplitPageRanges
+  method="POST"
+  path="/forms/chromium/convert/url"
+  curlFormData={`--form url=https://my.url \\`}
+/>
+
+<PdfaPdfua
+  method="POST"
+  path="/forms/chromium/convert/url"
+  curlFormData={`--form url=https://my.url \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<Encryption
+  method="POST"
+  path="/forms/chromium/convert/url"
+  curlFormData={`--form url=https://my.url \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<Sponsors />

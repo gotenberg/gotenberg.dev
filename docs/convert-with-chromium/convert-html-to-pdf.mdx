@@ -1,0 +1,157 @@
+---
+id: convert-html-to-pdf
+title: Convert HTML to PDF
+---
+
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import Assets from "./_assets.mdx";
+import PaperDimensions from "./_paper_dimensions.mdx";
+import RenderingBehaviorPDF from "./_rendering_behavior/_rendering_behavior_pdf.mdx";
+import HttpNetworking from "./_http_networking.mdx";
+import Console from "./_console.mdx";
+import HeaderFooter from "./_header_footer.mdx";
+import StructureMetadata from "./_structure_metadata.mdx";
+import SplitPageRanges from "./_split_page_ranges.mdx";
+import PdfaPdfua from "./_pdfa_pdfua.mdx";
+import Encryption from "./_encryption.mdx";
+import Sponsors from "@site/src/components/documentation/Sponsors";
+
+Converts uploaded HTML content to PDF using Headless Chromium.
+
+Unlike the URL route, this endpoint renders files provided directly in the request body. It requires an `index.html` file to serve as the entry point. You may also include additional assets (CSS, images, fonts) in the `multipart/form-data` request, which can be referenced in your HTML using relative paths.
+
+## Basics
+
+<ApiEndpoint
+  method="POST"
+  path="/forms/chromium/convert/html"
+  headers={[
+    {
+      name: "Gotenberg-Output-Filename",
+      type: "string",
+      required: false,
+      description:
+        "The filename of the resulting file - Gotenberg automatically appends the file extension. Defaults to a random UUID filename.",
+    },
+  ]}
+  formFiles={[
+    {
+      name: "index.html",
+      type: "file",
+      required: true,
+      description: "An HTML file named 'index.html' to convert into PDF.",
+    },
+  ]}
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/chromium/convert/html \\
+--form files=@/path/to/index.html \\
+-o my.pdf`}
+  responses={[
+    {
+      status: 200,
+      message: "OK",
+      description: "The PDF file has been successfully created.",
+      body: `
+Content-Disposition: attachment; filename={output-filename.pdf}
+Content-Type: {content-type}
+Content-Length: {content-length}
+Gotenberg-Trace: {trace}
+Body: {output-file}
+      `,
+    },
+    {
+      status: 400,
+      message: "Bad Request",
+      description: "The request had one ore more invalid form fields.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+      `,
+    },
+    {
+      status: 503,
+      message: "Service Unavailable",
+      description:
+        "The request did not complete within the configured maximum duration.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: Service Unavailable
+      `,
+    },
+  ]}
+/>
+
+<Assets
+  method="POST"
+  path="/forms/chromium/convert/html"
+  curlFormData={`--form files=@/path/to/index.html \\`}
+  curlOutput={`-o my.pdf`}
+  isMarkdown={false}
+/>
+
+<PaperDimensions
+  method="POST"
+  path="/forms/chromium/convert/html"
+  curlFormData={`--form files=@/path/to/index.html \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<RenderingBehaviorPDF
+  method="POST"
+  path="/forms/chromium/convert/html"
+  curlFormData={`--form files=@/path/to/index.html \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<HttpNetworking
+  method="POST"
+  path="/forms/chromium/convert/html"
+  curlFormData={`--form files=@/path/to/index.html \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<Console
+  method="POST"
+  path="/forms/chromium/convert/html"
+  curlFormData={`--form files=@/path/to/index.html \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<HeaderFooter
+  method="POST"
+  path="/forms/chromium/convert/html"
+  curlFormData={`--form files=@/path/to/index.html \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<StructureMetadata
+  method="POST"
+  path="/forms/chromium/convert/html"
+  curlFormData={`--form files=@/path/to/index.html \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<SplitPageRanges
+  method="POST"
+  path="/forms/chromium/convert/html"
+  curlFormData={`--form files=@/path/to/index.html \\`}
+/>
+
+<PdfaPdfua
+  method="POST"
+  path="/forms/chromium/convert/html"
+  curlFormData={`--form files=@/path/to/index.html \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<Encryption
+  method="POST"
+  path="/forms/chromium/convert/html"
+  curlFormData={`--form files=@/path/to/index.html \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<Sponsors />

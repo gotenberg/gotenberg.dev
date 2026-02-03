@@ -1,0 +1,194 @@
+---
+id: convert-markdown-to-pdf
+title: Convert Markdown to PDF
+---
+
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import Assets from "./_assets.mdx";
+import PaperDimensions from "./_paper_dimensions.mdx";
+import RenderingBehaviorPDF from "./_rendering_behavior/_rendering_behavior_pdf.mdx";
+import HttpNetworking from "./_http_networking.mdx";
+import Console from "./_console.mdx";
+import HeaderFooter from "./_header_footer.mdx";
+import StructureMetadata from "./_structure_metadata.mdx";
+import SplitPageRanges from "./_split_page_ranges.mdx";
+import PdfaPdfua from "./_pdfa_pdfua.mdx";
+import Encryption from "./_encryption.mdx";
+import Sponsors from "@site/src/components/documentation/Sponsors";
+
+Converts Markdown content (with [MathJaX](https://www.mathjax.org/) support) to PDF using Headless Chromium.
+
+This route works by rendering Markdown files within a provided HTML template. You must upload an `index.html` file that acts as the container for the content. Gotenberg converts the Markdown syntax into HTML and injects it into this template, allowing you to style the document using standard CSS and external assets.
+
+:::info Template Configuration
+
+The `index.html` file **must** include the following Go template action where the content should appear:
+
+```html {8}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>My PDF</title>
+  </head>
+  <body>
+    {{ toHTML "file.md" }}
+  </body>
+</html>
+```
+
+:::
+
+## Basics
+
+<ApiEndpoint
+  method="POST"
+  path="/forms/chromium/convert/markdown"
+  headers={[
+    {
+      name: "Gotenberg-Output-Filename",
+      type: "string",
+      required: false,
+      description:
+        "The filename of the resulting file - Gotenberg automatically appends the file extension. Defaults to a random UUID filename.",
+    },
+  ]}
+  formFiles={[
+    {
+      name: "index.html",
+      type: "file",
+      required: true,
+      description:
+        "An HTML file named 'index.html' to wrap the markdown content.",
+    },
+    {
+      name: "*.md",
+      type: "file[]",
+      required: true,
+      description: "At least one markdown file.",
+    },
+  ]}
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/chromium/convert/markdown \\
+--form files=@/path/to/index.html \\
+--form files=@/path/to/file.md \\
+-o my.pdf`}
+  responses={[
+    {
+      status: 200,
+      message: "OK",
+      description: "The PDF file has been successfully created.",
+      body: `
+Content-Disposition: attachment; filename={output-filename.pdf}
+Content-Type: {content-type}
+Content-Length: {content-length}
+Gotenberg-Trace: {trace}
+Body: {output-file}
+      `,
+    },
+    {
+      status: 400,
+      message: "Bad Request",
+      description: "The request had one ore more invalid form fields.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+      `,
+    },
+    {
+      status: 503,
+      message: "Service Unavailable",
+      description:
+        "The request did not complete within the configured maximum duration.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: Service Unavailable
+      `,
+    },
+  ]}
+/>
+
+<Assets
+  method="POST"
+  path="/forms/chromium/convert/markdown"
+  curlFormData={`--form files=@/path/to/index.html \\
+--form files=@/path/to/file.md \\`}
+  curlOutput={`-o my.pdf`}
+  isMarkdown={true}
+/>
+
+<PaperDimensions
+  method="POST"
+  path="/forms/chromium/convert/markdown"
+  curlFormData={`--form files=@/path/to/index.html \\
+--form files=@/path/to/file.md \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<RenderingBehaviorPDF
+  method="POST"
+  path="/forms/chromium/convert/markdown"
+  curlFormData={`--form files=@/path/to/index.html \\
+--form files=@/path/to/file.md \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<HttpNetworking
+  method="POST"
+  path="/forms/chromium/convert/markdown"
+  curlFormData={`--form files=@/path/to/index.html \\
+--form files=@/path/to/file.md \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<Console
+  method="POST"
+  path="/forms/chromium/convert/markdown"
+  curlFormData={`--form files=@/path/to/index.html \\
+--form files=@/path/to/file.md \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<HeaderFooter
+  method="POST"
+  path="/forms/chromium/convert/markdown"
+  curlFormData={`--form files=@/path/to/index.html \\
+--form files=@/path/to/file.md \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<StructureMetadata
+  method="POST"
+  path="/forms/chromium/convert/markdown"
+  curlFormData={`--form files=@/path/to/index.html \\
+--form files=@/path/to/file.md \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<SplitPageRanges
+  method="POST"
+  path="/forms/chromium/convert/markdown"
+  curlFormData={`--form files=@/path/to/index.html \\
+--form files=@/path/to/file.md \\`}
+/>
+
+<PdfaPdfua
+  method="POST"
+  path="/forms/chromium/convert/markdown"
+  curlFormData={`--form files=@/path/to/index.html \\
+--form files=@/path/to/file.md \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<Encryption
+  method="POST"
+  path="/forms/chromium/convert/markdown"
+  curlFormData={`--form files=@/path/to/index.html \\
+--form files=@/path/to/file.md \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<Sponsors />

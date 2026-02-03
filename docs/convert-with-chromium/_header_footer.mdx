@@ -1,0 +1,96 @@
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+
+## Header & Footer
+
+You can inject a custom header and footer into every page of the generated PDF.
+
+These must be provided as **separate, complete HTML files** (`header.html` and `footer.html`).
+
+:::warning Chromium Print Feature
+This feature uses the native **Chromium printing engine**. It operates in a separate context from your main document, which means:
+
+1.  **Styles are isolated:** Your main page's CSS does not apply here.
+2.  **No JavaScript:** Scripts inside headers/footers will not execute.
+3.  **No External Requests:** You cannot link to external images, fonts, or stylesheets.
+    :::
+
+<ApiEndpoint
+  formFiles={[
+    {
+      name: "header.html",
+      type: "file",
+      defaultValue: "None",
+      description: "Complete HTML document for the header.",
+    },
+    {
+      name: "footer.html",
+      type: "file",
+      defaultValue: "None",
+      description: "Complete HTML document for the footer.",
+    },
+  ]}
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form files=@/path/to/header.html \\
+--form files=@/path/to/footer.html \\
+${props.curlOutput}
+`}
+/>
+
+### HTML Structure
+
+Each file must be a full HTML document with its own `<html>`, `<head>`, and `<body>` tags.
+
+```html
+<html>
+  <head>
+    <style>
+      body {
+        /* Recommended: Use a larger font-size than normal */
+        font-size: 16px;
+        /* Recommended: Use margins to align with the page edge */
+        margin: 0 20px;
+        /* Required for background colors to show */
+        -webkit-print-color-adjust: exact;
+      }
+    </style>
+  </head>
+  <body>
+    <p>
+      Page <span class="pageNumber"></span> of <span class="totalPages"></span>
+    </p>
+  </body>
+</html>
+```
+
+### Dynamic Content Injection
+
+Chromium automatically injects values into elements with specific class names:
+
+| Class Name       | Injected Value             |
+| :--------------- | :------------------------- |
+| **`date`**       | The formatted print date.  |
+| **`title`**      | The document title.        |
+| **`url`**        | The document location.     |
+| **`pageNumber`** | The current page number.   |
+| **`totalPages`** | The total number of pages. |
+
+### Styling & Asset Limitations
+
+The Chromium header/footer engine operates in a restricted environment. Follow these rules to ensure correct rendering:
+
+| Component   | Limitation & Solution                                                                                                  |
+| :---------- | :--------------------------------------------------------------------------------------------------------------------- |
+| **Images**  | **Must be Base64 encoded** inline (e.g., `<img src="data:image/png;base64,...">`). External URLs (HTTP) will not load. |
+| **Fonts**   | Only fonts installed in the Docker image are available. See [Fonts Configuration](/docs/configuration#fonts).          |
+| **Colors**  | To force background/text colors to print, you must explicitly add `-webkit-print-color-adjust: exact;` to your CSS.    |
+| **Margins** | Content taller than the `marginTop` / `marginBottom` form fields will be clipped.                                      |
+| **CSS**     | `footer.html` styles may override `header.html` styles. Use unique class names to prevent conflicts.                   |
+
+<br />
+
+:::danger Performance Impact
+Do not attempt to load external assets (CSS, images, scripts) in headers or footers. They will likely time out, slowing down the rendering process significantly or causing the request to fail entirely.
+:::

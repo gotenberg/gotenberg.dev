@@ -1,0 +1,167 @@
+---
+id: asynchronous-remote
+title: Asynchronous & Remote
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import Sponsors from "@site/src/components/documentation/Sponsors";
+
+Handle long-running processes or fetch external assets without keeping persistent connections open.
+
+## Webhooks
+
+By default, Gotenberg handles requests synchronously: you send a file, wait, and get a PDF back.
+However, for large files or batch operations, you may prefer an **asynchronous** workflow.
+
+When Webhook headers are provided:
+
+1. Gotenberg immediately validates the request.
+2. Returns a `204 No Content` response.
+3. Processes the conversion in the background.
+4. Uploads the resulting PDF to the URL specified in `Gotenberg-Webhook-Url`.
+
+:::info Testing Webhooks
+
+Tools like [PipeDream](https://pipedream.com/) or [Webhook.site](https://webhook.site) are excellent for testing these callbacks without setting up a dedicated server.
+
+:::
+
+<ApiEndpoint
+  method="POST"
+  path="/forms/..."
+  headers={[
+    {
+      name: "Gotenberg-Webhook-Url",
+      type: "string",
+      defaultValue: "None",
+      description:
+        "The callback URL where the successful result will be sent via POST (default).",
+      required: true,
+    },
+    {
+      name: "Gotenberg-Webhook-Error-Url",
+      type: "string",
+      defaultValue: "None",
+      description: "The callback URL to use if the conversion fails.",
+      required: true,
+    },
+    {
+      name: "Gotenberg-Webhook-Method",
+      type: "string",
+      defaultValue: "POST",
+      description:
+        "The HTTP method to use for the success callback (POST, PUT, PATCH).",
+    },
+    {
+      name: "Gotenberg-Webhook-Error-Method",
+      type: "string",
+      defaultValue: "POST",
+      description: "The HTTP method to use for the error callback.",
+    },
+    {
+      name: "Gotenberg-Webhook-Extra-Http-Headers",
+      type: "string",
+      defaultValue: "None",
+      description:
+        "JSON object containing extra headers to send to the callback URLs.",
+    },
+  ]}
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/chromium/convert/url \\
+--header 'Gotenberg-Webhook-Url: https://my.webhook/success' \\
+--header 'Gotenberg-Webhook-Error-Url: https://my.webhook/error' \\
+--header 'Gotenberg-Webhook-Extra-Http-Headers: {"Authorization": "Bearer 123"}' \\
+--form url=https://my.url
+`}
+  responses={[
+    {
+      status: "{Webhook-Method}",
+      message: "Success Callback",
+      description:
+        "The resulting file has been uploaded successfully to the specified URL.",
+      body: `
+Content-Disposition: attachment; filename={output-filename.ext}
+Content-Type: {content-type}
+Content-Length: {content-length}
+Gotenberg-Trace: {trace}
+User-Agent: Gotenberg
+Body: {output-file}
+      `,
+    },
+    {
+      status: "{Webhook-Error-Method}",
+      message: "Error Callback",
+      description:
+        "The operation failed and the error has been reported to the specified URL.",
+      body: `
+Content-Type: application/json; charset=UTF-8
+Gotenberg-Trace: {trace}
+User-Agent: Gotenberg
+{
+    "status": "{status}",
+    "message": "{message}"
+}
+      `,
+    },
+  ]}
+/>
+
+## Download From
+
+All `multipart/form-data` endpoints accept the `downloadFrom` form field. This allows you to instruct Gotenberg to fetch files from remote URLs (e.g., S3, Azure Blob, or an internal CDN) instead of uploading them directly.
+
+<ApiEndpoint
+  method="POST"
+  path="/forms/..."
+  formFields={[
+    {
+      name: "downloadFrom",
+      type: "json",
+      defaultValue: "None",
+      description: "A JSON array of files to fetch remotely.",
+    },
+  ]}
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/libreoffice/convert \\
+--form 'downloadFrom=[{
+  "url": "http://url/to/file.docx",
+  "extraHttpHeaders": {
+    "X-My-Header": "MyValue"
+  }
+}]' \\
+-o my.pdf
+`}
+/>
+
+:::info Configuration
+
+This feature is enabled by default. It can be disabled via the `API_DISABLE_DOWNLOAD_FROM` environment variable.
+For further details, refer to the [API module configuration](/docs/configuration#api).
+
+:::
+
+### JSON Object Structure
+
+The `downloadFrom` field accepts a **JSON-formatted array**. Each item in the array must be an object with the following keys:
+
+| Key                | Description                                                                                                    | Default                                                          |
+| :----------------- | :------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------- |
+| `url`              | URL of the file. The remote server **MUST** return a `Content-Disposition` header with a `filename` parameter. | <span style={{color: 'var(--ifm-color-danger)'}}>Required</span> |
+| `extraHttpHeaders` | A JSON object containing extra HTTP headers to send when fetching this specific URL.                           | `None`                                                           |
+| `embedded`         | Whether this file should be embedded.                                                                          | `false`                                                          |
+
+<br />
+
+:::warning Known Issue: Empty Media Types
+
+Currently, a [bug](https://github.com/golang/go/issues/69551) in Go prevents Gotenberg from parsing responses with an empty media type.
+
+**AWS S3 Users:** Ensure your S3 objects have the Content-Disposition metadata set (e.g., attachment; filename="doc.pdf") to avoid this issue.
+
+:::
+
+<Sponsors />

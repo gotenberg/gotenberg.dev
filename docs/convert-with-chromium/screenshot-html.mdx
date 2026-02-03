@@ -1,0 +1,110 @@
+---
+id: screenshot-html
+title: Screenshot HTML
+---
+
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import Assets from "./_assets.mdx";
+import RenderingBehaviorScreenshot from "./_rendering_behavior/_rendering_behavior_screenshot.mdx";
+import HttpNetworking from "./_http_networking.mdx";
+import Console from "./_console.mdx";
+import Sponsors from "@site/src/components/documentation/Sponsors";
+
+Converts uploaded HTML content into an image using Headless Chromium.
+
+Unlike the URL route, this endpoint renders files provided directly in the request body. It requires an `index.html` file to serve as the entry point. You may also include additional assets (CSS, images, fonts) in the `multipart/form-data` request, which can be referenced in your HTML using relative paths.
+
+## Basics
+
+<ApiEndpoint
+  method="POST"
+  path="/forms/chromium/screenshot/html"
+  headers={[
+    {
+      name: "Gotenberg-Output-Filename",
+      type: "string",
+      required: false,
+      description:
+        "The filename of the resulting file - Gotenberg automatically appends the file extension. Defaults to a random UUID filename.",
+    },
+  ]}
+  formFiles={[
+    {
+      name: "index.html",
+      type: "file",
+      required: true,
+      description: "An HTML file named 'index.html' to convert into an image.",
+    },
+  ]}
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/chromium/screenshot/html \\
+--form files=@/path/to/index.html \\
+-o my.jpeg`}
+  responses={[
+    {
+      status: 200,
+      message: "OK",
+      description: "The screenshot has been successfully created.",
+      body: `
+Content-Disposition: attachment; filename={output-filename.ext}
+Content-Type: {content-type}
+Content-Length: {content-length}
+Gotenberg-Trace: {trace}
+Body: {output-file}
+      `,
+    },
+    {
+      status: 400,
+      message: "Bad Request",
+      description: "The request had one ore more invalid form fields.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+      `,
+    },
+    {
+      status: 503,
+      message: "Service Unavailable",
+      description:
+        "The request did not complete within the configured maximum duration.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: Service Unavailable
+      `,
+    },
+  ]}
+/>
+
+<Assets
+  method="POST"
+  path="/forms/chromium/screenshot/html"
+  curlFormData={`--form files=@/path/to/index.html`}
+  curlOutput={`-o my.jpeg`}
+  isMarkdown={false}
+/>
+
+<RenderingBehaviorScreenshot
+  method="POST"
+  path="/forms/chromium/screenshot/html"
+  curlFormData={`--form files=@/path/to/index.html \\`}
+  curlOutput={`-o my.jpeg`}
+/>
+
+<HttpNetworking
+  method="POST"
+  path="/forms/chromium/screenshot/html"
+  curlFormData={`--form files=@/path/to/index.html \\`}
+  curlOutput={`-o my.jpeg`}
+/>
+
+<Console
+  method="POST"
+  path="/forms/chromium/screenshot/html"
+  curlFormData={`--form files=@/path/to/index.html \\`}
+  curlOutput={`-o my.jpeg`}
+/>
+
+<Sponsors />

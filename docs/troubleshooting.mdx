@@ -8,44 +8,42 @@ If you encounter an issue not covered here, please:
 1. Check if it's already been reported on the [GitHub issues](https://github.com/gotenberg/gotenberg/issues) or [GitHub discussions](https://github.com/gotenberg/gotenberg/discussions).
 2. Open a new issue or start a discussion if needed.
 
----
-
 ## Chromium
 
 ### Large PDF File Size
 
-* Webfonts can significantly increase PDF sizes. For custom fonts, refer to the
-[fonts configuration section](configuration#fonts) ([Issue #521](https://github.com/gotenberg/gotenberg/issues/521)).
-* A bug in Chromium seems to duplicate images ([Issue #1077](https://github.com/gotenberg/gotenberg/issues/1077)).
+- Webfonts can significantly increase PDF sizes. For custom fonts, refer to the
+  [fonts configuration section](configuration#fonts) ([Issue #521](https://github.com/gotenberg/gotenberg/issues/521)).
+- A bug in Chromium seems to duplicate images ([Issue #1077](https://github.com/gotenberg/gotenberg/issues/1077)).
 
 ### Trouble Starting
 
-* Increase the startup timeout (see [Chromium module configuration](configuration#chromium)).
-* On macOS, consider disabling the *Use Virtualization Framework* ([Issue #792](https://github.com/gotenberg/gotenberg/issues/792)).
+- Increase the startup timeout (see [Chromium module configuration](configuration#chromium)).
+- On macOS, consider disabling the _Use Virtualization Framework_ ([Issue #792](https://github.com/gotenberg/gotenberg/issues/792)).
 
 ### Printing Failed (-32000)
 
-* This error may occur when converting large documents. Increasing memory might help, but note that it's a known
-[Chromium bug](https://issues.chromium.org/issues/40842550) ([Issue #788](https://github.com/gotenberg/gotenberg/issues/788)).
-* Also, large headers or footers can cause this error.
+- This error may occur when converting large documents. Increasing memory might help, but note that it's a known
+  [Chromium bug](https://issues.chromium.org/issues/40842550) ([Issue #788](https://github.com/gotenberg/gotenberg/issues/788)).
+- Also, large headers or footers can cause this error.
 
 ### Blank PDFs
 
-* For versions after *8.11.0*, set the `skipNetworkIdleEvent` field to *false*.
-* Consider upgrading to latest version to benefit from features like [Network Errors](routes#network-errors-chromium) or
-[Invalid HTTP Status Codes](routes#invalid-http-status-codes-chromium).
+- For versions after _8.11.0_, set the `skipNetworkIdleEvent` field to _false_.
+- Consider upgrading to latest version to benefit from features like [Network Errors](routes#network-errors-chromium) or
+  [Invalid HTTP Status Codes](routes#invalid-http-status-codes-chromium).
 
 ### Screenshots Repeated and Clipped
 
-* Set the `skipNetworkIdleEvent` field to *false* to resolve this issue
-([Issue #1065](https://github.com/gotenberg/gotenberg/issues/1065#issuecomment-2670882337)).
+- Set the `skipNetworkIdleEvent` field to _false_ to resolve this issue
+  ([Issue #1065](https://github.com/gotenberg/gotenberg/issues/1065#issuecomment-2670882337)).
 
 ### Timeouts (503 Service Unavailable)
 
-* Check if your Gotenberg instance is overloaded; add more instances if needed.
-* Ensure the target page’s resources are accessible.
-* Increase the API timeout ([API module configuration](configuration#api)).
-* Optionally, define a maximum queue size for faster request aborts ([Chromium module configuration](configuration#chromium)).
+- Check if your Gotenberg instance is overloaded; add more instances if needed.
+- Ensure the target page’s resources are accessible.
+- Increase the API timeout ([API module configuration](configuration#api)).
+- Optionally, define a maximum queue size for faster request aborts ([Chromium module configuration](configuration#chromium)).
 
 ---
 
@@ -53,22 +51,22 @@ If you encounter an issue not covered here, please:
 
 ### PDF/A-1a
 
-* Starting with version 7.6, LibreOffice no longer supports *PDF/A-1a*. It previously generated *PDF/A-1b* files, though
-some validators misidentified them ([LibreOffice commit](https://git.libreoffice.org/core/+/c4b12d06698402984b3ffdbd2c139f261fa35ca1%5E%21)).
+- Starting with version 7.6, LibreOffice no longer supports _PDF/A-1a_. It previously generated _PDF/A-1b_ files, though
+  some validators misidentified them ([LibreOffice commit](https://git.libreoffice.org/core/+/c4b12d06698402984b3ffdbd2c139f261fa35ca1%5E%21)).
 
 ### Internal Server Error (500)
 
-* Try increasing Gotenberg’s memory and CPU resources ([Issue #465](https://github.com/gotenberg/gotenberg/issues/465)).
+- Try increasing Gotenberg’s memory and CPU resources ([Issue #465](https://github.com/gotenberg/gotenberg/issues/465)).
 
 ### Trouble Starting
 
-* Increase the startup timeout ([LibreOffice module configuration](configuration#libreoffice)).
-* Debian users should use a current version of the distribution ([Issue #794](https://github.com/gotenberg/gotenberg/issues/794)).
-* For Synology and Paperless-ngx, consult [this configuration comment](https://github.com/gotenberg/gotenberg/issues/763#issuecomment-1890472047).
+- Increase the startup timeout ([LibreOffice module configuration](configuration#libreoffice)).
+- Debian users should use a current version of the distribution ([Issue #794](https://github.com/gotenberg/gotenberg/issues/794)).
+- For Synology and Paperless-ngx, consult [this configuration comment](https://github.com/gotenberg/gotenberg/issues/763#issuecomment-1890472047).
 
 ### Timeouts (503 Service Unavailable)
 
-* Check if your instance is overloaded; consider increasing instances or resource allocation.
-* Increase the API timeout ([API module configuration](configuration#api)).
-* Increase the LibreOffice startup timeout ([LibreOffice module configuration](configuration#libreoffice)).
-* Optionally, set a maximum queue size for quicker request aborts ([LibreOffice module configuration](configuration#libreoffice)).
+- Check if your instance is overloaded; consider increasing instances or resource allocation.
+- Increase the API timeout ([API module configuration](configuration#api)).
+- Increase the LibreOffice startup timeout ([LibreOffice module configuration](configuration#libreoffice)).
+- Optionally, set a maximum queue size for quicker request aborts ([LibreOffice module configuration](configuration#libreoffice)).

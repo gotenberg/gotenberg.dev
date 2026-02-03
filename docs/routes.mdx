@@ -3,10 +3,10 @@ id: routes
 title: Routes
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
-Most routes within Gotenberg are designed to accept *multipart/form-data* requests and generate one or more PDF files.
+Most routes within Gotenberg are designed to accept _multipart/form-data_ requests and generate one or more PDF files.
 This guide will assist you in understanding their usage.
 
 ## Convert with Chromium
@@ -18,7 +18,7 @@ Checkout the [Chromium module configuration](configuration#chromium) to tailor t
 
 ### URL into PDF <span class="badge badge--secondary">route</span>
 
-This *multipart/form-data* route converts a web page into PDF.
+This _multipart/form-data_ route converts a web page into PDF.
 
 ```
 POST /forms/chromium/convert/url
@@ -27,7 +27,7 @@ POST /forms/chromium/convert/url
 It accepts the following specific form field:
 
 | Key | Description                                   |                                                   |
-|-----|-----------------------------------------------|---------------------------------------------------|
+| --- | --------------------------------------------- | ------------------------------------------------- |
 | url | URL of the page you want to convert into PDF. | <span class="badge badge--danger">required</span> |
 
 <Tabs
@@ -67,8 +67,8 @@ Gotenberg-Trace: {trace}
 Body: {output-file}
 ```
 
-* See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
-* See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
+- See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
+- See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
 
 </TabItem>
 <TabItem value="400">
@@ -81,21 +81,21 @@ Gotenberg-Trace: {trace}
 Body: {error}
 ```
 
-Gotenberg also returns a *400 Bad Request* if it encounters any of the following network errors while attempting to load
+Gotenberg also returns a _400 Bad Request_ if it encounters any of the following network errors while attempting to load
 the main page:
 
-* `net::ERR_CONNECTION_CLOSED`
-* `net::ERR_CONNECTION_RESET`
-* `net::ERR_CONNECTION_REFUSED`
-* `net::ERR_CONNECTION_ABORTED`
-* `net::ERR_CONNECTION_FAILED`
-* `net::ERR_NAME_NOT_RESOLVED`
-* `net::ERR_INTERNET_DISCONNECTED`
-* `net::ERR_ADDRESS_UNREACHABLE`
-* `net::ERR_BLOCKED_BY_CLIENT`
-* `net::ERR_BLOCKED_BY_RESPONSE`
-* `net::ERR_FILE_NOT_FOUND`
-* `net::ERR_HTTP2_PROTOCOL_ERROR`
+- `net::ERR_CONNECTION_CLOSED`
+- `net::ERR_CONNECTION_RESET`
+- `net::ERR_CONNECTION_REFUSED`
+- `net::ERR_CONNECTION_ABORTED`
+- `net::ERR_CONNECTION_FAILED`
+- `net::ERR_NAME_NOT_RESOLVED`
+- `net::ERR_INTERNET_DISCONNECTED`
+- `net::ERR_ADDRESS_UNREACHABLE`
+- `net::ERR_BLOCKED_BY_CLIENT`
+- `net::ERR_BLOCKED_BY_RESPONSE`
+- `net::ERR_FILE_NOT_FOUND`
+- `net::ERR_HTTP2_PROTOCOL_ERROR`
 
 </TabItem>
 <TabItem value="403">
@@ -113,7 +113,7 @@ Body: '{url}' does not match the authorized URLs
 </TabItem>
 <TabItem value="503">
 
-If a request doesn't complete within a specified duration, the API will respond with a *503 Service Unavailable* status.
+If a request doesn't complete within a specified duration, the API will respond with a _503 Service Unavailable_ status.
 
 See the [API module configuration](configuration#api) for more details.
 
@@ -128,7 +128,7 @@ Body: Service Unavailable
 
 ### HTML file into PDF <span class="badge badge--secondary">route</span>
 
-This *multipart/form-data* route converts an HTML file into PDF.
+This _multipart/form-data_ route converts an HTML file into PDF.
 
 ```
 POST /forms/chromium/convert/html
@@ -137,7 +137,7 @@ POST /forms/chromium/convert/html
 It accepts the following specific form file:
 
 | Key        | Description                        |                                                   |
-|------------|------------------------------------|---------------------------------------------------|
+| ---------- | ---------------------------------- | ------------------------------------------------- |
 | index.html | The HTML file to convert into PDF. | <span class="badge badge--danger">required</span> |
 
 For instance:
@@ -191,8 +191,8 @@ Gotenberg-Trace: {trace}
 Body: {output-file}
 ```
 
-* See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
-* See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
+- See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
+- See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
 
 </TabItem>
 <TabItem value="400">
@@ -205,26 +205,26 @@ Gotenberg-Trace: {trace}
 Body: {error}
 ```
 
-Gotenberg also returns a *400 Bad Request* if it encounters any of the following network errors while attempting to load
+Gotenberg also returns a _400 Bad Request_ if it encounters any of the following network errors while attempting to load
 the main page:
 
-* `net::ERR_CONNECTION_CLOSED`
-* `net::ERR_CONNECTION_RESET`
-* `net::ERR_CONNECTION_REFUSED`
-* `net::ERR_CONNECTION_ABORTED`
-* `net::ERR_CONNECTION_FAILED`
-* `net::ERR_NAME_NOT_RESOLVED`
-* `net::ERR_INTERNET_DISCONNECTED`
-* `net::ERR_ADDRESS_UNREACHABLE`
-* `net::ERR_BLOCKED_BY_CLIENT`
-* `net::ERR_BLOCKED_BY_RESPONSE`
-* `net::ERR_FILE_NOT_FOUND`
-* `net::ERR_HTTP2_PROTOCOL_ERROR`
+- `net::ERR_CONNECTION_CLOSED`
+- `net::ERR_CONNECTION_RESET`
+- `net::ERR_CONNECTION_REFUSED`
+- `net::ERR_CONNECTION_ABORTED`
+- `net::ERR_CONNECTION_FAILED`
+- `net::ERR_NAME_NOT_RESOLVED`
+- `net::ERR_INTERNET_DISCONNECTED`
+- `net::ERR_ADDRESS_UNREACHABLE`
+- `net::ERR_BLOCKED_BY_CLIENT`
+- `net::ERR_BLOCKED_BY_RESPONSE`
+- `net::ERR_FILE_NOT_FOUND`
+- `net::ERR_HTTP2_PROTOCOL_ERROR`
 
 </TabItem>
 <TabItem value="503">
 
-If a request doesn't complete within a specified duration, the API will respond with a *503 Service Unavailable* status.
+If a request doesn't complete within a specified duration, the API will respond with a _503 Service Unavailable_ status.
 
 See the [API module configuration](configuration#api) for more details.
 
@@ -309,7 +309,7 @@ path resolution for any relative href.
 
 ### Markdown file(s) into PDF <span class="badge badge--secondary">route</span>
 
-This *multipart/form-data* route converts Markdown file(s) into PDF.
+This _multipart/form-data_ route converts Markdown file(s) into PDF.
 
 ```
 POST /forms/chromium/convert/markdown
@@ -318,18 +318,18 @@ POST /forms/chromium/convert/markdown
 It accepts the following specific form files:
 
 | Key        | Description                                    |                                                   |
-|------------|------------------------------------------------|---------------------------------------------------|
+| ---------- | ---------------------------------------------- | ------------------------------------------------- |
 | index.html | The HTML file that wraps the markdown content. | <span class="badge badge--danger">required</span> |
-| *.md       | At least one markdown file.                    | <span class="badge badge--danger">required</span> |
+| \*.md      | At least one markdown file.                    | <span class="badge badge--danger">required</span> |
 
 It works like the [HTML](#html) route but with access to a Go template function `toHTML`. This function converts a
 markdown file's content into HTML (with [MathJaX](https://www.mathjax.org/) support).
 
 ```html {8}
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <title>My PDF</title>
   </head>
   <body>
@@ -375,8 +375,8 @@ Gotenberg-Trace: {trace}
 Body: {output-file}
 ```
 
-* See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
-* See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
+- See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
+- See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
 
 </TabItem>
 <TabItem value="400">
@@ -389,26 +389,26 @@ Gotenberg-Trace: {trace}
 Body: {error}
 ```
 
-Gotenberg also returns a *400 Bad Request* if it encounters any of the following network errors while attempting to load
+Gotenberg also returns a _400 Bad Request_ if it encounters any of the following network errors while attempting to load
 the main page:
 
-* `net::ERR_CONNECTION_CLOSED`
-* `net::ERR_CONNECTION_RESET`
-* `net::ERR_CONNECTION_REFUSED`
-* `net::ERR_CONNECTION_ABORTED`
-* `net::ERR_CONNECTION_FAILED`
-* `net::ERR_NAME_NOT_RESOLVED`
-* `net::ERR_INTERNET_DISCONNECTED`
-* `net::ERR_ADDRESS_UNREACHABLE`
-* `net::ERR_BLOCKED_BY_CLIENT`
-* `net::ERR_BLOCKED_BY_RESPONSE`
-* `net::ERR_FILE_NOT_FOUND`
-* `net::ERR_HTTP2_PROTOCOL_ERROR`
+- `net::ERR_CONNECTION_CLOSED`
+- `net::ERR_CONNECTION_RESET`
+- `net::ERR_CONNECTION_REFUSED`
+- `net::ERR_CONNECTION_ABORTED`
+- `net::ERR_CONNECTION_FAILED`
+- `net::ERR_NAME_NOT_RESOLVED`
+- `net::ERR_INTERNET_DISCONNECTED`
+- `net::ERR_ADDRESS_UNREACHABLE`
+- `net::ERR_BLOCKED_BY_CLIENT`
+- `net::ERR_BLOCKED_BY_RESPONSE`
+- `net::ERR_FILE_NOT_FOUND`
+- `net::ERR_HTTP2_PROTOCOL_ERROR`
 
 </TabItem>
 <TabItem value="503">
 
-If a request doesn't complete within a specified duration, the API will respond with a *503 Service Unavailable* status.
+If a request doesn't complete within a specified duration, the API will respond with a _503 Service Unavailable_ status.
 
 See the [API module configuration](configuration#api) for more details.
 
@@ -426,7 +426,7 @@ Body: Service Unavailable
 Each route accepts the following form fields:
 
 | Key                     | Description                                                                                                               | Default   |
-|-------------------------|---------------------------------------------------------------------------------------------------------------------------|-----------|
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------- | --------- |
 | singlePage              | Define whether to print the entire content in one single page.                                                            | false     |
 | paperWidth              | Specify paper width using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.      | 8.5       |
 | paperHeight             | Specify paper height using units like 72pt, 96px, 1in, 25.4mm, 2.54cm, or 6pc. Default unit is inches if unspecified.     | 11        |
@@ -475,7 +475,7 @@ curl \
 
 :::info
 
-If the `singlePage` form field is set to *true*, it automatically overrides the values from the `paperHeight` and
+If the `singlePage` form field is set to _true_, it automatically overrides the values from the `paperHeight` and
 `nativePageRanges` form fields.
 
 :::
@@ -484,17 +484,17 @@ If the `singlePage` form field is set to *true*, it automatically overrides the 
 
 Examples of paper size (width x height):
 
-* `Letter` - 8.5 x 11 (default)
-* `Legal` - 8.5 x 14
-* `Tabloid` - 11 x 17
-* `Ledger` - 17 x 11
-* `A0` - 33.1 x 46.8
-* `A1` - 23.4 x 33.1
-* `A2` - 16.54 x 23.4
-* `A3` - 11.7 x 16.54
-* `A4` - 8.27 x 11.7
-* `A5` - 5.83 x 8.27
-* `A6` - 4.13 x 5.83
+- `Letter` - 8.5 x 11 (default)
+- `Legal` - 8.5 x 14
+- `Tabloid` - 11 x 17
+- `Ledger` - 17 x 11
+- `A0` - 33.1 x 46.8
+- `A1` - 23.4 x 33.1
+- `A2` - 16.54 x 23.4
+- `A3` - 11.7 x 16.54
+- `A4` - 8.27 x 11.7
+- `A5` - 5.83 x 8.27
+- `A6` - 4.13 x 5.83
 
 :::
 
@@ -502,12 +502,12 @@ Examples of paper size (width x height):
 
 The rules regarding the `printBackground` and `omitBackground` form fields are the following:
 
-* If `printBackground` is set to *false*, no background is printed.
-* If `printBackground` is set to *true*:
-    * If the HTML document has a background, that background is used.
-    * If not:
-        * If `omitBackground` is set to *true*, the default background is transparent.
-        * If not, the default white background is used.
+- If `printBackground` is set to _false_, no background is printed.
+- If `printBackground` is set to _true_:
+  - If the HTML document has a background, that background is used.
+  - If not:
+    - If `omitBackground` is set to _true_, the default background is transparent.
+    - If not, the default white background is used.
 
 :::
 
@@ -516,7 +516,7 @@ The rules regarding the `printBackground` and `omitBackground` form fields are t
 Each route accepts the following form files:
 
 | Key         | Description                      | Default |
-|-------------|----------------------------------|---------|
+| ----------- | -------------------------------- | ------- |
 | header.html | HTML file containing the header. | None    |
 | footer.html | HTML file containing the footer. | None    |
 
@@ -544,23 +544,23 @@ Each of them has to be a **complete HTML document**:
 
 ```html
 <html>
-<head>
+  <head>
     <style>
-    body {
+      body {
         font-size: 12px;
         margin: auto 20px;
-    }
+      }
     </style>
-</head>
-<body>
-<p><span class="pageNumber"></span> of <span class="totalPages"></span></p>
-</body>
+  </head>
+  <body>
+    <p><span class="pageNumber"></span> of <span class="totalPages"></span></p>
+  </body>
 </html>
 ```
 
 :::info
 
-It is recommended to use a *large* `font-size` to ensure that the content displays correctly.
+It is recommended to use a _large_ `font-size` to ensure that the content displays correctly.
 
 :::
 
@@ -568,11 +568,11 @@ It is recommended to use a *large* `font-size` to ensure that the content displa
 
 The following classes allow you to inject printing values:
 
-* `date` - formatted print date.
-* `title` - document title.
-* `url` - document location.
-* `pageNumber` - current page number.
-* `totalPages` - total pages in the document.
+- `date` - formatted print date.
+- `title` - document title.
+- `url` - document location.
+- `pageNumber` - current page number.
+- `totalPages` - total pages in the document.
 
 :::
 
@@ -580,14 +580,14 @@ The following classes allow you to inject printing values:
 
 There are some limitations:
 
-* No JavaScript.
-* The CSS properties are independent of the ones from the HTML document.
-* `footer.html` CSS properties override the ones from `header.html`.
-* Only fonts installed in the Docker image are loaded - see the [fonts configuration section](configuration#fonts).
-* Images only work using a base64 encoded source - i.e., `data:image/png;base64, iVBORw0K...`.
-* `background-color` and `color` CSS properties require an additional `-webkit-print-color-adjust: exact` CSS property in order to work.
-* Assets are not loaded (i.e., CSS files, scripts, fonts, etc.).
-* Background form fields do not apply.
+- No JavaScript.
+- The CSS properties are independent of the ones from the HTML document.
+- `footer.html` CSS properties override the ones from `header.html`.
+- Only fonts installed in the Docker image are loaded - see the [fonts configuration section](configuration#fonts).
+- Images only work using a base64 encoded source - i.e., `data:image/png;base64, iVBORw0K...`.
+- `background-color` and `color` CSS properties require an additional `-webkit-print-color-adjust: exact` CSS property in order to work.
+- Assets are not loaded (i.e., CSS files, scripts, fonts, etc.).
+- Background form fields do not apply.
 
 :::
 
@@ -602,9 +602,9 @@ Remove external assets from your header and footer; they can slow rendering or c
 Each route accepts the following form fields:
 
 | Key               | Description                                                                                            | Default |
-|-------------------|--------------------------------------------------------------------------------------------------------|---------|
+| ----------------- | ------------------------------------------------------------------------------------------------------ | ------- |
 | waitDelay         | Duration (e.g, '5s') to wait when loading an HTML document before converting it into PDF.              | None    |
-| waitForExpression | The JavaScript expression to wait before converting an HTML document into PDF until it returns *true*. | None    |
+| waitForExpression | The JavaScript expression to wait before converting an HTML document into PDF until it returns _true_. | None    |
 | waitForSelector   | Selector (e.g. '#id') to query before converting an HTML document into PDF until it matches a node.    | None    |
 
 :::info
@@ -645,9 +645,9 @@ A more reliable option than the previous form field:
 
 ```js
 // Somewhere in the HTML document.
-var globalVar = 'notReady'
-await promises()
-window.globalVar = 'ready'
+var globalVar = "notReady";
+await promises();
+window.globalVar = "ready";
 ```
 
 <Tabs
@@ -675,10 +675,10 @@ Instead of waiting on an expression, you can wait until a node matching a select
 
 ```js
 // Somewhere in the HTML document
-await promises()
-const newText = document.createElement("p")
-newText.id = "special-id"
-document.insertBefore(newText, null)
+await promises();
+const newText = document.createElement("p");
+newText.id = "special-id";
+document.insertBefore(newText, null);
 ```
 
 <Tabs
@@ -705,7 +705,7 @@ curl \
 Each route accepts the following form field:
 
 | Key               | Description                                                                  | Default |
-|-------------------|------------------------------------------------------------------------------|---------|
+| ----------------- | ---------------------------------------------------------------------------- | ------- |
 | emulatedMediaType | The media type to emulate, either "screen" or "print" - empty means "print". | print   |
 
 Some websites have dedicated CSS rules for print. Using "screen" allows you to force the "standard" CSS rules.
@@ -734,7 +734,7 @@ curl \
 Each route accepts the following form field:
 
 | Key     | Description                                                | Default |
-|---------|------------------------------------------------------------|---------|
+| ------- | ---------------------------------------------------------- | ------- |
 | cookies | Cookies to store in the Chromium cookie jar (JSON format). | None    |
 
 :::info
@@ -750,7 +750,7 @@ For further details, refer to the [API module configuration](configuration#api) 
 This form field is a JSON-formatted array with items accepting the following keys:
 
 | Key      | Description                                    | Default                                           |
-|----------|------------------------------------------------|---------------------------------------------------|
+| -------- | ---------------------------------------------- | ------------------------------------------------- |
 | name     | Cookie name.                                   | <span class="badge badge--danger">required</span> |
 | value    | Cookie value.                                  | <span class="badge badge--danger">required</span> |
 | domain   | Cookie domain.                                 | <span class="badge badge--danger">required</span> |
@@ -783,7 +783,7 @@ curl \
 Each route accepts the following form fields:
 
 | Key              | Description                                           | Default |
-|------------------|-------------------------------------------------------|---------|
+| ---------------- | ----------------------------------------------------- | ------- |
 | userAgent        | Override the default `User-Agent` HTTP header.        | None    |
 | extraHttpHeaders | Extra HTTP headers to send by Chromium (JSON format). | None    |
 
@@ -806,12 +806,12 @@ curl \
 
 :::info
 
-You can add an optional *scope* token to a header value to restrict its application using a regular expression.
+You can add an optional _scope_ token to a header value to restrict its application using a regular expression.
 
 For example, `"X-Scoped-Header":"value;scope=https?:\\/\\/([a-zA-Z0-9-]+\\.)*domain\\.com\\/.*"` will apply the
 `X-Scoped-Header` only to requests directed at domain.com and its subdomains.
 
-Note that the *scope* token is only processed by Gotenberg and is never sent with the header value.
+Note that the _scope_ token is only processed by Gotenberg and is never sent with the header value.
 
 :::
 
@@ -823,21 +823,22 @@ Note that the *scope* token is only processed by Gotenberg and is never sent wit
 Each route accepts the following form field:
 
 | Key                             | Description                                                                                            | Default     |
-|---------------------------------|--------------------------------------------------------------------------------------------------------|-------------|
-| failOnHttpStatusCodes           | Return a *409 Conflict* response if the HTTP status code from the main page is not acceptable.         | \[499,599\] |
-| failOnResourceHttpStatusCodes   | Return a *409 Conflict* response if the HTTP status code from at least one resource is not acceptable. | None        |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------ | ----------- |
+| failOnHttpStatusCodes           | Return a _409 Conflict_ response if the HTTP status code from the main page is not acceptable.         | \[499,599\] |
+| failOnResourceHttpStatusCodes   | Return a _409 Conflict_ response if the HTTP status code from at least one resource is not acceptable. | None        |
 | ignoreResourceHttpStatusDomains | Exclude resources from `failOnResourceHttpStatusCodes` checks based on their hostname.                 | None        |
 
-An *X99* entry means every HTTP status codes between *X00* and *X99* (e.g., 499 means every HTTP status codes between 400 and 499).
+An _X99_ entry means every HTTP status codes between _X00_ and _X99_ (e.g., 499 means every HTTP status codes between 400 and 499).
 
 The `ignoreResourceHttpStatusDomains` option allows you to exclude specific domains from the resource HTTP status code checks.
 A match happens if the hostname equals the domain or is a subdomain of it (e.g., `browser.sentry-cdn.com` matches `sentry-cdn.com`).
 
 Values are normalized (trimmed, lowercased) and may be provided as:
-* `example.com`
-* `*.example.com` or `.example.com`
-* `example.com:443` (port is ignored)
-* `https://example.com/path` (scheme/path are ignored)
+
+- `example.com`
+- `*.example.com` or `.example.com`
+- `example.com:443` (port is ignored)
+- `https://example.com/path` (scheme/path are ignored)
 
 <Tabs
 defaultValue="curl"
@@ -899,27 +900,27 @@ curl \
 
 ### Network Errors {#network-errors-chromium}
 
-Gotenberg returns a *400 Bad Request* if it encounters any of the following network errors while attempting to load
+Gotenberg returns a _400 Bad Request_ if it encounters any of the following network errors while attempting to load
 the main page:
 
-* `net::ERR_CONNECTION_CLOSED`
-* `net::ERR_CONNECTION_RESET`
-* `net::ERR_CONNECTION_REFUSED`
-* `net::ERR_CONNECTION_ABORTED`
-* `net::ERR_CONNECTION_FAILED`
-* `net::ERR_NAME_NOT_RESOLVED`
-* `net::ERR_INTERNET_DISCONNECTED`
-* `net::ERR_ADDRESS_UNREACHABLE`
-* `net::ERR_BLOCKED_BY_CLIENT`
-* `net::ERR_BLOCKED_BY_RESPONSE`
-* `net::ERR_FILE_NOT_FOUND`
-* `net::ERR_HTTP2_PROTOCOL_ERROR`
+- `net::ERR_CONNECTION_CLOSED`
+- `net::ERR_CONNECTION_RESET`
+- `net::ERR_CONNECTION_REFUSED`
+- `net::ERR_CONNECTION_ABORTED`
+- `net::ERR_CONNECTION_FAILED`
+- `net::ERR_NAME_NOT_RESOLVED`
+- `net::ERR_INTERNET_DISCONNECTED`
+- `net::ERR_ADDRESS_UNREACHABLE`
+- `net::ERR_BLOCKED_BY_CLIENT`
+- `net::ERR_BLOCKED_BY_RESPONSE`
+- `net::ERR_FILE_NOT_FOUND`
+- `net::ERR_HTTP2_PROTOCOL_ERROR`
 
 If you want a similar behavior for resources too, you may use the following form field:
 
 | Key                         | Description                                                                       | Default |
-|-----------------------------|-----------------------------------------------------------------------------------|---------|
-| failOnResourceLoadingFailed | Return a *409 Conflict* response if Chromium fails to load at least one resource. | false   |
+| --------------------------- | --------------------------------------------------------------------------------- | ------- |
+| failOnResourceLoadingFailed | Return a _409 Conflict_ response if Chromium fails to load at least one resource. | false   |
 
 <Tabs
 defaultValue="curl"
@@ -969,8 +970,8 @@ It's currently not possible to have more details about the exact resource that i
 Each route accepts the following form field:
 
 | Key                     | Description                                                                       | Default |
-|-------------------------|-----------------------------------------------------------------------------------|---------|
-| failOnConsoleExceptions | Return a *409 Conflict* response if there are exceptions in the Chromium console. | false   |
+| ----------------------- | --------------------------------------------------------------------------------- | ------- |
+| failOnConsoleExceptions | Return a _409 Conflict_ response if there are exceptions in the Chromium console. | false   |
 
 :::info
 
@@ -1027,14 +1028,14 @@ at file:///tmp/db09d2c8-31e3-4058-9923-c2705350f2b3/index.html:21:11:
 Each route accepts the following form field:
 
 | Key                  | Description                                  | Default |
-|----------------------|----------------------------------------------|---------|
+| -------------------- | -------------------------------------------- | ------- |
 | skipNetworkIdleEvent | Do not wait for Chromium network to be idle. | true    |
 
 By default, Gotenberg does not wait for the network idle event, significantly speeding up the conversion process.
 
 :::warning
 
-Prior to Gotenberg *8.11.0*, `false` was the default value.
+Prior to Gotenberg _8.11.0_, `false` was the default value.
 
 :::
 
@@ -1062,19 +1063,19 @@ curl \
 Each route accepts the following form fields:
 
 | Key        | Description                                                                                                                        | Default |
-|------------|------------------------------------------------------------------------------------------------------------------------------------|---------|
-| splitMode  | Either *intervals* or *pages*.                                                                                                     | None    |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| splitMode  | Either _intervals_ or _pages_.                                                                                                     | None    |
 | splitSpan  | Either the intervals or the page ranges to extract, depending on the selected mode.                                                | None    |
-| splitUnify | Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with *pages* mode. | false   |
+| splitUnify | Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with _pages_ mode. | false   |
 
 :::caution
 
-Gotenberg currently does not validate the `splitSpan` value if `splitMode` is *pages*, as it depends on the selected
+Gotenberg currently does not validate the `splitSpan` value if `splitMode` is _pages_, as it depends on the selected
 engine for the split feature:
 
-* [pdfcpu](https://pdfcpu.io/core/trim)
-* [QPDF](https://qpdf.readthedocs.io/en/stable/cli.html#page-ranges)
-* [PDFtk](https://www.pdflabs.com/docs/pdftk-man-page/#dest-op-cat)
+- [pdfcpu](https://pdfcpu.io/core/trim)
+- [QPDF](https://qpdf.readthedocs.io/en/stable/cli.html#page-ranges)
+- [PDFtk](https://www.pdflabs.com/docs/pdftk-man-page/#dest-op-cat)
 
 See also the [PDF Engines module configuration](configuration#pdf-engines) for more details.
 
@@ -1126,22 +1127,22 @@ curl \
 Each route accepts the following form fields:
 
 | Key   | Description                                                | Default |
-|-------|------------------------------------------------------------|---------|
+| ----- | ---------------------------------------------------------- | ------- |
 | pdfa  | Convert the resulting PDF into the given PDF/A format.     | None    |
 | pdfua | Enable PDF for Universal Access for optimal accessibility. | false   |
 
 :::info
 
-As of Gotenberg *8.21.0*, using the `generateTaggedPdf` form field may yield better results if you're prioritizing
+As of Gotenberg _8.21.0_, using the `generateTaggedPdf` form field may yield better results if you're prioritizing
 accessibility over strict (and sometimes hacky) PDF/UA compliance.
 
 :::
 
 At present, the following PDF/A formats are available:
 
-* `PDF/A-1b`
-* `PDF/A-2b`
-* `PDF/A-3b`
+- `PDF/A-1b`
+- `PDF/A-2b`
+- `PDF/A-3b`
 
 <Tabs
 defaultValue="curl"
@@ -1168,7 +1169,7 @@ curl \
 Each route accepts the following form field:
 
 | Key      | Description                          | Default |
-|----------|--------------------------------------|---------|
+| -------- | ------------------------------------ | ------- |
 | metadata | The metadata to write (JSON format). | None    |
 
 :::info
@@ -1208,7 +1209,7 @@ curl \
 Each route accepts the following form field:
 
 | Key     | Description                | Default |
-|---------|----------------------------|---------|
+| ------- | -------------------------- | ------- |
 | flatten | Flatten the resulting PDF. | false   |
 
 <Tabs
@@ -1235,7 +1236,7 @@ curl \
 Each route accepts the following specific form fields:
 
 | Key           | Description                                       | Default |
-|---------------|---------------------------------------------------|---------|
+| ------------- | ------------------------------------------------- | ------- |
 | userPassword  | Password for opening the resulting PDF(s).        | None    |
 | ownerPassword | Password for full access on the resulting PDF(s). | None    |
 
@@ -1277,8 +1278,8 @@ Gotenberg-Trace: {trace}
 Body: {output-file}
 ```
 
-* See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
-* See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
+- See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
+- See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
 
 </TabItem>
 <TabItem value="400">
@@ -1294,7 +1295,7 @@ Body: {error}
 </TabItem>
 <TabItem value="503">
 
-If a request doesn't complete within a specified duration, the API will respond with a *503 Service Unavailable* status.
+If a request doesn't complete within a specified duration, the API will respond with a _503 Service Unavailable_ status.
 
 See the [API module configuration](configuration#api) for more details.
 
@@ -1303,6 +1304,7 @@ Content-Type: text/plain; charset=UTF-8
 Gotenberg-Trace: {trace}
 Body: Service Unavailable
 ```
+
 </TabItem>
 </Tabs>
 
@@ -1313,7 +1315,7 @@ This feature enables the creation of PDFs compatible with standards like [ZUGFeR
 Each route accepts the following form field to attach files to the generated PDF:
 
 | Key    | Description                                       | Default |
-|--------|---------------------------------------------------|---------|
+| ------ | ------------------------------------------------- | ------- |
 | embeds | Files to embed in the generated PDF (repeatable). | None    |
 
 <Tabs
@@ -1361,7 +1363,7 @@ POST /forms/chromium/screenshot/markdown
 These routes accept the following form fields:
 
 | Key              | Description                                                                           | Default |
-|------------------|---------------------------------------------------------------------------------------|---------|
+| ---------------- | ------------------------------------------------------------------------------------- | ------- |
 | width            | The device screen width in pixels.                                                    | 800     |
 | height           | The device screen height in pixels.                                                   | 600     |
 | clip             | Define whether to clip the screenshot according to the device dimensions.             | false   |
@@ -1372,13 +1374,13 @@ These routes accept the following form fields:
 
 The following features are also available:
 
-* [Wait Before Rendering](#wait-before-rendering-chromium)
-* [Emulated Media Type](#emulated-media-type-chromium)
-* [Cookies](#cookies-chromium)
-* [Custom HTTP headers](#custom-http-headers-chromium)
-* [Invalid HTTP Status Codes](#invalid-http-status-codes-chromium)
-* [Console Exceptions](#console-exceptions-chromium)
-* [Performance Mode](#performance-mode-chromium)
+- [Wait Before Rendering](#wait-before-rendering-chromium)
+- [Emulated Media Type](#emulated-media-type-chromium)
+- [Cookies](#cookies-chromium)
+- [Custom HTTP headers](#custom-http-headers-chromium)
+- [Invalid HTTP Status Codes](#invalid-http-status-codes-chromium)
+- [Console Exceptions](#console-exceptions-chromium)
+- [Performance Mode](#performance-mode-chromium)
 
 <Tabs
 defaultValue="curl"
@@ -1403,7 +1405,7 @@ curl \
 
 :::info
 
-If your screenshots' content is repeated and clipped, consider setting the `skipNetworkIdleEvent` form field to *false*.
+If your screenshots' content is repeated and clipped, consider setting the `skipNetworkIdleEvent` form field to _false_.
 
 See issue [#1065](https://github.com/gotenberg/gotenberg/issues/1065#issuecomment-2670882337).
 
@@ -1425,7 +1427,7 @@ images.
 
 ### Office documents into PDFs <span class="badge badge--secondary">route</span>
 
-This *multipart/form-data* route convert one or more Office documents into PDF.
+This _multipart/form-data_ route convert one or more Office documents into PDF.
 
 ```
 POST /forms/libreoffice/convert
@@ -1619,8 +1621,8 @@ Gotenberg-Trace: {trace}
 Body: {output-file}
 ```
 
-* See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
-* See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
+- See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
+- See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
 
 </TabItem>
 <TabItem value="400">
@@ -1636,7 +1638,7 @@ Body: {error}
 </TabItem>
 <TabItem value="503">
 
-If a request doesn't complete within a specified duration, the API will respond with a *503 Service Unavailable* status.
+If a request doesn't complete within a specified duration, the API will respond with a _503 Service Unavailable_ status.
 
 See the [API module configuration](configuration#api) for more details.
 
@@ -1654,7 +1656,7 @@ Body: Service Unavailable
 The route also accepts the following form fields:
 
 | Key                             | Description                                                                                                                                                                   | Default   |
-|---------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|
+| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
 | password                        | Set the password for opening the source file.                                                                                                                                 | None      |
 | landscape                       | Set the paper orientation to landscape.                                                                                                                                       | false     |
 | nativePageRanges                | Page ranges to print, e.g., '1-4' - empty means all pages.                                                                                                                    | All pages |
@@ -1666,7 +1668,7 @@ The route also accepts the following form fields:
 | exportPlaceholders              | Export the placeholders fields visual markings only. The exported placeholder is ineffective.                                                                                 | false     |
 | exportNotes                     | Specify if notes are exported to PDF.                                                                                                                                         | false     |
 | exportNotesPages                | Specify if notes pages are exported to PDF. Notes pages are available in Impress documents only.                                                                              | false     |
-| exportOnlyNotesPages            | Specify, if the form field *exportNotesPages* is set to true, if only notes pages are exported to PDF.                                                                        | false     |
+| exportOnlyNotesPages            | Specify, if the form field _exportNotesPages_ is set to true, if only notes pages are exported to PDF.                                                                        | false     |
 | exportNotesInMargin             | Specify if notes in margin are exported to PDF.                                                                                                                               | false     |
 | convertOooTargetToPdfTarget     | Specify that the target documents with .od[tpgs] extension, will have that extension changed to .pdf when the link is exported to PDF. The source document remains untouched. | false     |
 | exportLinksRelativeFsys         | Specify that the file system related hyperlinks (file:// protocol) present in the document will be exported as relative to the source document location.                      | false     |
@@ -1721,17 +1723,16 @@ curl \
 </TabItem>
 </Tabs>
 
-
 ### Compress {#compress-libreoffice}
 
 The route accepts the following form fields:
 
 | Key                      | Description                                                                                                                                                              | Default |
-|--------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------- |
 | losslessImageCompression | Specify if images are exported to PDF using a lossless compression format like PNG or compressed using the JPEG format.                                                  | false   |
 | quality                  | Specify the quality of the JPG export. A higher value produces a higher-quality image and a larger file. Between 1 and 100.                                              | 90      |
-| reduceImageResolution    | Specify if the resolution of each image is reduced to the resolution specified by the form field *maxImageResolution*.                                                   | false   |
-| maxImageResolution       | If the form field *reduceImageResolution* is set to true, tell if all images will be reduced to the given value in DPI. Possible values are: 75, 150, 300, 600 and 1200. | 300     |
+| reduceImageResolution    | Specify if the resolution of each image is reduced to the resolution specified by the form field _maxImageResolution_.                                                   | false   |
+| maxImageResolution       | If the form field _reduceImageResolution_ is set to true, tell if all images will be reduced to the given value in DPI. Possible values are: 75, 150, 300, 600 and 1200. | 300     |
 
 <Tabs
 defaultValue="curl"
@@ -1760,7 +1761,7 @@ curl \
 The route also accepts the following form fields:
 
 | Key   | Description                                | Default |
-|-------|--------------------------------------------|---------|
+| ----- | ------------------------------------------ | ------- |
 | merge | Merge alphanumerically the resulting PDFs. | false   |
 
 :::info
@@ -1794,19 +1795,19 @@ curl \
 The route accepts the following form fields:
 
 | Key        | Description                                                                                                                        | Default |
-|------------|------------------------------------------------------------------------------------------------------------------------------------|---------|
-| splitMode  | Either *intervals* or *pages*.                                                                                                     | None    |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| splitMode  | Either _intervals_ or _pages_.                                                                                                     | None    |
 | splitSpan  | Either the intervals or the page ranges to extract, depending on the selected mode.                                                | None    |
-| splitUnify | Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with *pages* mode. | false   |
+| splitUnify | Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with _pages_ mode. | false   |
 
 :::caution
 
-Gotenberg currently does not validate the `splitSpan` value if `splitMode` is *pages*, as it depends on the selected
+Gotenberg currently does not validate the `splitSpan` value if `splitMode` is _pages_, as it depends on the selected
 engine for the split feature:
 
-* [pdfcpu](https://pdfcpu.io/core/trim)
-* [QPDF](https://qpdf.readthedocs.io/en/stable/cli.html#page-ranges)
-* [PDFtk](https://www.pdflabs.com/docs/pdftk-man-page/#dest-op-cat)
+- [pdfcpu](https://pdfcpu.io/core/trim)
+- [QPDF](https://qpdf.readthedocs.io/en/stable/cli.html#page-ranges)
+- [PDFtk](https://www.pdflabs.com/docs/pdftk-man-page/#dest-op-cat)
 
 See also the [PDF Engines module configuration](configuration#pdf-engines) for more details.
 
@@ -1858,15 +1859,15 @@ curl \
 The route also accepts the following form fields:
 
 | Key   | Description                                                | Default |
-|-------|------------------------------------------------------------|---------|
+| ----- | ---------------------------------------------------------- | ------- |
 | pdfa  | Convert the resulting PDF into the given PDF/A format.     | None    |
 | pdfua | Enable PDF for Universal Access for optimal accessibility. | false   |
 
 At present, the following PDF/A formats are available:
 
-* `PDF/A-1b`
-* `PDF/A-2b`
-* `PDF/A-3b`
+- `PDF/A-1b`
+- `PDF/A-2b`
+- `PDF/A-3b`
 
 <Tabs
 defaultValue="curl"
@@ -1893,7 +1894,7 @@ curl \
 The route accepts the following form field:
 
 | Key      | Description                          | Default |
-|----------|--------------------------------------|---------|
+| -------- | ------------------------------------ | ------- |
 | metadata | The metadata to write (JSON format). | None    |
 
 :::info
@@ -1933,7 +1934,7 @@ curl \
 The route accepts the following form field:
 
 | Key     | Description                | Default |
-|---------|----------------------------|---------|
+| ------- | -------------------------- | ------- |
 | flatten | Flatten the resulting PDF. | false   |
 
 <Tabs
@@ -1960,7 +1961,7 @@ curl \
 The route accepts the following specific form fields:
 
 | Key           | Description                                       | Default |
-|---------------|---------------------------------------------------|---------|
+| ------------- | ------------------------------------------------- | ------- |
 | userPassword  | Password for opening the resulting PDF(s).        | None    |
 | ownerPassword | Password for full access on the resulting PDF(s). | None    |
 
@@ -2002,8 +2003,8 @@ Gotenberg-Trace: {trace}
 Body: {output-file}
 ```
 
-* See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
-* See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
+- See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
+- See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
 
 </TabItem>
 <TabItem value="400">
@@ -2019,7 +2020,7 @@ Body: {error}
 </TabItem>
 <TabItem value="503">
 
-If a request doesn't complete within a specified duration, the API will respond with a *503 Service Unavailable* status.
+If a request doesn't complete within a specified duration, the API will respond with a _503 Service Unavailable_ status.
 
 See the [API module configuration](configuration#api) for more details.
 
@@ -2028,6 +2029,7 @@ Content-Type: text/plain; charset=UTF-8
 Gotenberg-Trace: {trace}
 Body: Service Unavailable
 ```
+
 </TabItem>
 </Tabs>
 
@@ -2038,7 +2040,7 @@ This feature enables the creation of PDFs compatible with standards like [ZUGFeR
 The route accepts the following form field to attach files to the generated PDF:
 
 | Key    | Description                                       | Default |
-|--------|---------------------------------------------------|---------|
+| ------ | ------------------------------------------------- | ------- |
 | embeds | Files to embed in the generated PDF (repeatable). | None    |
 
 <Tabs
@@ -2069,7 +2071,7 @@ You can embed multiple files by repeating the `embeds` form field. All embedded 
 
 ## Convert into PDF/A & PDF/UA <span class="badge badge--secondary">route</span>
 
-This *multipart/form-data* route transforms one or more PDF files into the requested PDF/A format and/or PDF/UA.
+This _multipart/form-data_ route transforms one or more PDF files into the requested PDF/A format and/or PDF/UA.
 
 ```
 POST /forms/pdfengines/convert
@@ -2077,19 +2079,20 @@ POST /forms/pdfengines/convert
 
 It accepts the following form files and form fields:
 
-| Key   | Description                                                | Default                                           |
-|-------|------------------------------------------------------------|---------------------------------------------------|
-| *.pdf | At least one PDF file.                                     | <span class="badge badge--danger">required</span> |
-| pdfa  | Convert the resulting PDF into the given PDF/A format.     | None<span style={{color: 'red'}}>*</span>         |
-| pdfua | Enable PDF for Universal Access for optimal accessibility. | false<span style={{color: 'red'}}>*</span>        |
+| Key    | Description                                                | Default                                           |
+| ------ | ---------------------------------------------------------- | ------------------------------------------------- |
+| \*.pdf | At least one PDF file.                                     | <span class="badge badge--danger">required</span> |
+| pdfa   | Convert the resulting PDF into the given PDF/A format.     | None<span style={{color: 'red'}}>\*</span>        |
+| pdfua  | Enable PDF for Universal Access for optimal accessibility. | false<span style={{color: 'red'}}>\*</span>       |
 
-<span style={{color: 'red'}}>\*</span>Note that at least one of the form field must be provided.
+<span style={{ color: "red" }}>\*</span>Note that at least one of the form field
+must be provided.
 
 At present, the following PDF/A formats are available:
 
-* `PDF/A-1b`
-* `PDF/A-2b`
-* `PDF/A-3b`
+- `PDF/A-1b`
+- `PDF/A-2b`
+- `PDF/A-3b`
 
 <Tabs
 defaultValue="curl"
@@ -2152,8 +2155,8 @@ Gotenberg-Trace: {trace}
 Body: {output-file}
 ```
 
-* See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
-* See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
+- See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
+- See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
 
 </TabItem>
 <TabItem value="400">
@@ -2169,7 +2172,7 @@ Body: {error}
 </TabItem>
 <TabItem value="503">
 
-If a request doesn't complete within a specified duration, the API will respond with a *503 Service Unavailable* status.
+If a request doesn't complete within a specified duration, the API will respond with a _503 Service Unavailable_ status.
 
 See the [API module configuration](configuration#api) for more details.
 
@@ -2184,7 +2187,7 @@ Body: Service Unavailable
 
 ## Read PDF metadata <span class="badge badge--secondary">route</span>
 
-This *multipart/form-data* route returns the metadata of one or more PDF files.
+This _multipart/form-data_ route returns the metadata of one or more PDF files.
 
 ```
 POST /forms/pdfengines/metadata/read
@@ -2192,9 +2195,9 @@ POST /forms/pdfengines/metadata/read
 
 It accepts the following form files:
 
-| Key   | Description            | Default                                           |
-|-------|------------------------|---------------------------------------------------|
-| *.pdf | At least one PDF file. | <span class="badge badge--danger">required</span> |
+| Key    | Description            | Default                                           |
+| ------ | ---------------------- | ------------------------------------------------- |
+| \*.pdf | At least one PDF file. | <span class="badge badge--danger">required</span> |
 
 <Tabs
 defaultValue="curl"
@@ -2230,26 +2233,27 @@ Content-Length: {content-length}
 Gotenberg-Trace: {trace}
 Body:
 ```
+
 ```json
 {
-    "file1.pdf": {
-        "CreateDate": "2024:03:05 09:15:32Z",
-        "Creator": "Writer",
-        "TaggedPDF": "Yes",
-        "XMPToolkit": "Image::ExifTool 12.57"
-        // ...
-    },
-    "file2.pdf": {
-        "CreateDate": "2024:03:05 09:15:32Z",
-        "Creator": "Writer",
-        "TaggedPDF": "Yes",
-        "XMPToolkit": "Image::ExifTool 12.57"
-        // ...
-    }
+  "file1.pdf": {
+    "CreateDate": "2024:03:05 09:15:32Z",
+    "Creator": "Writer",
+    "TaggedPDF": "Yes",
+    "XMPToolkit": "Image::ExifTool 12.57"
+    // ...
+  },
+  "file2.pdf": {
+    "CreateDate": "2024:03:05 09:15:32Z",
+    "Creator": "Writer",
+    "TaggedPDF": "Yes",
+    "XMPToolkit": "Image::ExifTool 12.57"
+    // ...
+  }
 }
 ```
 
-* See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
+- See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
 
 </TabItem>
 <TabItem value="400">
@@ -2265,7 +2269,7 @@ Body: {error}
 </TabItem>
 <TabItem value="503">
 
-If a request doesn't complete within a specified duration, the API will respond with a *503 Service Unavailable* status.
+If a request doesn't complete within a specified duration, the API will respond with a _503 Service Unavailable_ status.
 
 See the [API module configuration](configuration#api) for more details.
 
@@ -2280,7 +2284,7 @@ Body: Service Unavailable
 
 ## Write PDF metadata <span class="badge badge--secondary">route</span>
 
-This *multipart/form-data* route accepts one or more PDF files and writes/overrides their metadata.
+This _multipart/form-data_ route accepts one or more PDF files and writes/overrides their metadata.
 
 ```
 POST /forms/pdfengines/metadata/write
@@ -2289,8 +2293,8 @@ POST /forms/pdfengines/metadata/write
 It accepts the following form files and form field:
 
 | Key      | Description                          | Default                                           |
-|----------|--------------------------------------|---------------------------------------------------|
-| *.pdf    | At least one PDF file.               | <span class="badge badge--danger">required</span> |
+| -------- | ------------------------------------ | ------------------------------------------------- |
+| \*.pdf   | At least one PDF file.               | <span class="badge badge--danger">required</span> |
 | metadata | The metadata to write (JSON format). | <span class="badge badge--danger">required</span> |
 
 :::info
@@ -2363,8 +2367,8 @@ Gotenberg-Trace: {trace}
 Body: {output-file}
 ```
 
-* See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
-* See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
+- See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
+- See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
 
 </TabItem>
 <TabItem value="400">
@@ -2380,7 +2384,7 @@ Body: {error}
 </TabItem>
 <TabItem value="503">
 
-If a request doesn't complete within a specified duration, the API will respond with a *503 Service Unavailable* status.
+If a request doesn't complete within a specified duration, the API will respond with a _503 Service Unavailable_ status.
 
 See the [API module configuration](configuration#api) for more details.
 
@@ -2395,7 +2399,7 @@ Body: Service Unavailable
 
 ## Merge PDFs <span class="badge badge--secondary">route</span>
 
-This *multipart/form-data* route accepts PDF files and merges them alphanumerically.
+This _multipart/form-data_ route accepts PDF files and merges them alphanumerically.
 
 :::info
 
@@ -2408,8 +2412,8 @@ POST /forms/pdfengines/merge
 ```
 
 | Key           | Description                                                | Default                                           |
-|---------------|------------------------------------------------------------|---------------------------------------------------|
-| *.pdf         | PDF files.                                                 | <span class="badge badge--danger">required</span> |
+| ------------- | ---------------------------------------------------------- | ------------------------------------------------- |
+| \*.pdf        | PDF files.                                                 | <span class="badge badge--danger">required</span> |
 | pdfa          | Convert the resulting PDF into the given PDF/A format.     | None                                              |
 | pdfua         | Enable PDF for Universal Access for optimal accessibility. | false                                             |
 | metadata      | The metadata to write (JSON format).                       | None                                              |
@@ -2457,8 +2461,8 @@ Gotenberg-Trace: {trace}
 Body: {output-file}
 ```
 
-* See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
-* See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
+- See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
+- See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
 
 </TabItem>
 <TabItem value="400">
@@ -2474,7 +2478,7 @@ Body: {error}
 </TabItem>
 <TabItem value="503">
 
-If a request doesn't complete within a specified duration, the API will respond with a *503 Service Unavailable* status.
+If a request doesn't complete within a specified duration, the API will respond with a _503 Service Unavailable_ status.
 
 See the [API module configuration](configuration#api) for more details.
 
@@ -2489,18 +2493,18 @@ Body: Service Unavailable
 
 ## Split PDFs <span class="badge badge--secondary">route</span>
 
-This *multipart/form-data* route splits PDF files.
+This _multipart/form-data_ route splits PDF files.
 
 ```
 POST /forms/pdfengines/split
 ```
 
 | Key           | Description                                                                                                                        | Default                                           |
-|---------------|------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------|
-| *.pdf         | At least one PDF file.                                                                                                             | <span class="badge badge--danger">required</span> |
-| splitMode     | Either *intervals* or *pages*.                                                                                                     | <span class="badge badge--danger">required</span> |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
+| \*.pdf        | At least one PDF file.                                                                                                             | <span class="badge badge--danger">required</span> |
+| splitMode     | Either _intervals_ or _pages_.                                                                                                     | <span class="badge badge--danger">required</span> |
 | splitSpan     | Either the intervals or the page ranges to extract, depending on the selected mode.                                                | <span class="badge badge--danger">required</span> |
-| splitUnify    | Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with *pages* mode. | false                                             |
+| splitUnify    | Specify whether to put extracted pages into a single file or as many files as there are page ranges. Only works with _pages_ mode. | false                                             |
 | pdfa          | Convert the resulting PDF(s) into the given PDF/A format.                                                                          | None                                              |
 | pdfua         | Enable PDF for Universal Access for optimal accessibility.                                                                         | false                                             |
 | metadata      | The metadata to write (JSON format).                                                                                               | None                                              |
@@ -2511,12 +2515,12 @@ POST /forms/pdfengines/split
 
 :::caution
 
-Gotenberg currently does not validate the `splitSpan` value if `splitMode` is *pages*, as it depends on the selected
+Gotenberg currently does not validate the `splitSpan` value if `splitMode` is _pages_, as it depends on the selected
 engine for the split feature:
 
-* [pdfcpu](https://pdfcpu.io/core/trim)
-* [QPDF](https://qpdf.readthedocs.io/en/stable/cli.html#page-ranges)
-* [PDFtk](https://www.pdflabs.com/docs/pdftk-man-page/#dest-op-cat)
+- [pdfcpu](https://pdfcpu.io/core/trim)
+- [QPDF](https://qpdf.readthedocs.io/en/stable/cli.html#page-ranges)
+- [PDFtk](https://www.pdflabs.com/docs/pdftk-man-page/#dest-op-cat)
 
 See also the [PDF Engines module configuration](configuration#pdf-engines) for more details.
 
@@ -2581,8 +2585,8 @@ Gotenberg-Trace: {trace}
 Body: {output-file}
 ```
 
-* See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
-* See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
+- See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
+- See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
 
 </TabItem>
 <TabItem value="400">
@@ -2598,7 +2602,7 @@ Body: {error}
 </TabItem>
 <TabItem value="503">
 
-If a request doesn't complete within a specified duration, the API will respond with a *503 Service Unavailable* status.
+If a request doesn't complete within a specified duration, the API will respond with a _503 Service Unavailable_ status.
 
 See the [API module configuration](configuration#api) for more details.
 
@@ -2613,16 +2617,15 @@ Body: Service Unavailable
 
 ## Flatten PDFs <span class="badge badge--secondary">route</span>
 
-This *multipart/form-data* route flatten PDF files.
+This _multipart/form-data_ route flatten PDF files.
 
 ```
 POST /forms/pdfengines/flatten
 ```
 
-| Key   | Description            | Default                                           |
-|-------|------------------------|---------------------------------------------------|
-| *.pdf | At least one PDF file. | <span class="badge badge--danger">required</span> |
-
+| Key    | Description            | Default                                           |
+| ------ | ---------------------- | ------------------------------------------------- |
+| \*.pdf | At least one PDF file. | <span class="badge badge--danger">required</span> |
 
 <Tabs
 defaultValue="curl"
@@ -2660,8 +2663,8 @@ Gotenberg-Trace: {trace}
 Body: {output-file}
 ```
 
-* See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
-* See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
+- See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
+- See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
 
 </TabItem>
 <TabItem value="400">
@@ -2677,7 +2680,7 @@ Body: {error}
 </TabItem>
 <TabItem value="503">
 
-If a request doesn't complete within a specified duration, the API will respond with a *503 Service Unavailable* status.
+If a request doesn't complete within a specified duration, the API will respond with a _503 Service Unavailable_ status.
 
 See the [API module configuration](configuration#api) for more details.
 
@@ -2692,7 +2695,7 @@ Body: Service Unavailable
 
 ## Encrypt <span class="badge badge--secondary">route</span>
 
-This *multipart/form-data* route accepts one or more PDF files and adds password protection to them.
+This _multipart/form-data_ route accepts one or more PDF files and adds password protection to them.
 
 ```
 POST /forms/pdfengines/encrypt
@@ -2701,7 +2704,7 @@ POST /forms/pdfengines/encrypt
 It accepts the following specific form fields:
 
 | Key           | Description                                       |                                                   |
-|---------------|---------------------------------------------------|---------------------------------------------------|
+| ------------- | ------------------------------------------------- | ------------------------------------------------- |
 | files         | At least one PDF file.                            | <span class="badge badge--danger">required</span> |
 | userPassword  | Password for opening the resulting PDF(s).        | <span class="badge badge--danger">required</span> |
 | ownerPassword | Password for full access on the resulting PDF(s). | None                                              |
@@ -2744,8 +2747,8 @@ Gotenberg-Trace: {trace}
 Body: {output-file}
 ```
 
-* See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
-* See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
+- See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
+- See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
 
 </TabItem>
 <TabItem value="400">
@@ -2761,7 +2764,7 @@ Body: {error}
 </TabItem>
 <TabItem value="503">
 
-If a request doesn't complete within a specified duration, the API will respond with a *503 Service Unavailable* status.
+If a request doesn't complete within a specified duration, the API will respond with a _503 Service Unavailable_ status.
 
 See the [API module configuration](configuration#api) for more details.
 
@@ -2770,6 +2773,7 @@ Content-Type: text/plain; charset=UTF-8
 Gotenberg-Trace: {trace}
 Body: Service Unavailable
 ```
+
 </TabItem>
 </Tabs>
 
@@ -2777,7 +2781,7 @@ Body: Service Unavailable
 
 This feature enables the creation of PDFs compatible with standards like [ZUGFeRD / Factur-X](https://fnfe-mpe.org/factur-x/), which require embedding XML invoices and other files within the PDF.
 
-This *multipart/form-data* route accepts one or more PDF files and embeds files into them.
+This _multipart/form-data_ route accepts one or more PDF files and embeds files into them.
 
 ```
 POST /forms/pdfengines/embed
@@ -2786,7 +2790,7 @@ POST /forms/pdfengines/embed
 It accepts the following specific form fields:
 
 | Key    | Description                             |                                                   |
-|--------|-----------------------------------------|---------------------------------------------------|
+| ------ | --------------------------------------- | ------------------------------------------------- |
 | files  | PDF files to embed files into.          | <span class="badge badge--danger">required</span> |
 | embeds | Files to embed in the PDF (repeatable). | <span class="badge badge--danger">required</span> |
 
@@ -2828,8 +2832,8 @@ Gotenberg-Trace: {trace}
 Body: {output-file}
 ```
 
-* See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
-* See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
+- See the [Request Tracing](#request-tracing) section for more information about the `Gotenberg-Trace` header.
+- See the [Output Filename](#output-filename) section for more information about the `Gotenberg-Output-Filename` header.
 
 </TabItem>
 <TabItem value="400">
@@ -2845,7 +2849,7 @@ Body: {error}
 </TabItem>
 <TabItem value="503">
 
-If a request doesn't complete within a specified duration, the API will respond with a *503 Service Unavailable* status.
+If a request doesn't complete within a specified duration, the API will respond with a _503 Service Unavailable_ status.
 
 See the [API module configuration](configuration#api) for more details.
 
@@ -2854,6 +2858,7 @@ Content-Type: text/plain; charset=UTF-8
 Gotenberg-Trace: {trace}
 Body: Service Unavailable
 ```
+
 </TabItem>
 </Tabs>
 
@@ -2897,17 +2902,17 @@ values={[
 
 ```json
 {
-    "status": "up",
-    "details": {
-        "chromium": {
-            "status": "up",
-            "timestamp": "2021-07-01T08:05:14.603364Z"
-        },
-        "libreoffice": {
-            "status": "up",
-            "timestamp": "2021-07-01T08:05:14.603364Z"
-        }
+  "status": "up",
+  "details": {
+    "chromium": {
+      "status": "up",
+      "timestamp": "2021-07-01T08:05:14.603364Z"
+    },
+    "libreoffice": {
+      "status": "up",
+      "timestamp": "2021-07-01T08:05:14.603364Z"
     }
+  }
 }
 ```
 
@@ -2916,18 +2921,18 @@ values={[
 
 ```json
 {
-    "status": "down",
-    "details": {
-        "chromium": {
-            "status": "up",
-            "timestamp": "2021-07-01T08:05:14.603364Z"
-        },
-        "libreoffice": {
-            "status": "down",
-            "timestamp": "2021-07-01T08:05:14.603364Z",
-            "error": "LibreOffice is unhealthy"
-        }
+  "status": "down",
+  "details": {
+    "chromium": {
+      "status": "up",
+      "timestamp": "2021-07-01T08:05:14.603364Z"
+    },
+    "libreoffice": {
+      "status": "down",
+      "timestamp": "2021-07-01T08:05:14.603364Z",
+      "error": "LibreOffice is unhealthy"
     }
+  }
 }
 ```
 
@@ -2936,8 +2941,8 @@ values={[
 
 The `details` entry gathers the health checks from modules:
 
-* The Chromium module checks if the Chromium browser is healthy.
-* The LibreOffice module checks if the LibreOffice instance is healthy.
+- The Chromium module checks if the Chromium browser is healthy.
+- The LibreOffice module checks if the LibreOffice instance is healthy.
 
 :::info
 
@@ -2955,12 +2960,12 @@ GET /prometheus/metrics
 
 Currently, the metrics include:
 
-| Metric                                                                                    | Description                                                              |
-|-------------------------------------------------------------------------------------------|--------------------------------------------------------------------------|
-| <span class="badge badge--secondary">\{namespace\}_chromium_requests_queue_size</span>    | Current number of Chromium conversion requests waiting to be treated.    |
-| <span class="badge badge--secondary">\{namespace\}_chromium_restarts_count</span>         | Current number of Chromium restarts.                                     |
-| <span class="badge badge--secondary">\{namespace\}_libreoffice_requests_queue_size</span> | Current number of LibreOffice conversion requests waiting to be treated. |
-| <span class="badge badge--secondary">\{namespace\}_libreoffice_restarts_count</span>      | Current number of LibreOffice restarts.                                  |
+| Metric                                                                                     | Description                                                              |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
+| <span class="badge badge--secondary">\{namespace\}\_chromium_requests_queue_size</span>    | Current number of Chromium conversion requests waiting to be treated.    |
+| <span class="badge badge--secondary">\{namespace\}\_chromium_restarts_count</span>         | Current number of Chromium restarts.                                     |
+| <span class="badge badge--secondary">\{namespace\}\_libreoffice_requests_queue_size</span> | Current number of LibreOffice conversion requests waiting to be treated. |
+| <span class="badge badge--secondary">\{namespace\}\_libreoffice_restarts_count</span>      | Current number of LibreOffice restarts.                                  |
 
 See the [Prometheus module configuration](configuration#prometheus) for more information.
 
@@ -3037,7 +3042,7 @@ See for instance https://demo.gotenberg.dev/debug.
 
 :::info
 
-This route is only available if the flag `--api-enable-debug-route` is set to *true*.
+This route is only available if the flag `--api-enable-debug-route` is set to _true_.
 
 :::
 
@@ -3078,7 +3083,7 @@ The `--api-trace-header` flag allows you to configure the header key. See the [A
 
 ## Output Filename
 
-By default, for *multipart/form-data* endpoints, the API generates a response with a UUID filename.
+By default, for _multipart/form-data_ endpoints, the API generates a response with a UUID filename.
 However, you have the option to specify the filename for each request using the `Gotenberg-Output-Filename` header.
 
 <Tabs
@@ -3108,10 +3113,10 @@ The API automatically appends the file extension, so there's no need for you to 
 
 ## Download From
 
-All *multipart/form-data* endpoints accept the following form field:
+All _multipart/form-data_ endpoints accept the following form field:
 
 | Key          | Description                                | Default |
-|--------------|--------------------------------------------|---------|
+| ------------ | ------------------------------------------ | ------- |
 | downloadFrom | URLs to download files from (JSON format). | None    |
 
 :::info
@@ -3125,8 +3130,8 @@ For further details, refer to the [API module configuration](configuration#api).
 This form field is a JSON-formatted array with items accepting the following keys:
 
 | Key              | Description                                                                                     | Default                                           |
-|------------------|-------------------------------------------------------------------------------------------------|---------------------------------------------------|
-| url              | URL of the file. It **MUST** return a `Content-Disposition` header with a *filename* parameter. | <span class="badge badge--danger">required</span> |
+| ---------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------- |
+| url              | URL of the file. It **MUST** return a `Content-Disposition` header with a _filename_ parameter. | <span class="badge badge--danger">required</span> |
 | extraHttpHeaders | The extra HTTP headers to send to the URL (JSON format).                                        | None                                              |
 | embedded         | Whether this file should be embedded in the PDF (see [Embed Files](#embed-files-route)).        | false                                             |
 
@@ -3195,6 +3200,6 @@ Body: Forbidden
 :::warning
 
 Currently, a [bug](https://github.com/golang/go/issues/69551) is preventing Gotenberg to parse an empty mediatype.
-If you're using AWS S3, make sure to set the `Content-Disposition` header with the *attachment* value in the S3 metadata.
+If you're using AWS S3, make sure to set the `Content-Disposition` header with the _attachment_ value in the S3 metadata.
 
 :::

@@ -241,7 +241,7 @@ gotenberg/gotenberg:8`;
           <div className={styles.centerAction}>
             <Link
               className="button button--secondary button--lg"
-              to="/docs/routes"
+              to="/docs/convert-with-chromium/convert-url-to-pdf"
             >
               Explore all 20+ Routes →
             </Link>
@@ -335,7 +335,7 @@ gotenberg/gotenberg:8`;
             <p className={styles.sponsorLabel}>Powered By</p>
             <div className={styles.logos}>
               <a
-                href="https://www.docker.com/community/open-source/sponsored-projects/"
+                href="https://docs.docker.com/docker-hub/repos/manage/trusted-content/dsos-program/"
                 target="_blank"
                 className={styles.logoLink}
                 title="Docker Sponsored OSS"

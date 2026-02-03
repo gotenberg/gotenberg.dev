@@ -1,0 +1,211 @@
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+
+## HTTP & Networking
+
+<ApiEndpoint
+  formFields={[
+    {
+      name: "cookies",
+      type: "json",
+      defaultValue: "None",
+      description: "Array of cookies to add to the request.",
+    },
+    {
+      name: "extraHttpHeaders",
+      type: "json",
+      defaultValue: "None",
+      description: "Custom HTTP headers for the request.",
+    },
+    {
+      name: "userAgent",
+      type: "string",
+      defaultValue: "None",
+      description: "Overrides the default User-Agent header.",
+    },
+    {
+      name: "skipNetworkIdleEvent",
+      type: "boolean",
+      defaultValue: "true",
+      description: "Does not wait for Chromium network to be idle.",
+    },
+    {
+      name: "failOnHttpStatusCodes",
+      type: "json",
+      defaultValue: "[499,599]",
+      description:
+        "Returns a 409 Conflict if Gotenberg receives these codes for the main URL.",
+    },
+    {
+      name: "failOnResourceHttpStatusCodes",
+      type: "json",
+      defaultValue: "None",
+      description:
+        "Returns a 409 Conflict if Gotenberg receives these codes for at least one resource (images/css/etc.).",
+    },
+    {
+      name: "ignoreResourceHttpStatusDomains",
+      type: "json",
+      defaultValue: "None",
+      description:
+        "Excludes resources from failOnResourceHttpStatusCodes checks based on their hostname.",
+    },
+    {
+      name: "failOnResourceLoadingFailed",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Returns a 400 Bad Request if assets (images/css/etc.) fail to load due to network errors.",
+    },
+  ]}
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form 'userAgent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)"' \\
+--form skipNetworkIdleEvent=false \\
+--form failOnResourceLoadingFailed=true \\
+${props.curlOutput}
+`}
+/>
+
+### Cookies
+
+The `cookies` form field accepts a **JSON-formatted array** of cookie objects. It allows you to authenticate requests or maintain session state during the conversion process.
+
+**Cookie Object Schema**
+
+| Key            | Description                                                              | Default                                                          |
+| :------------- | :----------------------------------------------------------------------- | :--------------------------------------------------------------- |
+| **`name`**     | The name of the cookie.                                                  | <span style={{color: 'var(--ifm-color-danger)'}}>Required</span> |
+| **`value`**    | The value of the cookie.                                                 | <span style={{color: 'var(--ifm-color-danger)'}}>Required</span> |
+| **`domain`**   | The domain the cookie applies to (e.g., `example.com`).                  | <span style={{color: 'var(--ifm-color-danger)'}}>Required</span> |
+| **`path`**     | The URL path the cookie applies to.                                      | `None`                                                           |
+| **`secure`**   | If `true`, the cookie is only sent over HTTPS.                           | `None`                                                           |
+| **`httpOnly`** | If `true`, the cookie is inaccessible to JavaScript (`document.cookie`). | `None`                                                           |
+| **`sameSite`** | Controls cross-site behavior. Values: `"Strict"`, `"Lax"`, `"None"`.     | `None`                                                           |
+
+<br />
+
+:::info Session Lifecycle
+
+Cookies are transient and automatically expire when the request reaches its time limit.
+
+To ensure strict isolation between conversions (preventing data leakage), you can configure the API to explicitly clear the cookie jar after every request. See [API Configuration](/docs/configuration#api) for details.
+
+:::
+
+<ApiEndpoint
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form 'cookies=[{"name":"yummy_cookie","value":"choco","domain":"theyummycookie.com"}]' \\
+${props.curlOutput}
+`}
+/>
+
+### HTTP Headers
+
+The `extraHttpHeaders` form field accepts a **JSON-formatted object** representing the HTTP headers to send with every request.
+
+**Schema**
+
+This is a key-value map where:
+
+- **Key:** The header name (e.g., `Authorization`, `X-Custom-Header`).
+- **Value:** The header value (string).
+
+:::info Scoped Headers
+
+By default, headers are sent with **every** request made by the browser (including images, stylesheets, and scripts).
+
+To restrict a header to specific URLs, append a `;scope=` token containing a **Regular Expression**. Gotenberg will process this token and only send the header if the target URL matches the regex.
+
+**Example:**
+`"X-Internal-Token": "secret-123;scope=.*\\.internal\\.api"`
+
+- **Matches:** `https://data.internal.api/v1` (Header sent)
+- **Ignores:** `https://google.com/fonts` (Header NOT sent)
+
+_Note: The `scope` token is stripped before the header is sent to the server._
+
+:::
+
+<ApiEndpoint
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form-string 'extraHttpHeaders={"X-Header":"value","X-Scoped-Header":"value;scope=https?:\\/\\/([a-zA-Z0-9-]+\\.)*domain\\.com\\/.*"}' \\
+${props.curlOutput}
+`}
+/>
+
+### Invalid HTTP Status Codes
+
+You can configure Gotenberg to return a `409 Conflict` error if the main page or its resources return specific HTTP status codes.
+
+These fields accept a **JSON-formatted array** of integers.
+
+| Field                               | Description                                                          |
+| :---------------------------------- | :------------------------------------------------------------------- |
+| **`failOnHttpStatusCodes`**         | Fails if the **main page** URL returns a matching code.              |
+| **`failOnResourceHttpStatusCodes`** | Fails if **any asset** (image, CSS, script) returns a matching code. |
+
+#### Status Code Ranges
+
+You can define ranges using the **X99** notation:
+
+- `499` matches every code from **400 to 499**.
+- `599` matches every code from **500 to 599**.
+
+#### Domain Exclusions
+
+Use `ignoreResourceHttpStatusDomains` to prevent failures for specific third-party assets (e.g., analytics or tracking scripts that might fail without affecting the PDF).
+
+**Matching Rules:**
+Gotenberg matches if the asset's hostname **equals** or is a **subdomain** of the entry.
+
+Input values are automatically normalized (trimmed, lowercased, port/scheme removed):
+
+- `example.com`
+- `*.example.com` or `.example.com`
+- `example.com:443` (port is ignored)
+- `https://example.com/path` (scheme/path are ignored)
+
+<ApiEndpoint
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form 'failOnHttpStatusCodes=[499,599]' \\
+--form 'failOnResourceHttpStatusCodes=[499,599]' \\
+--form 'ignoreResourceHttpStatusDomains=["sentry-cdn.com","analytics.example.com"]' \\
+${props.curlOutput}
+`}
+/>
+
+### Network Errors
+
+Gotenberg automatically validates the connection to the **main page** URL. If the browser encounters any of the following critical network errors, the API immediately returns `400 Bad Request` to indicate the page could not be reached.
+
+**Critical Error List**
+
+- `net::ERR_CONNECTION_CLOSED`
+- `net::ERR_CONNECTION_RESET`
+- `net::ERR_CONNECTION_REFUSED`
+- `net::ERR_CONNECTION_ABORTED`
+- `net::ERR_CONNECTION_FAILED`
+- `net::ERR_NAME_NOT_RESOLVED`
+- `net::ERR_INTERNET_DISCONNECTED`
+- `net::ERR_ADDRESS_UNREACHABLE`
+- `net::ERR_BLOCKED_BY_CLIENT`
+- `net::ERR_BLOCKED_BY_RESPONSE`
+- `net::ERR_FILE_NOT_FOUND`
+- `net::ERR_HTTP2_PROTOCOL_ERROR`
+
+:::tip Strict Resource Validation
+By default, if an **image** or **stylesheet** fails to load (e.g., a broken 404 image link), the PDF is still generated with a missing asset icon.
+
+To force the conversion to **fail** completely when _any_ resource encounters a network error, set the `failOnResourceLoadingFailed` form field to `true`.
+:::

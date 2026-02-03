@@ -1,0 +1,31 @@
+---
+id: head-health-check
+title: Health Check
+---
+
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import Sponsors from "@site/src/components/documentation/Sponsors";
+
+Performs the same checks as the GET route but returns no response body.
+
+This endpoint is optimized for high-frequency health checks where parsing the JSON body is unnecessary. It returns a 200 OK status if the system is healthy, or an error status code otherwise.
+
+<ApiEndpoint
+  method="HEAD"
+  path="/health"
+  curl={`curl --request HEAD http://localhost:3000/health`}
+  responses={[
+    {
+      status: 200,
+      message: "OK",
+      description: "The service is healthy.",
+    },
+    {
+      status: 503,
+      message: "Service Unavailable",
+      description: "The service in unhealthy.",
+    },
+  ]}
+/>
+
+<Sponsors />

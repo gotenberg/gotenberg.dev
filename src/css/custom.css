@@ -1,6 +1,8 @@
 /* stylelint-disable docusaurus/copyright-header */
 
-/* 1. FONTS & VARIABLES*/
+/* -------------------------------------------------------
+   FONTS & VARIABLES
+   ------------------------------------------------------- */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap");
 
 :root {
@@ -33,59 +35,106 @@
   --ifm-container-width: 1200px; /* Safe standard override */
 }
 
-/* 2. GLOBAL RESET*/
+/* -------------------------------------------------------
+   GLOBAL RESET
+   ------------------------------------------------------- */
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* 4. TYPOGRAPHY ) */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--ifm-font-family-base), sans-serif;
-  color: var(--ifm-heading-color);
-  letter-spacing: -0.025em;
-  font-weight: 700;
+/* -------------------------------------------------------
+   TYPOGRAPHY (Scoped to Documentation)
+   ------------------------------------------------------- */
+
+/* Apply Inter to all Headings */
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.markdown h4,
+.markdown h5,
+.markdown h6 {
+  font-family: "Inter", var(--ifm-font-family-base), sans-serif; /* Priority to Inter */
+  color: var(--ifm-color-emphasis-900); /* Darker/Sharper than standard gray */
+  letter-spacing: -0.01em; /* Much less condensed than -0.025em */
   margin-bottom: 1rem;
+  line-height: 1.25; /* Slightly relaxed line height */
 }
 
-h1 {
+/* 1. The Page Title (H1)
+   - Massive weight
+   - Thick, high-contrast underline in your primary color
+*/
+.markdown h1 {
+  font-weight: 900; /* Extra Black */
   font-size: 3rem;
-  font-weight: 800;
-  background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 1.5rem;
-  line-height: 1.1;
+  letter-spacing: -0.03em; /* Tight & Punchy */
+  color: #0f172a; /* Deepest Slate */
+
+  margin-bottom: 2.5rem;
+  padding-bottom: 1rem;
+
+  /* The "Assumed" Underline */
+  border-bottom: 6px solid var(--ifm-color-primary);
+  display: inline-block; /* The line matches the text width, not full page */
+  min-width: 120px; /* Ensures short titles still have a substantial line */
 }
 
-h2 {
-  font-size: 2rem;
-  border-bottom: 1px solid #e2e8f0;
-  padding-bottom: 0.5rem;
-  margin-top: 3rem;
+/* 2. The Section Title (H2)
+   - Heavy structural divider
+   - clearly separates content blocks
+*/
+.markdown h2 {
+  font-weight: 800; /* Heavy */
+  font-size: 1.8rem;
+  letter-spacing: -0.02em;
+  color: #1e293b; /* Slate 800 */
+
+  margin-top: 4rem; /* Big gaps between sections */
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+
+  /* A thick, solid structural line (Not a wispy 1px hairline) */
+  border-bottom: 3px solid var(--ifm-color-emphasis-300);
 }
 
-p {
-  margin-bottom: 1.5rem;
-  letter-spacing: -0.01em;
+/* 3. Sub-sections (H3)
+   - No border, but relies on pure weight
+*/
+.markdown h3 {
+  font-family: "Inter", var(--ifm-font-family-base), sans-serif;
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: #334155; /* Slate 700 */
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+
+  /* Optional: A small left accent to mark the sub-section */
+  border-left: 4px solid var(--ifm-color-primary);
+  padding-left: 12px;
 }
-strong {
-  color: #0f172a;
+
+/* H4 - Used often for parameters/lists */
+.markdown h4 {
+  font-size: 1.15rem;
   font-weight: 600;
+  margin-top: 1.5rem;
 }
 
-code {
-  background-color: #f1f5f9;
-  border: 1px solid #e2e8f0;
-  border-radius: 4px;
-  padding: 2px 6px;
-  color: #0f172a;
+/* Paragraph Text - Making it readable */
+.markdown p {
+  font-family: "Inter", var(--ifm-font-family-base), sans-serif;
+  font-size: 1.05rem; /* Slight bump from 1rem makes reading easier */
+  line-height: 1.75; /* "Airy" reading experience */
+  color: var(--ifm-color-content);
+  margin-bottom: 1.5rem;
+  letter-spacing: 0; /* Reset spacing for body text */
+}
+
+/* Lists - Align with paragraph text */
+.markdown ul,
+.markdown ol {
+  line-height: 1.7;
 }
 
 .markdown a {
@@ -95,13 +144,269 @@ code {
   transition: all 0.2s ease;
   font-weight: 500;
 }
+
 .markdown a:hover {
   border-bottom-color: var(--ifm-color-primary);
   background-color: rgba(0, 138, 230, 0.05);
 }
 
-/* 6. COMPONENT OVERRIDES */
-/* Announcement Bar */
+/* -------------------------------------------------------
+   INLINE CODE (Light & Clean)
+   ------------------------------------------------------- */
+
+/* We use ":not(pre) > code" to target inline code specifically,
+   protecting your large Prism code blocks from these changes.
+*/
+.markdown :not(pre) > code {
+  /* Font & Size */
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.85em; /* Slightly smaller relative to text */
+  font-weight: 500; /* Medium weight for readability */
+
+  /* Visuals - The "Light" Look */
+  background-color: rgba(148, 163, 184, 0.12); /* Very faint slate tint */
+  border: none; /* Remove the heavy border */
+  border-radius: 4px; /* Soft edges */
+  box-shadow: none; /* No shadow */
+
+  /* Color */
+  color: var(
+    --ifm-color-emphasis-800
+  ); /* Dark text (readable), not harsh black */
+
+  /* Spacing */
+  padding: 2px 6px;
+  margin: 0 2px; /* Tiny breathing room from surrounding text */
+  vertical-align: 1px; /* Visual alignment fix */
+}
+
+/* -------------------------------------------------------
+   MODERN MARKDOWN TABLES
+   ------------------------------------------------------- */
+
+.markdown table {
+  display: table; /* Overrides some default Docusaurus block styles */
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+  font-size: 1rem; /* Base size for the table */
+}
+
+/* Table Headers (TH) */
+.markdown table th {
+  background-color: var(--ifm-color-emphasis-100); /* Light gray header bg */
+  color: var(--ifm-color-emphasis-700);
+
+  /* Typography */
+  font-family: "Inter", var(--ifm-font-family-base), sans-serif;
+  font-size: 0.85rem; /* Small but legible */
+  font-weight: 700; /* Bold */
+  text-transform: uppercase;
+  letter-spacing: 0.05em; /* Spacing for readability */
+
+  /* Spacing */
+  padding: 12px 16px;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-bottom: 2px solid var(--ifm-color-emphasis-300); /* Stronger divider */
+}
+
+/* Table Cells (TD) */
+.markdown table td {
+  color: var(--ifm-color-content);
+
+  /* Typography - Match your body text */
+  font-size: 1rem;
+  line-height: 1.6;
+
+  /* Spacing */
+  padding: 12px 16px; /* Comfortable padding */
+  border: 1px solid var(--ifm-color-emphasis-200);
+}
+
+/* Optional: Zebra Striping for better readability on long lists */
+.markdown table tr:nth-child(2n) {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+/* 4. Table Mobile Optimizations (< 768px) */
+@media screen and (max-width: 768px) {
+  .markdown table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .markdown table th,
+  .markdown table td {
+    padding: 8px 10px;
+    font-size: 0.85rem;
+  }
+
+  .markdown table td {
+    white-space: normal;
+    min-width: 120px;
+  }
+
+  .markdown table td:first-child {
+    white-space: nowrap;
+    font-weight: 600;
+  }
+}
+
+/* -------------------------------------------------------
+   TABLES INSIDE ALERTS (Adaptive Glass Style)
+   ------------------------------------------------------- */
+
+/* 1. Reset the container */
+.alert table {
+  margin-bottom: 1rem;
+  background-color: transparent;
+}
+
+/* 2. Header: Replace solid gray with translucent white */
+.alert table th {
+  background-color: rgba(255, 255, 255, 0.4);
+  border-color: rgba(0, 0, 0, 0.08); /* Much softer border */
+  border-bottom-width: 2px;
+  color: inherit; /* Use the alert's text color for harmony */
+}
+
+/* 3. Cells: Soft borders */
+.alert table td {
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+/* 4. Zebra Striping: Use a subtle white highlight instead of gray */
+.alert table tr:nth-child(2n) {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+/* 5. Last row border fix */
+.alert table tr:last-child td {
+  border-bottom: none;
+}
+
+/* -------------------------------------------------------
+   CRISP ADMONITIONS (Tinted & Sharp)
+   ------------------------------------------------------- */
+
+/* 1. Base Structure */
+.alert {
+  /* Box Model */
+  border: 1px solid transparent;
+  border-left-width: 4px;
+  border-radius: 4px;
+  box-shadow: none;
+
+  /* Spacing & Typography */
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  color: var(--ifm-color-content);
+}
+
+/* 2. The Header */
+.alert .alert__heading {
+  font-family: var(--ifm-font-family-base);
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.alert .alert__heading svg {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2.5px;
+}
+
+/* 3. LINK OVERRIDES (Fixing the conflict) */
+/* We use .markdown .alert a to be more specific than global .markdown a */
+.markdown .alert a {
+  border-bottom: none; /* Remove the global link border */
+  text-decoration: underline; /* Use standard underline for clarity */
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: opacity 0.2s ease;
+}
+
+.markdown .alert a:hover {
+  background-color: transparent; /* Remove global hover background */
+  opacity: 0.8;
+}
+
+/* :::info (Blue) */
+.alert--info {
+  background-color: rgba(0, 138, 230, 0.06);
+  border-color: rgba(0, 138, 230, 0.2);
+  border-left-color: var(--ifm-color-primary);
+}
+.alert--info .alert__heading {
+  color: var(--ifm-color-primary-dark);
+}
+/* Link Color: Dark Blue */
+.markdown .alert--info a {
+  color: var(--ifm-color-primary-darkest);
+  text-decoration-color: rgba(0, 138, 230, 0.4);
+}
+
+/* :::tip (Green / Success) */
+.alert--success {
+  --alert-success-color: #10b981;
+  background-color: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.25);
+  border-left-color: var(--alert-success-color);
+}
+.alert--success .alert__heading {
+  color: #047857;
+}
+/* Link Color: Dark Green */
+.markdown .alert--success a {
+  color: #064e3b; /* Emerald 900 */
+  text-decoration-color: rgba(16, 185, 129, 0.5);
+}
+
+/* :::warning (Amber) */
+.alert--warning {
+  --alert-warning-color: #f59e0b;
+  background-color: rgba(245, 158, 11, 0.08);
+  border-color: rgba(245, 158, 11, 0.25);
+  border-left-color: var(--alert-warning-color);
+}
+.alert--warning .alert__heading {
+  color: #b45309;
+}
+/* Link Color: Dark Amber */
+.markdown .alert--warning a {
+  color: #78350f; /* Amber 900 */
+  text-decoration-color: rgba(245, 158, 11, 0.5);
+}
+
+/* :::danger (Red) */
+.alert--danger {
+  --alert-danger-color: #ef4444;
+  background-color: rgba(239, 68, 68, 0.06);
+  border-color: rgba(239, 68, 68, 0.2);
+  border-left-color: var(--alert-danger-color);
+}
+.alert--danger .alert__heading {
+  color: #b91c1c;
+}
+/* Link Color: Dark Red */
+.markdown .alert--danger a {
+  color: #7f1d1d; /* Red 900 */
+  text-decoration-color: rgba(239, 68, 68, 0.5);
+}
+
+/* -------------------------------------------------------
+   COMPONENT OVERRIDES
+   ------------------------------------------------------- */
+
+/* 1. Announcement Bar */
 div[class*="announcementBar_"] {
   background: linear-gradient(90deg, #008ae6 0%, #6366f1 100%);
   color: white;
@@ -140,9 +445,136 @@ button[class*="closeButton_"]:hover {
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* Footer */
+/* -------------------------------------------------------
+   MODERN SIDEBAR
+   ------------------------------------------------------- */
+
+/* 1. General Link Typography */
+.menu__link {
+  /* Modern Font Stack Traits */
+  font-family: var(--ifm-font-family-base);
+  font-size: 0.9rem; /* Slightly smaller for density */
+  font-weight: 500; /* Medium weight is cleaner than 400 or 700 */
+  line-height: 1.5;
+  letter-spacing: -0.01em; /* Tighten text slightly */
+
+  /* Color Palette (Slate 600) */
+  color: #64748b;
+
+  /* Spacing & Shape */
+  padding: 8px 12px; /* More breathing room */
+  margin-bottom: 4px; /* Space between items */
+  border-radius: 6px; /* "Pill" shape hover */
+  transition: color 0.2s, background-color 0.2s;
+}
+
+/* 2. Hover State */
+.menu__link:hover {
+  color: #0f172a; /* Slate 900 (Nearly Black) */
+  background-color: #f1f5f9; /* Slate 100 (Very subtle gray) */
+  text-decoration: none;
+}
+
+/* 3. Active State (Selected Page) */
+.menu__link--active {
+  color: var(--ifm-color-primary); /* Your Brand Color */
+  background-color: var(
+    --ifm-color-primary-lightest
+  ); /* Very faint tint of brand color */
+  font-weight: 600;
+}
+
+/* 4. Category Headers (Top Level Groups) */
+/* This targets the collapsible parent items like "Getting Started" */
+.menu__list-item-collapsible > .menu__link {
+  color: #334155; /* Slate 700 (Darker than normal links) */
+  font-weight: 700; /* Bolder to act as a header */
+  font-size: 0.85rem;
+  text-transform: uppercase; /* Optional: Makes them look like distinct sections */
+  letter-spacing: 0.05em;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+/* Remove hover background on Categories if you prefer them to look like text headers */
+.menu__list-item-collapsible > .menu__link:hover {
+  background-color: transparent;
+  color: #0f172a;
+}
+
+/* 5. Clean up the Caret (The little arrow) */
+.menu__caret:before {
+  background: #94a3b8; /* Lighter gray arrow */
+  mask-size: 10px 10px; /* Make it smaller/sharper */
+}
+
+/* -------------------------------------------------------
+   SIDEBAR HTTP METHODS BADGES
+   ------------------------------------------------------- */
+
+/* 1. Base Badge Style (Shared) */
+.sidebar-method-post .menu__link::before,
+.sidebar-method-get .menu__link::before,
+.sidebar-method-put .menu__link::before,
+.sidebar-method-delete .menu__link::before,
+.sidebar-method-head .menu__link::before {
+  /* Layout */
+  display: inline-block;
+  margin-right: 8px;
+  padding: 2px 6px;
+  min-width: 45px; /* Slightly smaller than your main badge to fit sidebar */
+
+  /* Typography */
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-align: center;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+
+  /* Shape */
+  border-radius: 4px;
+
+  /* Vertical Alignment fix for Docusaurus sidebar */
+  vertical-align: middle;
+  line-height: 1.5;
+}
+
+/* 2. Specific Method Configuration */
+
+/* POST */
+.sidebar-method-post .menu__link::before {
+  content: "POST";
+  background-color: #49cc90;
+}
+
+/* GET */
+.sidebar-method-get .menu__link::before {
+  content: "GET";
+  background-color: #61affe;
+}
+
+/* PUT */
+.sidebar-method-put .menu__link::before {
+  content: "PUT";
+  background-color: #fca130;
+}
+
+/* DELETE */
+.sidebar-method-delete .menu__link::before {
+  content: "DEL";
+  background-color: #f93e3e;
+}
+
+/* HEAD */
+.sidebar-method-head .menu__link::before {
+  content: "HEAD";
+  background-color: #9061f9;
+}
+
+/* -------------------------------------------------------
+   FOOTER
+   ------------------------------------------------------- */
 .footer--dark {
-  /* Use Midnight Slate for footer to ground the design */
   --ifm-footer-background-color: #0f172a;
   --ifm-footer-padding-vertical: 4rem;
   border-top: 1px solid #1e293b;

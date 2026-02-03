@@ -1,0 +1,100 @@
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import WaitFor from "./_wait_for.mdx";
+
+## Rendering Behavior
+
+<ApiEndpoint
+  formFields={[
+    {
+      name: "scale",
+      type: "number",
+      defaultValue: "1.0",
+      description: "The scale of the page rendering (zoom factor).",
+    },
+    {
+      name: "printBackground",
+      type: "boolean",
+      defaultValue: "false",
+      description: "Includes background graphics/colors from the HTML.",
+    },
+    {
+      name: "omitBackground",
+      type: "boolean",
+      defaultValue: "false",
+      description: "Hides the default white background (allows transparency).",
+    },
+    {
+      name: "singlePage",
+      type: "boolean",
+      defaultValue: "false",
+      description: "Forces the entire content to fit on one very long page.",
+    },
+    {
+      name: "preferCssPageSize",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Uses page sizes defined in CSS (@page) instead of API parameters.",
+    },
+    {
+      name: "emulatedMediaType",
+      type: "enum",
+      defaultValue: "print",
+      description: "Media type to emulate ('screen' or 'print').",
+    },
+    {
+      name: "waitDelay",
+      type: "string",
+      defaultValue: "None",
+      description: "Duration to wait before converting (e.g. '5s').",
+    },
+    {
+      name: "waitForExpression",
+      type: "string",
+      defaultValue: "None",
+      description: "Waits until this JavaScript expression returns true.",
+    },
+    {
+      name: "waitForSelector",
+      type: "string",
+      defaultValue: "None",
+      description:
+        "Waits until the given selector (e.g., '#id') is visible on the page.",
+    },
+  ]}
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form scale=2.0 \\
+--form printBackground=true \\
+--form omitBackground=true \\
+--form singlePage=true \\
+--form preferCssPageSize=false \\
+--form emulatedMediaType=screen \\
+${props.curlOutput}
+`}
+/>
+
+### Single Page
+
+If `singlePage` is set to **true**, it automatically overrides the values from `paperHeight` and `nativePageRanges`.
+
+### Background Logic
+
+The final background depends on `printBackground`, `omitBackground`, and your document's CSS:
+
+| Print Background? | Omit Background? | HTML CSS has BG? | **Resulting Output**         |
+| :---------------- | :--------------- | :--------------- | :--------------------------- |
+| `false`           | _(Any)_          | _(Any)_          | **No Background**            |
+| `true`            | _(Any)_          | **Yes**          | **Uses HTML CSS Background** |
+| `true`            | `true`           | **No**           | **Transparent**              |
+| `true`            | `false`          | **No**           | **White (Default)**          |
+
+<WaitFor
+  method={props.method}
+  path={props.path}
+  curlFormData={props.curlFormData}
+  curlOutput={props.curlOutput}
+  isPDF={true}
+/>
