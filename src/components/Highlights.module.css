@@ -1,42 +1,38 @@
 /* -------------------------------------------------------
    GLOBAL LAYOUT
    ------------------------------------------------------- */
-
 .mainContainer {
-  background-color: #f8fafc;
+  background-color: #ffffff;
 }
 
 .section {
-  padding: 5rem 0;
+  padding: 8rem 0; /* Huge vertical spacing */
   position: relative;
 }
 
 .sectionHeader {
   text-align: center;
-  max-width: 700px;
-  margin: 0 auto 4rem auto;
+  max-width: 800px;
+  margin: 0 auto 5rem auto;
 }
 
 .sectionHeader h2 {
-  font-size: 2.5rem;
+  font-size: 3rem; /* Bigger Section Headers */
   font-weight: 800;
   color: #0f172a;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
 }
 
 .sectionSub {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   color: #64748b;
-  margin-top: 1rem;
-}
-
-.centerAction {
-  text-align: center;
-  margin-top: 3rem;
+  line-height: 1.6;
 }
 
 .highlight {
-  background: linear-gradient(90deg, #008ae6 0%, #29a1eb 100%);
+  background: linear-gradient(135deg, #008ae6 0%, #6366f1 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -45,338 +41,353 @@
 /* -------------------------------------------------------
    BENTO GRID
    ------------------------------------------------------- */
-
 .bentoGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  grid-template-columns: repeat(2, 1fr); /* STRICT 2 columns */
   gap: 2rem;
-  margin-bottom: 3rem;
+  margin-bottom: 4rem;
 }
 
 .featureCard {
   background: #ffffff;
   border: 1px solid #e2e8f0;
-  border-radius: 16px;
-  padding: 2rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  border-radius: 12px; /* Slightly tighter radius */
+  padding: 2.5rem;
+
   display: flex;
   flex-direction: column;
-  transition: transform 0.2s, box-shadow 0.2s;
   height: 100%;
-  min-width: 0;
+
+  /* Crisp transition */
+  transition: all 0.2s ease-out;
 }
 
 .featureCard:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-  border-color: #cbd5e1;
+  border-color: #94a3b8; /* Darker gray border on hover */
+  box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+  z-index: 10;
 }
 
 .cardHeader {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .iconWrapper {
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   border-radius: 12px;
-  background-color: #f0f9ff;
-  color: #008ae6;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
+  color: white; /* Icons are now white to contrast with gradient */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.featureCard:hover .iconWrapper {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.iconWrapper {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.featureCard:hover .iconWrapper {
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* 1. Chromium: Cyan to Blue (Represents "Web/Browser") */
+.featureCard:nth-child(1) .iconWrapper {
+  background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+}
+
+/* 2. Office: Violet to Purple (Represents "Suite/App") */
+.featureCard:nth-child(2) .iconWrapper {
+  background: linear-gradient(135deg, #8b5cf6 0%, #d946ef 100%);
+}
+
+/* 3. PDF Engines: Blue to Indigo (Represents "Core/Depth") */
+.featureCard:nth-child(3) .iconWrapper {
+  background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+}
+
+/* 4. Settings: Slate to Dark Gray (Represents "Infrastructure") */
+.featureCard:nth-child(4) .iconWrapper {
+  background: linear-gradient(135deg, #64748b 0%, #334155 100%);
 }
 
 .icon {
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
 }
 
 .cardTitle {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 700;
-  color: #1e293b;
+  color: #0f172a;
+  letter-spacing: -0.02em;
 }
 
 .cardDesc {
-  color: #64748b;
-  font-size: 1rem;
+  color: #475569;
+  font-size: 1.1rem;
   line-height: 1.6;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   flex-grow: 1;
 }
 
-.cardTerminal {
-  margin-top: auto;
-  width: 100%;
+.centerAction {
+  display: flex;
+  justify-content: center;
+  margin-top: 4rem;
+}
+
+/* 2. New "Quiet" Button Style */
+.btnExplore {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 2rem;
+  border-radius: 50px;
+
+  /* Solid Slate instead of Gradient */
+  background-color: #334155; /* Slate 700 */
+  color: white !important;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none !important;
+  border: 1px solid transparent;
+
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.btnExplore:hover {
+  background-color: #0f172a; /* Darker Slate on hover */
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
 /* -------------------------------------------------------
-   TERMINAL COMPONENT
+   TERMINAL COMPONENT (Make it look like VSCode)
    ------------------------------------------------------- */
-
 .terminalWindow {
-  background: #1e293b;
+  background: #0f172a; /* Slate 900 (Darker) */
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.3); /* Deep shadow */
   border: 1px solid #334155;
   width: 100%;
 }
 
 .terminalHeader {
-  background: #0f172a;
-  padding: 0.5rem 1rem;
+  background: #1e293b;
+  padding: 0.75rem 1rem;
   display: flex;
   align-items: center;
-  position: relative;
   border-bottom: 1px solid #334155;
 }
 
-.dots {
-  display: flex;
-  gap: 6px;
-}
-
-.dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-}
-
-.red {
-  background: #ef4444;
-}
-.yellow {
-  background: #f59e0b;
-}
-.green {
-  background: #22c55e;
-}
-
-.terminalTitle {
-  position: absolute;
-  left: 0;
-  right: 0;
-  text-align: center;
-  color: #64748b;
-  font-size: 0.8rem;
-  font-family: monospace;
-  pointer-events: none;
-}
+.dots { display: flex; gap: 8px; }
+.dot { width: 12px; height: 12px; border-radius: 50%; }
+.red { background: #ef4444; }
+.yellow { background: #f59e0b; }
+.green { background: #22c55e; }
 
 .terminalBody {
-  padding: 1rem;
-  font-family: "JetBrains Mono", "Fira Code", monospace;
-  font-size: 0.8rem;
-  line-height: 1.6;
-  overflow-x: auto;
-  white-space: pre;
+  padding: 1.5rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: #e2e8f0; /* Slate 200 - Much brighter plain text */
 }
+
+/* Update syntax highlighting to pop against the dark bg */
+.cPlain { color: #e2e8f0; }
+.cCommand { color: #f472b6; font-weight: 700; } /* Pink */
+.cFlag { color: #38bdf8; } /* Light Blue */
+.cString { color: #a3e635; } /* Lime Green */
+.cUrl { color: #a78bfa; text-decoration: underline; text-underline-offset: 3px; }
 
 /* -------------------------------------------------------
-   SYNTAX HIGHLIGHTING
+   ASYNC SECTION (The Mesh Gradient)
    ------------------------------------------------------- */
-
-.codeLine {
-  display: block;
-}
-.cPlain {
-  color: #abb2bf;
-}
-.cCommand {
-  color: #e06c75;
-  font-weight: bold;
-}
-.cFlag {
-  color: #d19a66;
-}
-.cString {
-  color: #98c379;
-}
-.cUrl {
-  color: #61afef;
-  text-decoration: underline;
-}
-.cOperator {
-  color: #56b6c2;
-}
-
-/* -------------------------------------------------------
-   ASYNC SECTION
-   ------------------------------------------------------- */
-
 .asyncSection {
+  /* Subtle Mesh Gradient */
   background-color: #f8fafc;
-  background-image: radial-gradient(#e2e8f0 2px, transparent 2px);
-  background-size: 32px 32px;
+  background-image:
+          radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.1) 0px, transparent 50%),
+          radial-gradient(at 100% 100%, rgba(14, 165, 233, 0.1) 0px, transparent 50%);
+
   border-top: 1px solid #e2e8f0;
   border-bottom: 1px solid #e2e8f0;
-  overflow: hidden;
-  padding: 4rem 0;
 }
 
 .splitRow {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 4rem;
+  gap: 5rem;
   align-items: center;
-  max-width: 100%;
 }
 
 .splitContent h2 {
-  border-bottom: none !important;
-  margin-bottom: 1rem;
-  color: #0f172a;
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
 }
 
 .splitContent p {
-  color: #334155;
-  font-size: 1.05rem;
-  line-height: 1.6;
-}
-
-.badge {
-  display: inline-block;
-  background: #ffffff;
-  color: #008ae6;
-  font-weight: 700;
-  font-size: 0.75rem;
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
-  margin-bottom: 1rem;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  font-size: 1.2rem;
+  color: #475569;
 }
 
 .capabilitiesGrid {
-  margin-top: 2rem;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.capItem {
+  /* Glassmorphism Card Style */
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+
+  /* Layout */
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .capItem strong {
-  display: block;
+  font-size: 0.95rem;
   color: #0f172a;
-  font-size: 1rem;
-  margin-bottom: 0.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .capItem span {
+  font-size: 1rem;
   color: #475569;
-  font-size: 0.95rem;
-  line-height: 1.5;
-  background-color: rgba(248, 250, 252, 0.6);
-  box-decoration-break: clone;
+  background: none; /* Remove the old highlight */
+  padding: 0;
 }
 
 /* -------------------------------------------------------
-   SPONSORS SECTION
+   SPONSORS SECTION (Premium Grid)
    ------------------------------------------------------- */
 
 .sponsorSection {
   background: #ffffff;
-  padding: 6rem 0;
+  padding: 8rem 0; /* Huge vertical spacing to match other sections */
   border-top: 1px solid #e2e8f0;
 }
 
 .sponsorGroup {
-  margin-bottom: 4rem;
+  margin-bottom: 5rem;
   text-align: center;
 }
 
+/* The divider label (e.g., "PROUDLY SPONSORED BY") */
 .sponsorLabel {
-  font-size: 0.85rem;
-  color: #94a3b8;
+  font-family: var(--ifm-font-family-base);
+  font-size: 0.8rem;
+  font-weight: 800; /* Extra bold */
+  color: #94a3b8;   /* Slate 400 */
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-weight: 700;
-  margin-bottom: 2rem;
+  letter-spacing: 0.15em; /* Wide tracking */
+  margin-bottom: 3rem;
   position: relative;
   display: inline-block;
+  padding: 0 1.5rem;
+  background: #ffffff; /* Masks the line behind it */
+  z-index: 1;
 }
 
-.sponsorLabel::before,
-.sponsorLabel::after {
+/* The line running behind the text */
+.sponsorGroup {
+  position: relative;
+}
+
+.sponsorGroup::before {
   content: "";
   position: absolute;
-  top: 50%;
-  width: 40px;
+  top: 10px; /* Aligns with the middle of the text approx */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px; /* Width of the line */
   height: 1px;
   background: #e2e8f0;
+  z-index: 0;
 }
 
-.sponsorLabel::before {
-  right: 110%;
-}
-.sponsorLabel::after {
-  left: 110%;
-}
-
+/* -------------------------------------------------------
+   LOGOS
+   ------------------------------------------------------- */
 .logos {
   display: flex;
   justify-content: center;
-  gap: 4rem;
+  gap: 5rem; /* Large gaps */
   flex-wrap: wrap;
   align-items: center;
 }
 
 .logoLink {
-  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
   display: block;
+  /* Grayscale filter for uniform look */
+  filter: grayscale(100%) opacity(0.6);
 }
 
 .logoLink:hover {
-  transform: scale(1.05);
-  opacity: 1;
+  transform: scale(1.1); /* Pop effect */
+  filter: grayscale(0%) opacity(1);
 }
 
+/* Tier 1 Logos */
 .logoBig {
-  height: 150px;
+  height: 200px;
   width: auto;
-  filter: grayscale(100%);
-  opacity: 0.6;
-  transition: all 0.3s ease;
+  object-fit: contain;
 }
 
-.logoLink:hover .logoBig {
-  filter: grayscale(0);
-  opacity: 1;
-}
-
+/* Tier 2 Logos */
 .logoSmall {
-  height: 45px;
+  height: 70px;
   width: auto;
-  opacity: 0.7;
-  filter: grayscale(100%);
-  transition: all 0.3s ease;
+  object-fit: contain;
 }
 
-.logoLink:hover .logoSmall {
-  filter: grayscale(0);
-  opacity: 1;
-}
-
+/* Special handling for dark logos on light bg if needed */
 .invertOnLight {
   filter: invert(1) opacity(0.7);
 }
 
-.logoLink:hover .invertOnLight {
-  filter: invert(1) opacity(1);
-}
-
+/* -------------------------------------------------------
+   CTA (The Heart Button)
+   ------------------------------------------------------- */
 .sponsorCta {
   text-align: center;
-  margin-top: 2rem;
-  padding-top: 3rem;
+  margin-top: 4rem;
+  padding-top: 4rem;
   border-top: 1px dashed #e2e8f0;
-  max-width: 600px;
+  max-width: 400px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -384,147 +395,104 @@
 .heartBtn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.75rem;
-  background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+
+  /* Gradient Pink/Red */
+  background: linear-gradient(135deg, #ec4899 0%, #e11d48 100%);
   color: white !important;
-  padding: 0.8rem 2rem;
-  border-radius: 50px;
+
+  padding: 1rem 2.5rem;
+  border-radius: 100px; /* Pill shape */
+
+  font-family: var(--ifm-font-family-base);
   font-weight: 700;
   font-size: 1.1rem;
   text-decoration: none !important;
-  box-shadow: 0 4px 6px -1px rgba(225, 29, 72, 0.3),
-    0 2px 4px -1px rgba(225, 29, 72, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  /* Glowing Shadow */
+  box-shadow: 0 4px 14px 0 rgba(236, 72, 153, 0.39);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .heartBtn:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 10px 15px -3px rgba(225, 29, 72, 0.4),
-    0 4px 6px -2px rgba(225, 29, 72, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(236, 72, 153, 0.23);
   color: white;
 }
 
 .heartBtn:active {
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px -1px rgba(225, 29, 72, 0.3);
+  transform: translateY(0);
 }
 
 .heartIcon {
-  width: 24px;
-  height: 24px;
-  color: white;
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
   animation: heartbeat 1.5s ease-in-out infinite;
-  transform-origin: center;
-}
-
-.heartBtn:hover .heartIcon {
-  animation: heartbeat 0.8s ease-in-out infinite;
 }
 
 @keyframes heartbeat {
-  0% {
-    transform: scale(1);
-  }
-  14% {
-    transform: scale(1.3);
-  }
-  28% {
-    transform: scale(1);
-  }
-  42% {
-    transform: scale(1.3);
-  }
-  70% {
-    transform: scale(1);
-  }
+  0% { transform: scale(1); }
+  14% { transform: scale(1.3); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.3); }
+  70% { transform: scale(1); }
 }
 
 /* -------------------------------------------------------
-   RESPONSIVE (TABLET: 996px & MOBILE: 768px)
+   RESPONSIVE
    ------------------------------------------------------- */
-
-@media (max-width: 996px) {
-  /* Bento Grid: Force 1 column on smaller tablets */
-  .bentoGrid {
-    grid-template-columns: 1fr;
-  }
-
-  /* Async Section: Stack vertically, Terminal VISIBLE */
-  .splitRow {
-    grid-template-columns: 1fr;
-    gap: 3rem;
-    text-align: center;
-  }
-
-  .splitContent {
-    order: 1;
-    margin: 0 auto;
-    width: 100%;
-    max-width: 700px;
-  }
-
-  .splitVisual {
-    order: 2;
-    display: block; /* Visible on Tablet */
-    width: 100%;
-    max-width: 700px;
-    margin: 0 auto;
-    text-align: left;
-  }
-
-  .badge {
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .capabilitiesGrid {
-    margin: 2rem auto 0;
-    text-align: left;
-    max-width: 500px;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-  }
-}
-
 @media (max-width: 768px) {
-  /* Global: Reduce padding */
-  .section {
-    padding: 3rem 0;
-  }
-
   .sectionHeader h2 {
-    font-size: 1.75rem;
+    font-size: 2rem;
   }
 
-  /* Bento Grid: Allow cards to shrink below 450px */
   .bentoGrid {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    /* Switch to single column */
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 0 1rem; /* Ensure outer padding */
   }
 
   .featureCard {
-    padding: 1.5rem;
+    /* Critical fix for overflow: allows flex/grid items to shrink below content size */
+    min-width: 0;
+    padding: 1.5rem; /* Reduce padding slightly on mobile */
   }
 
-  /* Async Section: Hide Terminal on Phone */
-  .splitVisual {
-    display: none !important;
+  .sponsorSection {
+    padding: 4rem 0;
   }
-
-  .capabilitiesGrid {
-    grid-template-columns: 1fr;
-  }
-
-  /* Sponsors: Adjust sizes */
   .logos {
-    gap: 2rem;
+    gap: 3rem;
+    flex-direction: column;
   }
   .logoBig {
-    height: 70px;
+    height: 100px;
   }
   .logoSmall {
     height: 35px;
   }
+}
+
+@media (max-width: 996px) {
+  .splitVisual {
+    display: none; /* Hides the terminal on Tablets & Phones */
+  }
+  /* Center the text since the terminal is gone */
+  .splitRow {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .splitContent {
+    margin: 0 auto;
+    max-width: 600px;
+  }
+  .capabilitiesGrid {
+    text-align: left; /* Keep the cards left-aligned for readability */
+  }
+  .bentoGrid { grid-template-columns: 1fr; }
+  .splitRow { grid-template-columns: 1fr; gap: 3rem; }
+  .sectionHeader h2 { font-size: 2.5rem; }
 }

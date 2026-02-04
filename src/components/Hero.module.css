@@ -1,10 +1,21 @@
 /* Container: Subtle radial gradient for depth without being dark */
 .hero {
   position: relative;
-  padding: 6rem 0;
+  padding: 8rem 0 6rem;
   overflow: hidden;
   background: radial-gradient(50% 50% at 50% 50%, #ffffff 0%, #f0f9ff 100%);
-  border-bottom: 1px solid var(--ifm-border-color);
+}
+
+/* Add a fade mask at the bottom so it blends into the next section */
+.hero::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 150px;
+  background: linear-gradient(to bottom, transparent, #ffffff);
+  pointer-events: none;
 }
 
 /* -------------------------------------------------------
@@ -13,27 +24,31 @@
 .title {
   font-family: var(--ifm-font-family-base), sans-serif;
   font-weight: 800;
-  font-size: 3.5rem;
-  line-height: 1.1;
-  color: #0f172a; /* Slate 900 */
-  margin-bottom: 1.5rem;
+  /* Massive font size for modern impact */
+  font-size: 4.5rem;
+  line-height: 1;
+  letter-spacing: -0.04em; /* Tight tracking is key for the "Crisp" look */
+  color: #0f172a;
+  margin-bottom: 2rem;
   text-align: left;
 }
 
-/* The magic gradient text effect */
+/* The magic gradient text effect - Brighter & Steeper */
 .highlight {
-  background: linear-gradient(90deg, #008ae6 0%, #29a1eb 100%);
+  background: linear-gradient(135deg, #008ae6 0%, #6366f1 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  padding-right: 0.1em; /* Fix clipping on italic/tight fonts */
 }
 
 .subtitle {
-  font-size: 1.1rem;
-  color: #64748b; /* Slate 500 */
-  margin-bottom: 2.5rem;
+  font-size: 1.2rem;
+  color: #475569;     /* Slightly darker for readability */
+  margin-bottom: 3rem;
   text-align: left;
-  line-height: 1.6;
+  line-height: 1.5;
+  max-width: 90%;
 }
 
 .subtitle strong {
@@ -58,7 +73,6 @@
 .btnCrisp {
   font-weight: 600;
   padding: 0.8rem 1.6rem;
-  border-radius: 8px; /* Slightly more rounded than default */
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
@@ -126,29 +140,21 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+  z-index: 1; /* Above the grid mask */
 }
 
 .logo {
   max-width: 100%;
   height: auto;
-  max-height: 400px;
-  /* Add a floating animation */
-  animation: float 6s ease-in-out infinite;
-  filter: drop-shadow(
-    0 20px 30px rgba(0, 0, 0, 0.1)
-  ); /* Soft shadow for the logo */
+  max-height: 480px; /* Bigger logo */
+  filter: drop-shadow(0 25px 50px rgba(0, 0, 0, 0.15)); /* Deeper shadow */
+  animation: float 8s ease-in-out infinite; /* Slower, more majestic float */
 }
 
 @keyframes float {
-  0% {
-    transform: translatey(0px);
-  }
-  50% {
-    transform: translatey(-15px);
-  }
-  100% {
-    transform: translatey(0px);
-  }
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
 }
 
 /* -------------------------------------------------------

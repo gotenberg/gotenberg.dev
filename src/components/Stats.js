@@ -75,12 +75,15 @@ export default function Stats() {
           </a>
 
           {/* Card 3: Safety */}
+          <a href="https://github.com/gotenberg/gotenberg?tab=MIT-1-ov-file#readme"
+             className={styles.linkWrapper}>
           <StatCard
             icon={LicenseIcon}
             number="MIT"
             label="Open Source License"
             colorClass="teal"
           />
+          </a>
         </div>
       </div>
     </section>
