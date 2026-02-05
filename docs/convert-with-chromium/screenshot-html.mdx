@@ -3,6 +3,7 @@ id: screenshot-html
 title: Screenshot HTML
 ---
 
+import ConfigurationInfo from "./_configuration_info.mdx";
 import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
 import Assets from "./_assets.mdx";
 import RenderingBehaviorScreenshot from "./_rendering_behavior/_rendering_behavior_screenshot.mdx";
@@ -13,6 +14,8 @@ import Sponsors from "@site/src/components/documentation/Sponsors";
 Converts uploaded HTML content into an image using Headless Chromium.
 
 Unlike the URL route, this endpoint renders files provided directly in the request body. It requires an `index.html` file to serve as the entry point. You may also include additional assets (CSS, images, fonts) in the `multipart/form-data` request, which can be referenced in your HTML using relative paths.
+
+<ConfigurationInfo />
 
 ## Basics
 

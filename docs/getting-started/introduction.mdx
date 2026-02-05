@@ -5,24 +5,14 @@ title: What is Gotenberg?
 
 import Sponsors from "@site/src/components/documentation/Sponsors";
 
-[Gotenberg](https://github.com/gotenberg/gotenberg) is a Docker-powered API for converting documents to PDF.
+[Gotenberg](https://github.com/gotenberg/gotenberg) is a containerized API that abstracts the complexity of PDF conversion.
 
-It acts as a self-contained wrapper around powerful tools like **Chromium** and **LibreOffice**, exposing them through a simple API. This eliminates the need to install and manage heavy dependencies in your application environment.
-
-## How it Works
-
-Instead of managing Chromium or LibreOffice binaries in your own backend, you send your files (HTML, Markdown, Word, Excel, etc.) to the Gotenberg container via `multipart/form-data`. Gotenberg handles the rendering and returns a PDF.
-
-## Why Gotenberg?
-
-- **Chromium at the Core:** It uses the Chromium engine (headless) to render HTML/CSS/JS exactly as it appears in a browser.
-- **Office Support:** Converts `.docx`, `.xlsx`, and `.pptx` using the LibreOffice engine.
-- **PDF Manipulation:** Merge, split, encrypt PDFs using robust engines like pdfcpu and QPDF.
-- **Zero Dependency Hell:** It runs as a single Docker image. You don't need to worry about fonts, shared libraries, or browser versions.
+It provides a `multipart/form-data` interface for interacting with powerful engines like **Chromium** and **LibreOffice**.
+Instead of managing heavy dependencies, browser versions, or fonts in your own backend, simply send your files to Gotenberg and get a PDF in return.
 
 ## Quick Start
 
-You can get a PDF from a URL with a single command:
+Spin up a container and convert a URL to PDF in two commands:
 
 ```bash
 # 1. Start the container.

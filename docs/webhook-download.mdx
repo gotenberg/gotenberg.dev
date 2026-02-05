@@ -1,10 +1,8 @@
 ---
-id: asynchronous-remote
-title: Asynchronous & Remote
+id: webhook-download
+title: Webhook & Download
 ---
 
-import Tabs from "@theme/Tabs";
-import TabItem from "@theme/TabItem";
 import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
 import Sponsors from "@site/src/components/documentation/Sponsors";
 
@@ -22,7 +20,14 @@ When Webhook headers are provided:
 3. Processes the conversion in the background.
 4. Uploads the resulting PDF to the URL specified in `Gotenberg-Webhook-Url`.
 
-:::info Testing Webhooks
+:::info Configuration
+
+You can customize retries, timeouts, and allowed URLs.
+See the [Webhook module configuration](/docs/configuration#webhook) for details.
+
+:::
+
+:::tip Testing Webhooks
 
 Tools like [PipeDream](https://pipedream.com/) or [Webhook.site](https://webhook.site) are excellent for testing these callbacks without setting up a dedicated server.
 
@@ -78,8 +83,33 @@ curl \\
 `}
   responses={[
     {
-      status: "{Webhook-Method}",
-      message: "Success Callback",
+      status: "204",
+      message: "No Content",
+      description: "The request is being processed asynchronously.",
+    },
+    {
+      status: "400",
+      message: "Bad Request",
+      description: "At least one of the header is invalid or missing.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+      `,
+    },
+    {
+      status: "403",
+      message: "Forbidden",
+      description: "At least one of the specified URLs is forbidden.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: Forbidden
+      `,
+    },
+    {
+      status: "Success",
+      message: "Callback",
       description:
         "The resulting file has been uploaded successfully to the specified URL.",
       body: `
@@ -92,8 +122,8 @@ Body: {output-file}
       `,
     },
     {
-      status: "{Webhook-Error-Method}",
-      message: "Error Callback",
+      status: "Error",
+      message: "Callback",
       description:
         "The operation failed and the error has been reported to the specified URL.",
       body: `
@@ -112,6 +142,13 @@ User-Agent: Gotenberg
 ## Download From
 
 All `multipart/form-data` endpoints accept the `downloadFrom` form field. This allows you to instruct Gotenberg to fetch files from remote URLs (e.g., S3, Azure Blob, or an internal CDN) instead of uploading them directly.
+
+:::info Configuration
+
+This feature is enabled by default. It can be disabled via the `API_DISABLE_DOWNLOAD_FROM` environment variable.
+For further details, refer to the [API module configuration](/docs/configuration#api).
+
+:::
 
 <ApiEndpoint
   method="POST"
@@ -135,14 +172,29 @@ curl \\
 }]' \\
 -o my.pdf
 `}
+  responses={[
+    {
+      status: 400,
+      message: "Bad Request",
+      description: "The JSON is malformed.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+      `,
+    },
+    {
+      status: 403,
+      message: "Forbidden",
+      description: "At least one of the specified URLs is forbidden.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: Forbidden
+      `,
+    },
+  ]}
 />
-
-:::info Configuration
-
-This feature is enabled by default. It can be disabled via the `API_DISABLE_DOWNLOAD_FROM` environment variable.
-For further details, refer to the [API module configuration](/docs/configuration#api).
-
-:::
 
 ### JSON Object Structure
 

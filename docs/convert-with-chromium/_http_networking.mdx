@@ -183,6 +183,19 @@ ${props.curlFormData}
 --form 'ignoreResourceHttpStatusDomains=["sentry-cdn.com","analytics.example.com"]' \\
 ${props.curlOutput}
 `}
+  responses={[
+    {
+      status: 409,
+      message: "Conflict",
+      description:
+        "The main page or one of its resources returned an invalid status code.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: Invalid HTTP status code from the main page: 400: Bad Request
+`,
+    },
+  ]}
 />
 
 ### Network Errors

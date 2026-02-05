@@ -36,7 +36,7 @@
 
   /* Crisp Border instead of shadow */
   border: 1px solid #e2e8f0;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 
   transition: all 0.2s ease;
   height: 100%;
@@ -93,8 +93,13 @@
 }
 
 @keyframes heartbeat {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.2); }
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
 }
 
 /* -------------------------------------------------------
@@ -155,7 +160,8 @@
   }
 
   /* Force cards to have a fixed width on mobile */
-  .linkWrapper, .card {
+  .linkWrapper,
+  .card {
     min-width: 260px; /* Fixed width for swipe */
     scroll-snap-align: center;
   }

@@ -3,6 +3,7 @@ id: convert-html-to-pdf
 title: Convert HTML to PDF
 ---
 
+import ConfigurationInfo from "./_configuration_info.mdx";
 import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
 import Assets from "./_assets.mdx";
 import PaperDimensions from "./_paper_dimensions.mdx";
@@ -19,6 +20,8 @@ import Sponsors from "@site/src/components/documentation/Sponsors";
 Converts uploaded HTML content to PDF using Headless Chromium.
 
 Unlike the URL route, this endpoint renders files provided directly in the request body. It requires an `index.html` file to serve as the entry point. You may also include additional assets (CSS, images, fonts) in the `multipart/form-data` request, which can be referenced in your HTML using relative paths.
+
+<ConfigurationInfo />
 
 ## Basics
 

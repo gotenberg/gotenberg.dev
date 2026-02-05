@@ -87,8 +87,8 @@ module.exports = {
     },
     {
       type: "doc",
-      id: "asynchronous-remote",
-      label: "Asynchronous & Remote",
+      id: "webhook-download",
+      label: "Webhook & Download",
     },
     {
       type: "doc",

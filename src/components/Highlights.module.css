@@ -201,11 +201,24 @@
   border-bottom: 1px solid #334155;
 }
 
-.dots { display: flex; gap: 8px; }
-.dot { width: 12px; height: 12px; border-radius: 50%; }
-.red { background: #ef4444; }
-.yellow { background: #f59e0b; }
-.green { background: #22c55e; }
+.dots {
+  display: flex;
+  gap: 8px;
+}
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+.red {
+  background: #ef4444;
+}
+.yellow {
+  background: #f59e0b;
+}
+.green {
+  background: #22c55e;
+}
 
 .terminalBody {
   padding: 1.5rem;
@@ -216,11 +229,24 @@
 }
 
 /* Update syntax highlighting to pop against the dark bg */
-.cPlain { color: #e2e8f0; }
-.cCommand { color: #f472b6; font-weight: 700; } /* Pink */
-.cFlag { color: #38bdf8; } /* Light Blue */
-.cString { color: #a3e635; } /* Lime Green */
-.cUrl { color: #a78bfa; text-decoration: underline; text-underline-offset: 3px; }
+.cPlain {
+  color: #e2e8f0;
+}
+.cCommand {
+  color: #f472b6;
+  font-weight: 700;
+} /* Pink */
+.cFlag {
+  color: #38bdf8;
+} /* Light Blue */
+.cString {
+  color: #a3e635;
+} /* Lime Green */
+.cUrl {
+  color: #a78bfa;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 
 /* -------------------------------------------------------
    ASYNC SECTION (The Mesh Gradient)
@@ -228,9 +254,12 @@
 .asyncSection {
   /* Subtle Mesh Gradient */
   background-color: #f8fafc;
-  background-image:
-          radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.1) 0px, transparent 50%),
-          radial-gradient(at 100% 100%, rgba(14, 165, 233, 0.1) 0px, transparent 50%);
+  background-image: radial-gradient(
+      at 0% 0%,
+      rgba(99, 102, 241, 0.1) 0px,
+      transparent 50%
+    ),
+    radial-gradient(at 100% 100%, rgba(14, 165, 233, 0.1) 0px, transparent 50%);
 
   border-top: 1px solid #e2e8f0;
   border-bottom: 1px solid #e2e8f0;
@@ -309,7 +338,7 @@
   font-family: var(--ifm-font-family-base);
   font-size: 0.8rem;
   font-weight: 800; /* Extra bold */
-  color: #94a3b8;   /* Slate 400 */
+  color: #94a3b8; /* Slate 400 */
   text-transform: uppercase;
   letter-spacing: 0.15em; /* Wide tracking */
   margin-bottom: 3rem;
@@ -362,14 +391,14 @@
 
 /* Tier 1 Logos */
 .logoBig {
-  height: 200px;
+  height: 150px;
   width: auto;
   object-fit: contain;
 }
 
 /* Tier 2 Logos */
 .logoSmall {
-  height: 70px;
+  height: 50px;
   width: auto;
   object-fit: contain;
 }
@@ -433,11 +462,21 @@
 }
 
 @keyframes heartbeat {
-  0% { transform: scale(1); }
-  14% { transform: scale(1.3); }
-  28% { transform: scale(1); }
-  42% { transform: scale(1.3); }
-  70% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+  14% {
+    transform: scale(1.3);
+  }
+  28% {
+    transform: scale(1);
+  }
+  42% {
+    transform: scale(1.3);
+  }
+  70% {
+    transform: scale(1);
+  }
 }
 
 /* -------------------------------------------------------
@@ -492,7 +531,14 @@
   .capabilitiesGrid {
     text-align: left; /* Keep the cards left-aligned for readability */
   }
-  .bentoGrid { grid-template-columns: 1fr; }
-  .splitRow { grid-template-columns: 1fr; gap: 3rem; }
-  .sectionHeader h2 { font-size: 2.5rem; }
+  .bentoGrid {
+    grid-template-columns: 1fr;
+  }
+  .splitRow {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  .sectionHeader h2 {
+    font-size: 2.5rem;
+  }
 }
