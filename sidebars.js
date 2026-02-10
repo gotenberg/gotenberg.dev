@@ -60,8 +60,67 @@ module.exports = {
     },
     {
       type: "category",
+      label: "Convert with LibreOffice",
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "convert-with-libreoffice/convert-to-pdf",
+          className: "sidebar-method-post",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Manipulate PDFs",
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "manipulate-pdfs/write-metadata",
+          className: "sidebar-method-post",
+        },
+        {
+          type: "doc",
+          id: "manipulate-pdfs/read-metadata",
+          className: "sidebar-method-post",
+        },
+        {
+          type: "doc",
+          id: "manipulate-pdfs/attachments",
+          className: "sidebar-method-post",
+        },
+        {
+          type: "doc",
+          id: "manipulate-pdfs/flatten-pdfs",
+          className: "sidebar-method-post",
+        },
+        {
+          type: "doc",
+          id: "manipulate-pdfs/merge-pdfs",
+          className: "sidebar-method-post",
+        },
+        {
+          type: "doc",
+          id: "manipulate-pdfs/split-pdfs",
+          className: "sidebar-method-post",
+        },
+        {
+          type: "doc",
+          id: "manipulate-pdfs/pdfa-pdfua",
+          className: "sidebar-method-post",
+        },
+        {
+          type: "doc",
+          id: "manipulate-pdfs/encrypt-pdfs",
+          className: "sidebar-method-post",
+        },
+      ],
+    },
+    {
+      type: "category",
       label: "System",
-      collapsed: false,
+      collapsed: true,
       items: [
         {
           type: "doc",

@@ -1,0 +1,22 @@
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import LibreOfficeNativePageRangesCaution from "./_libreoffice_native_page_ranges_caution.mdx";
+
+### Native Printing
+
+Use the `nativePageRanges` form field to instruct {props.engine} which pages to print.
+
+{props.engine === "LibreOffice" && <LibreOfficeNativePageRangesCaution />}
+
+- **Process:** Happens _during_ a conversion.
+- **Output:** A **single PDF** file {props.engine === "LibreOffice" && "(or many)"} containing only the selected pages.
+- **Performance:** Faster, as unused pages are never rendered.
+
+<ApiEndpoint
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form nativePageRanges=1-5 \\
+-o my.pdf
+`}
+/>

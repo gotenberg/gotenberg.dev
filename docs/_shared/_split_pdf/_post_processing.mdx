@@ -1,0 +1,37 @@
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import SyntaxValidationCaution from "./_syntax_validation_caution.mdx";
+import LibreOfficePostProcessingMergeInfo from "./_libreoffice_post_processing_merge_info.mdx";
+
+### Post-Processing (PDF Engines) {#post-processing-pdf-engines-split-page-ranges}
+
+{props.engine === "Chromium" && (
+<p>
+  Use the <code>splitMode</code>, <code>splitSpan</code>, and <code>splitUnify</code> form fields to manipulate the PDF <i>after</i> it has been generated.
+</p>
+)}
+
+{props.engine === "LibreOffice" && (
+<span>
+<p>
+  Use the <code>splitMode</code>, <code>splitSpan</code>, and <code>splitUnify</code> form fields to manipulate the PDFs <i>after</i> they have been generated.
+</p>
+  <LibreOfficePostProcessingMergeInfo />
+</span>
+)}
+
+- **Process:** Gotenberg generates the full PDF, then uses a PDF Engine (like pdfcpu) to split or extract pages.
+- **Output:** A **single PDF** or a **ZIP archive** containing PDF files.
+- **Use Case:** creating separate files for every page, or extracting intervals into separate documents.
+
+<ApiEndpoint
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form splitMode=intervals \\
+--form splitSpan=1 \\
+-o my.zip
+`}
+/>
+
+<SyntaxValidationCaution />

@@ -1,0 +1,19 @@
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+
+### Native Accessibility
+
+Use the `generateTaggedPdf` form field to instruct Chromium to structure the PDF for accessibility (tagging).
+
+- **Process:** Happens _during_ the initial HTML-to-PDF conversion.
+- **Performance:** High (negligible overhead).
+- **Result:** A logical structure tree (headings, paragraphs) embedded in the PDF, essential for screen readers.
+
+<ApiEndpoint
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form generateTaggedPdf=true \\
+${props.curlOutput}
+`}
+/>

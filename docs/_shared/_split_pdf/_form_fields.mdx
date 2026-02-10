@@ -1,0 +1,112 @@
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+
+<ApiEndpoint
+  method={props.standalone ? "POST": ""}
+  path={props.standalone ? "/forms/pdfengines/split" : ""}
+  formFields={[
+    ...(props.standalone
+      ? []
+      : [
+          {
+            name: "nativePageRanges",
+            type: "string",
+            defaultValue: "None",
+            description: (
+              <span>
+                {props.engine} feature. Define ranges to print (e.g., '1-5, 8,
+                11-13').
+              </span>
+            ),
+          },
+        ]),
+    {
+      name: "splitMode",
+      type: "enum",
+      required: props.standalone,
+      defaultValue: props.standalone ? "" : "None",
+      description:
+        "Activates the splitting engine. Options: 'intervals' or 'pages'.",
+    },
+    {
+      name: "splitSpan",
+      type: "string",
+      required: props.standalone,
+      defaultValue: props.standalone ? "" : "None",
+      description:
+        "The rule for splitting. If mode is 'intervals', defines the chunk size (e.g. '2'). If mode is 'pages', defines the page ranges.",
+    },
+    {
+      name: "splitUnify",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Only for 'pages' mode. If true, puts all extracted pages from a PDF into a single PDF file. If false, creates a separate file for each range.",
+    },
+  ]}
+  formFiles={[
+    ...(props.standalone
+      ? [
+          {
+            name: "*.pdf",
+            type: "file[]",
+            required: true,
+            description: "At least one PDF file.",
+          },
+        ]
+      : []),
+  ]}
+  curl={
+    props.standalone
+      ? `curl \\
+--request POST http://localhost:3000/forms/pdfengines/split \\
+--form files=@/path/to/pdf.pdf \\
+--form splitMode=intervals \\
+--form splitSpan=1 \\
+-o my.zip`
+      : ""
+  }
+  responses={
+  props.standalone
+    ? [
+      {
+        status: 200,
+        message: "OK",
+        description: (
+          <span>
+          The PDF file has been successfully handled. Returns a{" "}
+            <strong>ZIP archives</strong> if many result files, or a <strong>single PDF file</strong>.
+        </span>
+        ),
+        body: `
+Content-Disposition: attachment; filename={output-filename.zip}
+Content-Type: {content-type}
+Content-Length: {content-length}
+Gotenberg-Trace: {trace}
+Body: {output-file}
+      `,
+      },
+      {
+        status: 400,
+        message: "Bad Request",
+        description: "The request had one ore more invalid form fields.",
+        body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+      `,
+      },
+      {
+        status: 503,
+        message: "Service Unavailable",
+        description:
+          "The request did not complete within the configured maximum duration.",
+        body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: Service Unavailable
+      `,
+      },
+    ]
+    : []
+  }
+/>

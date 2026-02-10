@@ -43,7 +43,7 @@ const ParamsList = ({ title, items }) => {
 
             <div className={styles.paramBody}>
               <div className={styles.paramDescription}>{item.description}</div>
-              {item.defaultValue !== undefined && (
+              {item.defaultValue && item.defaultValue.length > 0 && (
                 <div className={styles.paramDefault}>
                   <span className={styles.defaultLabel}>Default:</span>
                   <code>{item.defaultValue}</code>

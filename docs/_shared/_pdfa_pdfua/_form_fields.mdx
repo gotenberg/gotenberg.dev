@@ -1,0 +1,99 @@
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+
+<ApiEndpoint
+  method={props.standalone ? "POST": ""}
+  path={props.standalone ? "/forms/pdfengines/convert" : ""}
+  formFields={[
+    ...(props.engine !== "Chromium"
+      ? []
+      : [
+        {
+          name: "generateTaggedPdf",
+          type: "boolean",
+          defaultValue: "false",
+          description:
+            "Chromium feature. Embeds logical structure tags for accessibility during generation.",
+        },
+      ]),
+    {
+      name: "pdfa",
+      type: "enum",
+      required: props.standalone,
+      defaultValue: props.standalone ? "" : "None",
+      description:
+        "Converts to a specific PDF/A archival standard. Options includes: 'PDF/A-1b', 'PDF/A-2b', 'PDF/A-3b'",
+    },
+    {
+      name: "pdfua",
+      type: "boolean",
+      defaultValue: "false",
+      description: "Enables PDF/UA (Universal Accessibility) compliance.",
+    },
+  ]}
+  formFiles={[
+    ...(props.standalone
+      ? [
+          {
+            name: "*.pdf",
+            type: "file[]",
+            required: true,
+            description: "At least one PDF file.",
+          },
+        ]
+      : []),
+  ]}
+  curl={
+    props.standalone
+      ? `curl \\
+--request POST http://localhost:3000/forms/pdfengines/convert \\
+--form files=@/path/to/pdf.pdf \\
+--form pdfa=PDF/A-1b \\
+--form pdfua=true \\
+-o my.pdf`
+      : ""
+  }
+  responses={
+    props.standalone
+      ? [
+        {
+          status: 200,
+          message: "OK",
+          description: (
+            <span>
+          The PDF file has been successfully converted. Returns a{" "}
+              <strong>ZIP archives</strong> if many files have been uploaded.
+        </span>
+          ),
+          body: `
+Content-Disposition: attachment; filename={output-filename.pdf}
+Content-Type: {content-type}
+Content-Length: {content-length}
+Gotenberg-Trace: {trace}
+Body: {output-file}
+      `,
+        },
+        {
+          status: 400,
+          message: "Bad Request",
+          description: "The request had one ore more invalid form fields.",
+          body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+      `,
+        },
+        {
+          status: 503,
+          message: "Service Unavailable",
+          description:
+            "The request did not complete within the configured maximum duration.",
+          body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: Service Unavailable
+      `,
+        },
+      ]
+      : []
+  }
+/>

@@ -1,0 +1,31 @@
+---
+id: split-pdfs
+title: Split PDFs
+---
+
+import SyntaxValidationCaution from "../_shared/_split_pdf/_syntax_validation_caution.mdx";
+import FormFields from "../_shared/_split_pdf/_form_fields.mdx";
+
+Splits PDF files or extracts specific pages using a PDF engine.
+
+This endpoint processes PDF files provided directly in the multipart/form-data request body.
+It operates in two modes: intervals (splitting documents into uniform chunks) or pages (extracting specific page ranges).
+You can upload one or more PDF files, and the API will return the results as either a ZIP archive of individual files or a single unified PDF.
+
+<SyntaxValidationCaution />
+
+## Basics
+
+<FormFields standalone={true} />
+
+## Structure & Metadata
+
+### Metadata (PDF Engines)
+
+### Attachments (PDF Engines)
+
+### Flatten (PDF Engines)
+
+## PDF/A & PDF/UA
+
+## Encryption (PDF Engines)

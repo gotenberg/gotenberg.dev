@@ -1,0 +1,296 @@
+---
+id: convert-to-pdf
+title: Convert to PDF
+---
+
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import SplitFormFields from "../_shared/_split_pdf/_form_fields.mdx";
+import NativePrinting from "../_shared/_split_pdf/_native_printing.mdx";
+import SplitPostProcessing from "../_shared/_split_pdf/_post_processing.mdx";
+import Sponsors from "@site/src/components/documentation/Sponsors";
+
+Converts uploaded documents to PDF using LibreOffice.
+
+This endpoint processes files provided directly in the `multipart/form-data` request body.
+It accepts a wide range of formats, including Microsoft Office (Word, Excel, PowerPoint), OpenOffice, and plain text files.
+You can upload one or more documents, and the API will convert all supported files found in the request.
+
+| Family                 | Supported Extensions                                                                                                                                                                                                                                  |
+| :--------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Word Processing**    | `.doc`, `.docx`, `.docm`, `.dot`, `.dotm`, `.dotx`, `.odt`, `.fodt`, `.ott`, `.rtf`, `.txt`, `.wps`, `.wpd`, `.pages`, `.abw`, `.zabw`, `.lwp`, `.mw`, `.mcw`, `.hwp`, `.sxw`, `.stw`, `.sgl`, `.vor`, `.602`, `.bib`, `.xml`, `.cwk`, `.psw`, `.uof` |
+| **Spreadsheets**       | `.xls`, `.xlsx`, `.xlsm`, `.xlsb`, `.xlt`, `.xltm`, `.xltx`, `.xlw`, `.ods`, `.fods`, `.ots`, `.csv`, `.numbers`, `.123`, `.wk1`, `.wks`, `.wb2`, `.dbf`, `.dif`, `.slk`, `.sxc`, `.stc`, `.uos`, `.pxl`, `.sdc`                                      |
+| **Presentations**      | `.ppt`, `.pptx`, `.pptm`, `.pot`, `.potm`, `.potx`, `.pps`, `.odp`, `.fodp`, `.otp`, `.key`, `.sxi`, `.sti`, `.uop`, `.sdd`, `.sdp`, `.fopd`                                                                                                          |
+| **Graphics & Drawing** | `.odg`, `.fodg`, `.otg`, `.vsd`, `.vsdx`, `.vsdm`, `.vdx`, `.cdr`, `.svg`, `.svm`, `.wmf`, `.emf`, `.cgm`, `.dxf`, `.std`, `.sxd`, `.pub`, `.wpg`, `.sda`, `.odd`, `.met`, `.cmx`, `.eps`                                                             |
+| **Images**             | `.jpg`, `.jpeg`, `.png`, `.bmp`, `.gif`, `.tif`, `.tiff`, `.pbm`, `.pgm`, `.ppm`, `.xbm`, `.xpm`, `.pcx`, `.pcd`, `.pct`, `.psd`, `.tga`, `.ras`, `.pwp`                                                                                              |
+| **Web & Other**        | `.html`, `.htm`, `.xhtml`, `.epub`, `.pdf`, `.pdb`, `.ltx`, `.mml`, `.smf`, `.sxm`, `.sxg`, `.oth`, `.odm`, `.swf`                                                                                                                                    |
+
+:::info Configuration
+
+You can configure the LibreOffice module behavior.
+See the [LibreOffice module configuration](/docs/configuration#libreoffice) for details.
+
+:::
+
+## Basics
+
+<ApiEndpoint
+  method="POST"
+  path="/forms/libreoffice/convert"
+  headers={[
+    {
+      name: "Gotenberg-Output-Filename",
+      type: "string",
+      required: false,
+      description:
+        "The filename of the resulting file - Gotenberg automatically appends the file extension. Defaults to a random UUID filename.",
+    },
+  ]}
+  formFiles={[
+    {
+      name: "files",
+      type: "file[]",
+      required: true,
+      description: "At least one file to convert to PDF.",
+    },
+  ]}
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/libreoffice/convert \\
+--form files=@/path/to/docx \\
+-o my.pdf`}
+  responses={[
+    {
+      status: 200,
+      message: "OK",
+      description: (
+        <span>
+          The PDF file has been successfully created. Returns a{" "}
+          <strong>ZIP archives</strong> if many files have been uploaded.
+        </span>
+      ),
+      body: `
+Content-Disposition: attachment; filename={output-filename.pdf}
+Content-Type: {content-type}
+Content-Length: {content-length}
+Gotenberg-Trace: {trace}
+Body: {output-file}
+      `,
+    },
+    {
+      status: 400,
+      message: "Bad Request",
+      description: "The request had one ore more invalid form fields.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+      `,
+    },
+    {
+      status: 503,
+      message: "Service Unavailable",
+      description:
+        "The request did not complete within the configured maximum duration.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: Service Unavailable
+      `,
+    },
+  ]}
+/>
+
+## Rendering Behavior
+
+<ApiEndpoint
+  formFields={[
+    {
+      name: "landscape",
+      type: "boolean",
+      defaultValue: "false",
+      description: "Sets the paper orientation to landscape.",
+    },
+    {
+      name: "singlePageSheets",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Ignores each sheet’s paper size, print ranges and shown/hidden status and puts every sheet (even hidden sheets) on exactly one page.",
+    },
+    {
+      name: "skipEmptyPages",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Specifies that automatically inserted empty pages are suppressed. This option is active only if storing Writer documents.",
+    },
+    {
+      name: "losslessImageCompression",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Specifies if images are exported to PDF using a lossless compression format like PNG or compressed using the JPEG format.",
+    },
+    {
+      name: "quality",
+      type: "integer",
+      defaultValue: "90",
+      description:
+        "Specifies the quality of the JPG export. A higher value produces a higher-quality image and a larger file. Between 1 and 100.",
+    },
+    {
+      name: "reduceImageResolution",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Specifies if the resolution of each image is reduced to the resolution specified by the form field maxImageResolution.",
+    },
+    {
+      name: "maxImageResolution",
+      type: "integer",
+      defaultValue: "300",
+      description:
+        "If the form field reduceImageResolution is set to true, tell if all images will be reduced to the given value in DPI. Possible values are: 75, 150, 300, 600 and 1200.",
+    },
+    {
+      name: "exportFormFields",
+      type: "boolean",
+      defaultValue: "true",
+      description:
+        "Specifies whether form fields are exported as widgets or only their fixed print representation is exported.",
+    },
+    {
+      name: "allowDuplicateFieldNames",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Specifies whether multiple form fields exported are allowed to have the same field name.",
+    },
+    {
+      name: "exportBookmarks",
+      type: "boolean",
+      defaultValue: "true",
+      description: "Specifies if bookmarks are exported to PDF.",
+    },
+    {
+      name: "exportBookmarksToPdfDestination",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Specifies that the bookmarks contained in the source LibreOffice file should be exported to the PDF file as Named Destination.",
+    },
+    {
+      name: "exportPlaceholders",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Exports the placeholders fields visual markings only. The exported placeholder is ineffective.",
+    },
+    {
+      name: "exportNotes",
+      type: "boolean",
+      defaultValue: "false",
+      description: "Specifies if notes are exported to PDF.",
+    },
+    {
+      name: "exportNotesPages",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Specifies if notes pages are exported to PDF. Notes pages are available in Impress documents only.",
+    },
+    {
+      name: "exportOnlyNotesPages",
+      type: "boolean",
+      defaultValue: "false",
+      description: (
+        <span>
+          Specifies, if the form field `exportNotesPages` is set to true, if
+          only notes pages are exported to PDF.
+        </span>
+      ),
+    },
+    {
+      name: "exportNotesInMargin",
+      type: "boolean",
+      defaultValue: "false",
+      description: "Specifies if notes in margin are exported to PDF.",
+    },
+    {
+      name: "convertOooTargetToPdfTarget",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Specifies that the target documents with .od[tpgs] extension, will have that extension changed to .pdf when the link is exported to PDF. The source document remains untouched.",
+    },
+    {
+      name: "exportLinksRelativeFsys",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Specifies that the file system related hyperlinks (file:// protocol) present in the document will be exported as relative to the source document location.",
+    },
+    {
+      name: "exportHiddenSlides",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Exports, for LibreOffice Impress, slides that are not included in slide shows.",
+    },
+  ]}
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/libreoffice/convert \\
+--form files=@/path/to/document.docx \\
+--form losslessImageCompression=false \\
+--form quality=50 \\
+--form reduceImageResolution=true \\
+--form maxImageResolution=75 \\
+-o my.pdf`}
+/>
+
+## Split & Page Ranges
+
+<SplitFormFields engine="LibreOffice" standalone={false} />
+
+<NativePrinting
+  method="POST"
+  path="/forms/libreoffice/convert"
+  curlFormData={`--form files=@/path/to/document.docx \\`}
+  engine="LibreOffice"
+  standalone={false}
+/>
+
+<SplitPostProcessing
+  method="POST"
+  path="/forms/libreoffice/convert"
+  curlFormData={`--form files=@/path/to/document.docx \\`}
+  engine="LibreOffice"
+  standalone={false}
+/>
+
+## Best Practices
+
+### Fonts & Layout Fidelity
+
+**Fonts are critical.** LibreOffice relies on installed fonts to calculate page breaks and layout.
+If a specific font used in your document is missing from the Gotenberg container, LibreOffice will substitute it with a default one. This is the most common cause of layout issues and shifted pagination.
+
+:::info
+
+For the best results, ensure all required fonts are installed in your Docker image (e.g., via a custom `Dockerfile`).
+See the [Fonts configuration](/docs/configuration#fonts) for more details.
+
+:::
+
+### Microsoft Office Compatibility
+
+While LibreOffice provides excellent support for Microsoft Office formats (e.g., `.docx`, `.xlsx`, `.pptx`), it is not a 1:1 clone.
+Documents containing complex styling, proprietary Smart Art, or highly specific formatting features may render slightly differently than they do in Microsoft Word or Excel.
+
+### Macros
+
+For security reasons, macros contained in documents (e.g., `.docm`, `.xlsm`, `.pptm`) are **disabled** by default during the conversion process.
+The files will still be converted, but any dynamic content or scripts generated by macros will not be executed.
+
+<Sponsors />
