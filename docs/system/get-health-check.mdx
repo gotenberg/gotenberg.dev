@@ -13,6 +13,15 @@ This endpoint verifies that the server is accepting requests and that all active
 <ApiEndpoint
   method="GET"
   path="/health"
+  headers={[
+    {
+      name: "Gotenberg-Trace",
+      type: "string",
+      required: false,
+      description:
+        "A custom request ID to identify the request in the logs; overrides the default UUID.",
+    },
+  ]}
   curl={`curl --request GET http://localhost:3000/health`}
   responses={[
     {

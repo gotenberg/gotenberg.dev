@@ -4,9 +4,6 @@ title: Convert to PDF
 ---
 
 import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
-import SplitFormFields from "../_shared/_split_pdf/_form_fields.mdx";
-import NativePrinting from "../_shared/_split_pdf/_native_printing.mdx";
-import SplitPostProcessing from "../_shared/_split_pdf/_post_processing.mdx";
 import Sponsors from "@site/src/components/documentation/Sponsors";
 
 Converts uploaded documents to PDF using LibreOffice.
@@ -43,6 +40,13 @@ See the [LibreOffice module configuration](/docs/configuration#libreoffice) for 
       required: false,
       description:
         "The filename of the resulting file - Gotenberg automatically appends the file extension. Defaults to a random UUID filename.",
+    },
+    {
+      name: "Gotenberg-Trace",
+      type: "string",
+      required: false,
+      description:
+        "A custom request ID to identify the request in the logs; overrides the default UUID.",
     },
   ]}
   formFiles={[
@@ -167,19 +171,6 @@ Body: Service Unavailable
         "Specifies whether multiple form fields exported are allowed to have the same field name.",
     },
     {
-      name: "exportBookmarks",
-      type: "boolean",
-      defaultValue: "true",
-      description: "Specifies if bookmarks are exported to PDF.",
-    },
-    {
-      name: "exportBookmarksToPdfDestination",
-      type: "boolean",
-      defaultValue: "false",
-      description:
-        "Specifies that the bookmarks contained in the source LibreOffice file should be exported to the PDF file as Named Destination.",
-    },
-    {
       name: "exportPlaceholders",
       type: "boolean",
       defaultValue: "false",
@@ -242,31 +233,274 @@ Body: Service Unavailable
 curl \\
 --request POST http://localhost:3000/forms/libreoffice/convert \\
 --form files=@/path/to/document.docx \\
---form losslessImageCompression=false \\
---form quality=50 \\
---form reduceImageResolution=true \\
---form maxImageResolution=75 \\
+--form landscape=true \\
+--form nativePageRanges=1-5 \\
+-o my.pdf`}
+/>
+
+## Structure & Metadata
+
+<ApiEndpoint
+  formFields={[
+    {
+      name: "updateIndexes",
+      type: "boolean",
+      defaultValue: "true",
+      description:
+        "Updates indexes (e.g., Table of Contents) before conversion. May cause missing links.",
+    },
+    {
+      name: "exportBookmarks",
+      type: "boolean",
+      defaultValue: "true",
+      description: "Exports bookmarks to the PDF.",
+    },
+    {
+      name: "exportBookmarksToPdfDestination",
+      type: "boolean",
+      defaultValue: "false",
+      description: "Exports bookmarks as Named Destinations.",
+    },
+    {
+      name: "addOriginalDocumentAsStream",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Embeds the original document as a stream in the PDF for archiving.",
+    },
+    {
+      name: "metadata",
+      type: "json",
+      defaultValue: "None",
+      description: "Writes metadata (Author, Title, etc.).",
+    },
+    {
+      name: "embeds",
+      type: "file[]",
+      defaultValue: "None",
+      description: "Embeds files into the PDF.",
+    },
+    {
+      name: "flatten",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Converts form fields into static content, preventing further editing.",
+    },
+  ]}
+/>
+
+### Document Structure (LibreOffice)
+
+Use the following form fields to control how the document structure is handled during conversion.
+
+<ApiEndpoint
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/libreoffice/convert \\
+--form files=@/path/to/document.docx \\
+--form updateIndexes=true \\
+--form exportBookmarks=true \\
+--form addOriginalDocumentAsStream=true \\
+-o my.pdf`}
+/>
+
+### Metadata (PDF Engines)
+
+Use the `metadata` form field to inject XMP metadata into the generated PDF.
+
+<ApiEndpoint
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/libreoffice/convert \\
+--form files=@/path/to/document.docx \\
+--form 'metadata={"Author":"Julien Neuhart"}' \\
+-o my.pdf`}
+/>
+
+### Attachments (PDF Engines)
+
+Use the `embeds` form field to attach external files directly inside the PDF container.
+
+<ApiEndpoint
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/libreoffice/convert \\
+--form files=@/path/to/document.docx \\
+--form embeds=@invoice.xml \\
+-o my.pdf`}
+/>
+
+### Flatten (PDF Engines)
+
+Use the `flatten` form field to make the PDF non-interactive.
+
+<ApiEndpoint
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/libreoffice/convert \\
+--form files=@/path/to/document.docx \\
+--form flatten=true \\
 -o my.pdf`}
 />
 
 ## Split & Page Ranges
 
-<SplitFormFields engine="LibreOffice" standalone={false} />
-
-<NativePrinting
-  method="POST"
-  path="/forms/libreoffice/convert"
-  curlFormData={`--form files=@/path/to/document.docx \\`}
-  engine="LibreOffice"
-  standalone={false}
+<ApiEndpoint
+  formFields={[
+    {
+      name: "nativePageRanges",
+      type: "string",
+      defaultValue: "All pages",
+      description:
+        "Page ranges to print, e.g., '1-4'. Empty means all pages. Applied independently to each file.",
+    },
+    {
+      name: "splitMode",
+      type: "enum",
+      defaultValue: "None",
+      description:
+        "Either 'intervals' or 'pages'. Configures how the PDF should be split.",
+    },
+    {
+      name: "splitSpan",
+      type: "string",
+      defaultValue: "None",
+      description:
+        "The intervals or page ranges to extract, based on the splitMode.",
+    },
+    {
+      name: "splitUnify",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "If true, puts extracted pages into a single file. Only works with 'pages' mode.",
+    },
+  ]}
 />
 
-<SplitPostProcessing
+### Page Ranges (LibreOffice)
+
+Use the `nativePageRanges` form field to tell LibreOffice which pages to print.
+
+- **Process:** Happens _during_ the conversion.
+- **Performance:** High.
+- **Behavior:** Applied independently to each uploaded file.
+
+<ApiEndpoint
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/libreoffice/convert \\
+--form files=@/path/to/document.docx \\
+--form nativePageRanges=1-5 \\
+-o my.pdf`}
+/>
+
+### Split (PDF Engines)
+
+Use the `splitMode` form fields to extract pages _after_ the PDF has been generated.
+
+- **Process:** Gotenberg generates the PDF, then splits it using a PDF Engine (pdfcpu, QPDF, or PDFtk).
+- **Performance:** Slower (requires a second pass).
+
+<ApiEndpoint
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/libreoffice/convert \\
+--form files=@/path/to/document.docx \\
+--form splitMode=intervals \\
+--form splitSpan=1 \\
+-o my.zip`}
+/>
+
+## Merge (PDF Engines)
+
+<Merge
   method="POST"
   path="/forms/libreoffice/convert"
-  curlFormData={`--form files=@/path/to/document.docx \\`}
-  engine="LibreOffice"
-  standalone={false}
+  curlFormData={`--form files=@/path/to/document.docx \\
+--form files=@/path/to/spreadsheet.xlsx \\`}
+  curlOutput="-o my.pdf"
+/>
+
+## PDF/A & PDF/UA
+
+<ApiEndpoint
+  formFields={[
+    {
+      name: "pdfa",
+      type: "enum",
+      defaultValue: "None",
+      description:
+        "Converts to a specific PDF/A archival standard. Options: 'PDF/A-1b', 'PDF/A-2b', 'PDF/A-3b'.",
+    },
+    {
+      name: "pdfua",
+      type: "boolean",
+      defaultValue: "false",
+      description: "Enables PDF/UA (Universal Accessibility) compliance.",
+    },
+  ]}
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/libreoffice/convert \\
+--form files=@/path/to/document.docx \\
+--form pdfa=PDF/A-1b \\
+--form pdfua=true \\
+-o my.pdf`}
+/>
+
+## Encryption
+
+<ApiEndpoint
+  formFields={[
+    {
+      name: "password",
+      type: "string",
+      defaultValue: "None",
+      description: "The password for opening the source file.",
+    },
+    {
+      name: "userPassword",
+      type: "string",
+      defaultValue: "None",
+      description: "The password required to open the PDF.",
+    },
+    {
+      name: "ownerPassword",
+      type: "string",
+      defaultValue: "None",
+      description:
+        "The password required to change permissions or edit the PDF.",
+    },
+  ]}
+/>
+
+### Open Document (LibreOffice)
+
+Use the `password` form field if the source file is password-protected.
+
+<ApiEndpoint
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/libreoffice/convert \\
+--form files=@/path/to/document.docx \\
+--form password=foo \\
+-o my.pdf`}
+/>
+
+### Permissions (PDF Engines)
+
+Secure your PDF by setting passwords that control access and permissions.
+
+<ApiEndpoint
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/libreoffice/convert \\
+--form files=@/path/to/document.docx \\
+--form userPassword=my_user_password \\
+--form ownerPassword=my_owner_password \\
+-o my.pdf`}
 />
 
 ## Best Practices

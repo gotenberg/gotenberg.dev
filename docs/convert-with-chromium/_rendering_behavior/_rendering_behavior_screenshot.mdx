@@ -90,11 +90,26 @@ ${props.curlOutput}
 `}
 />
 
-### Repeated & Clipped Rendering
+### Viewport & Layout
 
-If your screenshot's content is repeated and clipped, consider setting the `skipNetworkIdleEvent` form field to false.
+**The viewport defines the image.** Unlike PDFs which paginate content, screenshots capture the browser's viewport exactly as rendered.
 
-See issue [#1065](https://github.com/gotenberg/gotenberg/issues/1065#issuecomment-2670882337).
+- **Resolution:** Ensure you set the `width` and `height` form fields to match your desired target device (e.g., `1920`x`1080` for desktop, `375`x`812` for mobile).
+- If your screenshot's content is repeated and clipped, consider setting the `skipNetworkIdleEvent` form field to false (see issue [#1065](https://github.com/gotenberg/gotenberg/issues/1065#issuecomment-2670882337)).
+
+:::tip
+
+If you are simulating a mobile device, remember to also set the `userAgent` to match a mobile browser, or the site might serve the desktop version.
+
+:::
+
+### Image Format
+
+Choosing the right output format impacts quality and file size:
+
+- **PNG:** Best for screenshots containing text, UI elements, or flat colors. It is lossless, ensuring text remains sharp.
+- **JPEG:** Best for screenshots containing photographs or complex gradients. Use the `quality` form field to balance file size against visual fidelity (default is `100`).
+- **WebP:** Offers a modern balance of compression and quality, usually superior to JPEG.
 
 <WaitFor
   method={props.method}

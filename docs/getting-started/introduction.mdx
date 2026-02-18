@@ -17,7 +17,6 @@ Spin up a container and convert a URL to PDF in two commands:
 ```bash
 # 1. Start the container.
 docker run --rm -p "3000:3000" gotenberg/gotenberg:8
-
 # 2. Convert a URL to PDF.
 curl \
 --request POST http://localhost:3000/forms/chromium/convert/url \
@@ -25,7 +24,7 @@ curl \
 -o invoice.pdf
 ```
 
-## What's next?
+## What's Next?
 
 Get started with Gotenberg by reading the [installation guide](installation).
 

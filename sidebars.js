@@ -134,6 +134,11 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "system/prometheus-metrics",
+          className: "sidebar-method-get",
+        },
+        {
+          type: "doc",
           id: "system/version",
           className: "sidebar-method-get",
         },

@@ -43,6 +43,15 @@ Use the `nativePageRanges` form field to instruct Chromium which pages to print.
 - **Output:** A **single PDF** file containing only the selected pages.
 - **Performance:** Faster, as unused pages are never rendered.
 
+:::info Page Breaks
+
+Unlike word processors, HTML has no intrinsic concept of "pages" until it is printed. To prevent awkward breaks (like a table header being separated from its rows or an image being cut in half), use standard CSS fragmentation properties:
+
+- `break-inside: avoid;` (prevents an element from being split across two pages).
+- `break-before: always;` or `break-after: always;` (forces a new page).
+
+:::
+
 <ApiEndpoint
   curl={`
 curl \\

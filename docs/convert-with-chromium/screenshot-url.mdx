@@ -29,6 +29,13 @@ This route works by simulating a standard browser navigation: it connects to the
       description:
         "The filename of the resulting file - Gotenberg automatically appends the file extension. Defaults to a random UUID filename.",
     },
+    {
+      name: "Gotenberg-Trace",
+      type: "string",
+      required: false,
+      description:
+        "A custom request ID to identify the request in the logs; overrides the default UUID.",
+    },
   ]}
   formFields={[
     {

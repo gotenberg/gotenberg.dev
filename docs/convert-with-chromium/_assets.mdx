@@ -89,7 +89,16 @@ Gotenberg does not recreate your local folder structure (e.g., images/) inside t
 
 :::info Remote Assets
 
-You can also use standard remote URLs for images and fonts (e.g., `<img src="https://my-cdn.com/logo.png" />` or Google Fonts). These are fetched by Chromium over the network during conversion.
+If your HTML references remote URLs (e.g., CDNs, Google Fonts, localhost):
+
+- **DNS & Firewalls:** Ensure the container can resolve the domain name and that no firewalls are blocking the connection from the container's IP.
+- **Localhost:** If you are trying to convert a page running on the host machine (e.g., `http://localhost:8080`), you cannot use `localhost` inside the container. You must use the host's network IP or a special Docker DNS name like `host.docker.internal` (depending on your OS and Docker version).
+
+:::
+
+:::info Base64
+
+For small assets, embedding them directly as Base64 data URIs eliminates network dependencies entirely.
 
 :::
 

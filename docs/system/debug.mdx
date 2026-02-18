@@ -19,6 +19,15 @@ This route is only available if the `API_ENABLE_DEBUG_DATA` environment variable
 <ApiEndpoint
   method="GET"
   path="/debug"
+  headers={[
+    {
+      name: "Gotenberg-Trace",
+      type: "string",
+      required: false,
+      description:
+        "A custom request ID to identify the request in the logs; overrides the default UUID.",
+    },
+  ]}
   curl={`curl --request GET http://localhost:3000/debug`}
   responses={[
     {

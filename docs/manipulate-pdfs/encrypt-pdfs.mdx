@@ -2,3 +2,103 @@
 id: encrypt-pdfs
 title: Encrypt PDFs
 ---
+
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import Sponsors from "@site/src/components/documentation/Sponsors";
+
+Secure your PDF by setting passwords that control access and permissions.
+
+- **User Password:** Required to **open** and view the PDF.
+- **Owner Password:** Required to **modify** permissions (e.g., printing, copying text, extracting pages).
+
+:::info PDF Engine Dependency
+The encryption strength (e.g., AES-256) depends on the configured PDF Engine (QPDF, pdfcpu, or PDFtk).
+:::
+
+<ApiEndpoint
+  method="POST"
+  path="/forms/pdfengines/encrypt"
+  headers={[
+    {
+      name: "Gotenberg-Output-Filename",
+      type: "string",
+      required: false,
+      description:
+        "The filename of the resulting file - Gotenberg automatically appends the file extension. Defaults to a random UUID filename.",
+    },
+    {
+      name: "Gotenberg-Trace",
+      type: "string",
+      required: false,
+      description:
+        "A custom request ID to identify the request in the logs; overrides the default UUID.",
+    },
+  ]}
+  formFiles={[
+    {
+      name: "files",
+      type: "file[]",
+      required: true,
+      description: "PDF files to encrypt.",
+    },
+  ]}
+  formFields={[
+    {
+      name: "userPassword",
+      type: "string",
+      required: true,
+      description: "The password required to open the PDF.",
+    },
+    {
+      name: "ownerPassword",
+      type: "string",
+      required: false,
+      description:
+        "The password required to change permissions or edit the PDF.",
+    },
+  ]}
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/pdfengines/encrypt \\
+--form files=@/path/to/file.pdf \\
+--form userPassword=open \\
+--form ownerPassword=manage \\
+-o my.pdf`}
+  responses={[
+    {
+      status: 200,
+      message: "OK",
+      description: "The encrypted PDF file.",
+      body: `
+Content-Disposition: attachment; filename={output-filename.pdf}
+Content-Type: {content-type}
+Content-Length: {content-length}
+Gotenberg-Trace: {trace}
+Body: {output-file}
+      `,
+    },
+    {
+      status: 400,
+      message: "Bad Request",
+      description: "The request had one ore more invalid form fields.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+      `,
+    },
+    {
+      status: 503,
+      message: "Service Unavailable",
+      description:
+        "The request did not complete within the configured maximum duration.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: Service Unavailable
+      `,
+    },
+  ]}
+/>
+
+<Sponsors />

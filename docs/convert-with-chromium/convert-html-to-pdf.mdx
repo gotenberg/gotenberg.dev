@@ -6,7 +6,6 @@ title: Convert HTML to PDF
 import ConfigurationInfo from "./_configuration_info.mdx";
 import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
 import Assets from "./_assets.mdx";
-import PaperDimensions from "./_paper_dimensions.mdx";
 import RenderingBehaviorPDF from "./_rendering_behavior/_rendering_behavior_pdf.mdx";
 import HttpNetworking from "./_http_networking.mdx";
 import Console from "./_console.mdx";
@@ -35,6 +34,13 @@ Unlike the URL route, this endpoint renders files provided directly in the reque
       required: false,
       description:
         "The filename of the resulting file - Gotenberg automatically appends the file extension. Defaults to a random UUID filename.",
+    },
+    {
+      name: "Gotenberg-Trace",
+      type: "string",
+      required: false,
+      description:
+        "A custom request ID to identify the request in the logs; overrides the default UUID.",
     },
   ]}
   formFiles={[
@@ -93,13 +99,6 @@ Body: Service Unavailable
   curlFormData={`--form files=@/path/to/index.html \\`}
   curlOutput={`-o my.pdf`}
   isMarkdown={false}
-/>
-
-<PaperDimensions
-  method="POST"
-  path="/forms/chromium/convert/html"
-  curlFormData={`--form files=@/path/to/index.html \\`}
-  curlOutput={`-o my.pdf`}
 />
 
 <RenderingBehaviorPDF

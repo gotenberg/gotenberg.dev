@@ -2,3 +2,100 @@
 id: write-metadata
 title: Write Metadata
 ---
+
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import Sponsors from "@site/src/components/documentation/Sponsors";
+
+Updates the XMP metadata of one or more PDF files.
+
+This endpoint allows you to set properties like **Author**, **Title**, **Copyright**, and **Keywords** by passing a **JSON-formatted object**.
+
+:::info Valid Keys
+Not all metadata tags are writable. Gotenberg relies on ExifTool for this operation.
+[See the XMP Tag Name documentation](https://exiftool.org/TagNames/XMP.html#pdf) for a list of potential keys.
+:::
+
+:::caution Compliance Warning
+Writing metadata involves modifying the PDF structure and usually breaks **PDF/A** compliance.
+:::
+
+<ApiEndpoint
+  method="POST"
+  path="/forms/pdfengines/metadata/write"
+  headers={[
+    {
+      name: "Gotenberg-Output-Filename",
+      type: "string",
+      required: false,
+      description:
+        "The filename of the resulting file - Gotenberg automatically appends the file extension. Defaults to a random UUID filename.",
+    },
+    {
+      name: "Gotenberg-Trace",
+      type: "string",
+      required: false,
+      description:
+        "A custom request ID to identify the request in the logs; overrides the default UUID.",
+    },
+  ]}
+  formFiles={[
+    {
+      name: "files",
+      type: "file[]",
+      required: true,
+      description: "PDF files to update.",
+    },
+  ]}
+  formFields={[
+    {
+      name: "metadata",
+      type: "json",
+      required: true,
+      description:
+        'The metadata to write (JSON format). e.g. `{"Author": "Gotenberg"}`',
+    },
+  ]}
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/pdfengines/metadata/write \\
+--form files=@/path/to/file.pdf \\
+--form 'metadata={"Author":"Gotenberg","Producer":"Gotenberg","Keywords":["guide","documentation"]}' \\
+-o my.pdf`}
+  responses={[
+    {
+      status: 200,
+      message: "OK",
+      description: "The updated PDF file.",
+      body: `
+Content-Disposition: attachment; filename={output-filename.pdf}
+Content-Type: {content-type}
+Content-Length: {content-length}
+Gotenberg-Trace: {trace}
+Body: {output-file}
+      `,
+    },
+    {
+      status: 400,
+      message: "Bad Request",
+      description: "The request had one ore more invalid form fields.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+      `,
+    },
+    {
+      status: 503,
+      message: "Service Unavailable",
+      description:
+        "The request did not complete within the configured maximum duration.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: Service Unavailable
+      `,
+    },
+  ]}
+/>
+
+<Sponsors />

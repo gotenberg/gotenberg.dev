@@ -150,6 +150,26 @@ For further details, refer to the [API module configuration](/docs/configuration
 
 :::
 
+**Object Structure**
+
+The `downloadFrom` field accepts a **JSON-formatted array**. Each item in the array must be an object with the following keys:
+
+| Key                | Description                                                                                                    | Default                                                          |
+| :----------------- | :------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------- |
+| `url`              | URL of the file. The remote server **MUST** return a `Content-Disposition` header with a `filename` parameter. | <span style={{color: 'var(--ifm-color-danger)'}}>Required</span> |
+| `extraHttpHeaders` | A JSON object containing extra HTTP headers to send when fetching this specific URL.                           | `None`                                                           |
+| `embedded`         | Whether this file should be embedded.                                                                          | `false`                                                          |
+
+<br />
+
+:::warning Known Issue: Empty Media Types
+
+Currently, a [bug](https://github.com/golang/go/issues/69551) in Go prevents Gotenberg from parsing responses with an empty media type.
+
+**AWS S3 Users:** Ensure your S3 objects have the Content-Disposition metadata set (e.g., attachment; filename="doc.pdf") to avoid this issue.
+
+:::
+
 <ApiEndpoint
   method="POST"
   path="/forms/..."
@@ -195,25 +215,5 @@ Body: Forbidden
     },
   ]}
 />
-
-### JSON Object Structure
-
-The `downloadFrom` field accepts a **JSON-formatted array**. Each item in the array must be an object with the following keys:
-
-| Key                | Description                                                                                                    | Default                                                          |
-| :----------------- | :------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------- |
-| `url`              | URL of the file. The remote server **MUST** return a `Content-Disposition` header with a `filename` parameter. | <span style={{color: 'var(--ifm-color-danger)'}}>Required</span> |
-| `extraHttpHeaders` | A JSON object containing extra HTTP headers to send when fetching this specific URL.                           | `None`                                                           |
-| `embedded`         | Whether this file should be embedded.                                                                          | `false`                                                          |
-
-<br />
-
-:::warning Known Issue: Empty Media Types
-
-Currently, a [bug](https://github.com/golang/go/issues/69551) in Go prevents Gotenberg from parsing responses with an empty media type.
-
-**AWS S3 Users:** Ensure your S3 objects have the Content-Disposition metadata set (e.g., attachment; filename="doc.pdf") to avoid this issue.
-
-:::
 
 <Sponsors />

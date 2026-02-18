@@ -30,6 +30,13 @@ Unlike the URL route, this endpoint renders files provided directly in the reque
       description:
         "The filename of the resulting file - Gotenberg automatically appends the file extension. Defaults to a random UUID filename.",
     },
+    {
+      name: "Gotenberg-Trace",
+      type: "string",
+      required: false,
+      description:
+        "A custom request ID to identify the request in the logs; overrides the default UUID.",
+    },
   ]}
   formFiles={[
     {

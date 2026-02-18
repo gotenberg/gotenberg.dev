@@ -2,3 +2,95 @@
 id: read-metadata
 title: Read Metadata
 ---
+
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import Sponsors from "@site/src/components/documentation/Sponsors";
+
+Extracts metadata (Exif, XMP, PDF properties, etc.) from one or more PDF files.
+
+This endpoint relies on **ExifTool** to parse the documents and returns the data as a structured JSON object where keys are the filenames.
+
+:::info ExifTool Tags
+The returned keys correspond to ExifTool tag names.
+[See the ExifTool Tag Names documentation](https://exiftool.org/TagNames/PDF.html) for reference on what fields might be returned.
+:::
+
+<ApiEndpoint
+  method="POST"
+  path="/forms/pdfengines/metadata/read"
+  headers={[
+    {
+      name: "Gotenberg-Trace",
+      type: "string",
+      required: false,
+      description:
+        "A custom request ID to identify the request in the logs; overrides the default UUID.",
+    },
+  ]}
+  formFiles={[
+    {
+      name: "files",
+      type: "file[]",
+      required: true,
+      description: "PDF files to analyze.",
+    },
+  ]}
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/pdfengines/metadata/read \\
+--form files=@/path/to/invoice.pdf \\
+--form files=@/path/to/report.pdf`}
+  responses={[
+    {
+      status: 200,
+      message: "OK",
+      description: "The metadata in JSON format.",
+      body: `
+Content-Type: application/json; charset=UTF-8
+Content-Length: {content-length}
+Gotenberg-Trace: {trace}
+Body:
+{
+    "invoice.pdf": {
+      "PDFVersion": 1.7,
+      "Author": "Gotenberg",
+      "Title": "Invoice #001",
+      "CreateDate": "2024:03:05 09:15:32Z",
+      "PageCount": 2,
+      "Producer": "Gotenberg",
+      "MIMEType": "application/pdf"
+    },
+    "report.pdf": {
+      "PDFVersion": 1.4,
+      "Author": "John Doe",
+      "PageCount": 15
+      // ...
+    }
+}
+      `,
+    },
+    {
+      status: 400,
+      message: "Bad Request",
+      description: "The request had one ore more invalid form fields.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+      `,
+    },
+    {
+      status: 503,
+      message: "Service Unavailable",
+      description:
+        "The request did not complete within the configured maximum duration.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: Service Unavailable
+      `,
+    },
+  ]}
+/>
+
+<Sponsors />
