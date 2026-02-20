@@ -160,8 +160,6 @@ The `downloadFrom` field accepts a **JSON-formatted array**. Each item in the ar
 | `extraHttpHeaders` | A JSON object containing extra HTTP headers to send when fetching this specific URL.                           | `None`                                                           |
 | `embedded`         | Whether this file should be embedded.                                                                          | `false`                                                          |
 
-<br />
-
 :::warning Known Issue: Empty Media Types
 
 Currently, a [bug](https://github.com/golang/go/issues/69551) in Go prevents Gotenberg from parsing responses with an empty media type.

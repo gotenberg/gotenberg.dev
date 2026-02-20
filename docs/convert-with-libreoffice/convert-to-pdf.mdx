@@ -12,15 +12,6 @@ This endpoint processes files provided directly in the `multipart/form-data` req
 It accepts a wide range of formats, including Microsoft Office (Word, Excel, PowerPoint), OpenOffice, and plain text files.
 You can upload one or more documents, and the API will convert all supported files found in the request.
 
-| Family                 | Supported Extensions                                                                                                                                                                                                                                  |
-| :--------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Word Processing**    | `.doc`, `.docx`, `.docm`, `.dot`, `.dotm`, `.dotx`, `.odt`, `.fodt`, `.ott`, `.rtf`, `.txt`, `.wps`, `.wpd`, `.pages`, `.abw`, `.zabw`, `.lwp`, `.mw`, `.mcw`, `.hwp`, `.sxw`, `.stw`, `.sgl`, `.vor`, `.602`, `.bib`, `.xml`, `.cwk`, `.psw`, `.uof` |
-| **Spreadsheets**       | `.xls`, `.xlsx`, `.xlsm`, `.xlsb`, `.xlt`, `.xltm`, `.xltx`, `.xlw`, `.ods`, `.fods`, `.ots`, `.csv`, `.numbers`, `.123`, `.wk1`, `.wks`, `.wb2`, `.dbf`, `.dif`, `.slk`, `.sxc`, `.stc`, `.uos`, `.pxl`, `.sdc`                                      |
-| **Presentations**      | `.ppt`, `.pptx`, `.pptm`, `.pot`, `.potm`, `.potx`, `.pps`, `.odp`, `.fodp`, `.otp`, `.key`, `.sxi`, `.sti`, `.uop`, `.sdd`, `.sdp`, `.fopd`                                                                                                          |
-| **Graphics & Drawing** | `.odg`, `.fodg`, `.otg`, `.vsd`, `.vsdx`, `.vsdm`, `.vdx`, `.cdr`, `.svg`, `.svm`, `.wmf`, `.emf`, `.cgm`, `.dxf`, `.std`, `.sxd`, `.pub`, `.wpg`, `.sda`, `.odd`, `.met`, `.cmx`, `.eps`                                                             |
-| **Images**             | `.jpg`, `.jpeg`, `.png`, `.bmp`, `.gif`, `.tif`, `.tiff`, `.pbm`, `.pgm`, `.ppm`, `.xbm`, `.xpm`, `.pcx`, `.pcd`, `.pct`, `.psd`, `.tga`, `.ras`, `.pwp`                                                                                              |
-| **Web & Other**        | `.html`, `.htm`, `.xhtml`, `.epub`, `.pdf`, `.pdb`, `.ltx`, `.mml`, `.smf`, `.sxm`, `.sxg`, `.oth`, `.odm`, `.swf`                                                                                                                                    |
-
 :::info Configuration
 
 You can configure the LibreOffice module behavior.
@@ -115,20 +106,6 @@ Body: Service Unavailable
       description: "Sets the paper orientation to landscape.",
     },
     {
-      name: "singlePageSheets",
-      type: "boolean",
-      defaultValue: "false",
-      description:
-        "Ignores each sheet’s paper size, print ranges and shown/hidden status and puts every sheet (even hidden sheets) on exactly one page.",
-    },
-    {
-      name: "skipEmptyPages",
-      type: "boolean",
-      defaultValue: "false",
-      description:
-        "Specifies that automatically inserted empty pages are suppressed. This option is active only if storing Writer documents.",
-    },
-    {
       name: "losslessImageCompression",
       type: "boolean",
       defaultValue: "false",
@@ -146,8 +123,12 @@ Body: Service Unavailable
       name: "reduceImageResolution",
       type: "boolean",
       defaultValue: "false",
-      description:
-        "Specifies if the resolution of each image is reduced to the resolution specified by the form field maxImageResolution.",
+      description: (
+        <span>
+          Specifies if the resolution of each image is reduced to the resolution
+          specified by the form field <code>maxImageResolution</code>.
+        </span>
+      ),
     },
     {
       name: "maxImageResolution",
@@ -155,20 +136,6 @@ Body: Service Unavailable
       defaultValue: "300",
       description:
         "If the form field reduceImageResolution is set to true, tell if all images will be reduced to the given value in DPI. Possible values are: 75, 150, 300, 600 and 1200.",
-    },
-    {
-      name: "exportFormFields",
-      type: "boolean",
-      defaultValue: "true",
-      description:
-        "Specifies whether form fields are exported as widgets or only their fixed print representation is exported.",
-    },
-    {
-      name: "allowDuplicateFieldNames",
-      type: "boolean",
-      defaultValue: "false",
-      description:
-        "Specifies whether multiple form fields exported are allowed to have the same field name.",
     },
     {
       name: "exportPlaceholders",
@@ -196,8 +163,8 @@ Body: Service Unavailable
       defaultValue: "false",
       description: (
         <span>
-          Specifies, if the form field `exportNotesPages` is set to true, if
-          only notes pages are exported to PDF.
+          Specifies, if the form field <code>exportNotesPages</code> is set to
+          true, if only notes pages are exported to PDF.
         </span>
       ),
     },
@@ -228,15 +195,76 @@ Body: Service Unavailable
       description:
         "Exports, for LibreOffice Impress, slides that are not included in slide shows.",
     },
+    {
+      name: "singlePageSheets",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Ignores each sheet’s paper size, print ranges and shown/hidden status and puts every sheet (even hidden sheets) on exactly one page.",
+    },
+    {
+      name: "skipEmptyPages",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Specifies that automatically inserted empty pages are suppressed. This option is active only if storing Writer documents.",
+    },
   ]}
   curl={`
 curl \\
 --request POST http://localhost:3000/forms/libreoffice/convert \\
 --form files=@/path/to/document.docx \\
---form landscape=true \\
---form nativePageRanges=1-5 \\
+--form losslessImageCompression=false \\
+--form quality=50 \\
+--form reduceImageResolution=true \\
+--form maxImageResolution=75 \\
 -o my.pdf`}
 />
+
+### Supported Extensions
+
+The LibreOffice route supports converting a vast array of document formats into PDF. From modern office standards and
+open-source formats to legacy files and vector graphics, below is the comprehensive list of supported file extensions grouped by document family.
+
+| Family                 | Supported Extensions                                                                                                                                                                                                                                  |
+| :--------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Word Processing**    | `.doc`, `.docx`, `.docm`, `.dot`, `.dotm`, `.dotx`, `.odt`, `.fodt`, `.ott`, `.rtf`, `.txt`, `.wps`, `.wpd`, `.pages`, `.abw`, `.zabw`, `.lwp`, `.mw`, `.mcw`, `.hwp`, `.sxw`, `.stw`, `.sgl`, `.vor`, `.602`, `.bib`, `.xml`, `.cwk`, `.psw`, `.uof` |
+| **Spreadsheets**       | `.xls`, `.xlsx`, `.xlsm`, `.xlsb`, `.xlt`, `.xltm`, `.xltx`, `.xlw`, `.ods`, `.fods`, `.ots`, `.csv`, `.numbers`, `.123`, `.wk1`, `.wks`, `.wb2`, `.dbf`, `.dif`, `.slk`, `.sxc`, `.stc`, `.uos`, `.pxl`, `.sdc`                                      |
+| **Presentations**      | `.ppt`, `.pptx`, `.pptm`, `.pot`, `.potm`, `.potx`, `.pps`, `.odp`, `.fodp`, `.otp`, `.key`, `.sxi`, `.sti`, `.uop`, `.sdd`, `.sdp`, `.fopd`                                                                                                          |
+| **Graphics & Drawing** | `.odg`, `.fodg`, `.otg`, `.vsd`, `.vsdx`, `.vsdm`, `.vdx`, `.cdr`, `.svg`, `.svm`, `.wmf`, `.emf`, `.cgm`, `.dxf`, `.std`, `.sxd`, `.pub`, `.wpg`, `.sda`, `.odd`, `.met`, `.cmx`, `.eps`                                                             |
+| **Images**             | `.jpg`, `.jpeg`, `.png`, `.bmp`, `.gif`, `.tif`, `.tiff`, `.pbm`, `.pgm`, `.ppm`, `.xbm`, `.xpm`, `.pcx`, `.pcd`, `.pct`, `.psd`, `.tga`, `.ras`, `.pwp`                                                                                              |
+| **Web & Other**        | `.html`, `.htm`, `.xhtml`, `.epub`, `.pdf`, `.pdb`, `.ltx`, `.mml`, `.smf`, `.sxm`, `.sxg`, `.oth`, `.odm`, `.swf`                                                                                                                                    |
+
+:::info Microsoft Office Compatibility
+
+While LibreOffice provides excellent support for Microsoft Office formats (e.g., `.docx`, `.xlsx`, `.pptx`), it is not a 1:1 clone.
+Documents containing complex styling, proprietary Smart Art, or highly specific formatting features may render slightly differently than they do in Microsoft Word or Excel.
+
+:::
+
+### Fonts & Layout Fidelity
+
+**Fonts are critical.** LibreOffice relies on installed fonts to calculate page breaks and layout.
+If a specific font used in your document is missing from the Gotenberg container, LibreOffice will substitute it with a default one. This is the most common cause of layout issues and shifted pagination.
+
+:::info
+
+For the best results, ensure all required fonts are installed in your Docker image (e.g., via a custom `Dockerfile`).
+See the [Fonts configuration](/docs/configuration#fonts) for more details.
+
+:::
+
+### Image Compression
+
+How LibreOffice compresses images inside your PDF impacts both visual quality and the final file size:
+
+- **Lossless (PNG):** Best for documents containing line art, diagrams, or images with text and flat colors. It prevents visual artifacts and ensures sharp edges. Enable the `losslessImageCompression` form field to use this method.
+- **Lossy (JPEG):** The default behavior. Best for documents containing high-resolution photographs or complex gradients, as it significantly reduces the PDF's file size.
+
+### Macros
+
+For security reasons, macros contained in documents (e.g., `.docm`, `.xlsm`, `.pptm`) are **disabled** by default during the conversion process.
+The files will still be converted, but any dynamic content or scripts generated by macros will not be executed.
 
 ## Structure & Metadata
 
@@ -247,26 +275,41 @@ curl \\
       type: "boolean",
       defaultValue: "true",
       description:
-        "Updates indexes (e.g., Table of Contents) before conversion. May cause missing links.",
+        "LibreOffice feature. Updates indexes (e.g., Table of Contents) before conversion. May cause missing links.",
     },
     {
       name: "exportBookmarks",
       type: "boolean",
       defaultValue: "true",
-      description: "Exports bookmarks to the PDF.",
+      description: "LibreOffice feature. Exports bookmarks to the PDF.",
     },
     {
       name: "exportBookmarksToPdfDestination",
       type: "boolean",
       defaultValue: "false",
-      description: "Exports bookmarks as Named Destinations.",
+      description:
+        "LibreOffice feature. Exports bookmarks as Named Destinations.",
     },
     {
       name: "addOriginalDocumentAsStream",
       type: "boolean",
       defaultValue: "false",
       description:
-        "Embeds the original document as a stream in the PDF for archiving.",
+        "LibreOffice feature. Embeds the original document as a stream in the PDF for archiving.",
+    },
+    {
+      name: "exportFormFields",
+      type: "boolean",
+      defaultValue: "true",
+      description:
+        "LibreOffice feature. Specifies whether form fields are exported as widgets or only their fixed print representation is exported.",
+    },
+    {
+      name: "allowDuplicateFieldNames",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "LibreOffice feature. Specifies whether multiple form fields exported are allowed to have the same field name.",
     },
     {
       name: "metadata",
@@ -290,31 +333,45 @@ curl \\
   ]}
 />
 
-### Document Structure (LibreOffice)
+### Document Outline & Navigation (LibreOffice)
 
-Use the following form fields to control how the document structure is handled during conversion.
+Configure how LibreOffice generates PDF bookmarks (the sidebar) and internal indexes like the Table of Contents.
+
+- **Process:** Happens _during_ the document-to-PDF conversion.
+- **Requirement:** Your source document must use proper heading styles (e.g., Heading 1, Heading 2) or explicit bookmarks to generate the hierarchy.
 
 <ApiEndpoint
   curl={`
 curl \\
 --request POST http://localhost:3000/forms/libreoffice/convert \\
 --form files=@/path/to/document.docx \\
---form updateIndexes=true \\
---form exportBookmarks=true \\
---form addOriginalDocumentAsStream=true \\
+--form exportBookmarks=false \\
+--form exportBookmarksToPdfDestination=true \\
+--form updateIndexes=false \\
 -o my.pdf`}
 />
 
 ### Metadata (PDF Engines)
 
-Use the `metadata` form field to inject XMP metadata into the generated PDF.
+Use the `metadata` form field to inject XMP metadata into the generated PDF. This allows you to set properties like Author, Title, Copyright, and Keywords.
+
+This field accepts a **JSON-formatted object**.
+
+:::info Valid Keys
+Not all metadata tags are writable. Gotenberg relies on ExifTool for this operation.
+[See the XMP Tag Name documentation](https://exiftool.org/TagNames/XMP.html#pdf) for a list of potential keys.
+:::
+
+:::caution Compliance Warning
+Writing metadata involves modifying the PDF structure and usually breaks **PDF/A** compliance.
+:::
 
 <ApiEndpoint
   curl={`
 curl \\
 --request POST http://localhost:3000/forms/libreoffice/convert \\
 --form files=@/path/to/document.docx \\
---form 'metadata={"Author":"Julien Neuhart"}' \\
+--form 'metadata={"Author":"Julien Neuhart","Copyright":"Julien Neuhart","CreationDate":"2006-09-18T16:27:50-04:00","Creator":"Gotenberg","Keywords":["first","second"],"Marked":true,"ModDate":"2006-09-18T16:27:50-04:00","PDFVersion":1.7,"Producer":"Gotenberg","Subject":"Sample","Title":"Sample","Trapped":"Unknown"}' \\
 -o my.pdf`}
 />
 
@@ -322,18 +379,42 @@ curl \\
 
 Use the `embeds` form field to attach external files directly inside the PDF container.
 
+**Common Use Case:**
+This is essential for e-invoicing standards like **[ZUGFeRD / Factur-X](https://fnfe-mpe.org/factur-x/)**, which require a human-readable PDF to carry a machine-readable XML invoice as an attachment.
+
 <ApiEndpoint
   curl={`
 curl \\
 --request POST http://localhost:3000/forms/libreoffice/convert \\
 --form files=@/path/to/document.docx \\
 --form embeds=@invoice.xml \\
+--form embeds=@logo.png \\
+-o my.pdf`}
+/>
+
+### Native Flattening (LibreOffice)
+
+Use the `exportFormFields` form field to prevent LibreOffice from creating interactive PDF widgets, effectively "flattening" the form fields directly into the document's visual layout as static text and shapes.
+
+- **Process:** Happens _during_ the document-to-PDF conversion.
+- **Performance:** Faster and more efficient than post-processing, as the interactive PDF layers are never generated in the first place.
+
+<ApiEndpoint
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/libreoffice/convert \\
+--form files=@/path/to/document.docx \\
+--form exportFormFields=false \\
 -o my.pdf`}
 />
 
 ### Flatten (PDF Engines)
 
-Use the `flatten` form field to make the PDF non-interactive.
+Use the `flatten` form field to make the PDF non-interactive _after_ it has been generated.
+
+- **Process:** Gotenberg generates the full PDF, then uses a PDF Engine to merge all interactive form fields (text inputs, checkboxes, etc.) directly into the page content.
+- **Output:** A flattened PDF that cannot be modified by the end-user.
+- **Use Case:** Ideal if you are combining flattening with other post-processing operations (like merging or metadata extraction) handled by the PDF engines.
 
 <ApiEndpoint
   curl={`
@@ -341,6 +422,32 @@ curl \\
 --request POST http://localhost:3000/forms/libreoffice/convert \\
 --form files=@/path/to/document.docx \\
 --form flatten=true \\
+-o my.pdf`}
+/>
+
+## Merge (PDF Engines)
+
+Use the `merge` form field to combine multiple converted documents into a single PDF file.
+
+Gotenberg first converts each submitted file to PDF individually using LibreOffice. Once the conversions are complete,
+a PDF engine merges the resulting files together. The documents are appended in **alphanumeric order** based on
+their original filenames (numbers first, then alphabetical).
+
+<ApiEndpoint
+  formFiles={[
+    {
+      name: "merge",
+      type: "boolean",
+      required: false,
+      description: "Merge the resulting PDFs.",
+    },
+  ]}
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/libreoffice/convert \\
+--form files=@/path/to/1_document.docx \\
+--form files=@/path/to/2_document.docx \\
+--form merge=true \\
 -o my.pdf`}
 />
 
@@ -353,7 +460,7 @@ curl \\
       type: "string",
       defaultValue: "All pages",
       description:
-        "Page ranges to print, e.g., '1-4'. Empty means all pages. Applied independently to each file.",
+        "LibreOffice feature. Page ranges to print, e.g., '1-4'. Empty means all pages. Applied independently to each file.",
     },
     {
       name: "splitMode",
@@ -379,7 +486,7 @@ curl \\
   ]}
 />
 
-### Page Ranges (LibreOffice)
+### Native Printing (LibreOffice)
 
 Use the `nativePageRanges` form field to tell LibreOffice which pages to print.
 
@@ -396,7 +503,7 @@ curl \\
 -o my.pdf`}
 />
 
-### Split (PDF Engines)
+### Post-Processing (PDF Engines) {#post-processing-pdf-engines-split-page-ranges}
 
 Use the `splitMode` form fields to extract pages _after_ the PDF has been generated.
 
@@ -413,17 +520,9 @@ curl \\
 -o my.zip`}
 />
 
-## Merge (PDF Engines)
-
-<Merge
-  method="POST"
-  path="/forms/libreoffice/convert"
-  curlFormData={`--form files=@/path/to/document.docx \\
---form files=@/path/to/spreadsheet.xlsx \\`}
-  curlOutput="-o my.pdf"
-/>
-
 ## PDF/A & PDF/UA
+
+Use the `pdfa` and `pdfua` form fields to convert the PDF into a standardized format _after_ generation.
 
 <ApiEndpoint
   formFields={[
@@ -458,7 +557,8 @@ curl \\
       name: "password",
       type: "string",
       defaultValue: "None",
-      description: "The password for opening the source file.",
+      description:
+        "LibreOffice feature. The password for opening the source file.",
     },
     {
       name: "userPassword",
@@ -489,9 +589,18 @@ curl \\
 -o my.pdf`}
 />
 
-### Permissions (PDF Engines)
+### Post-Processing (PDF Engines) {#post-processing-pdf-engines-encryption}
 
 Secure your PDF by setting passwords that control access and permissions.
+
+- **User Password:** Required to **open** and view the PDF.
+- **Owner Password:** Required to **modify** permissions (e.g., printing, copying text, extracting pages).
+
+:::info PDF Engine Dependency
+
+The encryption strength (e.g., AES-256) depends on the configured PDF Engine (QPDF, pdfcpu, or PDFtk).
+
+:::
 
 <ApiEndpoint
   curl={`
@@ -502,29 +611,5 @@ curl \\
 --form ownerPassword=my_owner_password \\
 -o my.pdf`}
 />
-
-## Best Practices
-
-### Fonts & Layout Fidelity
-
-**Fonts are critical.** LibreOffice relies on installed fonts to calculate page breaks and layout.
-If a specific font used in your document is missing from the Gotenberg container, LibreOffice will substitute it with a default one. This is the most common cause of layout issues and shifted pagination.
-
-:::info
-
-For the best results, ensure all required fonts are installed in your Docker image (e.g., via a custom `Dockerfile`).
-See the [Fonts configuration](/docs/configuration#fonts) for more details.
-
-:::
-
-### Microsoft Office Compatibility
-
-While LibreOffice provides excellent support for Microsoft Office formats (e.g., `.docx`, `.xlsx`, `.pptx`), it is not a 1:1 clone.
-Documents containing complex styling, proprietary Smart Art, or highly specific formatting features may render slightly differently than they do in Microsoft Word or Excel.
-
-### Macros
-
-For security reasons, macros contained in documents (e.g., `.docm`, `.xlsm`, `.pptm`) are **disabled** by default during the conversion process.
-The files will still be converted, but any dynamic content or scripts generated by macros will not be executed.
 
 <Sponsors />

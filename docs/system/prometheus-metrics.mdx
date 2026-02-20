@@ -2,3 +2,39 @@
 id: prometheus-metrics
 title: Prometheus Metrics
 ---
+
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import Sponsors from "@site/src/components/documentation/Sponsors";
+
+This endpoint exposes internal telemetry data in a plain-text format ready to be scraped by [Prometheus](https://prometheus.io/). U
+se this route to monitor internal performance metrics to integrate Gotenberg into your observability stack.
+
+:::info Configuration
+
+You can configure the Prometheus module behavior.
+See the [Prometheus module configuration](/docs/configuration#prometheus) for details.
+
+:::
+
+<ApiEndpoint
+  method="GET"
+  path="/prometheus/metrics"
+  curl={`curl --request GET http://localhost:3000/prometheus/metrics`}
+  responses={[
+    {
+      status: 200,
+      message: "OK",
+      description: (
+        <span>
+          See{" "}
+          <a href="https://demo.gotenberg.dev/prometheus/metrics">
+            https://demo.gotenberg.dev/prometheus/metrics
+          </a>{" "}
+          for details.
+        </span>
+      ),
+    },
+  ]}
+/>
+
+<Sponsors />

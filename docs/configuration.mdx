@@ -3,6 +3,8 @@ id: configuration
 title: Configuration
 ---
 
+import Sponsors from "@site/src/components/documentation/Sponsors";
+
 The Docker image includes a binary with flags to configure its modules. This guide lists all available flags so you can
 fine-tune Gotenberg to your needs.
 
@@ -232,6 +234,8 @@ PDFtk and QPDF only support the split mode _pages_ with unification.
 
 PDFTk’s encryption feature requires both a user password and an owner password, and they must be different.
 
+The encryption strength is limited to AES-128, contrary to other PDF engines (AES-256).
+
 :::
 
 The following flags allow you to configure the PDF Engines module:
@@ -322,7 +326,7 @@ The following flag allows you to configure this duration:
 
 :::info
 
-For Gotenberg versions prior to _8.21.0_, when using the [webhook feature](webhook), make sure this duration is equal to
+For Gotenberg versions prior to _8.21.0_, when using the [webhook feature](/docs/webhook-download#webhooks), make sure this duration is equal to
 or longer than the API timeout. This ensures that all asynchronous processes finish before Gotenberg begins its shutdown
 sequence.
 
@@ -384,6 +388,8 @@ USER gotenberg
 
 ---
 
+**Via mounted volumes**
+
 You could also mount a volume containing your fonts to _/usr/local/share/fonts/_ as suggested in this
 [comment](https://github.com/gotenberg/gotenberg/issues/602#issue-1580360200).
 
@@ -407,3 +413,11 @@ USER gotenberg
 Since Gotenberg _8.21.0_, the image also supports [arbitrary user IDs (OpenShift)](https://docs.redhat.com/en/documentation/openshift_container_platform/4.15/html/images/creating-images#enable-images-for-source-to-image_create-images).
 
 :::
+
+### Template Repository
+
+Gotenberg comes with a template repository that you can use to quickly bootstrap your own variant:
+
+- https://github.com/gotenberg/gotenberg-template-repository
+
+<Sponsors />

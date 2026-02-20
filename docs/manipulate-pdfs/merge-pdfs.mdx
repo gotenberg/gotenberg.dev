@@ -42,9 +42,9 @@ This endpoint accepts PDF files in the `multipart/form-data` request and combine
   curl={`
 curl \\
 --request POST http://localhost:3000/forms/pdfengines/merge \\
---form files=@/path/to/pdf1.pdf \\
---form files=@/path/to/pdf2.pdf \\
---form files=@/path/to/pdf3.pdf \\
+--form files=@/path/to/1_pdf.pdf \\
+--form files=@/path/to/2_pdf.pdf \\
+--form files=@/path/to/3_pdf.pdf \\
 -o my.pdf`}
   responses={[
     {
@@ -103,10 +103,12 @@ Writing metadata involves modifying the PDF structure and usually breaks **PDF/A
 <ApiEndpoint
   curl={`
 curl \\
---request ${props.method} http://localhost:3000${props.path} \\
-${props.curlFormData}
+--request POST http://localhost:3000/forms/pdfengines/merge \\
+--form files=@/path/to/1_pdf.pdf \\
+--form files=@/path/to/2_pdf.pdf \\
+--form files=@/path/to/3_pdf.pdf \\
 --form 'metadata={"Author":"Julien Neuhart","Copyright":"Julien Neuhart","CreationDate":"2006-09-18T16:27:50-04:00","Creator":"Gotenberg","Keywords":["first","second"],"Marked":true,"ModDate":"2006-09-18T16:27:50-04:00","PDFVersion":1.7,"Producer":"Gotenberg","Subject":"Sample","Title":"Sample","Trapped":"Unknown"}' \\
-${props.curlOutput}
+-o my.pdf
 `}
 />
 
@@ -120,11 +122,13 @@ This is essential for e-invoicing standards like **[ZUGFeRD / Factur-X](https://
 <ApiEndpoint
   curl={`
 curl \\
---request ${props.method} http://localhost:3000${props.path} \\
-${props.curlFormData}
+--request POST http://localhost:3000/forms/pdfengines/merge \\
+--form files=@/path/to/1_pdf.pdf \\
+--form files=@/path/to/2_pdf.pdf \\
+--form files=@/path/to/3_pdf.pdf \\
 --form embeds=@invoice.xml \\
 --form embeds=@logo.png \\
-${props.curlOutput}
+-o my.pdf
 `}
 />
 
@@ -137,10 +141,12 @@ This process merges all interactive form fields (text inputs, checkboxes, etc.) 
 <ApiEndpoint
   curl={`
 curl \\
---request ${props.method} http://localhost:3000${props.path} \\
-${props.curlFormData}
+--request POST http://localhost:3000/forms/pdfengines/merge \\
+--form files=@/path/to/1_pdf.pdf \\
+--form files=@/path/to/2_pdf.pdf \\
+--form files=@/path/to/3_pdf.pdf \\
 --form flatten=true \\
-${props.curlOutput}
+-o my.pdf
 `}
 />
 
@@ -155,11 +161,13 @@ Use the `pdfa` and `pdfua` form fields to convert the PDF into a standardized fo
 <ApiEndpoint
   curl={`
 curl \\
---request ${props.method} http://localhost:3000${props.path} \\
-${props.curlFormData}
+--request POST http://localhost:3000/forms/pdfengines/merge \\
+--form files=@/path/to/1_pdf.pdf \\
+--form files=@/path/to/2_pdf.pdf \\
+--form files=@/path/to/3_pdf.pdf \\
 --form pdfa=PDF/A-1b \\
 --form pdfua=true \\
-${props.curlOutput}
+-o my.pdf
 `}
 />
 
@@ -194,11 +202,13 @@ The encryption strength (e.g., AES-256) depends on the configured PDF Engine (QP
   ]}
   curl={`
 curl \\
---request ${props.method} http://localhost:3000${props.path} \\
-${props.curlFormData}
+--request POST http://localhost:3000/forms/pdfengines/merge \\
+--form files=@/path/to/1_pdf.pdf \\
+--form files=@/path/to/2_pdf.pdf \\
+--form files=@/path/to/3_pdf.pdf \\
 --form userPassword=my_user_password \\
 --form ownerPassword=my_owner_password \\
-${props.curlOutput}
+-o my.pdf
 `}
 />
 

@@ -143,16 +143,16 @@ Writing metadata involves modifying the PDF structure and usually breaks **PDF/A
 <ApiEndpoint
   curl={`
 curl \\
---request ${props.method} http://localhost:3000${props.path} \\
-${props.curlFormData}
+--request POST http://localhost:3000/forms/pdfengines/split \\
+--form files=@/path/to/pdf.pdf \\
 --form 'metadata={"Author":"Julien Neuhart","Copyright":"Julien Neuhart","CreationDate":"2006-09-18T16:27:50-04:00","Creator":"Gotenberg","Keywords":["first","second"],"Marked":true,"ModDate":"2006-09-18T16:27:50-04:00","PDFVersion":1.7,"Producer":"Gotenberg","Subject":"Sample","Title":"Sample","Trapped":"Unknown"}' \\
-${props.curlOutput}
+-o my.zip
 `}
 />
 
 ### Attachments (PDF Engines)
 
-Use the `embeds` form field to attach external files directly inside the PDF container.
+Use the `embeds` form field to attach external files directly inside the PDFs container.
 
 **Common Use Case:**
 This is essential for e-invoicing standards like **[ZUGFeRD / Factur-X](https://fnfe-mpe.org/factur-x/)**, which require a human-readable PDF to carry a machine-readable XML invoice as an attachment.
@@ -160,54 +160,54 @@ This is essential for e-invoicing standards like **[ZUGFeRD / Factur-X](https://
 <ApiEndpoint
   curl={`
 curl \\
---request ${props.method} http://localhost:3000${props.path} \\
-${props.curlFormData}
+--request POST http://localhost:3000/forms/pdfengines/split \\
+--form files=@/path/to/pdf.pdf \\
 --form embeds=@invoice.xml \\
 --form embeds=@logo.png \\
-${props.curlOutput}
+-o my.zip
 `}
 />
 
 ### Flatten (PDF Engines)
 
-Use the `flatten` form field to make the PDF non-interactive.
+Use the `flatten` form field to make the PDFs non-interactive.
 
-This process merges all interactive form fields (text inputs, checkboxes, etc.) directly into the page content. The resulting PDF cannot be modified by the end-user.
+This process merges all interactive form fields (text inputs, checkboxes, etc.) directly into the page content. The resulting PDFs cannot be modified by the end-user.
 
 <ApiEndpoint
   curl={`
 curl \\
---request ${props.method} http://localhost:3000${props.path} \\
-${props.curlFormData}
+--request POST http://localhost:3000/forms/pdfengines/split \\
+--form files=@/path/to/pdf.pdf \\
 --form flatten=true \\
-${props.curlOutput}
+-o my.zip
 `}
 />
 
 ## PDF/A & PDF/UA (PDF Engines)
 
-Use the `pdfa` and `pdfua` form fields to convert the PDF into a standardized format _after_ the split operation.
+Use the `pdfa` and `pdfua` form fields to convert the PDFs into a standardized format _after_ the split operation.
 
-- **Process:** Gotenberg generates the PDF, then re-processes it using LibreOffice (the only engine supporting these standards).
+- **Process:** Gotenberg splits the PDFs, then re-processes them using LibreOffice (the only engine supporting these standards).
 - **Performance:** Slower (requires a second conversion pass).
-- **Result:** A compliant PDF/A (Archival) or PDF/UA (Universal Accessibility) document.
+- **Result:** Compliant PDF/A (Archival) or PDF/UA (Universal Accessibility) documents.
 
 <ApiEndpoint
   curl={`
 curl \\
---request ${props.method} http://localhost:3000${props.path} \\
-${props.curlFormData}
+--request POST http://localhost:3000/forms/pdfengines/split \\
+--form files=@/path/to/pdf.pdf \\
 --form pdfa=PDF/A-1b \\
 --form pdfua=true \\
-${props.curlOutput}
+-o my.zip
 `}
 />
 
 ## Encryption (PDF Engines)
 
-Secure your PDF by setting passwords that control access and permissions.
+Secure your PDFs by setting passwords that control access and permissions.
 
-- **User Password:** Required to **open** and view the PDF.
+- **User Password:** Required to **open** and view the PDFs.
 - **Owner Password:** Required to **modify** permissions (e.g., printing, copying text, extracting pages).
 
 :::info PDF Engine Dependency
@@ -234,11 +234,11 @@ The encryption strength (e.g., AES-256) depends on the configured PDF Engine (QP
   ]}
   curl={`
 curl \\
---request ${props.method} http://localhost:3000${props.path} \\
-${props.curlFormData}
+--request POST http://localhost:3000/forms/pdfengines/split \\
+--form files=@/path/to/pdf.pdf \\
 --form userPassword=my_user_password \\
 --form ownerPassword=my_owner_password \\
-${props.curlOutput}
+-o my.zip
 `}
 />
 
