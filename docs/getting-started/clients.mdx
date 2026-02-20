@@ -1,15 +1,35 @@
 ---
 id: clients
-title: Clients
+title: Clients & SDKs
 ---
 
-Gotenberg routes accept *multipart/form-data* requests, which are natively supported by most programming languages and tools, including cURL.
+import Sponsors from "@site/src/components/documentation/Sponsors";
 
-Due to popular demand, we and the community have developed several clients for easier integration:
+Gotenberg exposes a standard HTTP API that accepts `multipart/form-data` requests. While you can interact with it using any standard HTTP library (like Axios, Guzzle, etc.), dedicated clients provide a smoother developer experience.
 
-- Our *official* PHP client is available in the [gotenberg/gotenberg-php](https://github.com/gotenberg/gotenberg-php) package.
-- A range of community clients can be found on the [Awesome list](https://github.com/gotenberg/awesome-gotenberg#clients).
+## Why use a Client?
 
-In our upcoming [routes](/docs/routes) guide, you'll learn how to use Gotenberg's endpoints. While we’ll provide basic
-cURL examples, remember that there are multiple ways to create *multipart/form-data* requests —
-such as using streams or specifying file locations.
+- **Fluent Interfaces:** Build requests using clean, chainable methods.
+- **Type Safety:** Get autocomplete and validation for supported parameters.
+- **File Handling:** Simplified stream and file attachment management.
+
+## Official Client
+
+We maintain an official client for **PHP**, ensuring day-one support for new Gotenberg features.
+
+- [gotenberg/gotenberg-php](https://github.com/gotenberg/gotenberg-php)
+
+## Community Clients
+
+Thanks to our active community, robust clients are available for most major languages.
+You can find these libraries and more on the [**Awesome Gotenberg**](https://github.com/gotenberg/awesome-gotenberg#clients) list.
+
+:::tip Build your own
+
+Don't see your language? Since Gotenberg uses standard HTTP protocols, building a wrapper is straightforward.
+
+Check out the [routes guide](/docs/convert-with-chromium/convert-url-to-pdf) to see how the endpoints work, and feel free to submit your client to the [Awesome List](https://github.com/gotenberg/awesome-gotenberg)!
+
+:::
+
+<Sponsors />

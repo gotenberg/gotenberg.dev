@@ -1,0 +1,90 @@
+---
+id: attachments
+title: Attachments
+---
+
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import Sponsors from "@site/src/components/documentation/Sponsors";
+
+Embeds external files directly inside the PDF container.
+
+**Common Use Case:**
+This is essential for e-invoicing standards like **[ZUGFeRD / Factur-X](https://fnfe-mpe.org/factur-x/)**, which require a human-readable PDF to carry a machine-readable XML invoice as an attachment.
+
+<ApiEndpoint
+  method="POST"
+  path="/forms/pdfengines/embed"
+  headers={[
+    {
+      name: "Gotenberg-Output-Filename",
+      type: "string",
+      required: false,
+      description:
+        "The filename of the resulting file - Gotenberg automatically appends the file extension. Defaults to a random UUID filename.",
+    },
+    {
+      name: "Gotenberg-Trace",
+      type: "string",
+      required: false,
+      description:
+        "A custom request ID to identify the request in the logs; overrides the default UUID.",
+    },
+  ]}
+  formFiles={[
+    {
+      name: "files",
+      type: "file[]",
+      required: true,
+      description: "PDF files to embed content into.",
+    },
+    {
+      name: "embeds",
+      type: "file[]",
+      required: true,
+      description: "Files to embed (e.g., .xml, .png, etc.).",
+    },
+  ]}
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/pdfengines/embed \\
+--form files=@/path/to/invoice.pdf \\
+--form embeds=@/path/to/factur-x.xml \\
+-o my.pdf`}
+  responses={[
+    {
+      status: 200,
+      message: "OK",
+      description: "The PDF file with embedded attachments.",
+      body: `
+Content-Disposition: attachment; filename={output-filename.pdf}
+Content-Type: {content-type}
+Content-Length: {content-length}
+Gotenberg-Trace: {trace}
+Body: {output-file}
+      `,
+    },
+    {
+      status: 400,
+      message: "Bad Request",
+      description: "The request had one ore more invalid form fields.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+      `,
+    },
+    {
+      status: 503,
+      message: "Service Unavailable",
+      description:
+        "The request did not complete within the configured maximum duration.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: Service Unavailable
+      `,
+    },
+  ]}
+/>
+
+<Sponsors />

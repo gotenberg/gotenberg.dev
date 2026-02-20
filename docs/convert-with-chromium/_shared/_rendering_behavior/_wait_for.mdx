@@ -1,0 +1,86 @@
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+
+### JavaScript & Dynamic Content
+
+**Chromium captures what is currently visible.** If the page relies on JavaScript to render data, charts, or external content, the conversion might trigger _before_ the rendering is complete, resulting in blank or incomplete sections.
+
+:::info Cheatsheets
+
+If the content is generated dynamically:
+
+1.  Use the `waitDelay` form field to add a fixed pause before conversion.
+2.  For more precision, use the `waitForExpression` form field to trigger the conversion only when a specific JavaScript condition (e.g., `window.status === 'ready'`) is met.
+
+:::
+
+### Wait Delay
+
+Use this as a fallback when you cannot modify the target page's code. It forces Gotenberg to wait for a fixed duration before rendering, giving JavaScript time to finish execution.
+
+:::warning Reliability Note
+
+This method is "brute force". If the page loads faster, time is wasted. If it loads slower, the {props.isPDF ? "PDF" : "image" } will be incomplete. Use explicit waits (Expression or Selector) whenever possible.
+
+:::
+
+<ApiEndpoint
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form waitDelay=5s \\
+${props.curlOutput}
+`}
+/>
+
+### Wait For Expression
+
+This is the most robust method for synchronization. It pauses the conversion process until a specific JavaScript expression evaluates to `true` within the page context. This ensures the { props.isPDF ? "PDF" : "image" } is generated exactly when your data is ready.
+
+**Example: Client-side logic**
+
+```js
+// Inside your HTML page.
+window.status = "loading";
+
+fetchData().then(() => {
+  renderCharts();
+  // Signal to Gotenberg that the page is ready.
+  window.status = "ready";
+});
+```
+
+<ApiEndpoint
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+-- form 'waitForExpression=window.status === '\\''ready'\\''' \\
+${props.curlOutput}
+`}
+/>
+
+### Wait For Selector
+
+Ideally suited for Single Page Applications (SPAs) or frameworks like React/Vue. This method delays the conversion until a specific HTML element - identified by a CSS selector - appears in the DOM.
+
+**Example: Dynamic Element Injection**
+
+```js
+// Inside your HTML page.
+await heavyCalculation();
+
+const completionMarker = document.createElement("div");
+completionMarker.id = "app-ready"; // The selector we wait for.
+document.body.appendChild(completionMarker);
+```
+
+<ApiEndpoint
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form 'waitForSelector=#app-ready' \\
+${props.curlOutput}
+`}
+/>

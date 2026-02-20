@@ -3,6 +3,8 @@ id: configuration
 title: Configuration
 ---
 
+import Sponsors from "@site/src/components/documentation/Sponsors";
+
 The Docker image includes a binary with flags to configure its modules. This guide lists all available flags so you can
 fine-tune Gotenberg to your needs.
 
@@ -65,7 +67,7 @@ The API module is an HTTP/1 and HTTP/2 (with H2C support) server.
 The following flags allow you to configure the API module:
 
 | Flag                                                                           | Environment variable                                                         | Description                                                                                                                                    | Default         |
-|--------------------------------------------------------------------------------|------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|
+| ------------------------------------------------------------------------------ | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | --------------- |
 | <span class="badge badge--secondary">--api-port</span>                         | <span class="badge badge--secondary">API_PORT</span>                         | Set the port on which the API should listen.                                                                                                   | 3000            |
 | <span class="badge badge--secondary">--api-port-from-env</span>                | <span class="badge badge--secondary">API_PORT_FROM_ENV</span>                | Set the environment variable with the port on which the API should listen - override the default port.                                         | None            |
 | <span class="badge badge--secondary">--api-bind-ip</span>                      | <span class="badge badge--secondary">API_BIND_IP</span>                      | Set the IP address the API should bind to for incoming connections.                                                                            | 0.0.0.0         |
@@ -98,34 +100,35 @@ To maintain performance under a heavy load, consider increasing the number of Go
 
 :::caution
 
-Before Gotenberg *8.22.0*, the `amd64` image used Google Chrome (stable), while other architectures used Chromium.
+Before Gotenberg _8.22.0_, the `amd64` image used Google Chrome (stable), while other architectures used Chromium.
 Now all architectures use Chromium.
 
 :::
 
 The following flags allow you to configure the Chromium module:
 
-| Flag                                                                                | Environment variable                                                              | Description                                                                                                                           | Default                                 |
-|-------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------|
-| <span class="badge badge--secondary">--chromium-restart-after</span>                | <span class="badge badge--secondary">CHROMIUM_RESTART_AFTER</span>                | Number of conversions after which Chromium will automatically restart. Set to 0 to disable this feature.                              | 10<span style={{color: 'red'}}>*</span> |
-| <span class="badge badge--secondary">--chromium-max-queue-size</span>               | <span class="badge badge--secondary">CHROMIUM_MAX_QUEUE_SIZE</span>               | Maximum request queue size for Chromium. Set to 0 to disable this feature.                                                            | 0                                       |
-| <span class="badge badge--secondary">--chromium-auto-start</span>                   | <span class="badge badge--secondary">CHROMIUM_AUTO_START</span>                   | Automatically launch Chromium upon initialization if set to true; otherwise, Chromium will start at the time of the first conversion. | false                                   |
-| <span class="badge badge--secondary">--chromium-start-timeout</span>                | <span class="badge badge--secondary">CHROMIUM_START_TIMEOUT</span>                | Maximum duration to wait for Chromium to start or restart.                                                                            | 20s                                     |
-| <span class="badge badge--secondary">--chromium-allow-file-access-from-files</span> | <span class="badge badge--secondary">CHROMIUM_ALLOW_FILE_ACCESS_FROM_FILES</span> | Allow file:// URIs to read other file:// URIs.                                                                                        | false                                   |
-| <span class="badge badge--secondary">--chromium-allow-insecure-localhost</span>     | <span class="badge badge--secondary">CHROMIUM_ALLOW_INSECURE_LOCALHOST</span>     | Ignore TLS/SSL errors on localhost.                                                                                                   | false                                   |
-| <span class="badge badge--secondary">--chromium-allow-list</span>                   | <span class="badge badge--secondary">CHROMIUM_ALLOW_LIST</span>                   | Set the allowed URLs for Chromium using a regular expression.                                                                         | All                                     |
-| <span class="badge badge--secondary">--chromium-deny-list</span>                    | <span class="badge badge--secondary">CHROMIUM_DENY_LIST</span>                    | Set the denied URLs for Chromium using a regular expression.                                                                          | `^file:(?!//\/tmp/).*`                  |
-| <span class="badge badge--secondary">--chromium-ignore-certificate-errors</span>    | <span class="badge badge--secondary">CHROMIUM_IGNORE_CERTIFICATE_ERRORS</span>    | Ignore the certificate errors.                                                                                                        | false                                   |
-| <span class="badge badge--secondary">--chromium-disable-web-security</span>         | <span class="badge badge--secondary">CHROMIUM_DISABLE_WEB_SECURITY</span>         | Don't enforce the same-origin policy.                                                                                                 | false                                   |
-| <span class="badge badge--secondary">--chromium-incognito</span>                    | <span class="badge badge--secondary">CHROMIUM_INCOGNITO</span>                    | Start Chromium with incognito mode.                                                                                                   | false                                   |
-| <span class="badge badge--secondary">--chromium-host-resolver-rules</span>          | <span class="badge badge--secondary">CHROMIUM_HOST_RESOLVER_RULES</span>          | Set custom mappings to the host resolver.                                                                                             | None                                    |
-| <span class="badge badge--secondary">--chromium-proxy-server</span>                 | <span class="badge badge--secondary">CHROMIUM_PROXY_SERVER</span>                 | Set the outbound proxy server; this switch only affects HTTP and HTTPS requests.                                                      | None                                    |
-| <span class="badge badge--secondary">--chromium-clear-cache</span>                  | <span class="badge badge--secondary">CHROMIUM_CLEAR_CACHE</span>                  | Clear Chromium cache between each conversion.                                                                                         | false                                   |
-| <span class="badge badge--secondary">--chromium-clear-cookies</span>                | <span class="badge badge--secondary">CHROMIUM_CLEAR_COOKIES</span>                | Clear Chromium cookies between each conversion.                                                                                       | false                                   |
-| <span class="badge badge--secondary">--chromium-disable-javascript</span>           | <span class="badge badge--secondary">CHROMIUM_DISABLE_JAVASCRIPT</span>           | Disable JavaScript.                                                                                                                   | false                                   |
-| <span class="badge badge--secondary">--chromium-disable-routes</span>               | <span class="badge badge--secondary">CHROMIUM_DISABLE_ROUTES</span>               | Disable the routes.                                                                                                                   | false                                   |
+| Flag                                                                                | Environment variable                                                              | Description                                                                                                                           | Default                                  |
+| ----------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
+| <span class="badge badge--secondary">--chromium-restart-after</span>                | <span class="badge badge--secondary">CHROMIUM_RESTART_AFTER</span>                | Number of conversions after which Chromium will automatically restart. Set to 0 to disable this feature.                              | 10<span style={{color: 'red'}}>\*</span> |
+| <span class="badge badge--secondary">--chromium-max-queue-size</span>               | <span class="badge badge--secondary">CHROMIUM_MAX_QUEUE_SIZE</span>               | Maximum request queue size for Chromium. Set to 0 to disable this feature.                                                            | 0                                        |
+| <span class="badge badge--secondary">--chromium-auto-start</span>                   | <span class="badge badge--secondary">CHROMIUM_AUTO_START</span>                   | Automatically launch Chromium upon initialization if set to true; otherwise, Chromium will start at the time of the first conversion. | false                                    |
+| <span class="badge badge--secondary">--chromium-start-timeout</span>                | <span class="badge badge--secondary">CHROMIUM_START_TIMEOUT</span>                | Maximum duration to wait for Chromium to start or restart.                                                                            | 20s                                      |
+| <span class="badge badge--secondary">--chromium-allow-file-access-from-files</span> | <span class="badge badge--secondary">CHROMIUM_ALLOW_FILE_ACCESS_FROM_FILES</span> | Allow file:// URIs to read other file:// URIs.                                                                                        | false                                    |
+| <span class="badge badge--secondary">--chromium-allow-insecure-localhost</span>     | <span class="badge badge--secondary">CHROMIUM_ALLOW_INSECURE_LOCALHOST</span>     | Ignore TLS/SSL errors on localhost.                                                                                                   | false                                    |
+| <span class="badge badge--secondary">--chromium-allow-list</span>                   | <span class="badge badge--secondary">CHROMIUM_ALLOW_LIST</span>                   | Set the allowed URLs for Chromium using a regular expression.                                                                         | All                                      |
+| <span class="badge badge--secondary">--chromium-deny-list</span>                    | <span class="badge badge--secondary">CHROMIUM_DENY_LIST</span>                    | Set the denied URLs for Chromium using a regular expression.                                                                          | `^file:(?!//\/tmp/).*`                   |
+| <span class="badge badge--secondary">--chromium-ignore-certificate-errors</span>    | <span class="badge badge--secondary">CHROMIUM_IGNORE_CERTIFICATE_ERRORS</span>    | Ignore the certificate errors.                                                                                                        | false                                    |
+| <span class="badge badge--secondary">--chromium-disable-web-security</span>         | <span class="badge badge--secondary">CHROMIUM_DISABLE_WEB_SECURITY</span>         | Don't enforce the same-origin policy.                                                                                                 | false                                    |
+| <span class="badge badge--secondary">--chromium-incognito</span>                    | <span class="badge badge--secondary">CHROMIUM_INCOGNITO</span>                    | Start Chromium with incognito mode.                                                                                                   | false                                    |
+| <span class="badge badge--secondary">--chromium-host-resolver-rules</span>          | <span class="badge badge--secondary">CHROMIUM_HOST_RESOLVER_RULES</span>          | Set custom mappings to the host resolver.                                                                                             | None                                     |
+| <span class="badge badge--secondary">--chromium-proxy-server</span>                 | <span class="badge badge--secondary">CHROMIUM_PROXY_SERVER</span>                 | Set the outbound proxy server; this switch only affects HTTP and HTTPS requests.                                                      | None                                     |
+| <span class="badge badge--secondary">--chromium-clear-cache</span>                  | <span class="badge badge--secondary">CHROMIUM_CLEAR_CACHE</span>                  | Clear Chromium cache between each conversion.                                                                                         | false                                    |
+| <span class="badge badge--secondary">--chromium-clear-cookies</span>                | <span class="badge badge--secondary">CHROMIUM_CLEAR_COOKIES</span>                | Clear Chromium cookies between each conversion.                                                                                       | false                                    |
+| <span class="badge badge--secondary">--chromium-disable-javascript</span>           | <span class="badge badge--secondary">CHROMIUM_DISABLE_JAVASCRIPT</span>           | Disable JavaScript.                                                                                                                   | false                                    |
+| <span class="badge badge--secondary">--chromium-disable-routes</span>               | <span class="badge badge--secondary">CHROMIUM_DISABLE_ROUTES</span>               | Disable the routes.                                                                                                                   | false                                    |
 
-<span style={{color: 'red'}}>\*</span>Prior to Gotenberg *8.15.2*, restarting Chromium resulted in zombie processes.
+<span style={{ color: "red" }}>\*</span>Prior to Gotenberg *8.15.2*, restarting
+Chromium resulted in zombie processes.
 
 ## LibreOffice
 
@@ -143,7 +146,7 @@ To maintain performance under a heavy load, consider increasing the number of Go
 The following flags allow you to configure the LibreOffice module:
 
 | Flag                                                                     | Environment variable                                                   | Description                                                                                                                                 | Default |
-|--------------------------------------------------------------------------|------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|---------|
+| ------------------------------------------------------------------------ | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
 | <span class="badge badge--secondary">--libreoffice-restart-after</span>  | <span class="badge badge--secondary">LIBREOFFICE_RESTART_AFTER</span>  | Number of conversions after which LibreOffice will automatically restart. Set to 0 to disable this feature.                                 | 10      |
 | <span class="badge badge--secondary">--libreoffice-max-queue-size</span> | <span class="badge badge--secondary">LIBREOFFICE_MAX_QUEUE_SIZE</span> | Maximum request queue size for LibreOffice. Set to 0 to disable this feature.                                                               | 0       |
 | <span class="badge badge--secondary">--libreoffice-auto-start</span>     | <span class="badge badge--secondary">LIBREOFFICE_AUTO_START</span>     | Automatically launch LibreOffice upon initialization if set to true; otherwise, LibreOffice will start at the time of the first conversion. | false   |
@@ -157,7 +160,7 @@ building your own Docker image.
 
 For instance, with the German language:
 
-**Gotenberg *8.23.1* and after**
+**Gotenberg _8.23.1_ and after**
 
 ```docker
 FROM gotenberg/gotenberg:8
@@ -181,7 +184,7 @@ ENV LC_ALL de_DE.UTF-8
 USER gotenberg
 ```
 
-**Prior Gotenberg *8.22.0***
+**Prior Gotenberg _8.22.0_**
 
 ```docker
 FROM gotenberg/gotenberg:8
@@ -214,16 +217,16 @@ PDF files.
 Currently, Gotenberg supports the following PDF engines:
 
 | Engine                                       | Merge | Split | Flatten | Convert into PDF/A & PDF/UA | Read/Write metadata | Encrypt | Embed files | Name                  |
-|----------------------------------------------|-------|-------|---------|-----------------------------|---------------------|---------|-------------|-----------------------|
-| [ExifTool](https://exiftool.org/)            | ❌    | ❌    | ❌      | ❌                          | ✅                 | ❌      | ❌          | exiftool              |
-| [PDFtk](https://gitlab.com/pdftk-java/pdftk) | ✅    | ✅    | ❌      | ❌                          | ❌                 | ✅      | ❌          | pdtk                  |
-| [pdfcpu](https://github.com/pdfcpu/pdfcpu)   | ✅    | ✅    | ❌      | ❌                          | ❌                 | ✅      | ✅          | pdfcpu                |
-| [QPDF](https://github.com/qpdf/qpdf)         | ✅    | ✅    | ✅      | ❌                          | ❌                 | ✅      | ❌          | qpdf                  |
-| [UNO](https://github.com/unoconv/unoconv)    | ❌    | ❌    | ❌      | ✅                          | ❌                 | ❌      | ❌          | libreoffice-pdfengine |
+| -------------------------------------------- | ----- | ----- | ------- | --------------------------- | ------------------- | ------- | ----------- | --------------------- |
+| [ExifTool](https://exiftool.org/)            | ❌    | ❌    | ❌      | ❌                          | ✅                  | ❌      | ❌          | exiftool              |
+| [PDFtk](https://gitlab.com/pdftk-java/pdftk) | ✅    | ✅    | ❌      | ❌                          | ❌                  | ✅      | ❌          | pdtk                  |
+| [pdfcpu](https://github.com/pdfcpu/pdfcpu)   | ✅    | ✅    | ❌      | ❌                          | ❌                  | ✅      | ✅          | pdfcpu                |
+| [QPDF](https://github.com/qpdf/qpdf)         | ✅    | ✅    | ✅      | ❌                          | ❌                  | ✅      | ❌          | qpdf                  |
+| [UNO](https://github.com/unoconv/unoconv)    | ❌    | ❌    | ❌      | ✅                          | ❌                  | ❌      | ❌          | libreoffice-pdfengine |
 
 :::info
 
-PDFtk and QPDF only support the split mode *pages* with unification.
+PDFtk and QPDF only support the split mode _pages_ with unification.
 
 :::
 
@@ -231,12 +234,14 @@ PDFtk and QPDF only support the split mode *pages* with unification.
 
 PDFTk’s encryption feature requires both a user password and an owner password, and they must be different.
 
+The encryption strength is limited to AES-128, contrary to other PDF engines (AES-256).
+
 :::
 
 The following flags allow you to configure the PDF Engines module:
 
 | Flag                                                                            | Environment variable                                                          | Description                                                                                | Default               |
-|---------------------------------------------------------------------------------|-------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------|-----------------------|
+| ------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | --------------------- |
 | <span class="badge badge--secondary">--pdfengines-merge-engines</span>          | <span class="badge badge--secondary">PDFENGINES_MERGE_ENGINES</span>          | Set the PDF engines and their order for the merge feature - empty means all.               | qpdf,pdfcpu,pdftk     |
 | <span class="badge badge--secondary">--pdfengines-split-engines</span>          | <span class="badge badge--secondary">PDFENGINES_SPLIT_ENGINES</span>          | Set the PDF engines and their order for the split feature - empty means all.               | pdfcpu,qpdf,pdftk     |
 | <span class="badge badge--secondary">--pdfengines-flatten-engines</span>        | <span class="badge badge--secondary">PDFENGINES_FLATTEN_ENGINES</span>        | Set the PDF engines and their order for the flatten feature - empty means all.             | qpdf                  |
@@ -249,19 +254,19 @@ The following flags allow you to configure the PDF Engines module:
 
 :::warning
 
-As of Gotenberg *8.13.0*, the flag `--pdfengines-engines` has been deprecated.
+As of Gotenberg _8.13.0_, the flag `--pdfengines-engines` has been deprecated.
 
 :::
 
 ## Webhook
 
-The webhook feature enables Gotenberg to upload the output file originating from *multipart/form-data* routes to a
+The webhook feature enables Gotenberg to upload the output file originating from _multipart/form-data_ routes to a
 selected destination.
 
 The following flags allow you to configure the Webhook module:
 
 | Flag                                                                   | Environment variable                                                 | Description                                                                                  | Default |
-|------------------------------------------------------------------------|----------------------------------------------------------------------|----------------------------------------------------------------------------------------------|---------|
+| ---------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------- |
 | <span class="badge badge--secondary">--webhook-enable-sync-mode</span> | <span class="badge badge--secondary">WEBHOOK_ENABLE_SYNC_MODE</span> | Enable synchronous mode for the webhook feature.                                             | false   |
 | <span class="badge badge--secondary">--webhook-allow-list</span>       | <span class="badge badge--secondary">WEBHOOK_ALLOW_LIST</span>       | Set the allowed URLs for the webhook feature using a regular expression.                     | All     |
 | <span class="badge badge--secondary">--webhook-deny-list</span>        | <span class="badge badge--secondary">WEBHOOK_DENY_LIST</span>        | Set the denied URLs for the webhook feature using a regular expression.                      | None    |
@@ -281,7 +286,7 @@ The Prometheus module collects metrics from other modules and exposes an HTTP en
 The following flags allow you to configure the Prometheus module:
 
 | Flag                                                                           | Environment variable                                                         | Description                                       | Default             |
-|--------------------------------------------------------------------------------|------------------------------------------------------------------------------|---------------------------------------------------|---------------------|
+| ------------------------------------------------------------------------------ | ---------------------------------------------------------------------------- | ------------------------------------------------- | ------------------- |
 | <span class="badge badge--secondary">--prometheus-metrics-path</span>          | <span class="badge badge--secondary">PROMETHEUS_METRICS_PATH</span>          | Set the metrics endpoint path.                    | /prometheus/metrics |
 | <span class="badge badge--secondary">--prometheus-collect-interval</span>      | <span class="badge badge--secondary">PROMETHEUS_COLLECT_INTERVAL</span>      | Set the interval for collecting modules' metrics. | 1s                  |
 | <span class="badge badge--secondary">--prometheus-namespace</span>             | <span class="badge badge--secondary">PROMETHEUS_NAMESPACE</span>             | Set the namespace of modules' metrics.            | gotenberg           |
@@ -296,7 +301,7 @@ machine-readable way, making them extremely beneficial for centralized log manag
 The following flags allow you to configure the logger:
 
 | Flag                                                                | Environment variable                                              | Description                                                                      | Default |
-|---------------------------------------------------------------------|-------------------------------------------------------------------|----------------------------------------------------------------------------------|---------|
+| ------------------------------------------------------------------- | ----------------------------------------------------------------- | -------------------------------------------------------------------------------- | ------- |
 | <span class="badge badge--secondary">--log-format</span>            | <span class="badge badge--secondary">LOG_FORMAT</span>            | Specify the format of logging. Options include auto, json, or text.              | auto    |
 | <span class="badge badge--secondary">--log-level</span>             | <span class="badge badge--secondary">LOG_LEVEL</span>             | Choose the level of logging detail. Options include error, warn, info, or debug. | info    |
 | <span class="badge badge--secondary">--log-fields-prefix</span>     | <span class="badge badge--secondary">LOG_FIELDS_PREFIX</span>     | Prepend a specified prefix to each field in the logs.                            | None    |
@@ -304,7 +309,7 @@ The following flags allow you to configure the logger:
 
 :::warning
 
-As of Gotenberg *8.19.0*, the flag `--log-enable-gcp-severity` has been deprecated in favor of `--log-enable-gcp-fields`.
+As of Gotenberg _8.19.0_, the flag `--log-enable-gcp-severity` has been deprecated in favor of `--log-enable-gcp-fields`.
 
 :::
 
@@ -316,12 +321,12 @@ shutdown process.
 The following flag allows you to configure this duration:
 
 | Flag                                                                               | Environment variable                                                             | Description                         | Default |
-|------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|-------------------------------------|---------|
+| ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | ----------------------------------- | ------- |
 | <span class="badge badge--secondary">--gotenberg-graceful-shutdown-duration</span> | <span class="badge badge--secondary">GOTENBERG_GRACEFUL_SHUTDOWN_DURATION</span> | Set the graceful shutdown duration. | 30s     |
 
 :::info
 
-For Gotenberg versions prior to *8.21.0*, when using the [webhook feature](webhook), make sure this duration is equal to
+For Gotenberg versions prior to _8.21.0_, when using the [webhook feature](/docs/webhook-download#webhooks), make sure this duration is equal to
 or longer than the API timeout. This ensures that all asynchronous processes finish before Gotenberg begins its shutdown
 sequence.
 
@@ -332,7 +337,7 @@ sequence.
 The following flag allows you to hide the startup banner with:
 
 | Flag                                                                | Environment variable                                              | Description      | Default |
-|---------------------------------------------------------------------|-------------------------------------------------------------------|------------------|---------|
+| ------------------------------------------------------------------- | ----------------------------------------------------------------- | ---------------- | ------- |
 | <span class="badge badge--secondary">--gotenberg-hide-banner</span> | <span class="badge badge--secondary">GOTENBERG_HIDE_BANNER</span> | Hide the banner. | false   |
 
 ## Docker Image
@@ -383,12 +388,14 @@ USER gotenberg
 
 ---
 
-You could also mount a volume containing your fonts to */usr/local/share/fonts/* as suggested in this
+**Via mounted volumes**
+
+You could also mount a volume containing your fonts to _/usr/local/share/fonts/_ as suggested in this
 [comment](https://github.com/gotenberg/gotenberg/issues/602#issue-1580360200).
 
 ### Ownership
 
-The Docker image employs a specific non-root user, named *gotenberg*, with a User ID (uid) and Group ID (gid) of **1001**.
+The Docker image employs a specific non-root user, named _gotenberg_, with a User ID (uid) and Group ID (gid) of **1001**.
 If you want to change these identifiers, you will have to build a custom Docker image:
 
 ```docker
@@ -403,6 +410,14 @@ USER gotenberg
 
 :::info
 
-Since Gotenberg *8.21.0*, the image also supports [arbitrary user IDs (OpenShift)](https://docs.redhat.com/en/documentation/openshift_container_platform/4.15/html/images/creating-images#enable-images-for-source-to-image_create-images).
+Since Gotenberg _8.21.0_, the image also supports [arbitrary user IDs (OpenShift)](https://docs.redhat.com/en/documentation/openshift_container_platform/4.15/html/images/creating-images#enable-images-for-source-to-image_create-images).
 
 :::
+
+### Template Repository
+
+Gotenberg comes with a template repository that you can use to quickly bootstrap your own variant:
+
+- https://github.com/gotenberg/gotenberg-template-repository
+
+<Sponsors />

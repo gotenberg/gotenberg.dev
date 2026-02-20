@@ -1,0 +1,109 @@
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import CodeBlock from "@theme/CodeBlock";
+
+## Assets
+
+You can send local files - such as images, fonts, and stylesheets - alongside your HTML to create a rich document.
+
+<ApiEndpoint
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form files=@/path/to/img.png \\
+${props.curlOutput}
+`}
+/>
+
+When you upload files to Gotenberg, they are stored in a single temporary directory. Consequently, your HTML must reference these assets by **filename only**, regardless of their original folder structure on your machine.
+
+**Do not use absolute paths (`/img.png`) or subdirectories (`./assets/img.png`).**
+
+**✅ Correct Reference**
+
+Since `index.html` and `logo.png` sit side-by-side in the container:
+
+{props.isMarkdown ? (
+
+<CodeBlock language="html" title="index.html">
+  {`<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>My PDF</title>
+  </head>
+  <body>
+    {{ toHTML "file.md" }}
+    <img src="logo.png" />
+  </body>
+</html>`}
+</CodeBlock>
+) : (<CodeBlock language="html" title="index.html">
+  {`<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>My PDF</title>
+  </head>
+  <body>
+    <h1>Hello world!</h1>
+    <img src="logo.png" />
+  </body>
+</html>`}
+</CodeBlock>
+)}
+
+**❌ Incorrect Reference**
+
+Gotenberg does not recreate your local folder structure (e.g., images/) inside the container.
+
+{props.isMarkdown ? (
+
+<CodeBlock language="html" title="index.html">
+  {`<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>My PDF</title>
+  </head>
+  <body>
+    {{ toHTML "file.md" }}
+    <img src="/images/logo.png" />
+  </body>
+</html>`}
+</CodeBlock>
+) : (<CodeBlock language="html" title="index.html">
+  {`<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>My PDF</title>
+  </head>
+  <body>
+    <h1>Hello world!</h1>
+    <img src="/images/logo.png" />
+  </body>
+</html>`}
+</CodeBlock>
+)}
+
+:::info Remote Assets
+
+If your HTML references remote URLs (e.g., CDNs, Google Fonts, localhost):
+
+- **DNS & Firewalls:** Ensure the container can resolve the domain name and that no firewalls are blocking the connection from the container's IP.
+- **Localhost:** If you are trying to convert a page running on the host machine (e.g., `http://localhost:8080`), you cannot use `localhost` inside the container. You must use the host's network IP or a special Docker DNS name like `host.docker.internal` (depending on your OS and Docker version).
+
+:::
+
+:::info Base64
+
+For small assets, embedding them directly as Base64 data URIs eliminates network dependencies entirely.
+
+:::
+
+:::warning The Base Tag
+
+Avoid using the HTML \<base\> element. It alters how relative paths are resolved and often breaks the link between your HTML and the uploaded local assets.
+
+:::

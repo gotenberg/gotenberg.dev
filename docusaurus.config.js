@@ -48,17 +48,30 @@ module.exports = {
           docId: "getting-started/introduction",
         },
         {
-          type: "search",
-          position: "right",
-        },
-        {
           href: "https://github.com/gotenberg/gotenberg/discussions",
           label: "Help",
-          position: "right",
         },
         {
           href: "https://github.com/gotenberg/gotenberg",
           label: "GitHub",
+        },
+        {
+          type: "search",
+          position: "right",
+        },
+        {
+          href: "https://github.com/gotenberg/awesome-gotenberg",
+          label: "Awesome",
+          position: "right",
+        },
+        {
+          href: "https://github.com/gotenberg/gotenberg-php",
+          label: "PHP SDK",
+          position: "right",
+        },
+        {
+          href: "https://github.com/gotenberg/gotenberg/releases/tag/v8.0.0",
+          label: "Upgrade from 7.x",
           position: "right",
         },
       ],

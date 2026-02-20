@@ -1,107 +1,84 @@
 /* -------------------------------------------------------
    SECTION LAYOUT
    ------------------------------------------------------- */
-
 .section {
-  /* Premium Background: Slate 50 with subtle dots */
-  background-color: #f8fafc;
-  background-image: radial-gradient(#e2e8f0 2px, transparent 2px);
-  background-size: 32px 32px;
-
+  background-color: #ffffff;
   padding: 4rem 0;
-  position: relative;
   border-bottom: 1px solid #e2e8f0;
 }
 
 .grid {
   display: grid;
-  /* Auto-fit for responsiveness: min 280px width per card */
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-  justify-content: center;
-
-  /* Constrain max-width so cards don't stretch too wide on huge screens */
-  max-width: 1000px;
+  grid-template-columns: repeat(3, 1fr); /* Force 3 columns on large screens */
+  gap: 2rem; /* Larger gap */
+  max-width: 1100px;
   margin: 0 auto;
 }
 
 /* -------------------------------------------------------
-   CARD & INTERACTIVITY
+   CARD DESIGN (Cleaner, Apple-style)
    ------------------------------------------------------- */
-
-/* The Link Wrapper (<a> tag) */
 .linkWrapper {
-  text-decoration: none !important; /* Remove default underline */
-  color: inherit !important; /* Remove default blue link color */
+  text-decoration: none !important;
+  color: inherit !important;
   display: block;
   height: 100%;
 }
 
 .card {
   display: flex;
-  align-items: center;
+  flex-direction: column; /* Stack vertically for the big numbers */
+  align-items: flex-start;
+  justify-content: center;
   background-color: #ffffff;
-  padding: 1.5rem;
-  border-radius: 12px;
+  padding: 2rem; /* More padding */
+  border-radius: 16px;
 
-  /* Borders */
+  /* Crisp Border instead of shadow */
   border: 1px solid #e2e8f0;
-  border-left-width: 4px; /* The colored indicator strip */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease;
   height: 100%;
 }
 
-/* Hover Effect: When hovering the Link, lift the Card */
 .linkWrapper:hover .card {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
-  /* Subtle border highlight on hover */
-  border-top-color: #cbd5e1;
-  border-right-color: #cbd5e1;
-  border-bottom-color: #cbd5e1;
+  border-color: #94a3b8;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
 }
 
 /* -------------------------------------------------------
-   CARD CONTENT
+   CONTENT
    ------------------------------------------------------- */
-
 .iconWrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 52px;
-  height: 52px;
-  border-radius: 12px; /* Squircle shape */
-  margin-right: 1.25rem;
-  flex-shrink: 0;
-  transition: background-color 0.2s;
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  margin-bottom: 1.5rem; /* Space between icon and number */
 }
 
 .icon {
-  width: 28px;
-  height: 28px;
-}
-
-.content {
-  display: flex;
-  flex-direction: column;
+  width: 24px;
+  height: 24px;
 }
 
 .number {
   font-family: var(--ifm-font-family-base);
   font-weight: 800;
-  font-size: 1.5rem;
+  font-size: 3rem; /* HUGE NUMBERS */
   line-height: 1;
-  color: #0f172a; /* Slate 900 */
-  margin-bottom: 0.25rem;
+  letter-spacing: -0.05em; /* Tight tracking */
+  color: #0f172a;
+  margin-bottom: 0.5rem;
 }
 
 .label {
-  font-size: 0.85rem;
-  color: #64748b; /* Slate 500 */
+  font-size: 0.9rem;
+  color: #64748b;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -110,90 +87,93 @@
   gap: 0.5rem;
 }
 
-/* Heartbeat Animation for the Heart Emoji */
 .highlight {
   display: inline-block;
-  font-size: 1em;
   animation: heartbeat 1.5s ease-in-out infinite;
 }
 
 @keyframes heartbeat {
-  0% {
+  0%,
+  100% {
     transform: scale(1);
   }
-  14% {
-    transform: scale(1.3);
-  }
-  28% {
-    transform: scale(1);
-  }
-  42% {
-    transform: scale(1.3);
-  }
-  70% {
-    transform: scale(1);
+  50% {
+    transform: scale(1.2);
   }
 }
 
 /* -------------------------------------------------------
-   COLOR VARIANTS (Matches JS colorClass)
+   COLOR VARIANTS
    ------------------------------------------------------- */
-
-/* 1. Docker Blue */
-.blue {
-  border-left-color: #008ae6;
-}
+/* Blue */
 .blue .iconWrapper {
-  background-color: #f0f9ff;
-  color: #008ae6;
+  background-color: #eff6ff;
+  color: #3b82f6;
 }
-/* Darken icon bg on hover */
-.linkWrapper:hover .blue .iconWrapper {
-  background-color: #e0f2fe;
+.blue:hover .number {
+  color: #3b82f6; /* Color the number on hover */
 }
 
-/* 2. GitHub Yellow */
-.yellow {
-  border-left-color: #eab308;
-}
+/* Yellow */
 .yellow .iconWrapper {
   background-color: #fefce8;
+  color: #eab308;
+}
+.yellow:hover .number {
   color: #ca8a04;
 }
-.linkWrapper:hover .yellow .iconWrapper {
-  background-color: #fef9c3;
-}
 
-/* 3. License Teal */
-.teal {
-  border-left-color: #14b8a6;
-}
+/* Teal */
 .teal .iconWrapper {
   background-color: #ccfbf1;
-  color: #0d9488;
+  color: #14b8a6;
 }
-/* Non-clickable hover effect (optional, if you wrapped license in link later) */
-.teal:hover .iconWrapper {
-  background-color: #99f6e4;
+
+.teal:hover .number {
+  color: #14b8a6;
 }
 
 /* -------------------------------------------------------
    RESPONSIVE
    ------------------------------------------------------- */
-
 @media (max-width: 768px) {
   .section {
-    padding: 3rem 0;
+    padding: 2rem 0; /* Tighter padding */
   }
 
+  /* Create the horizontal scroll container */
   .grid {
-    grid-template-columns: 1fr; /* Stack vertically on phones */
-    max-width: 400px; /* Limit width */
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory; /* Snap to cards */
     gap: 1rem;
+    padding: 0 1.5rem 1.5rem 1.5rem; /* Padding for scroll shadows */
+    margin: 0 -1rem; /* Negative margin to pull scroll to screen edge */
+
+    /* Hide scrollbar for cleaner look */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 
-  /* Slightly reduce padding on mobile */
+  .grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Force cards to have a fixed width on mobile */
+  .linkWrapper,
   .card {
-    padding: 1.25rem;
+    min-width: 260px; /* Fixed width for swipe */
+    scroll-snap-align: center;
+  }
+
+  .card {
+    padding: 1.5rem;
+    height: 100%; /* Ensure equal height */
+  }
+}
+
+@media (max-width: 996px) {
+  .grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   }
 }

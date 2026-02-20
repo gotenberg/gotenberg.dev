@@ -3,33 +3,45 @@
    ------------------------------------------------------- */
 
 .wrapper {
-  margin: 4rem 0 2rem;
-  padding-top: 2rem;
-  /* Subtle dashed line to separate from content */
-  border-top: 1px dashed #e2e8f0;
+  margin: 6rem auto 4rem; /* HUGE whitespace above to separate from doc content */
+  padding-top: 3rem;
+
+  /* Subtle solid line instead of dashed */
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  max-width: 800px; /* Constrain width so it doesn't stretch too far */
 }
 
 /* -------------------------------------------------------
-   LINK RESETS (Critical for Doc Pages)
+   LABELS (New "Assumed" Style)
    ------------------------------------------------------- */
+/* Add a label above the logos if you have the text in your component */
+.sectionLabel {
+  font-family: var(--ifm-font-family-base);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #cbd5e1; /* Very light slate */
+  margin-bottom: 2rem;
+}
 
-/* We target 'a.cleanLink' inside '.wrapper' to beat
-   Docusaurus global specificity (which adds underlines/colors).
-*/
+/* -------------------------------------------------------
+   LINK RESETS
+   ------------------------------------------------------- */
 .wrapper a.cleanLink {
-  border: none !important; /* Kill the border-bottom */
-  text-decoration: none !important; /* Kill the underline */
-  background: transparent !important; /* Kill the hover highlight */
+  border: none !important;
+  text-decoration: none !important;
+  background: transparent !important;
   display: flex;
   align-items: center;
   transition: opacity 0.2s ease;
 }
 
-/* Remove Docusaurus 'text-decoration-line' if present */
 .wrapper a.cleanLink:hover {
   opacity: 1;
   background: transparent !important;
@@ -45,24 +57,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 3.5rem; /* Generous breathing room */
-  margin-bottom: 2rem;
+  gap: 4rem; /* More horizontal breathing room */
+  margin-bottom: 3rem;
   flex-wrap: wrap;
 }
 
 .logoPrimary {
-  height: 150px;
+  height: 95px;
   width: auto;
   filter: grayscale(100%);
-  opacity: 0.6;
-  /* Premium Apple-like transition */
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0.5; /* Lighter start state */
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .wrapper a.cleanLink:hover .logoPrimary {
   filter: grayscale(0);
   opacity: 1;
-  transform: scale(1.05); /* Subtle lift */
+  transform: scale(1.1); /* Pop effect */
 }
 
 /* -------------------------------------------------------
@@ -74,13 +85,13 @@
   align-items: center;
   justify-content: center;
   gap: 1.5rem;
-  margin-bottom: 2.5rem;
+  margin-bottom: 3rem;
 }
 
 .label {
   font-size: 0.75rem;
   text-transform: uppercase;
-  color: #94a3b8; /* Slate 400 */
+  color: #94a3b8;
   font-weight: 700;
   letter-spacing: 0.05em;
 }
@@ -92,10 +103,10 @@
 }
 
 .logoSecondary {
-  height: 40px; /* Subtle size */
+  height: 28px; /* Refined size */
   width: auto;
   filter: grayscale(100%);
-  opacity: 0.5;
+  opacity: 0.4; /* Very subtle */
   transition: all 0.2s ease;
 }
 
@@ -105,50 +116,64 @@
 }
 
 /* -------------------------------------------------------
-   CTA BUTTON (Rose Pill)
+   CTA BUTTON (Rose Pill - Refined)
    ------------------------------------------------------- */
 
 .ctaRow {
-  margin-top: 0.5rem;
+  margin-top: 1rem;
 }
 
-/* Specific selector to override global doc link styles */
 .wrapper a.sponsorButton {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.75rem;
 
-  /* The "Soft Rose" Pill Look */
-  background-color: #fff1f2 !important; /* Rose 50 */
-  color: #e11d48 !important; /* Rose 600 */
-  font-weight: 600;
-  font-size: 0.9rem;
+  /* Lighter, softer background for "Airy" feel */
+  background-color: #fff1f2 !important;
+  color: #e11d48 !important;
 
-  padding: 0.6rem 1.5rem;
-  border-radius: 50px; /* Pill shape */
-  border: 1px solid #fecdd3 !important; /* Rose 200 */
+  font-weight: 700;
+  font-size: 0.95rem; /* Slightly clearer text */
+  letter-spacing: -0.01em;
+
+  padding: 0.75rem 2rem; /* More internal padding */
+  border-radius: 100px;
+  border: 1px solid #fecdd3 !important;
 
   text-decoration: none !important;
-  border-bottom: 1px solid #fecdd3 !important; /* Override global border-bottom */
+  border-bottom: 1px solid #fecdd3 !important;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .wrapper a.sponsorButton:hover {
-  background-color: #ffe4e6 !important; /* Rose 100 */
-  color: #be123c !important; /* Rose 700 */
+  background-color: #ffe4e6 !important;
+  color: #be123c !important;
   border-color: #fda4af !important;
   transform: translateY(-2px);
-  box-shadow: 0 4px 6px -1px rgba(225, 29, 72, 0.15);
-  text-decoration: none !important;
+  /* Softer, more spread out shadow */
+  box-shadow: 0 10px 15px -3px rgba(225, 29, 72, 0.15);
 }
 
 .heart {
   font-size: 1.1em;
   transition: transform 0.2s;
+  /* Add the heartbeat animation here too if you like */
+  animation: heartbeat 2s ease-in-out infinite;
 }
 
 .wrapper a.sponsorButton:hover .heart {
   transform: scale(1.2);
+  animation-duration: 1s; /* Faster beat on hover */
+}
+
+@keyframes heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
 }
 
 /* -------------------------------------------------------
@@ -156,21 +181,26 @@
    ------------------------------------------------------- */
 
 @media (max-width: 600px) {
-  .sponsorGrid {
-    gap: 2rem;
+  .wrapper {
+    margin-top: 4rem;
   }
 
-  /* Stack infra row if screen is tiny */
+  .sponsorGrid {
+    gap: 2.5rem;
+    margin-bottom: 2rem;
+  }
+
   .metaRow {
     flex-direction: column;
     gap: 1rem;
+    margin-bottom: 2rem;
   }
 
   .logoPrimary {
-    height: 70px; /* Smaller on phone */
+    height: 40px; /* Smaller on phone */
   }
 
   .logoSecondary {
-    height: 20px; /* Smaller on phone */
+    height: 24px;
   }
 }

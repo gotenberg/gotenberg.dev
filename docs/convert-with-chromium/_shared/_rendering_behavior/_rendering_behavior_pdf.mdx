@@ -1,0 +1,185 @@
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import WaitFor from "./_wait_for.mdx";
+
+## Rendering Behavior
+
+<ApiEndpoint
+  formFields={[
+    {
+      name: "paperWidth",
+      type: "string",
+      defaultValue: "8.5",
+      description:
+        "Paper width (e.g. 8.5in). Standard units supported (in, pt, cm). Default is inches.",
+    },
+    {
+      name: "paperHeight",
+      type: "string",
+      defaultValue: "11",
+      description:
+        "Paper height (e.g. 11in). Standard units supported (in, pt, cm). Default is inches.",
+    },
+    {
+      name: "marginTop",
+      type: "string",
+      defaultValue: "0.39",
+      description:
+        "Top margin (e.g. 0.39in). Standard units supported (in, pt, cm). Default is inches.",
+    },
+    {
+      name: "marginBottom",
+      type: "string",
+      defaultValue: "0.39",
+      description:
+        "Bottom margin (e.g. 0.39in). Standard units supported (in, pt, cm). Default is inches.",
+    },
+    {
+      name: "marginLeft",
+      type: "string",
+      defaultValue: "0.39",
+      description:
+        "Left margin (e.g. 0.39in). Standard units supported (in, pt, cm). Default is inches.",
+    },
+    {
+      name: "marginRight",
+      type: "string",
+      defaultValue: "0.39",
+      description:
+        "Right margin (e.g. 0.39in). Standard units supported (in, pt, cm). Default is inches.",
+    },
+    {
+      name: "landscape",
+      type: "boolean",
+      defaultValue: "false",
+      description: "Sets the paper orientation to landscape",
+    },
+    {
+      name: "scale",
+      type: "number",
+      defaultValue: "1.0",
+      description: "The scale of the page rendering (zoom factor).",
+    },
+    {
+      name: "printBackground",
+      type: "boolean",
+      defaultValue: "false",
+      description: "Includes background graphics/colors from the HTML.",
+    },
+    {
+      name: "omitBackground",
+      type: "boolean",
+      defaultValue: "false",
+      description: "Hides the default white background (allows transparency).",
+    },
+    {
+      name: "singlePage",
+      type: "boolean",
+      defaultValue: "false",
+      description: "Forces the entire content to fit on one very long page.",
+    },
+    {
+      name: "preferCssPageSize",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Uses page sizes defined in CSS (@page) instead of API parameters.",
+    },
+    {
+      name: "emulatedMediaType",
+      type: "enum",
+      defaultValue: "print",
+      description: "Media type to emulate ('screen' or 'print').",
+    },
+    {
+      name: "waitDelay",
+      type: "string",
+      defaultValue: "None",
+      description: "Duration to wait before converting (e.g. '5s').",
+    },
+    {
+      name: "waitForExpression",
+      type: "string",
+      defaultValue: "None",
+      description: "Waits until this JavaScript expression returns true.",
+    },
+    {
+      name: "waitForSelector",
+      type: "string",
+      defaultValue: "None",
+      description:
+        "Waits until the given selector (e.g., '#id') is visible on the page.",
+    },
+  ]}
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form paperWidth=8.27 \\
+--form paperHeight=11.7 \\
+--form marginTop=1 \\
+--form marginBottom=1 \\
+--form marginLeft=1 \\
+--form marginRight=1 \\
+--form landscape=true \\
+--form scale=2.0 \\
+--form printBackground=true \\
+--form omitBackground=true \\
+--form singlePage=true \\
+--form preferCssPageSize=false \\
+--form emulatedMediaType=screen \\
+${props.curlOutput}
+`}
+/>
+
+### Standard Paper Sizes
+
+The following standard paper sizes are in inches (width x height), ordered from smallest to largest:
+
+| Format | Dimensions   | Format (US) | Dimensions         |
+| :----- | :----------- | :---------- | :----------------- |
+| **A6** | 4.13 x 5.83  | **Letter**  | 8.5 x 11 (Default) |
+| **A5** | 5.83 x 8.27  | **Legal**   | 8.5 x 14           |
+| **A4** | 8.27 x 11.7  | **Tabloid** | 11 x 17            |
+| **A3** | 11.7 x 16.54 | **Ledger**  | 17 x 11            |
+| **A2** | 16.54 x 23.4 |             |                    |
+| **A1** | 23.4 x 33.1  |             |                    |
+| **A0** | 33.1 x 46.8  |             |                    |
+
+### Single Page
+
+If `singlePage` is set to **true**, it automatically overrides the values from `paperHeight` and `nativePageRanges`.
+
+### CSS & Print Media
+
+**Chromium uses the print media type.**
+By default, browsers optimize pages for printing by removing background colors/images and adjusting the layout to save ink.
+
+If your generated PDF looks different from what you see in a browser viewport, it is likely because `print` media styles are being applied or background graphics are disabled.
+
+:::info Cheatsheets
+
+- Use `@media print` in your CSS to define specific styles for the PDF (e.g., hiding navigation bars or buttons).
+- Alternatively, use the `emulatedMediaType` form field to force the media type to `screen`.
+- To force background colors and images to appear, enable the `printBackground` form field in your request.
+- You can control paper size and margins via CSS using the `@page` rule. Note that for Gotenberg to respect these rules, you must enable the `preferCssPageSize` form field.
+
+:::
+
+### Background Logic
+
+The final background depends on `printBackground`, `omitBackground`, and your document's CSS:
+
+| Print Background? | Omit Background? | HTML CSS has BG? | **Resulting Output**         |
+| :---------------- | :--------------- | :--------------- | :--------------------------- |
+| `false`           | _(Any)_          | _(Any)_          | **No Background**            |
+| `true`            | _(Any)_          | **Yes**          | **Uses HTML CSS Background** |
+| `true`            | `true`           | **No**           | **Transparent**              |
+| `true`            | `false`          | **No**           | **White (Default)**          |
+
+<WaitFor
+  method={props.method}
+  path={props.path}
+  curlFormData={props.curlFormData}
+  curlOutput={props.curlOutput}
+  isPDF={true}
+/>

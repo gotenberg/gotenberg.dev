@@ -1,0 +1,50 @@
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+
+Use the `pdfa` and `pdfua` form fields to convert the result into a standardized PDF format during _post-processing_.
+
+- **Process:** Gotenberg generates the result, then re-processes it using LibreOffice (the only engine supporting these standards).
+- **Performance:** Slower (requires a second conversion pass).
+- **Result:** A compliant PDF/A (Archival) or PDF/UA (Universal Accessibility) document.
+
+{props.showFormFields && props.showCurlExample && (
+
+<ApiEndpoint
+  formFields={[
+    {
+      name: "pdfa",
+      type: "enum",
+      required: false,
+      description:
+        "Converts to a specific PDF/A archival standard. Options: 'PDF/A-1b', 'PDF/A-2b', 'PDF/A-3b'.",
+    },
+    {
+      name: "pdfua",
+      type: "boolean",
+      defaultValue: "false",
+      description: "Enables PDF/UA (Universal Accessibility) compliance.",
+    },
+  ]}
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form userPassword=my_user_password \\
+--form ownerPassword=my_owner_password \\
+${props.curlOutput}
+`}
+/>
+)}
+
+{!props.showFormFields && props.showCurlExample && (
+
+<ApiEndpoint
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form userPassword=my_user_password \\
+--form ownerPassword=my_owner_password \\
+${props.curlOutput}
+`}
+/>
+)}

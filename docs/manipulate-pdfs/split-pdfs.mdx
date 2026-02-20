@@ -1,0 +1,208 @@
+---
+id: split-pdfs
+title: Split PDFs
+---
+
+import SyntaxValidationSplitPDFEngines from "../_shared/_syntax_validation_split_pdfengines.mdx";
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import MetadataPDFEngines from "../_shared/_metadata_pdfengines.mdx";
+import AttachmentsPDFEngines from "../_shared/_attachments_pdfengines.mdx";
+import FlattenPDFEngines from "../_shared/_flatten_pdfengines.mdx";
+import PDFAPDFUAPDFEngines from "../_shared/_pdfa_pdfua_pdfengines.mdx";
+import EncryptionPDFEngines from "../_shared/_encryption_pdfengines.mdx";
+import Sponsors from "@site/src/components/documentation/Sponsors";
+
+Splits one or more PDF files.
+
+This endpoint allows you to extract specific pages or split the document into intervals.
+The result can be a ZIP archive of individual files or a unified PDF containing the extracted pages.
+
+<SyntaxValidationSplitPDFEngines />
+
+## Basics
+
+<ApiEndpoint
+  method="POST"
+  path="/forms/pdfengines/split"
+  headers={[
+    {
+      name: "Gotenberg-Output-Filename",
+      type: "string",
+      required: false,
+      description:
+        "The filename of the resulting file - Gotenberg automatically appends the file extension. Defaults to a random UUID filename.",
+    },
+    {
+      name: "Gotenberg-Trace",
+      type: "string",
+      required: false,
+      description:
+        "A custom request ID to identify the request in the logs; overrides the default UUID.",
+    },
+  ]}
+  formFields={[
+    {
+      name: "splitMode",
+      type: "enum",
+      required: true,
+      description:
+        "Activates the splitting engine. Options: 'intervals' or 'pages'.",
+    },
+    {
+      name: "splitSpan",
+      type: "string",
+      required: true,
+      description:
+        "The rule for splitting. If mode is 'intervals', defines the chunk size (e.g. '2'). If mode is 'pages', defines the page ranges.",
+    },
+    {
+      name: "splitUnify",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Only for 'pages' mode. If true, puts all extracted pages from a PDF into a single PDF file. If false, creates a separate file for each range.",
+    },
+  ]}
+  formFiles={[
+    {
+      name: "files",
+      type: "file[]",
+      required: true,
+      description: "PDF files to split.",
+    },
+  ]}
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/pdfengines/split \\
+--form files=@/path/to/file.pdf \\
+--form splitMode=intervals \\
+--form splitSpan=1 \\
+-o my.zip`}
+  responses={[
+    {
+      status: 200,
+      message: "OK",
+      description: "The split PDF files (ZIP) or unified PDF.",
+      body: `
+Content-Disposition: attachment; filename={output-filename.ext}
+Content-Type: {content-type}
+Content-Length: {content-length}
+Gotenberg-Trace: {trace}
+Body: {output-file}
+      `,
+    },
+    {
+      status: 400,
+      message: "Bad Request",
+      description: "The request had one ore more invalid form fields.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+      `,
+    },
+    {
+      status: 503,
+      message: "Service Unavailable",
+      description:
+        "The request did not complete within the configured maximum duration.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: Service Unavailable
+      `,
+    },
+  ]}
+/>
+
+## Structure & Metadata
+
+<ApiEndpoint
+  formFields={[
+    {
+      name: "metadata",
+      type: "json",
+      defaultValue: "None",
+      description: "Writes metadata (Author, Title, etc.).",
+    },
+    {
+      name: "flatten",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Converts form fields into static content, preventing further editing.",
+    },
+  ]}
+  formFiles={[
+    {
+      name: "embeds",
+      type: "file[]",
+      defaultValue: "None",
+      description: "Embeds files into the PDF.",
+    },
+  ]}
+/>
+
+### Metadata (PDF Engines)
+
+<MetadataPDFEngines
+  showCurlExample={true}
+  method="POST"
+  path="/forms/pdfengines/split"
+  curlFormData={`--form files=@/path/to/file.pdf \\
+--form splitMode=intervals \\
+--form splitSpan=1 \\`}
+  curlOutput={`-o my.zip`}
+/>
+
+### Attachments (PDF Engines)
+
+<AttachmentsPDFEngines
+  showCurlExample={true}
+  method="POST"
+  path="/forms/pdfengines/split"
+  curlFormData={`--form files=@/path/to/file.pdf \\
+--form splitMode=intervals \\
+--form splitSpan=1 \\`}
+  curlOutput={`-o my.zip`}
+/>
+
+### Flatten (PDF Engines)
+
+<FlattenPDFEngines
+  showCurlExample={true}
+  method="POST"
+  path="/forms/pdfengines/split"
+  curlFormData={`--form files=@/path/to/file.pdf \\
+--form splitMode=intervals \\
+--form splitSpan=1 \\`}
+  curlOutput={`-o my.zip`}
+/>
+
+## PDF/A & PDF/UA (PDF Engines)
+
+<PDFAPDFUAPDFEngines
+  showFormFields={true}
+  showCurlExample={true}
+  method="POST"
+  path="/forms/pdfengines/split"
+  curlFormData={`--form files=@/path/to/file.pdf \\
+--form splitMode=intervals \\
+--form splitSpan=1 \\`}
+  curlOutput={`-o my.zip`}
+/>
+
+## Encryption (PDF Engines)
+
+<EncryptionPDFEngines
+  showFormFields={true}
+  showCurlExample={true}
+  method="POST"
+  path="/forms/pdfengines/split"
+  curlFormData={`--form files=@/path/to/file.pdf \\
+--form splitMode=intervals \\
+--form splitSpan=1 \\`}
+  curlOutput={`-o my.zip`}
+/>
+
+<Sponsors />

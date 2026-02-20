@@ -1,0 +1,151 @@
+---
+id: screenshot-markdown
+title: Screenshot Markdown
+---
+
+import ConfigurationInfo from "./_shared/_configuration_info.mdx";
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import Assets from "./_shared/_assets.mdx";
+import RenderingBehaviorScreenshot from "./_shared/_rendering_behavior/_rendering_behavior_screenshot.mdx";
+import HttpNetworking from "./_shared/_http_networking.mdx";
+import Console from "./_shared/_console.mdx";
+import Sponsors from "@site/src/components/documentation/Sponsors";
+
+Converts Markdown content (with [MathJaX](https://www.mathjax.org/) support) into an image using Headless Chromium.
+
+This route works by rendering Markdown files within a provided HTML template. You must upload an `index.html` file that acts as the container for the content. Gotenberg converts the Markdown syntax into HTML and injects it into this template, allowing you to style the document using standard CSS and external assets.
+
+:::info Template Configuration
+
+The `index.html` file **must** include the following Go template action where the content should appear:
+
+```html {8}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>My PDF</title>
+  </head>
+  <body>
+    {{ toHTML "file.md" }}
+  </body>
+</html>
+```
+
+:::
+
+<ConfigurationInfo />
+
+## Basics
+
+<ApiEndpoint
+  method="POST"
+  path="/forms/chromium/screenshot/markdown"
+  headers={[
+    {
+      name: "Gotenberg-Output-Filename",
+      type: "string",
+      required: false,
+      description:
+        "The filename of the resulting file - Gotenberg automatically appends the file extension. Defaults to a random UUID filename.",
+    },
+    {
+      name: "Gotenberg-Trace",
+      type: "string",
+      required: false,
+      description:
+        "A custom request ID to identify the request in the logs; overrides the default UUID.",
+    },
+  ]}
+  formFiles={[
+    {
+      name: "index.html",
+      type: "file",
+      required: true,
+      description:
+        "An HTML file named 'index.html' to wrap the markdown content.",
+    },
+    {
+      name: "*.md",
+      type: "file[]",
+      required: true,
+      description: "At least one markdown file.",
+    },
+  ]}
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/chromium/screenshot/markdown \\
+--form files=@/path/to/index.html \\
+--form files=@/path/to/file.md \\
+-o my.jpeg`}
+  responses={[
+    {
+      status: 200,
+      message: "OK",
+      description: "The screenshot has been successfully created.",
+      body: `
+Content-Disposition: attachment; filename={output-filename.ext}
+Content-Type: {content-type}
+Content-Length: {content-length}
+Gotenberg-Trace: {trace}
+Body: {output-file}
+      `,
+    },
+    {
+      status: 400,
+      message: "Bad Request",
+      description: "The request had one ore more invalid form fields.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+      `,
+    },
+    {
+      status: 503,
+      message: "Service Unavailable",
+      description:
+        "The request did not complete within the configured maximum duration.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: Service Unavailable
+      `,
+    },
+  ]}
+/>
+
+<Assets
+  method="POST"
+  path="/forms/chromium/screenshot/markdown"
+  curlFormData={`--form files=@/path/to/index.html \\
+--form files=@/path/to/file.md \\`}
+  curlOutput={`-o my.jpeg`}
+  isMarkdown={true}
+/>
+
+<RenderingBehaviorScreenshot
+  method="POST"
+  path="/forms/chromium/screenshot/markdown"
+  curlFormData={`--form files=@/path/to/index.html \\
+--form files=@/path/to/file.md \\`}
+  curlOutput={`-o my.jpeg`}
+/>
+
+<HttpNetworking
+  method="POST"
+  path="/forms/chromium/screenshot/markdown"
+  curlFormData={`--form files=@/path/to/index.html \\
+--form files=@/path/to/file.md \\`}
+  curlOutput={`-o my.jpeg`}
+/>
+
+<Console
+  method="POST"
+  path="/forms/chromium/screenshot/markdown"
+  curlFormData={`--form files=@/path/to/index.html \\
+--form files=@/path/to/file.md \\`}
+  curlOutput={`-o my.jpeg`}
+/>
+
+<Sponsors />

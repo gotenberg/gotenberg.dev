@@ -1,0 +1,120 @@
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import WaitFor from "./_wait_for.mdx";
+
+## Rendering Behavior
+
+<ApiEndpoint
+  formFields={[
+    {
+      name: "width",
+      type: "number",
+      defaultValue: "800",
+      description: "The device screen width in pixels.",
+    },
+    {
+      name: "height",
+      type: "number",
+      defaultValue: "600",
+      description: "The device screen height in pixels.",
+    },
+    {
+      name: "clip",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Define whether to clip the screenshot according to the device dimensions.",
+    },
+    {
+      name: "format",
+      type: "enum",
+      defaultValue: "png",
+      description:
+        "The image compression format. Options: 'png', 'jpeg', 'webp'.",
+    },
+    {
+      name: "quality",
+      type: "number",
+      defaultValue: "100",
+      description:
+        "The compression quality (0-100). Only used if format is 'jpeg'.",
+    },
+    {
+      name: "omitBackground",
+      type: "boolean",
+      defaultValue: "false",
+      description: "Hides the default white background to allow transparency.",
+    },
+    {
+      name: "optimizeForSpeed",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Optimizes image encoding for speed rather than resulting file size.",
+    },
+    {
+      name: "emulatedMediaType",
+      type: "enum",
+      defaultValue: "print",
+      description: "Media type to emulate ('screen' or 'print').",
+    },
+    {
+      name: "waitDelay",
+      type: "string",
+      defaultValue: "None",
+      description: "Duration to wait before converting (e.g. '5s').",
+    },
+    {
+      name: "waitForExpression",
+      type: "string",
+      defaultValue: "None",
+      description: "Waits until this JavaScript expression returns true.",
+    },
+    {
+      name: "waitForSelector",
+      type: "string",
+      defaultValue: "None",
+      description:
+        "Waits until the given selector (e.g., '#id') is visible on the page.",
+    },
+  ]}
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form width=1280 \\
+--form height=720 \\
+--form format=jpeg \\
+--form quality=85 \\
+--form optimizeForSpeed=true \\
+${props.curlOutput}
+`}
+/>
+
+### Viewport & Layout
+
+**The viewport defines the image.** Unlike PDFs which paginate content, screenshots capture the browser's viewport exactly as rendered.
+
+- **Resolution:** Ensure you set the `width` and `height` form fields to match your desired target device (e.g., `1920`x`1080` for desktop, `375`x`812` for mobile).
+- If your screenshot's content is repeated and clipped, consider setting the `skipNetworkIdleEvent` form field to false (see issue [#1065](https://github.com/gotenberg/gotenberg/issues/1065#issuecomment-2670882337)).
+
+:::tip
+
+If you are simulating a mobile device, remember to also set the `userAgent` to match a mobile browser, or the site might serve the desktop version.
+
+:::
+
+### Image Format
+
+Choosing the right output format impacts quality and file size:
+
+- **PNG:** Best for screenshots containing text, UI elements, or flat colors. It is lossless, ensuring text remains sharp.
+- **JPEG:** Best for screenshots containing photographs or complex gradients. Use the `quality` form field to balance file size against visual fidelity (default is `100`).
+- **WebP:** Offers a modern balance of compression and quality, usually superior to JPEG.
+
+<WaitFor
+  method={props.method}
+  path={props.path}
+  curlFormData={props.curlFormData}
+  curlOutput={props.curlOutput}
+  isPDF={false}
+/>

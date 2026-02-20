@@ -3,6 +3,8 @@ id: installation
 title: Installation
 ---
 
+import Sponsors from "@site/src/components/documentation/Sponsors";
+
 This guide is not intended to provide a comprehensive tour of Docker and its orchestrators. Rather, it's designed to
 be concise enough to assist beginners in getting started while helping power users sidestep potential pitfalls.
 
@@ -17,9 +19,9 @@ as a database.
 
 Before downloading the Docker image, you might want to experiment with Gotenberg. We offer a demo API for this purpose:
 
-* https://demo.gotenberg.dev
+- https://demo.gotenberg.dev
 
-As you navigate through the documentation, feel free to open a terminal or [Postman](https://www.postman.com/) and try
+As you navigate through the documentation, feel free to open a terminal or [Bruno](https://www.usebruno.com/) and try
 out the routes using the demo URL.
 
 For instance:
@@ -39,8 +41,8 @@ The demo operates on a [Render](https://render.com) instance with 512MB of RAM a
 
 At present, the restrictions are:
 
-* A maximum of two requests per second per IP.
-* A body limit of 5MB.
+- A maximum of two requests per second per IP.
+- A body limit of 5MB.
 
 ## Docker
 
@@ -48,12 +50,6 @@ To start a default Docker container of Gotenberg, run:
 
 ```bash
 docker run --rm -p "3000:3000" gotenberg/gotenberg:8
-```
-
-Alternatively, using the historic Docker repository from our sponsor [TheCodingMachine](https://www.thecodingmachine.com):
-
-```bash
-docker run --rm -p "3000:3000" thecodingmachine/gotenberg:8
 ```
 
 :::info
@@ -88,7 +84,6 @@ services:
 
 :::info
 
-
 The API will be accessible at [gotenberg:3000](http://gotenberg:3000) within your Docker Compose network.
 This means your other services can interact with Gotenberg using [gotenberg:3000](http://gotenberg:3000).
 
@@ -106,8 +101,8 @@ services:
     image: gotenberg/gotenberg:8
     ports:
       - "3000:3000"
-     # Or more secure:
-     # - "127.0.0.1:3000:3000"
+      # Or more secure:
+      # - "127.0.0.1:3000:3000"
 ```
 
 :::info
@@ -118,11 +113,11 @@ The API will be available at [http://localhost:3000](http://localhost:3000).
 
 ## Kubernetes
 
-The Docker image runs as a non-root user named *gotenberg*, with a user ID (UID) and group ID (GID) of **1001**.
+The Docker image runs as a non-root user named _gotenberg_, with a user ID (UID) and group ID (GID) of **1001**.
 
 :::info
 
-Since Gotenberg *8.21.0*, the image also supports [arbitrary user IDs (OpenShift)](https://docs.redhat.com/en/documentation/openshift_container_platform/4.15/html/images/creating-images#enable-images-for-source-to-image_create-images).
+Since Gotenberg _8.21.0_, the image also supports [arbitrary user IDs (OpenShift)](https://docs.redhat.com/en/documentation/openshift_container_platform/4.15/html/images/creating-images#enable-images-for-source-to-image_create-images).
 
 :::
 
@@ -149,18 +144,12 @@ We have a dedicated Docker image tag specifically for this provider:
 gotenberg/gotenberg:8-cloudrun
 ```
 
-Alternatively, using the historic Docker repository from our sponsor [TheCodingMachine](https://www.thecodingmachine.com):
-
-```
-thecodingmachine/gotenberg:8-cloudrun
-```
-
 This image is preconfigured for Cloud Run:
 
-* Uses the `PORT` environment variable provided by Cloud Run.
-* Logs in a format compatible with Cloud Run.
-* Auto-starts Chromium and LibreOffice for faster readiness.
-* Uses synchronous webhook mode, since Cloud Run may stop the container if there’s no HTTP activity.
+- Uses the `PORT` environment variable provided by Cloud Run.
+- Logs in a format compatible with Cloud Run.
+- Auto-starts Chromium and LibreOffice for faster readiness.
+- Uses synchronous webhook mode, since Cloud Run may stop the container if there’s no HTTP activity.
 
 :::tip
 
@@ -178,19 +167,13 @@ We provide a dedicated Docker image tag, available on both `linux/amd64` and `li
 gotenberg/gotenberg:8-aws-lambda
 ```
 
-Alternatively, using the historic Docker repository from our sponsor [TheCodingMachine](https://www.thecodingmachine.com):
-
-```
-thecodingmachine/gotenberg:8-aws-lambda
-```
-
 This image is preconfigured for AWS Lambda:
 
-* Uses the `AWS_LWA_PORT` environment variable to configure its port.
-* Set `AWS_LWA_READINESS_CHECK_PATH` with the route `/health`.
-* Set `AWS_LWA_INVOKE_MODE` with the value `buffered`.
-* Uses synchronous webhook mode, since AWS may stop the container if there’s no HTTP activity.
-* See https://github.com/awslabs/aws-lambda-web-adapter for more AWS related options.
+- Uses the `AWS_LWA_PORT` environment variable to configure its port.
+- Set `AWS_LWA_READINESS_CHECK_PATH` with the route `/health`.
+- Set `AWS_LWA_INVOKE_MODE` with the value `buffered`.
+- Uses synchronous webhook mode, since AWS may stop the container if there’s no HTTP activity.
+- See https://github.com/awslabs/aws-lambda-web-adapter for more AWS related options.
 
 :::tip
 
@@ -208,7 +191,9 @@ If you have feedback, please feel free to share it in the thread!
 
 :::
 
-## What's next?
+## What's Next?
 
 Now that you have Gotenberg up and running, you can start using it. Install a custom [client](clients) or
-read the [routes guide](/docs/routes) to learn more.
+read the [routes guide](/docs/convert-with-chromium/convert-url-to-pdf) to learn more.
+
+<Sponsors />

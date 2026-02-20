@@ -1,0 +1,58 @@
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import PDFAPDFUAPDFEngines from "../../_shared/_pdfa_pdfua_pdfengines.mdx";
+
+## PDF/A & PDF/UA
+
+<ApiEndpoint
+  formFields={[
+    {
+      name: "generateTaggedPdf",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Chromium feature. Embeds logical structure tags for accessibility during generation.",
+    },
+    {
+      name: "pdfa",
+      type: "enum",
+      defaultValue: "None",
+      description:
+        "Converts to a specific PDF/A archival standard. Options includes: 'PDF/A-1b', 'PDF/A-2b', 'PDF/A-3b'",
+    },
+    {
+      name: "pdfua",
+      type: "boolean",
+      defaultValue: "false",
+      description: "Enables PDF/UA (Universal Accessibility) compliance.",
+    },
+  ]}
+/>
+
+### Native Accessibility (Chromium)
+
+Use the `generateTaggedPdf` form field to instruct Chromium to structure the PDF for accessibility (tagging).
+
+- **Process:** Happens _during_ the initial HTML-to-PDF conversion.
+- **Performance:** High (negligible overhead).
+- **Result:** A logical structure tree (headings, paragraphs) embedded in the PDF, essential for screen readers.
+
+<ApiEndpoint
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form generateTaggedPdf=true \\
+${props.curlOutput}
+`}
+/>
+
+### Post-Processing (PDF Engines) {#post-processing-pdf-engines-pdfa-pdfua}
+
+<PDFAPDFUAPDFEngines
+  showFormFields={false}
+  showCurlExample={true}
+  method={props.method}
+  path={props.path}
+  curlFormData={props.curlFormData}
+  curlOutput={props.curlOutput}
+/>

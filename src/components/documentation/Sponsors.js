@@ -38,7 +38,7 @@ export default function Sponsors() {
         <span className={styles.label}>Powered by</span>
         <div className={styles.infraGrid}>
           <a
-            href="https://www.docker.com/community/open-source/sponsored-projects/"
+            href="https://docs.docker.com/docker-hub/repos/manage/trusted-content/dsos-program/"
             target="_blank"
             rel="noopener noreferrer"
             className={styles.cleanLink}

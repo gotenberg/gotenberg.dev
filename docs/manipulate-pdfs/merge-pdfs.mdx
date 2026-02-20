@@ -1,0 +1,181 @@
+---
+id: merge-pdfs
+title: Merge PDFs
+---
+
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import MetadataPDFEngines from "../_shared/_metadata_pdfengines.mdx";
+import AttachmentsPDFEngines from "../_shared/_attachments_pdfengines.mdx";
+import FlattenPDFEngines from "../_shared/_flatten_pdfengines.mdx";
+import PDFAPDFUAPDFEngines from "../_shared/_pdfa_pdfua_pdfengines.mdx";
+import EncryptionPDFEngines from "../_shared/_encryption_pdfengines.mdx";
+import Sponsors from "@site/src/components/documentation/Sponsors";
+
+Merges multiple PDF files into a single PDF file.
+
+This endpoint accepts PDF files in the `multipart/form-data` request and combines them in alphanumeric order (numbers first, then alphabetical).
+
+## Basics
+
+<ApiEndpoint
+  method="POST"
+  path="/forms/pdfengines/merge"
+  headers={[
+    {
+      name: "Gotenberg-Output-Filename",
+      type: "string",
+      required: false,
+      description:
+        "The filename of the resulting file - Gotenberg automatically appends the file extension. Defaults to a random UUID filename.",
+    },
+    {
+      name: "Gotenberg-Trace",
+      type: "string",
+      required: false,
+      description:
+        "A custom request ID to identify the request in the logs; overrides the default UUID.",
+    },
+  ]}
+  formFiles={[
+    {
+      name: "files",
+      type: "file[]",
+      required: true,
+      description: "PDF files to merge.",
+    },
+  ]}
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/pdfengines/merge \\
+--form files=@/path/to/1_pdf.pdf \\
+--form files=@/path/to/2_pdf.pdf \\
+--form files=@/path/to/3_pdf.pdf \\
+-o my.pdf`}
+  responses={[
+    {
+      status: 200,
+      message: "OK",
+      description: "The merged PDF file.",
+      body: `
+Content-Disposition: attachment; filename={output-filename.pdf}
+Content-Type: {content-type}
+Content-Length: {content-length}
+Gotenberg-Trace: {trace}
+Body: {output-file}
+      `,
+    },
+    {
+      status: 400,
+      message: "Bad Request",
+      description: "The request had one ore more invalid form fields.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+      `,
+    },
+    {
+      status: 503,
+      message: "Service Unavailable",
+      description:
+        "The request did not complete within the configured maximum duration.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: Service Unavailable
+      `,
+    },
+  ]}
+/>
+
+## Structure & Metadata
+
+<ApiEndpoint
+  formFields={[
+    {
+      name: "metadata",
+      type: "json",
+      defaultValue: "None",
+      description: "Writes metadata (Author, Title, etc.).",
+    },
+    {
+      name: "flatten",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Converts form fields into static content, preventing further editing.",
+    },
+  ]}
+  formFiles={[
+    {
+      name: "embeds",
+      type: "file[]",
+      defaultValue: "None",
+      description: "Embeds files into the PDF.",
+    },
+  ]}
+/>
+
+### Metadata (PDF Engines)
+
+<MetadataPDFEngines
+  showCurlExample={true}
+  method="POST"
+  path="/forms/pdfengines/merge"
+  curlFormData={`--form files=@/path/to/1_pdf.pdf \\
+--form files=@/path/to/2_pdf.pdf \\
+--form files=@/path/to/3_pdf.pdf \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+### Attachments (PDF Engines)
+
+<AttachmentsPDFEngines
+  showCurlExample={true}
+  method="POST"
+  path="/forms/pdfengines/merge"
+  curlFormData={`--form files=@/path/to/1_pdf.pdf \\
+--form files=@/path/to/2_pdf.pdf \\
+--form files=@/path/to/3_pdf.pdf \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+### Flatten (PDF Engines)
+
+<FlattenPDFEngines
+  showCurlExample={true}
+  method="POST"
+  path="/forms/pdfengines/merge"
+  curlFormData={`--form files=@/path/to/1_pdf.pdf \\
+--form files=@/path/to/2_pdf.pdf \\
+--form files=@/path/to/3_pdf.pdf \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+## PDF/A & PDF/UA (PDF Engines)
+
+<PDFAPDFUAPDFEngines
+  showFormFields={true}
+  showCurlExample={true}
+  method="POST"
+  path="/forms/pdfengines/merge"
+  curlFormData={`--form files=@/path/to/1_pdf.pdf \\
+--form files=@/path/to/2_pdf.pdf \\
+--form files=@/path/to/3_pdf.pdf \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+## Encryption (PDF Engines)
+
+<EncryptionPDFEngines
+  showFormFields={true}
+  showCurlExample={true}
+  method="POST"
+  path="/forms/pdfengines/merge"
+  curlFormData={`--form files=@/path/to/1_pdf.pdf \\
+--form files=@/path/to/2_pdf.pdf \\
+--form files=@/path/to/3_pdf.pdf \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<Sponsors />

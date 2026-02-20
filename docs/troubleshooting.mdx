@@ -3,72 +3,76 @@ id: troubleshooting
 title: Troubleshooting
 ---
 
+import Sponsors from "@site/src/components/documentation/Sponsors";
+
 If you encounter an issue not covered here, please:
 
 1. Check if it's already been reported on the [GitHub issues](https://github.com/gotenberg/gotenberg/issues) or [GitHub discussions](https://github.com/gotenberg/gotenberg/discussions).
 2. Open a new issue or start a discussion if needed.
 
----
-
 ## Chromium
 
-### Large PDF File Size
+### Blank or Missing Content
 
-* Webfonts can significantly increase PDF sizes. For custom fonts, refer to the
-[fonts configuration section](configuration#fonts) ([Issue #521](https://github.com/gotenberg/gotenberg/issues/521)).
-* A bug in Chromium seems to duplicate images ([Issue #1077](https://github.com/gotenberg/gotenberg/issues/1077)).
+- **Dynamic Content:** If your page relies on JavaScript to render, Chromium might print before it finishes. Use `waitDelay` or `waitForExpression` to pause the conversion until the page is ready.
+- **Backgrounds:** By default, browsers remove backgrounds for printing. Enable the `printBackground` form field, or use the CSS property `-webkit-print-color-adjust: exact;`.
+- **Network Idle:** For versions after _8.11.0_, try setting the `skipNetworkIdleEvent` field to _false_.
+- **Updates:** Consider upgrading to the latest Gotenberg version to benefit from debugging features like [Network Errors](routes#network-errors-chromium) or [Invalid HTTP Status Codes](routes#invalid-http-status-codes-chromium).
 
-### Trouble Starting
+### Localhost / Missing Assets
 
-* Increase the startup timeout (see [Chromium module configuration](configuration#chromium)).
-* On macOS, consider disabling the *Use Virtualization Framework* ([Issue #792](https://github.com/gotenberg/gotenberg/issues/792)).
+- **Container Networking:** The Gotenberg container has its own network. If you try to convert `http://localhost:3000`, it looks inside the container, not your host machine. Use your host's actual network IP, or Docker's DNS (e.g., `host.docker.internal`).
+- **Unresolved Assets:** Ensure all CSS, fonts, and images are either accessible from the internet, sent as additional files in your multipart request, or embedded as Base64.
 
-### Printing Failed (-32000)
+### Large PDFs
 
-* This error may occur when converting large documents. Increasing memory might help, but note that it's a known
-[Chromium bug](https://issues.chromium.org/issues/40842550) ([Issue #788](https://github.com/gotenberg/gotenberg/issues/788)).
-* Also, large headers or footers can cause this error.
+- Webfonts can significantly increase PDF sizes. For custom fonts, refer to the [fonts configuration section](configuration#fonts) ([Issue #521](https://github.com/gotenberg/gotenberg/issues/521)).
+- A known bug in Chromium can sometimes cause duplicate images ([Issue #1077](https://github.com/gotenberg/gotenberg/issues/1077)).
 
-### Blank PDFs
+### Fails to Start
 
-* For versions after *8.11.0*, set the `skipNetworkIdleEvent` field to *false*.
-* Consider upgrading to latest version to benefit from features like [Network Errors](routes#network-errors-chromium) or
-[Invalid HTTP Status Codes](routes#invalid-http-status-codes-chromium).
+- Increase the startup timeout (see [Chromium module configuration](configuration#chromium)).
+- On macOS, consider disabling the _Use Virtualization Framework_ in Docker Desktop ([Issue #792](https://github.com/gotenberg/gotenberg/issues/792)).
 
-### Screenshots Repeated and Clipped
+### Print Error (-32000)
 
-* Set the `skipNetworkIdleEvent` field to *false* to resolve this issue
-([Issue #1065](https://github.com/gotenberg/gotenberg/issues/1065#issuecomment-2670882337)).
+- This error often occurs when converting massive documents. Increasing container memory might help, but note that it is a known [Chromium bug](https://issues.chromium.org/issues/40842550) ([Issue #788](https://github.com/gotenberg/gotenberg/issues/788)).
+- Unusually large headers or footers injected via the API can also trigger this error.
 
-### Timeouts (503 Service Unavailable)
+### Clipped Screenshots
 
-* Check if your Gotenberg instance is overloaded; add more instances if needed.
-* Ensure the target page’s resources are accessible.
-* Increase the API timeout ([API module configuration](configuration#api)).
-* Optionally, define a maximum queue size for faster request aborts ([Chromium module configuration](configuration#chromium)).
+- If your screenshots are repeating or clipped, set the `skipNetworkIdleEvent` field to _false_ ([Issue #1065](https://github.com/gotenberg/gotenberg/issues/1065#issuecomment-2670882337)).
 
----
+### Timeouts (503)
+
+- **Overload:** Check if your Gotenberg instance is overwhelmed. Scale horizontally by adding more instances if needed.
+- **Accessibility:** Ensure the target page’s resources respond quickly.
+- **Configuration:** Increase the API timeout ([API module configuration](configuration#api)). Optionally, define a maximum queue size for faster request aborts ([Chromium module configuration](configuration#chromium)).
 
 ## LibreOffice
 
-### PDF/A-1a
+### Layout & Font Shifts
 
-* Starting with version 7.6, LibreOffice no longer supports *PDF/A-1a*. It previously generated *PDF/A-1b* files, though
-some validators misidentified them ([LibreOffice commit](https://git.libreoffice.org/core/+/c4b12d06698402984b3ffdbd2c139f261fa35ca1%5E%21)).
+- **Missing Fonts:** LibreOffice relies on installed system fonts to calculate page breaks and layout. If your document uses a font not present in the container, LibreOffice will substitute it, causing shifted layouts. You must install the required fonts via a custom `Dockerfile` (see [Fonts configuration](configuration#fonts)).
 
-### Internal Server Error (500)
+### Server Errors (500)
 
-* Try increasing Gotenberg’s memory and CPU resources ([Issue #465](https://github.com/gotenberg/gotenberg/issues/465)).
+- **Resource Limits:** Office document conversion is resource-heavy. Try increasing Gotenberg’s memory and CPU allocations ([Issue #465](https://github.com/gotenberg/gotenberg/issues/465)).
 
-### Trouble Starting
+### Fails to Start
 
-* Increase the startup timeout ([LibreOffice module configuration](configuration#libreoffice)).
-* Debian users should use a current version of the distribution ([Issue #794](https://github.com/gotenberg/gotenberg/issues/794)).
-* For Synology and Paperless-ngx, consult [this configuration comment](https://github.com/gotenberg/gotenberg/issues/763#issuecomment-1890472047).
+- Increase the startup timeout ([LibreOffice module configuration](configuration#libreoffice)).
+- Debian users should ensure they are using a current version of the distribution ([Issue #794](https://github.com/gotenberg/gotenberg/issues/794)).
+- For Synology and Paperless-ngx users, consult [this configuration comment](https://github.com/gotenberg/gotenberg/issues/763#issuecomment-1890472047).
 
-### Timeouts (503 Service Unavailable)
+### PDF/A-1a Support
 
-* Check if your instance is overloaded; consider increasing instances or resource allocation.
-* Increase the API timeout ([API module configuration](configuration#api)).
-* Increase the LibreOffice startup timeout ([LibreOffice module configuration](configuration#libreoffice)).
-* Optionally, set a maximum queue size for quicker request aborts ([LibreOffice module configuration](configuration#libreoffice)).
+- Starting with version 7.6, LibreOffice no longer supports _PDF/A-1a_. It previously generated _PDF/A-1b_ files anyway, though some validators misidentified them ([LibreOffice commit](https://git.libreoffice.org/core/+/c4b12d06698402984b3ffdbd2c139f261fa35ca1%5E%21)).
+
+### Timeouts (503)
+
+- **Overload:** Check if your instance is overloaded; consider increasing instances or resource allocation.
+- **Configuration:** Increase the API timeout ([API module configuration](configuration#api)) and the LibreOffice startup timeout ([LibreOffice module configuration](configuration#libreoffice)).
+- **Queuing:** Optionally, set a maximum queue size for quicker request aborts ([LibreOffice module configuration](configuration#libreoffice)).
+
+<Sponsors />

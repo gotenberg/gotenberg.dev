@@ -1,0 +1,67 @@
+---
+id: get-health-check
+title: Health Check
+---
+
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import Sponsors from "@site/src/components/documentation/Sponsors";
+
+Returns the operational status of the API and its modules.
+
+This endpoint verifies that the server is accepting requests and that all active modules (Chromium, LibreOffice) are in a healthy state. It returns a JSON object detailing the status of each subsystem. It is designed for use by container orchestrators (e.g., Kubernetes Liveness Probes) or monitoring agents.
+
+<ApiEndpoint
+  method="GET"
+  path="/health"
+  headers={[
+    {
+      name: "Gotenberg-Trace",
+      type: "string",
+      required: false,
+      description:
+        "A custom request ID to identify the request in the logs; overrides the default UUID.",
+    },
+  ]}
+  curl={`curl --request GET http://localhost:3000/health`}
+  responses={[
+    {
+      status: 200,
+      message: "OK",
+      description: "The service is healthy.",
+      body: `{
+    status: "up",
+    details: {
+      chromium: {
+        status: "up",
+        timestamp: "2021-07-01T08:05:14.603364Z",
+      },
+      libreoffice: {
+        status: "up",
+        timestamp: "2021-07-01T08:05:14.603364Z",
+      },
+    },
+  }`,
+    },
+    {
+      status: 503,
+      message: "Service Unavailable",
+      description: "The service in unhealthy.",
+      body: `{
+    status: "down",
+    details: {
+      chromium: {
+        status: "up",
+        timestamp: "2021-07-01T08:05:14.603364Z",
+      },
+      libreoffice: {
+        status: "down",
+        timestamp: "2021-07-01T08:05:14.603364Z",
+        error: "LibreOffice is unhealthy",
+      },
+    },
+  }`,
+    },
+  ]}
+/>
+
+<Sponsors />

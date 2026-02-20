@@ -3,33 +3,29 @@ id: introduction
 title: What is Gotenberg?
 ---
 
-import Sponsors from '@site/src/components/documentation/Sponsors';
+import Sponsors from "@site/src/components/documentation/Sponsors";
 
-[Gotenberg](https://github.com/gotenberg/gotenberg) is a containerized API for seamless PDF conversion.
+[Gotenberg](https://github.com/gotenberg/gotenberg) is a containerized API that abstracts the complexity of PDF conversion.
 
-## Overview
+It provides a `multipart/form-data` interface for interacting with powerful engines like **Chromium** and **LibreOffice**.
+Instead of managing heavy dependencies, browser versions, or fonts in your own backend, simply send your files to Gotenberg and get a PDF in return.
 
-* **Versatile Conversion Endpoints**<br />
-Features robust *multipart/form-data* endpoints that convert various document formats to PDF.
+## Quick Start
 
-* **Containerized & Self-Contained**<br />
-Runs as a Docker image with all necessary dependencies bundled — no separate environment setup required.<br />
-Available on *amd64*, *arm64*, *armhf*, *i386*, and *ppc64le* architectures.
+Spin up a container and convert a URL to PDF in two commands:
 
-* **Scalable & Distributed**<br />
-Seamlessly integrates into distributed systems for efficient scaling.
+```bash
+# 1. Start the container.
+docker run --rm -p "3000:3000" gotenberg/gotenberg:8
+# 2. Convert a URL to PDF.
+curl \
+--request POST http://localhost:3000/forms/chromium/convert/url \
+--form url=https://sparksuite.github.io/simple-html-invoice-template/ \
+-o invoice.pdf
+```
 
-* **Modern Protocol Support**<br/ >
-Fully supports HTTP/2, including classic and H2C configurations.
-
-* **Architecture & Flexibility**<br />
-Gotenberg's modular design means each component is independently configurable.
-
-* **Open Source**<br />
-Gotenberg is open-source and free to use, making it an accessible solution for integrating PDF conversion into your projects.
-
-<Sponsors />
-
-## Getting Started
+## What's Next?
 
 Get started with Gotenberg by reading the [installation guide](installation).
+
+<Sponsors />

@@ -22,14 +22,137 @@ module.exports = {
       ],
     },
     {
-      type: "doc",
-      id: "routes",
-      label: "Routes",
+      type: "category",
+      label: "Convert with Chromium",
+      collapsed: false,
+      items: [
+        {
+          type: "doc",
+          id: "convert-with-chromium/convert-url-to-pdf",
+          className: "sidebar-method-post",
+        },
+        {
+          type: "doc",
+          id: "convert-with-chromium/convert-html-to-pdf",
+          className: "sidebar-method-post",
+        },
+        {
+          type: "doc",
+          id: "convert-with-chromium/convert-markdown-to-pdf",
+          className: "sidebar-method-post",
+        },
+        {
+          type: "doc",
+          id: "convert-with-chromium/screenshot-url",
+          className: "sidebar-method-post",
+        },
+        {
+          type: "doc",
+          id: "convert-with-chromium/screenshot-html",
+          className: "sidebar-method-post",
+        },
+        {
+          type: "doc",
+          id: "convert-with-chromium/screenshot-markdown",
+          className: "sidebar-method-post",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Convert with LibreOffice",
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "convert-with-libreoffice/convert-to-pdf",
+          className: "sidebar-method-post",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Manipulate PDFs",
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "manipulate-pdfs/write-metadata",
+          className: "sidebar-method-post",
+        },
+        {
+          type: "doc",
+          id: "manipulate-pdfs/read-metadata",
+          className: "sidebar-method-post",
+        },
+        {
+          type: "doc",
+          id: "manipulate-pdfs/attachments",
+          className: "sidebar-method-post",
+        },
+        {
+          type: "doc",
+          id: "manipulate-pdfs/flatten-pdfs",
+          className: "sidebar-method-post",
+        },
+        {
+          type: "doc",
+          id: "manipulate-pdfs/merge-pdfs",
+          className: "sidebar-method-post",
+        },
+        {
+          type: "doc",
+          id: "manipulate-pdfs/split-pdfs",
+          className: "sidebar-method-post",
+        },
+        {
+          type: "doc",
+          id: "manipulate-pdfs/pdfa-pdfua",
+          className: "sidebar-method-post",
+        },
+        {
+          type: "doc",
+          id: "manipulate-pdfs/encrypt-pdfs",
+          className: "sidebar-method-post",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "System",
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "system/get-health-check",
+          className: "sidebar-method-get",
+        },
+        {
+          type: "doc",
+          id: "system/head-health-check",
+          className: "sidebar-method-head",
+        },
+        {
+          type: "doc",
+          id: "system/prometheus-metrics",
+          className: "sidebar-method-get",
+        },
+        {
+          type: "doc",
+          id: "system/version",
+          className: "sidebar-method-get",
+        },
+        {
+          type: "doc",
+          id: "system/debug",
+          className: "sidebar-method-get",
+        },
+      ],
     },
     {
       type: "doc",
-      id: "webhook",
-      label: "Webhook",
+      id: "webhook-download",
+      label: "Webhook & Download",
     },
     {
       type: "doc",
@@ -40,16 +163,6 @@ module.exports = {
       type: "doc",
       id: "troubleshooting",
       label: "Troubleshooting",
-    },
-    {
-      type: "link",
-      label: "Awesome",
-      href: "https://github.com/gotenberg/awesome-gotenberg",
-    },
-    {
-      type: "link",
-      label: "Gotenberg PHP",
-      href: "https://github.com/gotenberg/gotenberg-php",
     },
     {
       type: "link",
