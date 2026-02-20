@@ -88,12 +88,12 @@ module.exports = {
           title: "Documentation",
           items: [
             {
-              label: "Getting started",
+              label: "Getting Started",
               to: "/docs/getting-started/introduction",
             },
             {
-              label: "Routes",
-              to: "/docs/routes",
+              label: "Explore All Routes",
+              to: "/docs/convert-with-chromium/convert-url-to-pdf",
             },
             {
               label: "Configuration",
@@ -109,7 +109,7 @@ module.exports = {
               href: "https://github.com/gotenberg/awesome-gotenberg",
             },
             {
-              label: "Gotenberg PHP",
+              label: "PHP SDK",
               href: "https://github.com/gotenberg/gotenberg-php",
             },
             {

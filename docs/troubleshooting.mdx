@@ -17,7 +17,7 @@ If you encounter an issue not covered here, please:
 - **Dynamic Content:** If your page relies on JavaScript to render, Chromium might print before it finishes. Use `waitDelay` or `waitForExpression` to pause the conversion until the page is ready.
 - **Backgrounds:** By default, browsers remove backgrounds for printing. Enable the `printBackground` form field, or use the CSS property `-webkit-print-color-adjust: exact;`.
 - **Network Idle:** For versions after _8.11.0_, try setting the `skipNetworkIdleEvent` field to _false_.
-- **Updates:** Consider upgrading to the latest Gotenberg version to benefit from debugging features like [Network Errors](routes#network-errors-chromium) or [Invalid HTTP Status Codes](routes#invalid-http-status-codes-chromium).
+- **Updates:** Consider upgrading to the latest Gotenberg version to benefit from debugging features like _Network Errors_ or _Invalid HTTP Status Codes_.
 
 ### Localhost / Missing Assets
 

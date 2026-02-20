@@ -41,6 +41,7 @@
     ]
   },
   "devDependencies": {
+    "baseline-browser-mapping": "^2.10.0",
     "prettier": "2.3.2"
   }
 }
