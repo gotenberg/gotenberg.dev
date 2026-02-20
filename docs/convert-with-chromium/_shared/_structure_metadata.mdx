@@ -1,0 +1,86 @@
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import MetadataPDFEngines from "../../_shared/_metadata_pdfengines.mdx";
+import AttachmentsPDFEngines from "../../_shared/_attachments_pdfengines.mdx";
+import FlattenPDFEngines from "../../_shared/_flatten_pdfengines.mdx";
+
+## Structure & Metadata
+
+<ApiEndpoint
+  formFields={[
+    {
+      name: "generateDocumentOutline",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Chromium feature. Embeds the document outline (bookmarks) into the PDF.",
+    },
+    {
+      name: "metadata",
+      type: "json",
+      defaultValue: "None",
+      description: "Writes metadata (Author, Title, etc.).",
+    },
+    {
+      name: "flatten",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Converts form fields into static content, preventing further editing.",
+    },
+  ]}
+  formFiles={[
+    {
+      name: "embeds",
+      type: "file[]",
+      defaultValue: "None",
+      description: "Embeds files into the PDF.",
+    },
+  ]}
+/>
+
+### Document Outline (Chromium)
+
+Use the `generateDocumentOutline` form field to automatically create a PDF bookmark pane (sidebar) based on your HTML headings (`<h1>` to `<h6>`).
+
+- **Process:** Happens _during_ the HTML-to-PDF conversion.
+- **Requirement:** Your HTML must use proper heading tags to generate the hierarchy.
+
+<ApiEndpoint
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form generateDocumentOutline=true \\
+${props.curlOutput}
+`}
+/>
+
+### Metadata (PDF Engines)
+
+<MetadataPDFEngines
+  showCurlExample={true}
+  method={props.method}
+  path={props.path}
+  curlFormData={props.curlFormData}
+  curlOutput={props.curlOutput}
+/>
+
+### Attachments (PDF Engines)
+
+<AttachmentsPDFEngines
+  showCurlExample={true}
+  method={props.method}
+  path={props.path}
+  curlFormData={props.curlFormData}
+  curlOutput={props.curlOutput}
+/>
+
+### Flatten (PDF Engines)
+
+<FlattenPDFEngines
+  showCurlExample={true}
+  method={props.method}
+  path={props.path}
+  curlFormData={props.curlFormData}
+  curlOutput={props.curlOutput}
+/>

@@ -4,16 +4,10 @@ title: Encrypt PDFs
 ---
 
 import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import EncryptionPDFEngines from "../_shared/_encryption_pdfengines.mdx";
 import Sponsors from "@site/src/components/documentation/Sponsors";
 
-Secure your PDF by setting passwords that control access and permissions.
-
-- **User Password:** Required to **open** and view the PDF.
-- **Owner Password:** Required to **modify** permissions (e.g., printing, copying text, extracting pages).
-
-:::info PDF Engine Dependency
-The encryption strength (e.g., AES-256) depends on the configured PDF Engine (QPDF, pdfcpu, or PDFtk).
-:::
+<EncryptionPDFEngines showFormFields={false} showCurlExample={false} />
 
 <ApiEndpoint
   method="POST"

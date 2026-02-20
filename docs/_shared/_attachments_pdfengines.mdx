@@ -1,0 +1,21 @@
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+
+Use the `embeds` form field to attach external files directly inside the PDF container.
+
+**Common Use Case:**
+This is essential for e-invoicing standards like **[ZUGFeRD / Factur-X](https://fnfe-mpe.org/factur-x/)**, which require a human-readable PDF to
+carry a machine-readable XML invoice as an attachment.
+
+{props.showCurlExample && (
+
+<ApiEndpoint
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form embeds=@invoice.xml \\
+--form embeds=@logo.png \\
+${props.curlOutput}
+`}
+/>
+)}

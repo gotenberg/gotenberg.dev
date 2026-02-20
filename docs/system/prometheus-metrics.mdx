@@ -19,6 +19,15 @@ See the [Prometheus module configuration](/docs/configuration#prometheus) for de
 <ApiEndpoint
   method="GET"
   path="/prometheus/metrics"
+  headers={[
+    {
+      name: "Gotenberg-Trace",
+      type: "string",
+      required: false,
+      description:
+        "A custom request ID to identify the request in the logs; overrides the default UUID.",
+    },
+  ]}
   curl={`curl --request GET http://localhost:3000/prometheus/metrics`}
   responses={[
     {

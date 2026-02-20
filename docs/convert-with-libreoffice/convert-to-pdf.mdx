@@ -4,6 +4,9 @@ title: Convert to PDF
 ---
 
 import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import MetadataPDFEngines from "../_shared/_metadata_pdfengines.mdx";
+import AttachmentsPDFEngines from "../_shared/_attachments_pdfengines.mdx";
+import EncryptionPDFEngines from "../_shared/_encryption_pdfengines.mdx";
 import Sponsors from "@site/src/components/documentation/Sponsors";
 
 Converts uploaded documents to PDF using LibreOffice.
@@ -318,17 +321,19 @@ The files will still be converted, but any dynamic content or scripts generated 
       description: "Writes metadata (Author, Title, etc.).",
     },
     {
-      name: "embeds",
-      type: "file[]",
-      defaultValue: "None",
-      description: "Embeds files into the PDF.",
-    },
-    {
       name: "flatten",
       type: "boolean",
       defaultValue: "false",
       description:
         "Converts form fields into static content, preventing further editing.",
+    },
+  ]}
+  formFiles={[
+    {
+      name: "embeds",
+      type: "file[]",
+      defaultValue: "None",
+      description: "Embeds files into the PDF.",
     },
   ]}
 />
@@ -353,43 +358,22 @@ curl \\
 
 ### Metadata (PDF Engines)
 
-Use the `metadata` form field to inject XMP metadata into the generated PDF. This allows you to set properties like Author, Title, Copyright, and Keywords.
-
-This field accepts a **JSON-formatted object**.
-
-:::info Valid Keys
-Not all metadata tags are writable. Gotenberg relies on ExifTool for this operation.
-[See the XMP Tag Name documentation](https://exiftool.org/TagNames/XMP.html#pdf) for a list of potential keys.
-:::
-
-:::caution Compliance Warning
-Writing metadata involves modifying the PDF structure and usually breaks **PDF/A** compliance.
-:::
-
-<ApiEndpoint
-  curl={`
-curl \\
---request POST http://localhost:3000/forms/libreoffice/convert \\
---form files=@/path/to/document.docx \\
---form 'metadata={"Author":"Julien Neuhart","Copyright":"Julien Neuhart","CreationDate":"2006-09-18T16:27:50-04:00","Creator":"Gotenberg","Keywords":["first","second"],"Marked":true,"ModDate":"2006-09-18T16:27:50-04:00","PDFVersion":1.7,"Producer":"Gotenberg","Subject":"Sample","Title":"Sample","Trapped":"Unknown"}' \\
--o my.pdf`}
+<MetadataPDFEngines
+  showCurlExample={true}
+  method="POST"
+  path="/forms/libreoffice/convert"
+  curlFormData={`--form files=@/path/to/document.docx \\`}
+  curlOutput={`-o my.pdf`}
 />
 
 ### Attachments (PDF Engines)
 
-Use the `embeds` form field to attach external files directly inside the PDF container.
-
-**Common Use Case:**
-This is essential for e-invoicing standards like **[ZUGFeRD / Factur-X](https://fnfe-mpe.org/factur-x/)**, which require a human-readable PDF to carry a machine-readable XML invoice as an attachment.
-
-<ApiEndpoint
-  curl={`
-curl \\
---request POST http://localhost:3000/forms/libreoffice/convert \\
---form files=@/path/to/document.docx \\
---form embeds=@invoice.xml \\
---form embeds=@logo.png \\
--o my.pdf`}
+<AttachmentsPDFEngines
+  showCurlExample={true}
+  method="POST"
+  path="/forms/libreoffice/convert"
+  curlFormData={`--form files=@/path/to/document.docx \\`}
+  curlOutput={`-o my.pdf`}
 />
 
 ### Native Flattening (LibreOffice)
@@ -591,25 +575,13 @@ curl \\
 
 ### Post-Processing (PDF Engines) {#post-processing-pdf-engines-encryption}
 
-Secure your PDF by setting passwords that control access and permissions.
-
-- **User Password:** Required to **open** and view the PDF.
-- **Owner Password:** Required to **modify** permissions (e.g., printing, copying text, extracting pages).
-
-:::info PDF Engine Dependency
-
-The encryption strength (e.g., AES-256) depends on the configured PDF Engine (QPDF, pdfcpu, or PDFtk).
-
-:::
-
-<ApiEndpoint
-  curl={`
-curl \\
---request POST http://localhost:3000/forms/libreoffice/convert \\
---form files=@/path/to/document.docx \\
---form userPassword=my_user_password \\
---form ownerPassword=my_owner_password \\
--o my.pdf`}
+<EncryptionPDFEngines
+  showFormFields={false}
+  showCurlExample={true}
+  method="POST"
+  path="/forms/libreoffice/convert"
+  curlFormData={`--form files=@/path/to/document.docx \\`}
+  curlOutput={`-o my.pdf`}
 />
 
 <Sponsors />

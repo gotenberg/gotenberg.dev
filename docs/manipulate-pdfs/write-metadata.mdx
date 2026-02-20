@@ -4,20 +4,12 @@ title: Write Metadata
 ---
 
 import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import MetadataPDFEngines from "../_shared/_metadata_pdfengines.mdx";
 import Sponsors from "@site/src/components/documentation/Sponsors";
 
-Updates the XMP metadata of one or more PDF files.
+This endpoint updates the XMP metadata of one or more PDF files.
 
-This endpoint allows you to set properties like **Author**, **Title**, **Copyright**, and **Keywords** by passing a **JSON-formatted object**.
-
-:::info Valid Keys
-Not all metadata tags are writable. Gotenberg relies on ExifTool for this operation.
-[See the XMP Tag Name documentation](https://exiftool.org/TagNames/XMP.html#pdf) for a list of potential keys.
-:::
-
-:::caution Compliance Warning
-Writing metadata involves modifying the PDF structure and usually breaks **PDF/A** compliance.
-:::
+<MetadataPDFEngines showCurlExample={false} />
 
 <ApiEndpoint
   method="POST"
