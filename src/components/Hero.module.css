@@ -94,8 +94,10 @@
 }
 
 .btnPrimary:hover {
-  background-color: var(--ifm-color-primary-dark);
-  box-shadow: 0 6px 20px rgba(0, 138, 230, 0.23);
+  border-color: rgba(99, 102, 241, 0.4);
+  box-shadow: 0 20px 40px -5px rgba(99, 102, 241, 0.15);
+  transform: translateY(-4px);
+  z-index: 10;
 }
 
 /* Secondary Button (GitHub) */
@@ -108,9 +110,10 @@
 }
 
 .btnSecondary:hover {
-  background-color: #f8fafc;
-  border-color: #cbd5e1;
-  color: #000;
+  border-color: rgba(99, 102, 241, 0.4);
+  box-shadow: 0 20px 40px -5px rgba(99, 102, 241, 0.15);
+  transform: translateY(-4px);
+  z-index: 10;
 }
 
 .btnIcon {

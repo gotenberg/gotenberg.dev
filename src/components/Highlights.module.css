@@ -2,6 +2,7 @@
    GLOBAL LAYOUT
    ------------------------------------------------------- */
 .mainContainer {
+  /* Must be pure white so the fade masks blend invisibly */
   background-color: #ffffff;
 }
 
@@ -26,9 +27,36 @@
 }
 
 .sectionSub {
-  font-size: 1.4rem;
-  color: #64748b;
+  display: inline-block;
+  font-size: 1.7rem;
+  font-weight: 600;
   line-height: 1.6;
+  position: relative;
+  padding-bottom: 1.2rem;
+  margin-bottom: 1rem;
+
+  /* The Shimmering Sweep */
+  background: linear-gradient(
+    to right,
+    #008ae6 0%,
+    /* Crisp Blue */ #6366f1 25%,
+    /* Indigo */ #38bdf8 50%,
+    /* Bright Sky Blue shine */ #6366f1 75%,
+    /* Indigo */ #008ae6 100% /* Crisp Blue */
+  );
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  /* The Animation */
+  animation: sweepShine 4s linear infinite;
+}
+
+@keyframes sweepShine {
+  to {
+    background-position: 200% center;
+  }
 }
 
 .highlight {
@@ -36,6 +64,60 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* -------------------------------------------------------
+   RADIANT GRADIENT BACKGROUNDS & FADES
+   ------------------------------------------------------- */
+.radiantSection {
+  position: relative;
+  overflow: clip;
+}
+
+/* Ensure the content sits safely above the fade masks */
+.radiantSection > div {
+  position: relative;
+  z-index: 2;
+}
+
+/* Fades the TOP of the section from white to transparent */
+.fadeTop::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 150px;
+  background: linear-gradient(to bottom, #ffffff, transparent);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Fades the BOTTOM of the section from transparent to white */
+.fadeBottom::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 150px;
+  background: linear-gradient(to bottom, transparent, #ffffff);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Bento: Intersecting pale Sky blues */
+.radiantBento {
+  background-color: #ffffff;
+  background-image: radial-gradient(at 0% 0%, #e0f2fe 0%, transparent 60%),
+    radial-gradient(at 100% 100%, #f0f9ff 0%, transparent 50%);
+}
+
+/* Async: Intersecting cool Slate and Blue */
+.radiantAsync {
+  background-color: #ffffff;
+  background-image: radial-gradient(at 100% 0%, #dbeafe 0%, transparent 60%),
+    radial-gradient(at 0% 100%, #f8fafc 0%, transparent 50%);
 }
 
 /* -------------------------------------------------------
@@ -63,8 +145,8 @@
 }
 
 .featureCard:hover {
-  border-color: #94a3b8; /* Darker gray border on hover */
-  box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.1);
+  border-color: rgba(99, 102, 241, 0.4);
+  box-shadow: 0 20px 40px -5px rgba(99, 102, 241, 0.15);
   transform: translateY(-4px);
   z-index: 10;
 }
@@ -155,7 +237,6 @@
   margin-top: 4rem;
 }
 
-/* 2. New "Quiet" Button Style */
 .btnExplore {
   display: inline-flex;
   align-items: center;
@@ -163,22 +244,28 @@
   padding: 0.8rem 2rem;
   border-radius: 50px;
 
-  /* Solid Slate instead of Gradient */
-  background-color: #334155; /* Slate 700 */
-  color: white !important;
+  background-color: #4f46e5; /* Primary Indigo 600 */
+  color: #ffffff !important;
+
   font-weight: 600;
   font-size: 1rem;
   text-decoration: none !important;
-  border: 1px solid transparent;
+
+  border: 1px solid #4338ca;
 
   transition: all 0.2s ease;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 14px 0 rgba(79, 70, 229, 0.3);
 }
 
 .btnExplore:hover {
-  background-color: #0f172a; /* Darker Slate on hover */
+  background-color: #4338ca; /* Indigo 700 */
   transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+  /* Soft Indigo shadow instead of black */
+  box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.5);
+
+  /* A very subtle indigo tint to the border */
+  border-color: rgba(99, 102, 241, 0.3);
 }
 
 /* -------------------------------------------------------
@@ -249,27 +336,77 @@
 }
 
 /* -------------------------------------------------------
-   ASYNC SECTION (The Mesh Gradient)
+   ASYNC SECTION
    ------------------------------------------------------- */
-.asyncSection {
-  /* Subtle Mesh Gradient */
-  background-color: #f8fafc;
-  background-image: radial-gradient(
-      at 0% 0%,
-      rgba(99, 102, 241, 0.1) 0px,
-      transparent 50%
-    ),
-    radial-gradient(at 100% 100%, rgba(14, 165, 233, 0.1) 0px, transparent 50%);
+.badge {
+  display: inline-block;
+  padding: 0.35rem 1rem;
+  background: #ffffff;
+  color: #008ae6;
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-radius: 50px;
+  margin-bottom: 1.5rem;
 
-  border-top: 1px solid #e2e8f0;
-  border-bottom: 1px solid #e2e8f0;
+  /* The tricky gradient border effect */
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  position: relative;
+}
+
+.badge::before {
+  content: "";
+  position: absolute;
+  inset: -2px; /* Pulls the border outward */
+  border-radius: 50px;
+  background: linear-gradient(135deg, #008ae6 0%, #6366f1 100%);
+  z-index: -1; /* Puts the gradient behind the white background */
 }
 
 .splitRow {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 5rem;
-  align-items: center;
+  align-items: flex-start;
+}
+
+.splitVisual {
+  position: sticky;
+  padding-top: 4rem;
+  top: 6rem;
+  z-index: 10;
+}
+
+/* Create the glowing orb behind the terminal */
+.splitVisual::before {
+  content: "";
+  position: absolute;
+  top: 10%;
+  left: 5%;
+  right: 5%;
+  bottom: 10%;
+
+  /* A vibrant mix of your brand colors */
+  background: linear-gradient(135deg, #008ae6, #6366f1, #d946ef);
+  filter: blur(80px); /* Massive blur makes it an ambient glow */
+  opacity: 0.25;
+  z-index: -1;
+
+  /* Makes the glow pulse softly */
+  animation: ambientPulse 6s ease-in-out infinite alternate;
+}
+
+@keyframes ambientPulse {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.15;
+  }
+  100% {
+    transform: scale(1.1);
+    opacity: 0.35;
+  }
 }
 
 .splitContent h2 {
@@ -290,42 +427,59 @@
 }
 
 .capItem {
-  /* Glassmorphism Card Style */
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  padding: 1rem 1.25rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
 
-  /* Layout */
+  /* A subtle resting border to align the text */
+  border-left: 2px solid #cbd5e1; /* Slate 300 */
+  padding: 0.5rem 0 0.5rem 1.5rem; /* Indent the text from the line */
+
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.35rem;
+
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* The Indigo Hover Effect */
+.capItem:hover {
+  /* The line lights up Indigo and thickens slightly */
+  border-left-color: #6366f1;
+  border-left-width: 4px;
+  padding-left: 1.35rem; /* Compensate for the thicker border so text doesn't jump */
+
+  /* Optional: A tiny nudge to the right to feel interactive */
+  transform: translateX(4px);
+}
+
+/* High-Readability Typography */
 .capItem strong {
-  font-size: 0.95rem;
+  font-size: 1.1rem; /* Larger, readable title */
+  font-weight: 700;
   color: #0f172a;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: -0.01em;
+  transition: color 0.3s ease;
+}
+
+/* Make the title pop Indigo on hover */
+.capItem:hover strong {
+  color: #6366f1;
 }
 
 .capItem span {
-  font-size: 1rem;
+  font-size: 1.05rem; /* Highly readable description */
   color: #475569;
-  background: none; /* Remove the old highlight */
-  padding: 0;
+  line-height: 1.6;
 }
 
 /* -------------------------------------------------------
-   SPONSORS SECTION (Premium Grid)
+   SPONSORS SECTION
    ------------------------------------------------------- */
-
 .sponsorSection {
-  background: #ffffff;
+  background-color: #ffffff;
   padding: 8rem 0; /* Huge vertical spacing to match other sections */
-  border-top: 1px solid #e2e8f0;
 }
 
 .sponsorGroup {

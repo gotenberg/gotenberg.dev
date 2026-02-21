@@ -4,7 +4,6 @@
 .section {
   background-color: #ffffff;
   padding: 4rem 0;
-  border-bottom: 1px solid #e2e8f0;
 }
 
 .grid {
@@ -43,9 +42,10 @@
 }
 
 .linkWrapper:hover .card {
-  border-color: #94a3b8;
-  transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+  border-color: rgba(99, 102, 241, 0.4);
+  box-shadow: 0 20px 40px -5px rgba(99, 102, 241, 0.15);
+  transform: translateY(-4px);
+  z-index: 10;
 }
 
 /* -------------------------------------------------------
@@ -147,7 +147,7 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory; /* Snap to cards */
     gap: 1rem;
-    padding: 0 1.5rem 1.5rem 1.5rem; /* Padding for scroll shadows */
+    padding: 0.5rem 1.5rem 1.5rem 1.5rem; /* Padding for scroll shadows */
     margin: 0 -1rem; /* Negative margin to pull scroll to screen edge */
 
     /* Hide scrollbar for cleaner look */

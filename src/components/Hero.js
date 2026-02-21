@@ -31,7 +31,7 @@ export default function Hero() {
                 )}
                 to="/docs/getting-started/introduction"
               >
-                Getting started
+                Getting Started
                 {/* Tiny arrow icon for momentum */}
                 <svg
                   width="13"

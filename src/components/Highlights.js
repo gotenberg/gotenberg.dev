@@ -190,18 +190,27 @@ gotenberg/gotenberg:8`;
 
   const codeS3Workflow = `curl \\
 --request POST http://localhost:3000/forms/libreoffice/convert \\
-# 1. Tell Gotenberg where to upload the result (S3 PUT) \\
---header 'Gotenberg-Webhook-Url: https://my-bucket.s3.amazonaws.com/out.pdf?Start=...' \\
---header 'Gotenberg-Webhook-Method: PUT' \\
-# 2. Tell Gotenberg where to fetch the input file (S3 GET) \\
+# 1. Tell Gotenberg where to fetch the input file (S3 GET) \\
 --form 'downloadFrom=[{ \\
   "url": "https://my-bucket.s3.amazonaws.com/file.docx?Start=..." \\
-}]'`;
+}]'
+# 2. Tell Gotenberg where to upload the result (S3 PUT) \\
+--header 'Gotenberg-Webhook-Url: https://my-bucket.s3.amazonaws.com/out.pdf?Start=...' \\
+--header 'Gotenberg-Webhook-Method: PUT'
+`;
 
   return (
     <main className={styles.mainContainer}>
       {/* SECTION 1: 2x2 BENTO GRID */}
-      <section className={styles.section}>
+      <section
+        className={clsx(
+          styles.section,
+          styles.radiantSection,
+          styles.radiantBento,
+          styles.fadeTop,
+          styles.fadeBottom
+        )}
+      >
         <div className="container">
           <div className={styles.sectionHeader}>
             <h2>
@@ -243,14 +252,22 @@ gotenberg/gotenberg:8`;
               className={styles.btnExplore}
               to="/docs/convert-with-chromium/convert-url-to-pdf"
             >
-              Explore all routes →
+              Explore All Routes →
             </Link>
           </div>
         </div>
       </section>
 
       {/* SECTION 2: ASYNC */}
-      <section className={clsx(styles.section, styles.asyncSection)}>
+      <section
+        className={clsx(
+          styles.section,
+          styles.radiantSection,
+          styles.radiantAsync,
+          styles.fadeTop,
+          styles.fadeBottom
+        )}
+      >
         <div className="container">
           <div className={styles.splitRow}>
             {/* LEFT: The Pitch */}
