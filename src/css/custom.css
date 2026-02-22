@@ -1,8 +1,6 @@
-/* stylelint-disable docusaurus/copyright-header */
-
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap");
 
-/* --- FONTS & VARIABLES --- */
+/* --- FONTS AND VARIABLES --- */
 :root {
   --ifm-color-primary: #008ae6;
   --ifm-color-primary-dark: #007ccf;
@@ -19,7 +17,7 @@
   --ifm-font-family-base: "Inter", system-ui, -apple-system, sans-serif;
   --ifm-font-family-monospace: "JetBrains Mono", "Fira Code", monospace;
   --ifm-font-size-base: 16px;
-  --ifm-line-height-base: 1.65;
+  --ifm-line-height-base: 1.6;
 
   --ifm-color-content: #334155;
   --ifm-color-content-secondary: #64748b;
@@ -27,7 +25,7 @@
 
   --ifm-navbar-background-color: rgba(255, 255, 255, 0.95);
   --ifm-navbar-height: 4rem;
-  --ifm-container-width: 1200px;
+  --ifm-container-width: 1366px;
 }
 
 /* --- GLOBAL RESET --- */
@@ -485,4 +483,28 @@ button[class*="closeButton_"]:hover {
   text-decoration-line: underline;
   text-decoration-color: rgba(255, 255, 255, 0.3);
   text-underline-offset: 4px;
+}
+
+/* --- LAYOUT AND SPACING --- */
+.theme-doc-markdown {
+  max-width: 840px;
+  letter-spacing: -0.01em;
+}
+
+@media screen and (min-width: 996px) {
+  main[class^="docMainContainer_"],
+  div[class^="docMainContainer_"] {
+    padding-left: 4rem !important;
+  }
+
+  div[class*="theme-doc-toc-desktop"] {
+    padding-left: 2rem;
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  main[class^="docMainContainer_"],
+  div[class^="docMainContainer_"] {
+    padding-left: 7rem !important;
+  }
 }

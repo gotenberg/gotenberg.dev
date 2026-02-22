@@ -61,8 +61,6 @@ export default function Sponsors() {
         </a>
       </div>
 
-      <div className={styles.sponsorDivider} />
-
       {/* Group 3: CTA */}
       <div className={styles.ctaWrapper}>
         <a
