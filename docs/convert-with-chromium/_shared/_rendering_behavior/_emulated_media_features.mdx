@@ -1,0 +1,26 @@
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+
+### Emulated Media Features
+
+You can simulate specific browser conditions by overriding CSS media features. This is particularly useful for forcing "Dark Mode" or testing layouts with reduced motion.
+
+The `emulatedMediaFeatures` field expects a JSON array of objects, where each object contains a `name` and a `value`.
+
+**Common Media Features:**
+
+| Feature Name             | Common Values             | Description                                                              |
+| :----------------------- | :------------------------ | :----------------------------------------------------------------------- |
+| `prefers-color-scheme`   | `light`, `dark`           | Emulates the user's OS color theme preference.                           |
+| `prefers-reduced-motion` | `no-preference`, `reduce` | Emulates the setting to minimize non-essential motion.                   |
+| `color-gamut`            | `srgb`, `p3`, `rec2020`   | Emulates the approximate range of colors supported by the output device. |
+| `forced-colors`          | `none`, `active`          | Emulates "High Contrast" modes where the browser restricts colors.       |
+
+<ApiEndpoint
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form emulatedMediaFeatures='[{"name": "prefers-color-scheme", "value": "dark"}, {"name": "prefers-reduced-motion", "value": "reduce"}]' \\
+${props.curlOutput}
+`}
+/>

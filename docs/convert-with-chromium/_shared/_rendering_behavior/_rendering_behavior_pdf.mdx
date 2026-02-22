@@ -1,4 +1,5 @@
 import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import EmulatedMediaFeatures from "./_emulated_media_features.mdx";
 import WaitFor from "./_wait_for.mdx";
 
 ## Rendering Behavior
@@ -91,6 +92,13 @@ import WaitFor from "./_wait_for.mdx";
       description: "Media type to emulate ('screen' or 'print').",
     },
     {
+      name: "emulatedMediaFeatures",
+      type: "json",
+      defaultValue: "None",
+      description:
+        "A JSON array of objects to override CSS media features (e.g., prefers-color-scheme).",
+    },
+    {
       name: "waitDelay",
       type: "string",
       defaultValue: "None",
@@ -149,7 +157,7 @@ The following standard paper sizes are in inches (width x height), ordered from 
 
 If `singlePage` is set to **true**, it automatically overrides the values from `paperHeight` and `nativePageRanges`.
 
-### CSS & Print Media
+### Print Media
 
 **Chromium uses the print media type.**
 By default, browsers optimize pages for printing by removing background colors/images and adjusting the layout to save ink.
@@ -164,6 +172,13 @@ If your generated PDF looks different from what you see in a browser viewport, i
 - You can control paper size and margins via CSS using the `@page` rule. Note that for Gotenberg to respect these rules, you must enable the `preferCssPageSize` form field.
 
 :::
+
+<EmulatedMediaFeatures
+  method={props.method}
+  path={props.path}
+  curlFormData={props.curlFormData}
+  curlOutput={props.curlOutput}
+/>
 
 ### Background Logic
 
