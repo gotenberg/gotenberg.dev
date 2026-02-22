@@ -190,7 +190,7 @@ body {
     display: block;
     overflow-x: auto;
     white-space: nowrap;
-    min-width: 50px;
+    min-width: 100px;
   }
 }
 
