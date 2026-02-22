@@ -5,7 +5,7 @@ import TabItem from "@theme/TabItem";
 import clsx from "clsx";
 import styles from "./ApiEndpoint.module.css";
 
-const MethodBadge = ({ method }) => {
+const MethodBadge = ({ method = "" }) => {
   const colors = {
     GET: "#61affe",
     POST: "#49cc90",
@@ -14,22 +14,25 @@ const MethodBadge = ({ method }) => {
     PATCH: "#50e3c2",
     HEAD: "#9061f9",
   };
+
+  const isMultipart = !method;
+  const safeMethod = isMultipart ? "multipart/form-data" : method.toUpperCase();
+
   return (
     <span
-      className={styles.methodBadge}
-      style={{ backgroundColor: colors[method.toUpperCase()] || "#888" }}
+      className={clsx(styles.methodBadge, isMultipart && styles.multipartBadge)}
+      style={{ backgroundColor: colors[safeMethod] || "#64748b" }}
     >
-      {method.toUpperCase()}
+      {safeMethod}
     </span>
   );
 };
 
 const ParamsList = ({ title, items }) => {
   if (!items || items.length === 0) return null;
-
   return (
     <div className={styles.paramsSection}>
-      <div className={styles.sectionLabel}>{title}</div>
+      <div className={styles.paramsSectionLabel}>{title}</div>
       <div className={styles.listWrapper}>
         {items.map((item, idx) => (
           <div key={idx} className={styles.paramItem}>
@@ -40,16 +43,15 @@ const ParamsList = ({ title, items }) => {
                 <span className={styles.requiredLabel}>required</span>
               )}
             </div>
-
-            <div className={styles.paramBody}>
+            {item.description && (
               <div className={styles.paramDescription}>{item.description}</div>
-              {item.defaultValue && item.defaultValue.length > 0 && (
-                <div className={styles.paramDefault}>
-                  <span className={styles.defaultLabel}>Default:</span>
-                  <code>{item.defaultValue}</code>
-                </div>
-              )}
-            </div>
+            )}
+            {item.defaultValue && (
+              <div className={styles.paramDefault}>
+                <span className={styles.defaultLabel}>Default:</span>
+                <code>{item.defaultValue}</code>
+              </div>
+            )}
           </div>
         ))}
       </div>
@@ -58,73 +60,74 @@ const ParamsList = ({ title, items }) => {
 };
 
 export default function ApiEndpoint({
-  method,
-  path,
-  formFields,
-  formFiles,
-  headers,
-  curl,
-  responses,
+  method = "",
+  path = "",
+  formFields = [],
+  formFiles = [],
+  headers = [],
+  curl = "",
+  responses = [],
 }) {
+  const hasInputs =
+    headers?.length > 0 || formFields?.length > 0 || formFiles?.length > 0;
+  const hasTechnical = (curl && curl.length > 0) || responses?.length > 0;
+  const hasHeader = method || path;
+
   return (
-    <div className={clsx("card", styles.apiContainer)}>
-      {method && path && (
-        <>
-          {/* 1. Header (Method + Path) */}
-          <div className={styles.apiHeader}>
-            <MethodBadge method={method} />
-            <span className={styles.apiPath}>{path}</span>
-          </div>
-        </>
+    <div className={styles.apiContainer}>
+      {/* --- HEADER: Only shows if method or path exists --- */}
+      {hasHeader && (
+        <div className={styles.apiHeader}>
+          <MethodBadge method={method} />
+          <span className={styles.apiPath}>{path}</span>
+        </div>
       )}
 
-      {((headers && headers.length > 0) ||
-        (formFields && formFields.length > 0) ||
-        (formFiles && formFiles.length > 0)) && (
-        <>
-          {/* 2. Input Zone (White/Clean) */}
-          <div className={styles.sectionInput}>
-            <ParamsList title="Headers" items={headers} />
-            <ParamsList title="Form Fields" items={formFields} />
-            <ParamsList title="Form Files" items={formFiles} />
-          </div>
-        </>
+      {/* --- INPUT ZONE --- */}
+      {hasInputs && (
+        <div className={styles.sectionInput}>
+          <ParamsList title="Headers" items={headers} />
+          <ParamsList title="Form Fields" items={formFields} />
+          <ParamsList title="Form Files" items={formFiles} />
+        </div>
       )}
 
-      {/* 3. Interaction Zone (Contrast/Technical) */}
-      {curl && curl.length > 0 && (
-        <>
-          <div className={styles.sectionTechnical}>
-            <div className={styles.sectionLabel}>Example Request</div>
-            <CodeBlock language="bash" title="cURL">
-              {curl.trim()}
-            </CodeBlock>
+      {/* --- TECHNICAL ZONE --- */}
+      {hasTechnical && (
+        <div className={styles.sectionTechnical}>
+          {curl && (
+            <>
+              <div className={styles.sectionLabel}>Example Request</div>
+              <CodeBlock language="bash" title="cURL">
+                {curl.trim()}
+              </CodeBlock>
+            </>
+          )}
 
-            {responses && responses.length > 0 && (
-              <>
-                <div className={styles.sectionLabel}>Responses</div>
-                <Tabs className={styles.responseTabs}>
-                  {responses.map((res, idx) => (
-                    <TabItem
-                      key={idx}
-                      value={String(res.status)}
-                      label={`${res.status} ${res.message || ""}`}
-                    >
-                      {res.description && (
-                        <div className={styles.responseDescription}>
-                          {res.description}
-                        </div>
-                      )}
-                      {res.body && (
-                        <CodeBlock language="json">{res.body.trim()}</CodeBlock>
-                      )}
-                    </TabItem>
-                  ))}
-                </Tabs>
-              </>
-            )}
-          </div>
-        </>
+          {responses?.length > 0 && (
+            <div className={styles.responseWrapper}>
+              <div className={styles.sectionLabel}>Responses</div>
+              <Tabs className={styles.responseTabs}>
+                {responses.map((res, idx) => (
+                  <TabItem
+                    key={idx}
+                    value={String(res.status)}
+                    label={`${res.status}`}
+                  >
+                    {res.description && (
+                      <div className={styles.responseDescription}>
+                        {res.description}
+                      </div>
+                    )}
+                    {res.body && (
+                      <CodeBlock language="json">{res.body.trim()}</CodeBlock>
+                    )}
+                  </TabItem>
+                ))}
+              </Tabs>
+            </div>
+          )}
+        </div>
       )}
     </div>
   );

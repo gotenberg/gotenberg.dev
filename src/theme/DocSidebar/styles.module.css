@@ -1,43 +1,74 @@
 /* avoids layout shift before Carbon gets a chance to initialize */
 .roomForCarbon > :first-child > :first-child {
-  height: calc(100% - 135px) !important;
+  height: calc(100% - 190px) !important;
   flex-grow: initial;
 }
 
 .carbonWrapper {
   flex-shrink: 0;
-  height: 135px;
+  min-height: 190px;
+  padding: 20px 15px 15px 15px; /* 20px gap at the top! */
   overflow: hidden;
+  display: flex;
+  justify-content: center; /* Centers the ad horizontally */
+  align-items: flex-end;
+}
+
+:global(#carbonads) {
+  display: block;
+  background-color: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-border-color); /* Soft outline */
+  border-radius: 8px; /* Matches the modern feel */
+  padding: 12px;
+  position: relative;
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.03); /* Barely-there shadow */
+  transition: all 0.2s ease;
+}
+
+:global(#carbonads:hover) {
+  border-color: rgba(99, 102, 241, 0.3); /* Subtle Indigo tint on hover */
+  box-shadow: 0 4px 10px -2px rgba(99, 102, 241, 0.1);
 }
 
 :global(#carbonads .carbon-wrap) {
   display: flex;
+  align-items: flex-start;
+  gap: 12px; /* Adds clean space between the image and the text */
 }
 
 :global(#carbonads .carbon-text) {
-  padding: 0 10px;
-  font-size: 14px;
-  line-height: 1.35;
+  padding: 0;
+  font-size: 13px; /* Slightly smaller to feel less shouty */
+  line-height: 1.45;
+  color: var(--ifm-color-content-secondary);
 }
 
 :global(#carbonads .carbon-poweredby) {
-  position: absolute;
-  right: 5px;
-  bottom: 5px;
+  display: block;
+  text-align: right; /* Keeps it neatly tucked to the right */
 
-  font-size: 10px;
-  font-weight: 600;
+  /* Creates a hard, guaranteed gap between the ad text and the link */
+  margin-top: 10px;
+
+  font-size: 9px;
+  font-weight: 700;
   line-height: 1;
-  letter-spacing: 0.1ch;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
+  color: var(--ifm-color-content-secondary);
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
+:global(#carbonads:hover .carbon-poweredby) {
+  opacity: 1;
 }
 
 :global(#carbonads a) {
-  color: var(--ifm-font-color-base);
+  color: inherit;
   text-decoration: none;
 }
 
 :global(#carbonads a:hover) {
-  color: var(--ifm-font-color-base);
   text-decoration: none;
 }

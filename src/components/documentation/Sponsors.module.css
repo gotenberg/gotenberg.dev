@@ -1,169 +1,79 @@
-/* -------------------------------------------------------
-   LAYOUT CONTAINER
-   ------------------------------------------------------- */
-
-.wrapper {
-  margin: 6rem auto 4rem; /* HUGE whitespace above to separate from doc content */
-  padding-top: 3rem;
-
-  /* Subtle solid line instead of dashed */
-  border-top: 1px solid var(--ifm-color-emphasis-200);
-
+/* --- SHARED STRIP STYLES --- */
+.sponsorsStrip {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   align-items: center;
-  text-align: center;
-  max-width: 800px; /* Constrain width so it doesn't stretch too far */
+  justify-content: center;
+  gap: 2.5rem;
+  margin-top: 4rem;
+  padding: 3rem 1rem;
+  border-top: 1px dashed #e2e8f0;
 }
 
-/* -------------------------------------------------------
-   LABELS (New "Assumed" Style)
-   ------------------------------------------------------- */
-/* Add a label above the logos if you have the text in your component */
-.sectionLabel {
-  font-family: var(--ifm-font-family-base);
+/* Force override global Docusaurus link styles */
+.sponsorsStrip a {
+  text-decoration: none !important;
+  border-bottom: none !important;
+  background-color: transparent !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center;
+}
+
+.sponsorCategory {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-shrink: 0;
+}
+
+.sponsorStripLabel {
   font-size: 0.75rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: #cbd5e1; /* Very light slate */
-  margin-bottom: 2rem;
-}
-
-/* -------------------------------------------------------
-   LINK RESETS
-   ------------------------------------------------------- */
-.wrapper a.cleanLink {
-  border: none !important;
-  text-decoration: none !important;
-  background: transparent !important;
-  display: flex;
-  align-items: center;
-  transition: opacity 0.2s ease;
-}
-
-.wrapper a.cleanLink:hover {
-  opacity: 1;
-  background: transparent !important;
-  text-decoration: none !important;
-  border: none !important;
-}
-
-/* -------------------------------------------------------
-   PRIMARY LOGOS (The Big Ones)
-   ------------------------------------------------------- */
-
-.sponsorGrid {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4rem; /* More horizontal breathing room */
-  margin-bottom: 3rem;
-  flex-wrap: wrap;
-}
-
-.logoPrimary {
-  height: 95px;
-  width: auto;
-  filter: grayscale(100%);
-  opacity: 0.5; /* Lighter start state */
-  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.wrapper a.cleanLink:hover .logoPrimary {
-  filter: grayscale(0);
-  opacity: 1;
-  transform: scale(1.1); /* Pop effect */
-}
-
-/* -------------------------------------------------------
-   META ROW (Infrastructure Partners)
-   ------------------------------------------------------- */
-
-.metaRow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1.5rem;
-  margin-bottom: 3rem;
-}
-
-.label {
-  font-size: 0.75rem;
-  text-transform: uppercase;
   color: #94a3b8;
-  font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
+  user-select: none;
 }
 
-.infraGrid {
-  display: flex;
-  gap: 1.5rem;
-  align-items: center;
+.sponsorDivider {
+  width: 1px;
+  height: 24px;
+  background-color: #e2e8f0;
 }
 
-.logoSecondary {
-  height: 28px; /* Refined size */
+.logoStrip {
   width: auto;
-  filter: grayscale(100%);
-  opacity: 0.4; /* Very subtle */
-  transition: all 0.2s ease;
+  filter: grayscale(100%) opacity(0.6);
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: block;
 }
 
-.wrapper a.cleanLink:hover .logoSecondary {
-  filter: grayscale(0);
-  opacity: 1;
+.logoStrip:hover {
+  filter: grayscale(0%) opacity(1);
+  transform: scale(1.08);
 }
 
-/* -------------------------------------------------------
-   CTA BUTTON (Rose Pill - Refined)
-   ------------------------------------------------------- */
-
-.ctaRow {
-  margin-top: 1rem;
+.logoWide {
+  height: 52px;
+}
+.logoSquare {
+  height: 22px;
 }
 
-.wrapper a.sponsorButton {
-  display: inline-flex;
+.sponsorButton {
+  display: inline-flex !important;
   align-items: center;
-  gap: 0.75rem;
-
-  /* Lighter, softer background for "Airy" feel */
-  background-color: #fff1f2 !important;
-  color: #e11d48 !important;
-
+  gap: 0.5rem;
+  font-size: 0.85rem;
   font-weight: 700;
-  font-size: 0.95rem; /* Slightly clearer text */
-  letter-spacing: -0.01em;
-
-  padding: 0.75rem 2rem; /* More internal padding */
-  border-radius: 100px;
-  border: 1px solid #fecdd3 !important;
-
-  text-decoration: none !important;
-  border-bottom: 1px solid #fecdd3 !important;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.wrapper a.sponsorButton:hover {
-  background-color: #ffe4e6 !important;
-  color: #be123c !important;
-  border-color: #fda4af !important;
-  transform: translateY(-2px);
-  /* Softer, more spread out shadow */
-  box-shadow: 0 10px 15px -3px rgba(225, 29, 72, 0.15);
+  color: #e11d48 !important;
+  transition: opacity 0.2s;
 }
 
 .heart {
-  font-size: 1.1em;
-  transition: transform 0.2s;
-  /* Add the heartbeat animation here too if you like */
+  display: inline-block;
   animation: heartbeat 2s ease-in-out infinite;
-}
-
-.wrapper a.sponsorButton:hover .heart {
-  transform: scale(1.2);
-  animation-duration: 1s; /* Faster beat on hover */
 }
 
 @keyframes heartbeat {
@@ -176,31 +86,36 @@
   }
 }
 
-/* -------------------------------------------------------
-   RESPONSIVE
-   ------------------------------------------------------- */
-
-@media (max-width: 600px) {
-  .wrapper {
-    margin-top: 4rem;
+/* --- MOBILE VARIANT: TWO STRIPS + CTA --- */
+@media (max-width: 996px) {
+  .sponsorsStrip {
+    flex-direction: column; /* Stack the groups */
+    gap: 2rem;
+    padding-top: 2rem;
   }
 
-  .sponsorGrid {
-    gap: 2.5rem;
-    margin-bottom: 2rem;
+  .sponsorDivider {
+    display: none; /* Dividers aren't needed when stacked */
   }
 
-  .metaRow {
-    flex-direction: column;
-    gap: 1rem;
-    margin-bottom: 2rem;
+  .sponsorCategory {
+    width: 100%;
+    justify-content: center; /* Keep the logos in a row within their strip */
+    gap: 1.25rem;
   }
 
-  .logoPrimary {
-    height: 40px; /* Smaller on phone */
+  .logoWide {
+    height: 36px; /* Slightly smaller for mobile */
   }
 
-  .logoSecondary {
-    height: 24px;
+  .logoSquare {
+    height: 18px;
+  }
+
+  .ctaWrapper {
+    margin-top: 0.5rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
   }
 }

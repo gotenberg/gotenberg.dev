@@ -1,23 +1,19 @@
-/* -------------------------------------------------------
-   API CONTAINER
-   ------------------------------------------------------- */
+/* --- API CONTAINER --- */
 .apiContainer {
-  margin-bottom: 2.5rem; /* More space outside */
+  margin-bottom: 2.5rem;
   border: 1px solid var(--ifm-color-emphasis-200);
   border-radius: var(--ifm-global-radius);
-  box-shadow: var(--ifm-global-shadow-lw);
   background-color: var(--ifm-background-surface-color);
   overflow: hidden;
+  box-shadow: var(--ifm-global-shadow-lw);
 }
 
-/* -------------------------------------------------------
-   API HEADER & BADGES
-   ------------------------------------------------------- */
+/* --- API HEADER & BADGES --- */
 .apiHeader {
   display: flex;
   align-items: center;
-  gap: 16px; /* Relaxed gap */
-  padding: 16px 20px; /* Bigger touch target */
+  gap: 16px;
+  padding: 20px 24px;
   background-color: var(--ifm-color-emphasis-100);
   border-bottom: 1px solid var(--ifm-color-emphasis-200);
 }
@@ -25,29 +21,30 @@
 .methodBadge {
   color: white;
   font-weight: 700;
-  font-size: 0.85rem; /* Bigger badge text */
-  padding: 5px 10px;
-  border-radius: 6px;
+  font-size: 0.8rem;
+  padding: 4px 10px;
+  border-radius: 5px;
   min-width: 70px;
   text-align: center;
-  letter-spacing: 0.02em;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+  white-space: nowrap;
+}
+
+.multipartBadge {
+  font-size: 0.7rem;
+  padding: 4px 12px;
+  min-width: auto;
 }
 
 .apiPath {
   font-family: var(--ifm-font-family-monospace);
   font-weight: 600;
-  font-size: 1.05rem; /* Matches your body text size */
+  font-size: 1.05rem;
   color: var(--ifm-color-content);
-  letter-spacing: -0.01em;
 }
 
-/* -------------------------------------------------------
-   LAYOUT ZONES
-   ------------------------------------------------------- */
+/* --- LAYOUT ZONES --- */
 .sectionInput {
-  padding: 24px 24px 12px; /* More padding */
-  background-color: var(--ifm-card-background-color);
+  padding: 24px;
 }
 
 .sectionTechnical {
@@ -56,137 +53,111 @@
   border-top: 1px solid var(--ifm-color-emphasis-200);
 }
 
-/* -------------------------------------------------------
-   SECTION LABELS
-   ------------------------------------------------------- */
+/* --- SECTION LABELS --- */
 .sectionLabel {
-  font-size: 0.8rem; /* Slightly larger */
+  font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-weight: 700;
   color: var(--ifm-color-emphasis-600);
-  margin-bottom: 16px;
-  margin-top: 28px;
-  display: flex;
-  align-items: center;
+  margin-bottom: 12px;
 }
 
-.sectionInput .sectionLabel:first-of-type,
-.sectionTechnical .sectionLabel:first-child {
-  margin-top: 0;
+/* --- PARAMETER LIST STRUCTURE --- */
+.paramsSection {
+  margin-bottom: 28px;
 }
 
-/* -------------------------------------------------------
-   PARAMETER LIST STRUCTURE
-   ------------------------------------------------------- */
+.paramsSectionLabel {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 800;
+  color: var(--ifm-color-emphasis-700);
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  padding-bottom: 8px;
+}
+
 .listWrapper {
   display: flex;
   flex-direction: column;
-  margin-bottom: 16px;
 }
 
 .paramItem {
-  padding: 16px 0; /* More vertical breathing room */
-  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  padding: 16px 0;
+  border-bottom: 1px dashed var(--ifm-color-emphasis-200);
 }
 
 .paramItem:last-child {
   border-bottom: none;
 }
 
-/* -------------------------------------------------------
-   PARAMETER HEADER STYLING
-   ------------------------------------------------------- */
+/* --- PARAMETER HEADER STYLING --- */
 .paramHeader {
   display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 8px;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
 }
 
 .paramName {
   font-family: var(--ifm-font-family-monospace);
   font-weight: 700;
   color: var(--ifm-color-primary);
-  font-size: 1rem; /* 16px - Much more readable */
+  font-size: 0.95rem;
 }
 
 .paramType {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: var(--ifm-color-content-secondary);
   font-family: var(--ifm-font-family-monospace);
-  background-color: var(
-    --ifm-color-emphasis-200
-  ); /* Slightly darker bg for contrast */
+  background-color: var(--ifm-color-emphasis-200);
   padding: 2px 8px;
   border-radius: 4px;
 }
 
 .requiredLabel {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   text-transform: uppercase;
-  color: #ef4444; /* Red 500 */
-  font-weight: 700;
-  letter-spacing: 0.05em;
+  color: #ef4444;
+  font-weight: 800;
   margin-left: auto;
 }
 
-/* -------------------------------------------------------
-   PARAMETER BODY STYLING
-   ------------------------------------------------------- */
-.paramBody {
-  font-size: 1rem; /* Standard body size (16px) */
-  padding-left: 0;
-}
-
+/* --- PARAMETER BODY STYLING --- */
 .paramDescription {
-  margin-bottom: 8px;
-  line-height: 1.6; /* Relaxed reading */
-  color: var(--ifm-color-content); /* Use PRIMARY color, not secondary/gray */
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--ifm-color-content);
 }
 
-/* Default Value styling */
 .paramDefault {
+  margin-top: 8px;
   font-size: 0.9rem;
-  color: var(--ifm-color-content-secondary); /* Keep metadata subtle */
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  color: var(--ifm-color-content-secondary);
 }
 
 .defaultLabel {
   font-weight: 600;
-  opacity: 0.8;
+  margin-right: 6px;
 }
 
 .paramDefault code {
-  background-color: var(--ifm-color-emphasis-200);
-  border: 1px solid var(--ifm-color-emphasis-300); /* Crisp border */
-  padding: 1px 6px;
-  border-radius: 4px;
-  color: var(--ifm-color-content);
   font-size: 0.85rem;
+  background-color: var(--ifm-color-emphasis-100);
 }
 
-/* -------------------------------------------------------
-   RESPONSE & TECHNICAL COMPONENTS
-   ------------------------------------------------------- */
-.responseTabs {
-  margin-bottom: 0 !important;
+/* --- RESPONSE & TECHNICAL COMPONENTS --- */
+.responseWrapper {
+  margin-top: 24px;
 }
 
 .responseDescription {
-  margin-top: 20px;
-  margin-bottom: 16px;
-  font-size: 1rem; /* Match body */
-  line-height: 1.6;
-  color: var(--ifm-color-content);
-
-  /* Make it pop slightly but keep it clean */
+  font-size: 0.95rem;
   padding: 12px 16px;
+  margin-bottom: 12px;
   background-color: var(--ifm-background-surface-color);
   border-left: 4px solid var(--ifm-color-primary);
   border-radius: 0 4px 4px 0;
-  box-shadow: var(--ifm-global-shadow-lw);
 }
