@@ -18,6 +18,7 @@
   padding: 1.5rem 2rem;
   background-color: rgba(248, 250, 252, 0.8);
   border-bottom: 1px solid var(--ifm-border-color);
+  overflow-y: scroll;
 }
 
 .methodBadge {

@@ -798,13 +798,8 @@
   .statCard {
     padding: 1.5rem;
   }
-  .sponsorStripLabel {
-    font-size: 0.65rem;
-    letter-spacing: 0.05em;
-    margin-bottom: -0.5rem;
-  }
   .finalCta {
-    padding: 0 0 10rem;
+    padding: 0 0 20rem;
   }
   .finalCta h2 {
     font-size: 2.2rem;
