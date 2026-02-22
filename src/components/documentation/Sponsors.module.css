@@ -68,7 +68,41 @@
   font-size: 0.85rem;
   font-weight: 700;
   color: #e11d48 !important;
-  transition: opacity 0.2s;
+  text-decoration: underline;
+  text-decoration-color: rgba(225, 29, 72, 0.3);
+  text-underline-offset: 3px;
+  transition: all 0.3s ease;
+}
+
+.sponsorButton:hover {
+  opacity: 1;
+  text-decoration-color: #e11d48;
+  text-shadow: 0 0 12px rgba(225, 29, 72, 0.5);
+  transform: translateY(-1px);
+}
+
+.sponsorButton svg {
+  animation: sponsorHeartbeat 2s ease-in-out infinite;
+  filter: drop-shadow(0 0 5px rgba(225, 29, 72, 0.2));
+}
+
+@keyframes sponsorHeartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  10% {
+    transform: scale(1.2);
+  }
+  20% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.2);
+  }
+  50% {
+    transform: scale(1);
+  }
 }
 
 .heart {

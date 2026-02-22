@@ -1,82 +1,97 @@
 /* --- API CONTAINER --- */
 .apiContainer {
-  margin-bottom: 2.5rem;
-  border: 1px solid var(--ifm-color-emphasis-200);
-  border-radius: var(--ifm-global-radius);
+  margin-bottom: 3.5rem;
+  border: 1px solid var(--ifm-border-color);
+  border-radius: 12px;
   background-color: var(--ifm-background-surface-color);
   overflow: hidden;
-  box-shadow: var(--ifm-global-shadow-lw);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* --- API HEADER & BADGES --- */
+/* --- API HEADER AND BADGES --- */
 .apiHeader {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 20px 24px;
-  background-color: var(--ifm-color-emphasis-100);
-  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  gap: 18px;
+  padding: 1.5rem 2rem;
+  background-color: rgba(248, 250, 252, 0.8);
+  border-bottom: 1px solid var(--ifm-border-color);
 }
 
 .methodBadge {
-  color: white;
-  font-weight: 700;
-  font-size: 0.8rem;
-  padding: 4px 10px;
-  border-radius: 5px;
-  min-width: 70px;
+  color: #ffffff;
+  font-family: var(--ifm-font-family-base);
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  padding: 6px 14px;
+  border-radius: 6px;
+  min-width: 80px;
   text-align: center;
   white-space: nowrap;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
 .multipartBadge {
-  font-size: 0.7rem;
-  padding: 4px 12px;
+  font-size: 0.75rem;
+  padding: 6px 16px;
   min-width: auto;
+  background-color: var(--ifm-color-content-secondary) !important;
 }
 
 .apiPath {
   font-family: var(--ifm-font-family-monospace);
   font-weight: 600;
-  font-size: 1.05rem;
-  color: var(--ifm-color-content);
+  font-size: 1.15rem;
+  color: var(--ifm-heading-color);
+  letter-spacing: -0.02em;
 }
 
 /* --- LAYOUT ZONES --- */
 .sectionInput {
-  padding: 24px;
+  padding: 2.5rem 2rem;
 }
 
 .sectionTechnical {
-  padding: 24px;
-  background-color: var(--ifm-color-emphasis-100);
-  border-top: 1px solid var(--ifm-color-emphasis-200);
+  padding: 2.5rem 2rem;
+  background-color: rgba(248, 250, 252, 0.5);
+}
+
+.sectionInput + .sectionTechnical {
+  border-top: 1px dashed var(--ifm-border-color);
 }
 
 /* --- SECTION LABELS --- */
 .sectionLabel {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-weight: 700;
-  color: var(--ifm-color-emphasis-600);
-  margin-bottom: 12px;
+  letter-spacing: 0.1em;
+  font-weight: 800;
+  color: var(--ifm-color-content-secondary);
+  margin-bottom: 16px;
 }
 
 /* --- PARAMETER LIST STRUCTURE --- */
 .paramsSection {
-  margin-bottom: 28px;
+  margin-bottom: 2.5rem;
+}
+
+.paramsSection:last-child {
+  margin-bottom: 0;
 }
 
 .paramsSectionLabel {
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   font-weight: 800;
-  color: var(--ifm-color-emphasis-700);
-  margin-bottom: 12px;
-  border-bottom: 1px solid var(--ifm-color-emphasis-200);
-  padding-bottom: 8px;
+  color: var(--ifm-heading-color);
+  margin-bottom: 16px;
+  border-bottom: 2px solid var(--ifm-border-color);
+  padding-bottom: 10px;
 }
 
 .listWrapper {
@@ -85,44 +100,56 @@
 }
 
 .paramItem {
-  padding: 16px 0;
-  border-bottom: 1px dashed var(--ifm-color-emphasis-200);
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--ifm-border-color);
+  transition: background-color 0.2s ease;
 }
 
 .paramItem:last-child {
   border-bottom: none;
+  padding-bottom: 0;
+}
+
+.paramItem:first-child {
+  padding-top: 0.5rem;
 }
 
 /* --- PARAMETER HEADER STYLING --- */
 .paramHeader {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 12px;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
 }
 
 .paramName {
   font-family: var(--ifm-font-family-monospace);
   font-weight: 700;
   color: var(--ifm-color-primary);
-  font-size: 0.95rem;
+  font-size: 1rem;
 }
 
 .paramType {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   color: var(--ifm-color-content-secondary);
   font-family: var(--ifm-font-family-monospace);
-  background-color: var(--ifm-color-emphasis-200);
-  padding: 2px 8px;
-  border-radius: 4px;
+  background-color: var(--ifm-border-color);
+  padding: 3px 10px;
+  border-radius: 50px;
+  font-weight: 500;
 }
 
 .requiredLabel {
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   text-transform: uppercase;
+  letter-spacing: 0.05em;
   color: #ef4444;
   font-weight: 800;
   margin-left: auto;
+  background-color: rgba(239, 68, 68, 0.1);
+  padding: 3px 10px;
+  border-radius: 50px;
 }
 
 /* --- PARAMETER BODY STYLING --- */
@@ -130,34 +157,68 @@
   font-size: 1rem;
   line-height: 1.6;
   color: var(--ifm-color-content);
+  margin-top: 8px;
 }
 
 .paramDefault {
-  margin-top: 8px;
-  font-size: 0.9rem;
+  margin-top: 12px;
+  font-size: 0.95rem;
   color: var(--ifm-color-content-secondary);
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
 }
 
 .defaultLabel {
   font-weight: 600;
-  margin-right: 6px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .paramDefault code {
   font-size: 0.85rem;
-  background-color: var(--ifm-color-emphasis-100);
+  background-color: rgba(241, 245, 249, 0.8);
+  color: var(--ifm-color-primary-dark);
 }
 
-/* --- RESPONSE & TECHNICAL COMPONENTS --- */
+/* --- RESPONSE AND TECHNICAL COMPONENTS --- */
 .responseWrapper {
-  margin-top: 24px;
+  margin-top: 2.5rem;
 }
 
 .responseDescription {
   font-size: 0.95rem;
-  padding: 12px 16px;
-  margin-bottom: 12px;
-  background-color: var(--ifm-background-surface-color);
-  border-left: 4px solid var(--ifm-color-primary);
-  border-radius: 0 4px 4px 0;
+  line-height: 1.6;
+  padding: 18px 24px;
+  margin-bottom: 20px;
+  color: var(--ifm-color-content);
+  background-color: rgba(248, 250, 252, 0.8);
+  border: 1px dashed var(--ifm-border-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.03);
+}
+
+/* --- GLOWING CONTAINER HOVER --- */
+.apiContainer:hover {
+  border-color: rgba(99, 102, 241, 0.4);
+  box-shadow: 0 20px 40px -5px rgba(99, 102, 241, 0.15);
+  transform: translateY(-4px);
+  z-index: 10;
+}
+
+/* --- GLOWING BADGE HOVER --- */
+.apiHeader:hover .methodBadge {
+  box-shadow: 0 10px 20px -5px currentColor;
+  transform: translateY(-1px);
+}
+
+/* --- GLOWING PARAMETER HOVER --- */
+.paramItem:hover {
+  background-color: rgba(248, 250, 252, 0.8);
+  border-radius: 8px;
+  padding-left: 16px;
+  padding-right: 16px;
+  margin-left: -16px;
+  margin-right: -16px;
 }
