@@ -261,7 +261,7 @@ export default function Homepage() {
 
           <div className={styles.sponsorsStrip}>
             <div className={styles.sponsorCategory}>
-              <span className={styles.sponsorStripLabel}>Sponsored By</span>
+              <span className={styles.sponsorStripLabel}>Sponsors</span>
               <a href="https://thecodingmachine.com" target="_blank">
                 <img
                   src="https://user-images.githubusercontent.com/8983173/130324668-9d6e7b35-53a3-49c7-a574-38190d2bd6b0.png"
@@ -476,6 +476,71 @@ export default function Homepage() {
                 <SimpleTerminal content={codeS3Workflow} />
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+      {/* --- FINAL CTA SECTION --- */}
+      <section
+        className={clsx(
+          styles.section,
+          styles.radiantSection,
+          styles.radiantCta,
+          styles.fadeTop,
+          styles.finalCta
+        )}
+      >
+        <div className={styles.ctaGlow} />
+        <div className="container">
+          <h2>
+            Ready to transform your{" "}
+            <span className={styles.highlight}>workflows?</span>
+          </h2>
+          <p>
+            Join thousands of developers and start generating high-quality PDFs
+            with Gotenberg's powerful containerized API.
+          </p>
+
+          <div className={styles.finalButtons}>
+            <Link
+              className={clsx(
+                "button button--primary button--lg",
+                styles.btnCrisp,
+                styles.btnPrimary
+              )}
+              to="/docs/getting-started/introduction"
+            >
+              Getting Started
+              <svg
+                width="13"
+                height="12"
+                viewBox="0 0 13 12"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className={styles.btnIcon}
+              >
+                <path
+                  d="M0 6H11M11 6L6 1M11 6L6 11"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                />
+              </svg>
+            </Link>
+
+            <Link
+              className={clsx(
+                "button button--secondary button--lg",
+                styles.btnCrisp,
+                styles.btnSecondary
+              )}
+              to="https://github.com/gotenberg/gotenberg"
+            >
+              <img
+                className={styles.githubIcon}
+                src={useBaseUrl("/img/github.svg")}
+                alt="GitHub Logo"
+              />
+              <span className={styles.githubButtonText}>GitHub</span>
+            </Link>
           </div>
         </div>
       </section>
