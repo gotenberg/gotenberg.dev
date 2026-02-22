@@ -71,11 +71,17 @@ Chromium automatically injects values into elements with specific class names:
 
 | Class Name       | Injected Value             |
 | :--------------- | :------------------------- |
-| **`date`**       | The formatted print date.  |
+| **`date`**       | The formatted print date   |
 | **`title`**      | The document title.        |
 | **`url`**        | The document location.     |
 | **`pageNumber`** | The current page number.   |
 | **`totalPages`** | The total number of pages. |
+
+:::tip Timezone
+
+The environment variable `TZ` allows you to override the default "UTC" timezone.
+
+:::
 
 ### Styling & Asset Limitations
 
