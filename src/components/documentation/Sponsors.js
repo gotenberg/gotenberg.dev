@@ -38,7 +38,7 @@ export default function Sponsors() {
       <div className={styles.sponsorCategory}>
         <span className={styles.sponsorStripLabel}>Powered by</span>
         <a
-          href="https://docker.com"
+          href="https://docs.docker.com/docker-hub/repos/manage/trusted-content/dsos-program/"
           target="_blank"
           className={styles.cleanLink}
         >
