@@ -95,8 +95,6 @@ The Chromium header/footer engine operates in a restricted environment. Follow t
 | **Margins** | Content taller than the `marginTop` / `marginBottom` form fields will be clipped.                                      |
 | **CSS**     | `footer.html` styles may override `header.html` styles. Use unique class names to prevent conflicts.                   |
 
-<br />
-
 :::danger Performance Impact
 Do not attempt to load external assets (CSS, images, scripts) in headers or footers. They will likely time out, slowing down the rendering process significantly or causing the request to fail entirely.
 :::

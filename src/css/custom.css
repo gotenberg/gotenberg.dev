@@ -148,8 +148,8 @@ body {
 
 .markdown table:hover {
   border-color: rgba(99, 102, 241, 0.4);
-  box-shadow: 0 20px 40px -5px rgba(99, 102, 241, 0.15);
-  transform: translateY(-4px);
+  box-shadow: 0 10px 10px -5px rgba(99, 102, 241, 0.15);
+  transform: translateY(-1px);
   z-index: 10;
 }
 
@@ -182,7 +182,6 @@ body {
 
 .markdown table tbody tr:hover td {
   background-color: rgba(99, 102, 241, 0.03);
-  color: #6366f1;
 }
 
 @media screen and (max-width: 1280px) {
@@ -546,26 +545,26 @@ button[class*="closeButton_"]:hover {
 
 /* --- GLOWING ADMONITIONS --- */
 .alert--info:hover {
-  box-shadow: 0 20px 40px -5px rgba(0, 138, 230, 0.15);
-  transform: translateY(-4px);
+  box-shadow: 0 10px 10px -5px rgba(0, 138, 230, 0.15);
+  transform: translateY(-1px);
   z-index: 10;
 }
 
 .alert--success:hover {
-  box-shadow: 0 20px 40px -5px rgba(16, 185, 129, 0.15);
-  transform: translateY(-4px);
+  box-shadow: 0 10px 10px -5px rgba(16, 185, 129, 0.15);
+  transform: translateY(-1px);
   z-index: 10;
 }
 
 .alert--warning:hover {
-  box-shadow: 0 20px 40px -5px rgba(245, 158, 11, 0.15);
-  transform: translateY(-4px);
+  box-shadow: 0 10px 10px -5px rgba(245, 158, 11, 0.15);
+  transform: translateY(-1px);
   z-index: 10;
 }
 
 .alert--danger:hover {
   box-shadow: 0 20px 40px -5px rgba(239, 68, 68, 0.15);
-  transform: translateY(-4px);
+  transform: translateY(-1px);
   z-index: 10;
 }
 
