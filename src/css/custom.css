@@ -104,6 +104,7 @@ body {
 
 .markdown a {
   color: var(--ifm-color-primary);
+  text-shadow: 0 0 15px rgba(0, 138, 230, 0.1);
   text-decoration: none;
   border-bottom: 1px solid rgba(0, 138, 230, 0.3);
   transition: all 0.2s ease;
@@ -111,6 +112,7 @@ body {
 }
 
 .markdown a:hover {
+  text-shadow: 0 0 20px rgba(0, 138, 230, 0.4);
   border-bottom-color: var(--ifm-color-primary);
   background-color: rgba(0, 138, 230, 0.05);
 }
@@ -296,6 +298,30 @@ body {
 
 .alert--danger .alert__heading {
   color: #b91c1c;
+}
+
+.alert--info:hover {
+  box-shadow: 0 10px 10px -5px rgba(0, 138, 230, 0.15);
+  transform: translateY(-1px);
+  z-index: 10;
+}
+
+.alert--success:hover {
+  box-shadow: 0 10px 10px -5px rgba(16, 185, 129, 0.15);
+  transform: translateY(-1px);
+  z-index: 10;
+}
+
+.alert--warning:hover {
+  box-shadow: 0 10px 10px -5px rgba(245, 158, 11, 0.15);
+  transform: translateY(-1px);
+  z-index: 10;
+}
+
+.alert--danger:hover {
+  box-shadow: 0 10px 10px -5px rgba(239, 68, 68, 0.15);
+  transform: translateY(-1px);
+  z-index: 10;
 }
 
 .markdown .alert a {
@@ -541,38 +567,4 @@ button[class*="closeButton_"]:hover {
   div[class^="docMainContainer_"] {
     padding-left: 7rem !important;
   }
-}
-
-/* --- GLOWING ADMONITIONS --- */
-.alert--info:hover {
-  box-shadow: 0 10px 10px -5px rgba(0, 138, 230, 0.15);
-  transform: translateY(-1px);
-  z-index: 10;
-}
-
-.alert--success:hover {
-  box-shadow: 0 10px 10px -5px rgba(16, 185, 129, 0.15);
-  transform: translateY(-1px);
-  z-index: 10;
-}
-
-.alert--warning:hover {
-  box-shadow: 0 10px 10px -5px rgba(245, 158, 11, 0.15);
-  transform: translateY(-1px);
-  z-index: 10;
-}
-
-.alert--danger:hover {
-  box-shadow: 0 20px 40px -5px rgba(239, 68, 68, 0.15);
-  transform: translateY(-1px);
-  z-index: 10;
-}
-
-/* --- GLOWING LINKS --- */
-.markdown a {
-  text-shadow: 0 0 15px rgba(0, 138, 230, 0.1);
-}
-
-.markdown a:hover {
-  text-shadow: 0 0 20px rgba(0, 138, 230, 0.4);
 }
