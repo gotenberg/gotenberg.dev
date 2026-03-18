@@ -13,6 +13,12 @@ Check the [PDF Engines Configuration](/docs/configuration#pdf-engines) to see wh
 
 :::
 
+:::danger
+
+Encryption is incompatible with PDF/A compliance — requesting both returns a `400 Bad Request`.
+
+:::
+
 {props.showFormFields && props.showCurlExample && (
 
 <ApiEndpoint

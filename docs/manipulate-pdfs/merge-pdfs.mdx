@@ -7,6 +7,9 @@ import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
 import MetadataPDFEngines from "../_shared/_metadata_pdfengines.mdx";
 import AttachmentsPDFEngines from "../_shared/_attachments_pdfengines.mdx";
 import FlattenPDFEngines from "../_shared/_flatten_pdfengines.mdx";
+import WatermarkPDFEngines from "../_shared/_watermark_pdfengines.mdx";
+import StampPDFEngines from "../_shared/_stamp_pdfengines.mdx";
+import RotatePDFEngines from "../_shared/_rotate_pdfengines.mdx";
 import PDFAPDFUAPDFEngines from "../_shared/_pdfa_pdfua_pdfengines.mdx";
 import EncryptionPDFEngines from "../_shared/_encryption_pdfengines.mdx";
 import Sponsors from "@site/src/components/documentation/Sponsors";
@@ -99,6 +102,20 @@ Body: Service Unavailable
       description: "Writes metadata (Author, Title, etc.).",
     },
     {
+      name: "bookmarks",
+      type: "json",
+      defaultValue: "None",
+      description:
+        "Bookmarks to write (JSON). A list applies to the final merged PDF. A map of filename→bookmarks shifts page indexes per file before merging.",
+    },
+    {
+      name: "autoIndexBookmarks",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Extracts existing bookmarks from input files and offsets their page numbers based on their position in the merged document.",
+    },
+    {
       name: "flatten",
       type: "boolean",
       defaultValue: "false",
@@ -128,6 +145,36 @@ Body: Service Unavailable
   curlOutput={`-o my.pdf`}
 />
 
+### Bookmarks (PDF Engines)
+
+Use the `autoIndexBookmarks` form field to automatically extract existing bookmarks from input files and offset their page numbers based on their position in the merged document.
+
+<ApiEndpoint
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/pdfengines/merge \\
+--form files=@/path/to/1_pdf.pdf \\
+--form files=@/path/to/2_pdf.pdf \\
+--form files=@/path/to/3_pdf.pdf \\
+--form autoIndexBookmarks=true \\
+-o my.pdf`}
+/>
+
+You can also provide custom bookmarks with the `bookmarks` form field. When provided as a **list**, it is applied directly to the final merged PDF. When provided as a **map** of filename to bookmarks, page indexes are shifted per file before merging.
+
+Both options work together — when `autoIndexBookmarks` is enabled, Gotenberg respects your custom mappings for specific files while automatically recalculating indexes for the others.
+
+<ApiEndpoint
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/pdfengines/merge \\
+--form files=@/path/to/1_pdf.pdf \\
+--form files=@/path/to/2_pdf.pdf \\
+--form autoIndexBookmarks=true \\
+--form 'bookmarks={"1_pdf.pdf":[{"title":"Introduction","page":1,"children":[]}],"2_pdf.pdf":[{"title":"Appendix","page":1,"children":[]}]}' \\
+-o my.pdf`}
+/>
+
 ### Attachments (PDF Engines)
 
 <AttachmentsPDFEngines
@@ -143,6 +190,42 @@ Body: Service Unavailable
 ### Flatten (PDF Engines)
 
 <FlattenPDFEngines
+  showCurlExample={true}
+  method="POST"
+  path="/forms/pdfengines/merge"
+  curlFormData={`--form files=@/path/to/1_pdf.pdf \\
+--form files=@/path/to/2_pdf.pdf \\
+--form files=@/path/to/3_pdf.pdf \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+## Watermark (PDF Engines)
+
+<WatermarkPDFEngines
+  showCurlExample={true}
+  method="POST"
+  path="/forms/pdfengines/merge"
+  curlFormData={`--form files=@/path/to/1_pdf.pdf \\
+--form files=@/path/to/2_pdf.pdf \\
+--form files=@/path/to/3_pdf.pdf \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+## Stamp (PDF Engines)
+
+<StampPDFEngines
+  showCurlExample={true}
+  method="POST"
+  path="/forms/pdfengines/merge"
+  curlFormData={`--form files=@/path/to/1_pdf.pdf \\
+--form files=@/path/to/2_pdf.pdf \\
+--form files=@/path/to/3_pdf.pdf \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+## Rotate (PDF Engines)
+
+<RotatePDFEngines
   showCurlExample={true}
   method="POST"
   path="/forms/pdfengines/merge"

@@ -154,11 +154,12 @@ For further details, refer to the [API module configuration](/docs/configuration
 
 The `downloadFrom` field accepts a **JSON-formatted array**. Each item in the array must be an object with the following keys:
 
-| Key                | Description                                                                                                    | Default                                                          |
-| :----------------- | :------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------- |
-| `url`              | URL of the file. The remote server **MUST** return a `Content-Disposition` header with a `filename` parameter. | <span style={{color: 'var(--ifm-color-danger)'}}>Required</span> |
-| `extraHttpHeaders` | A JSON object containing extra HTTP headers to send when fetching this specific URL.                           | `None`                                                           |
-| `embedded`         | Whether this file should be embedded.                                                                          | `false`                                                          |
+| Key                | Description                                                                                                                                 | Default                                                          |
+| :----------------- | :------------------------------------------------------------------------------------------------------------------------------------------ | :--------------------------------------------------------------- |
+| `url`              | URL of the file. The remote server **MUST** return a `Content-Disposition` header with a `filename` parameter.                              | <span style={{color: 'var(--ifm-color-danger)'}}>Required</span> |
+| `extraHttpHeaders` | A JSON object containing extra HTTP headers to send when fetching this specific URL.                                                        | `None`                                                           |
+| `embedded`         | Whether this file should be embedded (legacy — prefer `field`).                                                                             | `false`                                                          |
+| `field`            | Routes the downloaded file to a specific form field: `"embedded"`, `"watermark"`, or `"stamp"`. When set, takes precedence over `embedded`. | `""` (regular file)                                              |
 
 :::warning Known Issue: Empty Media Types
 
@@ -187,6 +188,24 @@ curl \\
   "extraHttpHeaders": {
     "X-My-Header": "MyValue"
   }
+}]' \\
+-o my.pdf
+`}
+/>
+
+### Watermark & Stamp from Remote URLs
+
+Use the `field` property to route a downloaded file as a watermark or stamp source:
+
+<ApiEndpoint
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/pdfengines/watermark \\
+--form files=@/path/to/file.pdf \\
+--form watermarkSource=image \\
+--form 'downloadFrom=[{
+  "url": "http://url/to/logo.png",
+  "field": "watermark"
 }]' \\
 -o my.pdf
 `}

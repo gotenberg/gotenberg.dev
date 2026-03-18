@@ -87,12 +87,37 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "manipulate-pdfs/read-bookmarks",
+          className: "sidebar-method-post",
+        },
+        {
+          type: "doc",
+          id: "manipulate-pdfs/write-bookmarks",
+          className: "sidebar-method-post",
+        },
+        {
+          type: "doc",
           id: "manipulate-pdfs/attachments",
           className: "sidebar-method-post",
         },
         {
           type: "doc",
           id: "manipulate-pdfs/flatten-pdfs",
+          className: "sidebar-method-post",
+        },
+        {
+          type: "doc",
+          id: "manipulate-pdfs/watermark-pdfs",
+          className: "sidebar-method-post",
+        },
+        {
+          type: "doc",
+          id: "manipulate-pdfs/stamp-pdfs",
+          className: "sidebar-method-post",
+        },
+        {
+          type: "doc",
+          id: "manipulate-pdfs/rotate-pdfs",
           className: "sidebar-method-post",
         },
         {

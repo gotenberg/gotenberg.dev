@@ -1,0 +1,23 @@
+:::info Stamp Options Reference
+
+The `stampOptions` form field accepts a JSON object whose keys depend on the configured PDF Engine:
+
+| Engine               | Syntax Reference                                               |
+| :------------------- | :------------------------------------------------------------- |
+| **pdfcpu** (Default) | [See pdfcpu stamp documentation](https://pdfcpu.io/core/stamp) |
+
+Available keys include `font`, `points` (font size), `color`, `rotation`, `opacity`, `scale`, `offset`, and more. Example:
+
+```json
+{
+  "font": "Helvetica",
+  "points": 24,
+  "color": "#008000",
+  "rotation": 0,
+  "opacity": 0.6
+}
+```
+
+Check the [PDF Engines Configuration](/docs/configuration#pdf-engines) to see which engine is active.
+
+:::

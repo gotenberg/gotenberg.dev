@@ -1,0 +1,101 @@
+---
+id: read-bookmarks
+title: Read Bookmarks
+---
+
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import Sponsors from "@site/src/components/documentation/Sponsors";
+
+Extracts bookmarks (the document outline / table of contents) from one or more PDF files.
+
+This endpoint returns the data as a structured JSON object where keys are the filenames. Each bookmark contains a `title`, a `page` number, and optional `children` for nested entries.
+
+<ApiEndpoint
+  method="POST"
+  path="/forms/pdfengines/bookmarks/read"
+  headers={[
+    {
+      name: "Gotenberg-Trace",
+      type: "string",
+      required: false,
+      description:
+        "A custom request ID to identify the request in the logs; overrides the default UUID.",
+    },
+  ]}
+  formFiles={[
+    {
+      name: "files",
+      type: "file[]",
+      required: true,
+      description: "PDF files to analyze.",
+    },
+  ]}
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/pdfengines/bookmarks/read \\
+--form files=@/path/to/document.pdf \\
+--form files=@/path/to/report.pdf`}
+  responses={[
+    {
+      status: 200,
+      message: "OK",
+      description: "The bookmarks in JSON format.",
+      body: `
+Content-Type: application/json; charset=UTF-8
+Content-Length: {content-length}
+Gotenberg-Trace: {trace}
+Body:
+{
+    "document.pdf": [
+      {
+        "title": "Chapter 1",
+        "page": 1,
+        "children": [
+          {
+            "title": "Section 1.1",
+            "page": 3,
+            "children": []
+          }
+        ]
+      },
+      {
+        "title": "Chapter 2",
+        "page": 10,
+        "children": []
+      }
+    ],
+    "report.pdf": [
+      {
+        "title": "Introduction",
+        "page": 1,
+        "children": []
+      }
+    ]
+}
+      `,
+    },
+    {
+      status: 400,
+      message: "Bad Request",
+      description: "The request had one ore more invalid form fields.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+      `,
+    },
+    {
+      status: 503,
+      message: "Service Unavailable",
+      description:
+        "The request did not complete within the configured maximum duration.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: Service Unavailable
+      `,
+    },
+  ]}
+/>
+
+<Sponsors />

@@ -1,0 +1,23 @@
+:::info Watermark Options Reference
+
+The `watermarkOptions` form field accepts a JSON object whose keys depend on the configured PDF Engine:
+
+| Engine               | Syntax Reference                                                       |
+| :------------------- | :--------------------------------------------------------------------- |
+| **pdfcpu** (Default) | [See pdfcpu watermark documentation](https://pdfcpu.io/core/watermark) |
+
+Available keys include `font`, `points` (font size), `color`, `rotation`, `opacity`, `scale`, `offset`, and more. Example:
+
+```json
+{
+  "font": "Helvetica",
+  "points": 48,
+  "color": "#808080",
+  "rotation": 45,
+  "opacity": 0.15
+}
+```
+
+Check the [PDF Engines Configuration](/docs/configuration#pdf-engines) to see which engine is active.
+
+:::

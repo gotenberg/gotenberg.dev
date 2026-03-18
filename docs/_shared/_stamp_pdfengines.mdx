@@ -1,0 +1,63 @@
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import SyntaxStampPDFEngines from "./_syntax_stamp_pdfengines.mdx";
+
+Adds a stamp _on top of_ the content of each page using a PDF Engine during post-processing.
+
+- **Process:** Gotenberg generates the PDF, then applies the stamp using a PDF Engine.
+- **Performance:** Slower (requires a second pass).
+- **Sources:** Use `text` for a simple label, `image` to overlay an uploaded image, or `pdf` to stamp a full-page PDF on top.
+
+<SyntaxStampPDFEngines />
+
+{props.showCurlExample && (
+
+<ApiEndpoint
+  formFields={[
+    {
+      name: "stampSource",
+      type: "enum",
+      required: false,
+      description: "The stamp source type. Options: 'text', 'image', 'pdf'.",
+    },
+    {
+      name: "stampExpression",
+      type: "string",
+      required: false,
+      description:
+        "The stamp content. For 'text', the string to render. For 'image' or 'pdf', the filename of the uploaded stamp file.",
+    },
+    {
+      name: "stampPages",
+      type: "string",
+      required: false,
+      description:
+        "Page ranges to stamp (e.g., '1-3', '5'). Empty means all pages.",
+    },
+    {
+      name: "stampOptions",
+      type: "json",
+      required: false,
+      description:
+        "Advanced options in JSON format (e.g., font, color, rotation, opacity, scaling).",
+    },
+  ]}
+  formFiles={[
+    {
+      name: "stamp",
+      type: "file",
+      required: false,
+      description:
+        "An image or PDF file used as stamp source (required when stampSource is 'image' or 'pdf').",
+    },
+  ]}
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form stampSource=text \\
+--form stampExpression=APPROVED \\
+--form 'stampOptions={"opacity":0.5,"rotation":0}' \\
+${props.curlOutput}
+`}
+/>
+)}

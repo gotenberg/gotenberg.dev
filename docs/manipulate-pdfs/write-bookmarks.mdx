@@ -1,0 +1,92 @@
+---
+id: write-bookmarks
+title: Write Bookmarks
+---
+
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import Sponsors from "@site/src/components/documentation/Sponsors";
+
+Writes bookmarks (the document outline / table of contents) into one or more PDF files.
+
+You can provide the bookmarks as a single list (applied to all files) or as a map of filename to bookmarks for per-file control.
+
+<ApiEndpoint
+  method="POST"
+  path="/forms/pdfengines/bookmarks/write"
+  headers={[
+    {
+      name: "Gotenberg-Output-Filename",
+      type: "string",
+      required: false,
+      description:
+        "The filename of the resulting file - Gotenberg automatically appends the file extension. Defaults to a random UUID filename.",
+    },
+    {
+      name: "Gotenberg-Trace",
+      type: "string",
+      required: false,
+      description:
+        "A custom request ID to identify the request in the logs; overrides the default UUID.",
+    },
+  ]}
+  formFields={[
+    {
+      name: "bookmarks",
+      type: "json",
+      required: true,
+      description:
+        'The bookmarks to write (JSON format). Accepts a list of bookmarks or a map of filename to bookmarks. e.g. `[{"title":"Chapter 1","page":1,"children":[]}]`',
+    },
+  ]}
+  formFiles={[
+    {
+      name: "files",
+      type: "file[]",
+      required: true,
+      description: "PDF files to update.",
+    },
+  ]}
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/pdfengines/bookmarks/write \\
+--form files=@/path/to/file.pdf \\
+--form 'bookmarks=[{"title":"Chapter 1","page":1,"children":[]},{"title":"Chapter 2","page":5,"children":[{"title":"Section 2.1","page":6,"children":[]}]}]' \\
+-o my.pdf`}
+  responses={[
+    {
+      status: 200,
+      message: "OK",
+      description: "The updated PDF file.",
+      body: `
+Content-Disposition: attachment; filename={output-filename.pdf}
+Content-Type: {content-type}
+Content-Length: {content-length}
+Gotenberg-Trace: {trace}
+Body: {output-file}
+      `,
+    },
+    {
+      status: 400,
+      message: "Bad Request",
+      description: "The request had one ore more invalid form fields.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+      `,
+    },
+    {
+      status: 503,
+      message: "Service Unavailable",
+      description:
+        "The request did not complete within the configured maximum duration.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: Service Unavailable
+      `,
+    },
+  ]}
+/>
+
+<Sponsors />
