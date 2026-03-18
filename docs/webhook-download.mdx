@@ -193,44 +193,4 @@ curl \\
 `}
 />
 
-### Watermark & Stamp from Remote URLs
-
-Use the `field` property to route a downloaded file as a watermark or stamp source:
-
-<ApiEndpoint
-  curl={`
-curl \\
---request POST http://localhost:3000/forms/pdfengines/watermark \\
---form files=@/path/to/file.pdf \\
---form watermarkSource=image \\
---form 'downloadFrom=[{
-  "url": "http://url/to/logo.png",
-  "field": "watermark"
-}]' \\
--o my.pdf
-`}
-  responses={[
-    {
-      status: 400,
-      message: "Bad Request",
-      description: "The JSON is malformed.",
-      body: `
-Content-Type: text/plain; charset=UTF-8
-Gotenberg-Trace: {trace}
-Body: {error}
-      `,
-    },
-    {
-      status: 403,
-      message: "Forbidden",
-      description: "At least one of the specified URLs is forbidden.",
-      body: `
-Content-Type: text/plain; charset=UTF-8
-Gotenberg-Trace: {trace}
-Body: Forbidden
-      `,
-    },
-  ]}
-/>
-
 <Sponsors />

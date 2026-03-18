@@ -511,7 +511,7 @@ curl \\
 -o my.zip`}
 />
 
-## Watermark, Stamp & Rotate
+## Watermark & Stamp
 
 <ApiEndpoint
   formFields={[
@@ -612,19 +612,6 @@ curl \\
       description:
         "Advanced stamp options in JSON format (e.g., font, color, rotation, opacity, scaling).",
     },
-    {
-      name: "rotateAngle",
-      type: "enum",
-      defaultValue: "None",
-      description: "The rotation angle. Options: '90', '180', '270'.",
-    },
-    {
-      name: "rotatePages",
-      type: "string",
-      defaultValue: "None",
-      description:
-        "Page ranges to rotate (e.g., '1-3', '5'). Empty means all pages.",
-    },
   ]}
   formFiles={[
     {
@@ -681,7 +668,7 @@ curl \\
   curlOutput={`-o my.pdf`}
 />
 
-### Rotate (PDF Engines)
+## Rotate (PDF Engines)
 
 <RotatePDFEngines
   showCurlExample={true}
