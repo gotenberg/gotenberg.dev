@@ -2,6 +2,61 @@
 
 You are working on **gotenberg.dev**, the official documentation website for [Gotenberg](https://github.com/gotenberg/gotenberg) — a Docker-based API for converting documents to PDF. This is a Docusaurus 3.x site serving the public-facing docs at https://gotenberg.dev. Accuracy and clarity are paramount: users rely on this documentation to integrate Gotenberg into production systems.
 
+## Mandatory Workflow
+
+Every task follows these five steps **in order**. Do not skip or reorder them.
+
+### Step 1 — Plan
+
+Before writing any code or content:
+
+1. State the problem or request.
+2. Propose a solution.
+3. List alternatives when pertinent.
+4. Define scope — which files will be created, modified, or deleted.
+5. Describe the verification strategy.
+
+**Wait for user approval before proceeding.**
+
+### Step 2 — Implement
+
+Execute the approved plan. After implementation, verify the site builds cleanly:
+
+```bash
+npm run build
+```
+
+### Step 3 — Test
+
+Verify the changes:
+
+- All links and imports resolve correctly.
+- cURL examples are valid and copy-pasteable.
+- Form field names, types, and defaults match the actual Gotenberg API.
+- Components render correctly at desktop (1440px), laptop (1024px), and tablet (768px) widths.
+- No console errors or React warnings in the browser.
+
+### Step 4 — Review
+
+Self-review against this checklist, then present findings to the user:
+
+- [ ] **Accuracy.** Every endpoint path, form field name, code sample, and configuration flag matches the actual Gotenberg API.
+- [ ] **Backward compatibility.** No broken links, no removed content without replacement, no changed URLs.
+- [ ] **Consistency.** Follows established page structure, component usage, and terminology.
+- [ ] **Code quality.** Formatted with Prettier (`npm run format`), no linting errors, no unused imports.
+- [ ] **Documentation.** Shared partials used where appropriate — no duplicated content across pages.
+- [ ] **Build.** `npm run build` passes without errors or warnings.
+
+### Step 5 — Commit
+
+**Only after explicit user approval.**
+
+- Use [Conventional Commits](https://www.conventionalcommits.org/) (e.g., `docs:`, `feat:`, `fix:`, `style:`).
+- Stage specific files only — never `git add -A` or `git add .`.
+- Write a concise commit message that explains _why_, not just _what_.
+
+---
+
 ## Core Principles
 
 - **Accuracy is law.** Every code sample, form field name, endpoint path, and configuration flag must match the actual Gotenberg API. When in doubt, cross-reference with the [Gotenberg source](https://github.com/gotenberg/gotenberg).
@@ -77,13 +132,224 @@ Common features (encryption, PDF/A, metadata, etc.) are documented as reusable `
 - Shared partials in `docs/_shared/` cover PDF engine features (encryption, flatten, metadata, PDF/A, attachments).
 - The homepage (`src/components/Homepage.js`) is a custom React component, not an MDX page.
 
-## Persona Selection (MANDATORY)
+---
 
-Before starting any task, you MUST read the appropriate persona file from `.agents/` based on what is being asked. This is not optional — the persona contains critical context you need.
+## Writer Reference
 
-| Task type                                                         | Persona to load                              | Trigger keywords / signals                                                                        |
-| ----------------------------------------------------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| Writing or editing documentation content (new pages, fixing docs) | [`.agents/WRITER.md`](.agents/WRITER.md)     | "write", "document", "add page", "update docs", "fix typo", "reword", editing any `.mdx` file     |
-| Modifying site design, components, styles, or layout              | [`.agents/DESIGNER.md`](.agents/DESIGNER.md) | "style", "design", "component", "layout", "CSS", "theme", "homepage", editing `.js`, `.css` files |
+Content for writing or editing documentation pages (new pages, fixing docs, rewording, editing `.mdx` files).
 
-If a task spans multiple concerns (e.g., adding a new doc page AND creating a new component for it), load ALL relevant personas.
+### Page Structure Convention
+
+Every API endpoint documentation page follows this exact structure:
+
+1. **Frontmatter** — `id` and `title` fields
+2. **Imports** — Shared MDX partials and React components
+3. **Intro paragraph** — One or two sentences explaining what the endpoint does
+4. **`<ConfigurationInfo />`** — Links to the configuration page for related flags
+5. **`## Basics`** — The `<ApiEndpoint>` component with method, path, headers, form fields/files, cURL example, and responses
+6. **Feature sections** — Imported shared partials (`<Assets />`, `<RenderingBehaviorPDF />`, `<HeaderFooter />`, etc.)
+7. **`<Sponsors />`** — Sponsor component at the bottom
+
+Do not deviate from this structure. New pages must follow existing pages as templates.
+
+### Writing Style
+
+- **Be direct.** Lead with what the endpoint does, not background context.
+- **Use second person.** "You can", "your files", not "the user can".
+- **Keep paragraphs short.** Two to four sentences maximum.
+- **Prefer active voice.** "Gotenberg converts the file" not "The file is converted by Gotenberg".
+- **Use inline code** for all technical terms: form field names (`url`), header names (`Gotenberg-Trace`), endpoint paths (`/forms/chromium/convert/url`), file names (`index.html`), CLI flags (`--api-port`), and environment variables.
+
+### ApiEndpoint Component Usage
+
+When documenting an API endpoint, use the `<ApiEndpoint>` component. All parameters must be accurate.
+
+```jsx
+<ApiEndpoint
+  method="POST"
+  path="/forms/chromium/convert/url"
+  headers={[
+    {
+      name: "Gotenberg-Output-Filename",
+      type: "string",
+      required: false,
+      description: "The filename of the resulting file...",
+    },
+  ]}
+  formFields={[
+    {
+      name: "url",
+      type: "string",
+      required: true,
+      description: "The URL to convert to PDF.",
+    },
+  ]}
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/chromium/convert/url \\
+--form url=https://my.url \\
+-o my.pdf`}
+  responses={[
+    {
+      status: 200,
+      description: "A PDF file or a ZIP archive...",
+    },
+  ]}
+/>
+```
+
+Key rules:
+
+- The `curl` example must be a valid, copy-pasteable command.
+- Response descriptions must match Gotenberg's actual behavior.
+- Use `defaultValue` in form fields when a default exists.
+- Mark fields as `required: true` only when they are genuinely required.
+
+### Shared Partials
+
+Reusable documentation blocks live in `_shared/` directories:
+
+- `docs/convert-with-chromium/_shared/` — Chromium features (assets, console, encryption, header/footer, HTTP networking, rendering behavior, structure metadata, PDF/A, split/page ranges)
+- `docs/_shared/` — PDF engine features (attachments, encryption, flatten, metadata, PDF/A-UA, syntax validation)
+
+When a feature applies to multiple endpoints, it MUST be a shared partial. Never duplicate content across pages — import the partial instead.
+
+### Admonitions
+
+Use Docusaurus admonitions for callouts:
+
+```mdx
+:::info
+Informational note about behavior or context.
+:::
+
+:::warning
+Important caveat or potential pitfall.
+:::
+
+:::danger
+Breaking behavior, data loss risk, or critical limitation.
+:::
+
+:::tip
+Helpful suggestion or best practice.
+:::
+```
+
+Reserve `:::danger` for genuinely dangerous situations. Use `:::info` for most callouts.
+
+### Sidebar Updates
+
+When adding a new page, update `sidebars.js`:
+
+- API endpoints must include `className: "sidebar-method-post"` (or `-get`, `-head`) for the HTTP method badge.
+- Place the page in the correct category following the existing order.
+- Use `type: "doc"` with the document `id` matching the frontmatter.
+
+### Versioning
+
+The site supports versioned documentation (`versioned_docs/`, `versions.json`). Current docs live in `docs/`. Do not modify versioned docs unless explicitly asked — changes to `docs/` apply to the current (next) version only.
+
+---
+
+## Designer Reference
+
+Content for modifying site design, React components, styles, or layout (CSS, theme, homepage, `.js`/`.css` files).
+
+### Technology Stack
+
+- **Framework:** Docusaurus 3.8.1 (React 18)
+- **Styling:** CSS Modules (`.module.css`) for components, global CSS (`src/css/custom.css`) for theme overrides
+- **Fonts:** Inter (body, headings), JetBrains Mono (code) — loaded via Google Fonts
+- **Icons:** Inline SVGs in React components (no icon library)
+- **Images:** `@docusaurus/plugin-ideal-image` for optimized images
+
+### Design System
+
+#### Colors
+
+| Token                           | Value     | Usage                         |
+| ------------------------------- | --------- | ----------------------------- |
+| `--ifm-color-primary`           | `#008ae6` | Links, accents, primary CTA   |
+| `--ifm-heading-color`           | `#0f172a` | H1 headings                   |
+| `--ifm-color-content`           | `#334155` | Body text                     |
+| `--ifm-color-content-secondary` | `#64748b` | Secondary text, sidebar links |
+| `--ifm-border-color`            | `#e2e8f0` | Borders, dividers             |
+
+HTTP method badge colors:
+
+- POST: `#49cc90` (green)
+- GET: `#61affe` (blue)
+- PUT: `#fca130` (orange)
+- DELETE: `#f93e3e` (red)
+- HEAD: `#9061f9` (purple)
+
+#### Typography
+
+- H1: 3rem, weight 900, letter-spacing -0.03em, blue bottom border
+- H2: 1.8rem, weight 800, letter-spacing -0.02em, gray bottom border
+- H3: 1.4rem, weight 700, blue left border with padding
+- Body: 1.05rem, line-height 1.75
+- Code: 0.85em, weight 500, subtle gray background
+
+#### Spacing and Layout
+
+- Max content width: 840px (`.theme-doc-markdown`)
+- Container width: 1366px
+- Navbar height: 4rem
+- Light mode only — dark mode switch is disabled
+
+### Component Architecture
+
+#### Homepage (`src/components/Homepage.js`)
+
+A standalone React component with CSS Modules (`Homepage.module.css`). Contains:
+
+- Hero section with logo, tagline, and CTA buttons
+- Community stats strip (Docker pulls, GitHub stars, license)
+- Feature blocks with `SimpleTerminal` code previews
+- Final CTA section
+
+The `SimpleTerminal` component renders syntax-highlighted bash commands with a macOS-style window chrome (red/yellow/green dots).
+
+#### ApiEndpoint (`src/components/documentation/ApiEndpoint.js`)
+
+The core documentation component. Renders API endpoint information with:
+
+- Method badge + path header
+- Collapsible parameter lists (headers, form fields, form files)
+- cURL example via Docusaurus `<CodeBlock>`
+- Tabbed response display via Docusaurus `<Tabs>`
+
+This component has its own CSS Module (`ApiEndpoint.module.css`).
+
+#### Sponsors (`src/components/documentation/Sponsors.js`)
+
+Renders sponsor logos at the bottom of documentation pages.
+
+### Theme Overrides
+
+- `src/theme/DocSidebar/index.js` — Custom sidebar with HTTP method badges via CSS pseudo-elements
+- Sidebar badges are implemented purely in CSS using `::before` pseudo-elements on `.sidebar-method-*` classes
+
+### CSS Conventions
+
+- Use CSS custom properties (`--ifm-*`) for Docusaurus theme values
+- Use CSS Modules for component-scoped styles
+- Use `src/css/custom.css` only for global overrides (admonitions, sidebar, footer, typography)
+- Transitions: `0.2s ease` for interactive elements, `0.3s cubic-bezier(0.4, 0, 0.2, 1)` for larger animations
+- Hover effects: subtle `translateY(-1px)` lift with colored box-shadow
+- Use `clsx` for conditional class composition in React components
+
+### Docusaurus Integration
+
+- Respect Docusaurus's Infima CSS framework — override with specificity, not `!important` (except documented exceptions)
+- Use `@docusaurus/Link` for internal navigation, not `<a>` tags
+- Use `useBaseUrl` for static asset paths
+- Swizzled components live in `src/theme/` — be cautious when upgrading Docusaurus
+
+### Responsive Design
+
+- Tables switch to horizontal scroll below 1280px
+- Content padding adjusts at 996px and 1400px breakpoints
+- Homepage uses Docusaurus grid system (`col col--6`, `row`, `container`)

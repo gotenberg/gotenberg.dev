@@ -4,12 +4,7 @@ Thank you for your interest in contributing to the Gotenberg documentation! This
 
 ## Before You Start
 
-Please read the [AGENTS.md](AGENTS.md) file — it describes the core principles, project layout, and documentation standards that all contributions must follow. Even though it is written for AI agents, the same rules apply to human contributors.
-
-For deeper context on specific areas, see the personas in `.agents/`:
-
-- **[WRITER](.agents/WRITER.md)** — Page structure conventions, writing style, component usage.
-- **[DESIGNER](.agents/DESIGNER.md)** — Design system, React components, CSS conventions.
+Please read the [AGENTS.md](AGENTS.md) file — it describes the core principles, project layout, and documentation standards that all contributions must follow. Even though it is written for AI agents, the same rules apply to human contributors. It also contains the Writer and Designer reference sections with page structure conventions, writing style, design system, and component usage.
 
 ## Getting Started
 
