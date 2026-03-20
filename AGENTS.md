@@ -64,29 +64,6 @@ Self-review against this checklist, then present findings to the user:
 - **Consistency.** Follow established patterns for page structure, component usage, and terminology. Every API doc page uses the same layout and components.
 - **No broken builds.** The site must build cleanly (`npm run build`) before any change is considered complete.
 
-## Project Layout
-
-```
-docs/                        → Documentation content (MDX files).
-  getting-started/           → Introduction, installation, clients.
-  convert-with-chromium/     → Chromium conversion & screenshot endpoints.
-    _shared/                 → Reusable MDX partials for Chromium features.
-  convert-with-libreoffice/  → LibreOffice conversion endpoint.
-  manipulate-pdfs/           → PDF manipulation endpoints (merge, split, encrypt, etc.).
-  _shared/                   → Reusable MDX partials for PDF engine features.
-  configuration.mdx          → Comprehensive configuration reference.
-  webhook-download.mdx       → Webhook & download-from documentation.
-  troubleshooting.mdx        → Common issues and solutions.
-src/
-  components/                → React components (Homepage, ApiEndpoint, Sponsors).
-  css/custom.css             → Global styles (Inter font, color system, admonitions).
-  theme/                     → Docusaurus theme overrides (sidebar).
-static/img/                  → Image assets.
-sidebars.js                  → Sidebar navigation structure.
-docusaurus.config.js         → Site configuration (Algolia, navbar, footer).
-versioned_docs/              → Previous version documentation snapshots.
-```
-
 ## Quick Reference
 
 - Dev server: `npm start`
@@ -126,6 +103,7 @@ Common features (encryption, PDF/A, metadata, etc.) are documented as reusable `
 
 ## Codebase Navigation
 
+- Documentation content (MDX files) lives in `docs/`, React components and styles in `src/`, and site configuration in root files (`sidebars.js`, `docusaurus.config.js`).
 - Start with `sidebars.js` to understand the documentation structure.
 - API doc pages follow a consistent pattern: intro paragraph, `<ConfigurationInfo />`, basics section with `<ApiEndpoint>`, then imported shared partials for additional features.
 - Shared partials in `docs/convert-with-chromium/_shared/` cover Chromium-specific features (headers/footers, rendering behavior, HTTP networking, console output, assets).
