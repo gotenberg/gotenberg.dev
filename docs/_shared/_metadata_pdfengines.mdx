@@ -16,15 +16,31 @@ Writing metadata involves modifying the PDF structure and usually breaks **PDF/A
 
 :::
 
-{props.showCurlExample && (
+{(props.showFormFields || props.showCurlExample) && (
 
 <ApiEndpoint
-  curl={`
+  formFields={
+    props.showFormFields
+      ? [
+          {
+            name: "metadata",
+            type: "json",
+            defaultValue: "None",
+            description: "Writes metadata (Author, Title, etc.).",
+          },
+        ]
+      : undefined
+  }
+  curl={
+    props.showCurlExample
+      ? `
 curl \\
 --request ${props.method} http://localhost:3000${props.path} \\
 ${props.curlFormData}
 --form 'metadata={"Author":"Julien Neuhart","Copyright":"Julien Neuhart","CreationDate":"2006-09-18T16:27:50-04:00","Creator":"Gotenberg","Keywords":["first","second"],"Marked":true,"ModDate":"2006-09-18T16:27:50-04:00","PDFVersion":1.7,"Producer":"Gotenberg","Subject":"Sample","Title":"Sample","Trapped":"Unknown"}' \\
 ${props.curlOutput}
-`}
+`
+      : undefined
+  }
 />
 )}

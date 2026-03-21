@@ -5,47 +5,19 @@ import FlattenPDFEngines from "../../_shared/_flatten_pdfengines.mdx";
 
 ## Structure & Metadata
 
+### Document Outline (Chromium)
+
+Automatically creates a PDF bookmark pane (sidebar) based on your HTML headings (`<h1>` to `<h6>`). Your HTML must use proper heading tags to generate the hierarchy.
+
 <ApiEndpoint
   formFields={[
     {
       name: "generateDocumentOutline",
       type: "boolean",
       defaultValue: "false",
-      description:
-        "Chromium feature. Embeds the document outline (bookmarks) into the PDF.",
-    },
-    {
-      name: "metadata",
-      type: "json",
-      defaultValue: "None",
-      description: "Writes metadata (Author, Title, etc.).",
-    },
-    {
-      name: "flatten",
-      type: "boolean",
-      defaultValue: "false",
-      description:
-        "Converts form fields into static content, preventing further editing.",
+      description: "Embeds the document outline (bookmarks) into the PDF.",
     },
   ]}
-  formFiles={[
-    {
-      name: "embeds",
-      type: "file[]",
-      defaultValue: "None",
-      description: "Embeds files into the PDF.",
-    },
-  ]}
-/>
-
-### Document Outline (Chromium)
-
-Use the `generateDocumentOutline` form field to automatically create a PDF bookmark pane (sidebar) based on your HTML headings (`<h1>` to `<h6>`).
-
-- **Process:** Happens _during_ the HTML-to-PDF conversion.
-- **Requirement:** Your HTML must use proper heading tags to generate the hierarchy.
-
-<ApiEndpoint
   curl={`
 curl \\
 --request ${props.method} http://localhost:3000${props.path} \\
@@ -58,6 +30,7 @@ ${props.curlOutput}
 ### Metadata (PDF Engines)
 
 <MetadataPDFEngines
+  showFormFields={true}
   showCurlExample={true}
   method={props.method}
   path={props.path}
@@ -68,6 +41,7 @@ ${props.curlOutput}
 ### Attachments (PDF Engines)
 
 <AttachmentsPDFEngines
+  showFormFields={true}
   showCurlExample={true}
   method={props.method}
   path={props.path}
@@ -78,6 +52,7 @@ ${props.curlOutput}
 ### Flatten (PDF Engines)
 
 <FlattenPDFEngines
+  showFormFields={true}
   showCurlExample={true}
   method={props.method}
   path={props.path}

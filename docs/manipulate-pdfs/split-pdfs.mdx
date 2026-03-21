@@ -117,35 +117,10 @@ Body: Service Unavailable
 
 ## Structure & Metadata
 
-<ApiEndpoint
-  formFields={[
-    {
-      name: "metadata",
-      type: "json",
-      defaultValue: "None",
-      description: "Writes metadata (Author, Title, etc.).",
-    },
-    {
-      name: "flatten",
-      type: "boolean",
-      defaultValue: "false",
-      description:
-        "Converts form fields into static content, preventing further editing.",
-    },
-  ]}
-  formFiles={[
-    {
-      name: "embeds",
-      type: "file[]",
-      defaultValue: "None",
-      description: "Embeds files into the PDF.",
-    },
-  ]}
-/>
-
 ### Metadata (PDF Engines)
 
 <MetadataPDFEngines
+  showFormFields={true}
   showCurlExample={true}
   method="POST"
   path="/forms/pdfengines/split"
@@ -158,6 +133,7 @@ Body: Service Unavailable
 ### Attachments (PDF Engines)
 
 <AttachmentsPDFEngines
+  showFormFields={true}
   showCurlExample={true}
   method="POST"
   path="/forms/pdfengines/split"
@@ -170,6 +146,7 @@ Body: Service Unavailable
 ### Flatten (PDF Engines)
 
 <FlattenPDFEngines
+  showFormFields={true}
   showCurlExample={true}
   method="POST"
   path="/forms/pdfengines/split"

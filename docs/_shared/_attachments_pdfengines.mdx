@@ -6,16 +6,32 @@ Use the `embeds` form field to attach external files directly inside the PDF con
 This is essential for e-invoicing standards like **[ZUGFeRD / Factur-X](https://fnfe-mpe.org/factur-x/)**, which require a human-readable PDF to
 carry a machine-readable XML invoice as an attachment.
 
-{props.showCurlExample && (
+{(props.showFormFields || props.showCurlExample) && (
 
 <ApiEndpoint
-  curl={`
+  formFiles={
+    props.showFormFields
+      ? [
+          {
+            name: "embeds",
+            type: "file[]",
+            defaultValue: "None",
+            description: "Embeds files into the PDF.",
+          },
+        ]
+      : undefined
+  }
+  curl={
+    props.showCurlExample
+      ? `
 curl \\
 --request ${props.method} http://localhost:3000${props.path} \\
 ${props.curlFormData}
 --form embeds=@invoice.xml \\
 --form embeds=@logo.png \\
 ${props.curlOutput}
-`}
+`
+      : undefined
+  }
 />
 )}

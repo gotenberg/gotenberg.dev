@@ -91,14 +91,23 @@ Body: Service Unavailable
 
 ## Structure & Metadata
 
+### Metadata (PDF Engines)
+
+<MetadataPDFEngines
+  showFormFields={true}
+  showCurlExample={true}
+  method="POST"
+  path="/forms/pdfengines/merge"
+  curlFormData={`--form files=@/path/to/1_pdf.pdf \\
+--form files=@/path/to/2_pdf.pdf \\
+--form files=@/path/to/3_pdf.pdf \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+### Bookmarks (PDF Engines)
+
 <ApiEndpoint
   formFields={[
-    {
-      name: "metadata",
-      type: "json",
-      defaultValue: "None",
-      description: "Writes metadata (Author, Title, etc.).",
-    },
     {
       name: "bookmarks",
       type: "json",
@@ -113,39 +122,10 @@ Body: Service Unavailable
       description:
         "Extracts existing bookmarks from input files and offsets their page numbers based on their position in the merged document.",
     },
-    {
-      name: "flatten",
-      type: "boolean",
-      defaultValue: "false",
-      description:
-        "Converts form fields into static content, preventing further editing.",
-    },
-  ]}
-  formFiles={[
-    {
-      name: "embeds",
-      type: "file[]",
-      defaultValue: "None",
-      description: "Embeds files into the PDF.",
-    },
   ]}
 />
 
-### Metadata (PDF Engines)
-
-<MetadataPDFEngines
-  showCurlExample={true}
-  method="POST"
-  path="/forms/pdfengines/merge"
-  curlFormData={`--form files=@/path/to/1_pdf.pdf \\
---form files=@/path/to/2_pdf.pdf \\
---form files=@/path/to/3_pdf.pdf \\`}
-  curlOutput={`-o my.pdf`}
-/>
-
-### Bookmarks (PDF Engines)
-
-Use the `autoIndexBookmarks` form field to automatically extract existing bookmarks from input files and offset their page numbers based on their position in the merged document.
+Use `autoIndexBookmarks` to automatically extract existing bookmarks and offset their page numbers based on position in the merged document.
 
 <ApiEndpoint
   curl={`
@@ -176,6 +156,7 @@ curl \\
 ### Attachments (PDF Engines)
 
 <AttachmentsPDFEngines
+  showFormFields={true}
   showCurlExample={true}
   method="POST"
   path="/forms/pdfengines/merge"
@@ -188,6 +169,7 @@ curl \\
 ### Flatten (PDF Engines)
 
 <FlattenPDFEngines
+  showFormFields={true}
   showCurlExample={true}
   method="POST"
   path="/forms/pdfengines/merge"

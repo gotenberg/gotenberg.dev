@@ -3,15 +3,45 @@ import SyntaxValidationSplitPDFEngines from "../../_shared/_syntax_validation_sp
 
 ## Split & Page Ranges
 
+### Native Printing (Chromium)
+
+Happens _during_ conversion — faster, as unused pages are never rendered.
+
+:::info Page Breaks
+
+Unlike word processors, HTML has no intrinsic concept of "pages" until it is printed. Use CSS fragmentation properties to control breaks:
+
+- `break-inside: avoid;` (prevents an element from being split across two pages).
+- `break-before: always;` or `break-after: always;` (forces a new page).
+
+:::
+
 <ApiEndpoint
   formFields={[
     {
       name: "nativePageRanges",
       type: "string",
       defaultValue: "None",
-      description:
-        "Chromium feature. Define ranges to print (e.g., '1-5, 8, 11-13').",
+      description: "Define ranges to print (e.g., '1-5, 8, 11-13').",
     },
+  ]}
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form nativePageRanges=1-5 \\
+-o my.pdf
+`}
+/>
+
+### Post-Processing (PDF Engines) {#post-processing-pdf-engines-split-page-ranges}
+
+Splits pages _after_ the PDF has been generated using a PDF Engine (like pdfcpu). Returns a single PDF or a ZIP archive.
+
+<SyntaxValidationSplitPDFEngines />
+
+<ApiEndpoint
+  formFields={[
     {
       name: "splitMode",
       type: "enum",
@@ -34,46 +64,6 @@ import SyntaxValidationSplitPDFEngines from "../../_shared/_syntax_validation_sp
         "Only for 'pages' mode. If true, puts all extracted pages into a single PDF file. If false, creates a separate file for each range.",
     },
   ]}
-/>
-
-### Native Printing (Chromium)
-
-Use the `nativePageRanges` form field to instruct Chromium which pages to print.
-
-- **Process:** Happens _during_ the HTML-to-PDF conversion.
-- **Output:** A **single PDF** file containing only the selected pages.
-- **Performance:** Faster, as unused pages are never rendered.
-
-:::info Page Breaks
-
-Unlike word processors, HTML has no intrinsic concept of "pages" until it is printed. To prevent awkward breaks (like a table header being separated from its rows or an image being cut in half), use standard CSS fragmentation properties:
-
-- `break-inside: avoid;` (prevents an element from being split across two pages).
-- `break-before: always;` or `break-after: always;` (forces a new page).
-
-:::
-
-<ApiEndpoint
-  curl={`
-curl \\
---request ${props.method} http://localhost:3000${props.path} \\
-${props.curlFormData}
---form nativePageRanges=1-5 \\
--o my.pdf
-`}
-/>
-
-### Post-Processing (PDF Engines) {#post-processing-pdf-engines-split-page-ranges}
-
-Use the `splitMode`, `splitSpan`, and `splitUnify` form fields to manipulate the PDF _after_ it has been generated.
-
-- **Process:** Gotenberg generates the full PDF, then uses a PDF Engine (like pdfcpu) to split or extract pages.
-- **Output:** A **single PDF** or a **ZIP archive** containing PDF files.
-- **Use Case:** Creating separate files for every page, or extracting intervals into separate documents.
-
-<SyntaxValidationSplitPDFEngines />
-
-<ApiEndpoint
   curl={`
 curl \\
 --request ${props.method} http://localhost:3000${props.path} \\
