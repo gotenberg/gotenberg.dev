@@ -1,8 +1,4 @@
-:::caution Syntax Validation
-
-When `splitMode` is set to **pages**, Gotenberg does **not** validate the `splitSpan` syntax.
-
-The value is passed directly to the underlying PDF Engine, and the valid syntax depends on which engine you have configured:
+When `splitMode` is set to **pages**, Gotenberg does **not** validate the `splitSpan` syntax. The value is passed directly to the underlying PDF Engine, and the valid syntax depends on which engine you have configured:
 
 | Engine               | Syntax Reference                                                                                 |
 | :------------------- | :----------------------------------------------------------------------------------------------- |
@@ -11,5 +7,3 @@ The value is passed directly to the underlying PDF Engine, and the valid syntax 
 | **PDFtk**            | [See PDFtk cat operation](https://www.pdflabs.com/docs/pdftk-man-page/#dest-op-cat)              |
 
 Check the [PDF Engines Configuration](/docs/configuration#pdf-engines) to see which engine is active.
-
-:::
