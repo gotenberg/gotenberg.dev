@@ -413,17 +413,17 @@ export default function Homepage() {
                 </p>
                 <div className={styles.capabilitiesGrid}>
                   <div className={styles.capItem}>
-                    <strong>Merge, Split & Flatten</strong>
+                    <strong>Merge, Split & Transform</strong>
                     <span>
-                      Combine dozens of PDFs, extract specific page intervals,
-                      or flatten form fields.
+                      Combine PDFs, extract page ranges, rotate, flatten form
+                      fields, watermark, and stamp.
                     </span>
                   </div>
                   <div className={styles.capItem}>
                     <strong>Security & Metadata</strong>
                     <span>
-                      Secure documents with user/owner passwords, embed
-                      attachments, and read or write custom metadata.
+                      Encrypt with user/owner passwords. Embed attachments. Read
+                      or write metadata and bookmarks.
                     </span>
                   </div>
                 </div>
