@@ -6,32 +6,17 @@ title: Webhook & Download
 import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
 import Sponsors from "@site/src/components/documentation/Sponsors";
 
-Handle long-running processes or fetch external assets without keeping persistent connections open.
+Asynchronous processing and external file delivery.
 
 ## Webhooks
 
-By default, Gotenberg handles requests synchronously: you send a file, wait, and get a PDF back.
-However, for large files or batch operations, you may prefer an **asynchronous** workflow.
+By default, requests are synchronous: you send a file and wait for the PDF. For large files or batch operations, add webhook headers to switch to async:
 
-When Webhook headers are provided:
+1. Gotenberg validates the request and returns `204 No Content`.
+2. The conversion runs in the background.
+3. The result is POSTed to your `Gotenberg-Webhook-Url`.
 
-1. Gotenberg immediately validates the request.
-2. Returns a `204 No Content` response.
-3. Processes the conversion in the background.
-4. Uploads the resulting PDF to the URL specified in `Gotenberg-Webhook-Url`.
-
-:::info Configuration
-
-You can customize retries, timeouts, and allowed URLs.
-See the [Webhook module configuration](/docs/configuration#webhook) for details.
-
-:::
-
-:::tip Testing Webhooks
-
-Tools like [PipeDream](https://pipedream.com/) or [Webhook.site](https://webhook.site) are excellent for testing these callbacks without setting up a dedicated server.
-
-:::
+See the [Webhook module configuration](/docs/configuration#webhook) for retries, timeouts, and allowed URLs. Tools like [PipeDream](https://pipedream.com/) or [Webhook.site](https://webhook.site) are great for testing.
 
 <ApiEndpoint
   method="POST"
@@ -158,7 +143,7 @@ The `downloadFrom` field accepts a **JSON-formatted array**. Each item in the ar
 | :----------------- | :------------------------------------------------------------------------------------------------------------------------------------------ | :--------------------------------------------------------------- |
 | `url`              | URL of the file. The remote server **MUST** return a `Content-Disposition` header with a `filename` parameter.                              | <span style={{color: 'var(--ifm-color-danger)'}}>Required</span> |
 | `extraHttpHeaders` | A JSON object containing extra HTTP headers to send when fetching this specific URL.                                                        | `None`                                                           |
-| `embedded`         | Whether this file should be embedded (legacy — prefer `field`).                                                                             | `false`                                                          |
+| `embedded`         | Whether this file should be embedded (legacy, prefer `field`).                                                                              | `false`                                                          |
 | `field`            | Routes the downloaded file to a specific form field: `"embedded"`, `"watermark"`, or `"stamp"`. When set, takes precedence over `embedded`. | `""` (regular file)                                              |
 
 :::warning Known Issue: Empty Media Types

@@ -140,7 +140,7 @@ curl \\
 
 You can also provide custom bookmarks with the `bookmarks` form field. When provided as a **list**, it is applied directly to the final merged PDF. When provided as a **map** of filename to bookmarks, page indexes are shifted per file before merging.
 
-Both options work together — when `autoIndexBookmarks` is enabled, Gotenberg respects your custom mappings for specific files while automatically recalculating indexes for the others.
+Both options work together. When `autoIndexBookmarks` is enabled, Gotenberg respects your custom mappings for specific files while automatically recalculating indexes for the others.
 
 <ApiEndpoint
   curl={`

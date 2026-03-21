@@ -1,24 +1,24 @@
 # Operational Guidelines for Gotenberg Documentation
 
-You are working on **gotenberg.dev**, the official documentation website for [Gotenberg](https://github.com/gotenberg/gotenberg) — a Docker-based API for converting documents to PDF. This is a Docusaurus 3.x site serving the public-facing docs at https://gotenberg.dev. Accuracy and clarity are paramount: users rely on this documentation to integrate Gotenberg into production systems.
+You are working on **gotenberg.dev**, the official documentation website for [Gotenberg](https://github.com/gotenberg/gotenberg), a Docker-based API for converting documents to PDF. This is a Docusaurus 3.x site serving the public-facing docs at https://gotenberg.dev. Accuracy and clarity are paramount: users rely on this documentation to integrate Gotenberg into production systems.
 
 ## Mandatory Workflow
 
 Every task follows these five steps **in order**. Do not skip or reorder them.
 
-### Step 1 — Plan
+### Step 1: Plan
 
 Before writing any code or content:
 
 1. State the problem or request.
 2. Propose a solution.
 3. List alternatives when pertinent.
-4. Define scope — which files will be created, modified, or deleted.
+4. Define scope: which files will be created, modified, or deleted.
 5. Describe the verification strategy.
 
 **Wait for user approval before proceeding.**
 
-### Step 2 — Implement
+### Step 2: Implement
 
 Execute the approved plan. After implementation, verify the site builds cleanly:
 
@@ -26,7 +26,7 @@ Execute the approved plan. After implementation, verify the site builds cleanly:
 npm run build
 ```
 
-### Step 3 — Test
+### Step 3: Test
 
 Verify the changes:
 
@@ -36,7 +36,7 @@ Verify the changes:
 - Components render correctly at desktop (1440px), laptop (1024px), and tablet (768px) widths.
 - No console errors or React warnings in the browser.
 
-### Step 4 — Review
+### Step 4: Review
 
 Self-review against this checklist, then present findings to the user:
 
@@ -44,15 +44,15 @@ Self-review against this checklist, then present findings to the user:
 - [ ] **Backward compatibility.** No broken links, no removed content without replacement, no changed URLs.
 - [ ] **Consistency.** Follows established page structure, component usage, and terminology.
 - [ ] **Code quality.** Formatted with Prettier (`npm run format`), no linting errors, no unused imports.
-- [ ] **Documentation.** Shared partials used where appropriate — no duplicated content across pages.
+- [ ] **Documentation.** Shared partials used where appropriate. No duplicated content across pages.
 - [ ] **Build.** `npm run build` passes without errors or warnings.
 
-### Step 5 — Commit
+### Step 5: Commit
 
 **Only after explicit user approval.**
 
 - Use [Conventional Commits](https://www.conventionalcommits.org/) (e.g., `docs:`, `feat:`, `fix:`, `style:`).
-- Stage specific files only — never `git add -A` or `git add .`.
+- Stage specific files only. Never `git add -A` or `git add .`.
 - Write a concise commit message that explains _why_, not just _what_.
 
 ---
@@ -60,7 +60,12 @@ Self-review against this checklist, then present findings to the user:
 ## Core Principles
 
 - **Accuracy is law.** Every code sample, form field name, endpoint path, and configuration flag must match the actual Gotenberg API. When in doubt, cross-reference with the [Gotenberg source](https://github.com/gotenberg/gotenberg).
-- **User-first writing.** Write for developers who want to get things done. Lead with the most common use case, then cover edge cases.
+- **Direct, confident tone.** Short declarative sentences. No filler words, no hedging ("you might want to", "please feel free to"). Say what something does, not what it is. Lead with the action or outcome.
+- **No robotic patterns.** Never start with "This endpoint...", "This route...", or "Use the X form field to...". Describe what it does for the user, not what the object is.
+- **Inline over admonitions.** Integrate warnings and notes into prose. Reserve `:::info`, `:::warning`, `:::danger` for genuinely critical information that must stand out. Most pages should have zero or one admonition.
+- **No "we" hedging.** Avoid "We do not recommend...", "We offer...", "We have...". Speak directly: "Don't expose...", "There's a dedicated image...".
+- **One sentence, not two.** If the second sentence restates the first with more words, delete it.
+- **No em dashes.** Never use `—` in any markdown file. Use a period, colon, or comma instead.
 - **Consistency.** Follow established patterns for page structure, component usage, and terminology. Every API doc page uses the same layout and components.
 - **No broken builds.** The site must build cleanly (`npm run build`) before any change is considered complete.
 
@@ -78,13 +83,13 @@ Self-review against this checklist, then present findings to the user:
 
 All API endpoint documentation uses the `<ApiEndpoint>` React component (`src/components/documentation/ApiEndpoint.js`). It accepts:
 
-- `method` — HTTP method (GET, POST, HEAD)
-- `path` — Endpoint path (e.g., `/forms/chromium/convert/html`)
-- `headers` — Array of `{ name, type, required, description }` objects
-- `formFields` — Array of `{ name, type, required, description, defaultValue }` objects
-- `formFiles` — Array of `{ name, type, required, description }` objects
-- `curl` — Example cURL command string
-- `responses` — Array of `{ status, description, body }` objects
+- `method`: HTTP method (GET, POST, HEAD)
+- `path`: Endpoint path (e.g., `/forms/chromium/convert/html`)
+- `headers`: Array of `{ name, type, required, description }` objects
+- `formFields`: Array of `{ name, type, required, description, defaultValue }` objects
+- `formFiles`: Array of `{ name, type, required, description }` objects
+- `curl`: Example cURL command string
+- `responses`: Array of `{ status, description, body }` objects
 
 ### Shared MDX Partials
 
@@ -118,24 +123,26 @@ Content for writing or editing documentation pages (new pages, fixing docs, rewo
 
 ### Page Structure Convention
 
-Every API endpoint documentation page follows this exact structure:
+Every API endpoint documentation page follows this structure:
 
-1. **Frontmatter** — `id` and `title` fields
-2. **Imports** — Shared MDX partials and React components
-3. **Intro paragraph** — One or two sentences explaining what the endpoint does
-4. **`<ConfigurationInfo />`** — Links to the configuration page for related flags
-5. **`## Basics`** — The `<ApiEndpoint>` component with method, path, headers, form fields/files, cURL example, and responses
-6. **Feature sections** — Imported shared partials (`<Assets />`, `<RenderingBehaviorPDF />`, `<HeaderFooter />`, etc.)
-7. **`<Sponsors />`** — Sponsor component at the bottom
+1. **Frontmatter:** `id` and `title` fields
+2. **Imports:** Shared MDX partials and React components
+3. **Intro line:** One direct sentence saying what the endpoint does
+4. **Configuration link:** Links to the configuration page for related flags (Chromium/LibreOffice pages)
+5. **`## Basics`:** The `<ApiEndpoint>` component with method, path, headers, form fields/files, cURL example, and responses. Only used on pages with multiple sections; single-section pages skip this heading.
+6. **Feature sections:** Each sub-section owns its form fields directly (no summary-then-detail duplication). Shared partials with `showFormFields={true}` render their own field definitions.
+7. **`<Sponsors />`:** Sponsor component at the bottom
 
-Do not deviate from this structure. New pages must follow existing pages as templates.
+New pages must follow existing pages as templates.
 
 ### Writing Style
 
-- **Be direct.** Lead with what the endpoint does, not background context.
-- **Use second person.** "You can", "your files", not "the user can".
-- **Keep paragraphs short.** Two to four sentences maximum.
+- **Short, declarative sentences.** Say what it does, then stop. No filler, no hedging.
+- **Lead with the action.** "Merges multiple PDF files" not "This endpoint allows you to merge multiple PDF files".
+- **Use second person sparingly.** "your files", "your HTML", but don't overuse "you can".
 - **Prefer active voice.** "Gotenberg converts the file" not "The file is converted by Gotenberg".
+- **Inline over admonitions.** Integrate caveats into prose. Only use `:::info`, `:::warning`, `:::danger` for genuinely critical information.
+- **No "Use the X form field to..." pattern.** Describe the outcome directly: "Inject XMP metadata into the PDF" not "Use the `metadata` form field to inject XMP metadata".
 - **Use inline code** for all technical terms: form field names (`url`), header names (`Gotenberg-Trace`), endpoint paths (`/forms/chromium/convert/url`), file names (`index.html`), CLI flags (`--api-port`), and environment variables.
 
 ### ApiEndpoint Component Usage
@@ -187,10 +194,10 @@ Key rules:
 
 Reusable documentation blocks live in `_shared/` directories:
 
-- `docs/convert-with-chromium/_shared/` — Chromium features (assets, console, encryption, header/footer, HTTP networking, rendering behavior, structure metadata, PDF/A, split/page ranges)
-- `docs/_shared/` — PDF engine features (attachments, encryption, flatten, metadata, PDF/A-UA, syntax validation)
+- `docs/convert-with-chromium/_shared/`: Chromium features (assets, console, encryption, header/footer, HTTP networking, rendering behavior, structure metadata, PDF/A, split/page ranges)
+- `docs/_shared/`: PDF engine features (attachments, encryption, flatten, metadata, PDF/A-UA, syntax validation)
 
-When a feature applies to multiple endpoints, it MUST be a shared partial. Never duplicate content across pages — import the partial instead.
+When a feature applies to multiple endpoints, it MUST be a shared partial. Never duplicate content across pages. Import the partial instead.
 
 ### Admonitions
 
@@ -226,7 +233,7 @@ When adding a new page, update `sidebars.js`:
 
 ### Versioning
 
-The site supports versioned documentation (`versioned_docs/`, `versions.json`). Current docs live in `docs/`. Do not modify versioned docs unless explicitly asked — changes to `docs/` apply to the current (next) version only.
+The site supports versioned documentation (`versioned_docs/`, `versions.json`). Current docs live in `docs/`. Do not modify versioned docs unless explicitly asked. Changes to `docs/` apply to the current (next) version only.
 
 ---
 
@@ -238,7 +245,7 @@ Content for modifying site design, React components, styles, or layout (CSS, the
 
 - **Framework:** Docusaurus 3.8.1 (React 18)
 - **Styling:** CSS Modules (`.module.css`) for components, global CSS (`src/css/custom.css`) for theme overrides
-- **Fonts:** Inter (body, headings), JetBrains Mono (code) — loaded via Google Fonts
+- **Fonts:** Inter (body, headings), JetBrains Mono (code), loaded via Google Fonts
 - **Icons:** Inline SVGs in React components (no icon library)
 - **Images:** `@docusaurus/plugin-ideal-image` for optimized images
 
@@ -275,7 +282,7 @@ HTTP method badge colors:
 - Max content width: 840px (`.theme-doc-markdown`)
 - Container width: 1366px
 - Navbar height: 4rem
-- Light mode only — dark mode switch is disabled
+- Light mode only (dark mode switch is disabled)
 
 ### Component Architecture
 
@@ -307,7 +314,7 @@ Renders sponsor logos at the bottom of documentation pages.
 
 ### Theme Overrides
 
-- `src/theme/DocSidebar/index.js` — Custom sidebar with HTTP method badges via CSS pseudo-elements
+- `src/theme/DocSidebar/index.js`: Custom sidebar with HTTP method badges via CSS pseudo-elements
 - Sidebar badges are implemented purely in CSS using `::before` pseudo-elements on `.sidebar-method-*` classes
 
 ### CSS Conventions
@@ -321,10 +328,10 @@ Renders sponsor logos at the bottom of documentation pages.
 
 ### Docusaurus Integration
 
-- Respect Docusaurus's Infima CSS framework — override with specificity, not `!important` (except documented exceptions)
+- Respect Docusaurus's Infima CSS framework. Override with specificity, not `!important` (except documented exceptions).
 - Use `@docusaurus/Link` for internal navigation, not `<a>` tags
 - Use `useBaseUrl` for static asset paths
-- Swizzled components live in `src/theme/` — be cautious when upgrading Docusaurus
+- Swizzled components live in `src/theme/`. Be cautious when upgrading Docusaurus.
 
 ### Responsive Design
 

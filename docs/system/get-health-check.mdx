@@ -6,9 +6,7 @@ title: Health Check
 import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
 import Sponsors from "@site/src/components/documentation/Sponsors";
 
-Returns the operational status of the API and its modules.
-
-This endpoint verifies that the server is accepting requests and that all active modules (Chromium, LibreOffice) are in a healthy state. It returns a JSON object detailing the status of each subsystem. It is designed for use by container orchestrators (e.g., Kubernetes Liveness Probes) or monitoring agents.
+Reports whether the API and its modules (Chromium, LibreOffice) are healthy. Use it for Kubernetes liveness probes or monitoring agents.
 
 <ApiEndpoint
   method="GET"

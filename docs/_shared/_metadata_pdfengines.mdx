@@ -1,20 +1,8 @@
 import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
 
-Use the `metadata` form field to inject XMP metadata into the generated PDF. This allows you to set properties like
-**Author**, **Title**, **Copyright**, and **Keywords** by passing a **JSON-formatted object**.
+Inject XMP metadata (Author, Title, Copyright, Keywords, etc.) into the PDF as a JSON object.
 
-:::info Valid Keys
-
-Not all metadata tags are writable. Gotenberg relies on ExifTool for this operation.
-[See the XMP Tag Name documentation](https://exiftool.org/TagNames/XMP.html#pdf) for a list of potential keys.
-
-:::
-
-:::caution Compliance Warning
-
-Writing metadata involves modifying the PDF structure and usually breaks **PDF/A** compliance.
-
-:::
+Not all tags are writable. Gotenberg uses ExifTool under the hood. See the [XMP Tag Name documentation](https://exiftool.org/TagNames/XMP.html#pdf) for valid keys. Writing metadata usually breaks **PDF/A** compliance.
 
 {(props.showFormFields || props.showCurlExample) && (
 

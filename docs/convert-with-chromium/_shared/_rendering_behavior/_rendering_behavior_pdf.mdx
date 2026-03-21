@@ -160,7 +160,7 @@ ${props.curlOutput}
 
 ### Standard Paper Sizes
 
-The following standard paper sizes are in inches (width x height), ordered from smallest to largest:
+Dimensions in inches (width × height):
 
 | Format | Dimensions   | Format (US) | Dimensions         |
 | :----- | :----------- | :---------- | :----------------- |
@@ -174,23 +174,16 @@ The following standard paper sizes are in inches (width x height), ordered from 
 
 ### Single Page
 
-If `singlePage` is set to **true**, it automatically overrides the values from `paperHeight` and `nativePageRanges`.
+When `singlePage` is `true`, it overrides `paperHeight` and `nativePageRanges`.
 
 ### Print Media
 
-**Chromium uses the print media type.**
-By default, browsers optimize pages for printing by removing background colors/images and adjusting the layout to save ink.
+Chromium defaults to `print` media: backgrounds are removed and layout is optimized for ink. If your PDF looks different from the browser, this is probably why.
 
-If your generated PDF looks different from what you see in a browser viewport, it is likely because `print` media styles are being applied or background graphics are disabled.
-
-:::info Cheatsheets
-
-- Use `@media print` in your CSS to define specific styles for the PDF (e.g., hiding navigation bars or buttons).
-- Alternatively, use the `emulatedMediaType` form field to force the media type to `screen`.
-- To force background colors and images to appear, enable the `printBackground` form field in your request.
-- You can control paper size and margins via CSS using the `@page` rule. Note that for Gotenberg to respect these rules, you must enable the `preferCssPageSize` form field.
-
-:::
+- `@media print` in CSS lets you hide elements (nav bars, buttons) from the PDF.
+- Set `emulatedMediaType` to `screen` to match the browser viewport.
+- Enable `printBackground` to include background colors and images.
+- Control paper size and margins via the CSS `@page` rule (requires `preferCssPageSize`).
 
 <EmulatedMediaFeatures
   method={props.method}

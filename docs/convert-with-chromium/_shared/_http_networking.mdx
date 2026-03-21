@@ -85,7 +85,7 @@ ${props.curlOutput}
 
 ### Cookies
 
-The `cookies` form field accepts a **JSON-formatted array** of cookie objects. It allows you to authenticate requests or maintain session state during the conversion process.
+A JSON array of cookie objects for authentication or session state.
 
 **Cookie Object Schema**
 
@@ -99,13 +99,7 @@ The `cookies` form field accepts a **JSON-formatted array** of cookie objects. I
 | **`httpOnly`** | If `true`, the cookie is inaccessible to JavaScript (`document.cookie`). | `None`                                                           |
 | **`sameSite`** | Controls cross-site behavior. Values: `"Strict"`, `"Lax"`, `"None"`.     | `None`                                                           |
 
-:::info Session Lifecycle
-
-Cookies are transient and automatically expire when the request reaches its time limit.
-
-To ensure strict isolation between conversions (preventing data leakage), you can configure the API to explicitly clear the cookie jar after every request. See [API Configuration](/docs/configuration#api) for details.
-
-:::
+Cookies expire when the request reaches its time limit. For strict isolation between conversions, configure the API to clear the cookie jar after every request. See [API Configuration](/docs/configuration#api).
 
 <ApiEndpoint
   curl={`
@@ -119,30 +113,14 @@ ${props.curlOutput}
 
 ### HTTP Headers
 
-The `extraHttpHeaders` form field accepts a **JSON-formatted object** representing the HTTP headers to send with every request.
+A JSON object of headers sent with every browser request (including images, stylesheets, scripts).
 
-**Schema**
+To restrict a header to specific URLs, append `;scope=` with a regex. The scope token is stripped before sending.
 
-This is a key-value map where:
+**Example:** `"X-Internal-Token": "secret-123;scope=.*\\.internal\\.api"`
 
-- **Key:** The header name (e.g., `Authorization`, `X-Custom-Header`).
-- **Value:** The header value (string).
-
-:::info Scoped Headers
-
-By default, headers are sent with **every** request made by the browser (including images, stylesheets, and scripts).
-
-To restrict a header to specific URLs, append a `;scope=` token containing a **Regular Expression**. Gotenberg will process this token and only send the header if the target URL matches the regex.
-
-**Example:**
-`"X-Internal-Token": "secret-123;scope=.*\\.internal\\.api"`
-
-- **Matches:** `https://data.internal.api/v1` (Header sent)
-- **Ignores:** `https://google.com/fonts` (Header NOT sent)
-
-_Note: The `scope` token is stripped before the header is sent to the server._
-
-:::
+- `https://data.internal.api/v1` → header sent
+- `https://google.com/fonts` → header not sent
 
 <ApiEndpoint
   curl={`
@@ -156,9 +134,7 @@ ${props.curlOutput}
 
 ### Invalid HTTP Status Codes
 
-You can configure Gotenberg to return a `409 Conflict` error if the main page or its resources return specific HTTP status codes.
-
-These fields accept a **JSON-formatted array** of integers.
+Return a `409 Conflict` if the main page or its resources return specific HTTP status codes (JSON array of integers).
 
 | Field                               | Description                                                          |
 | :---------------------------------- | :------------------------------------------------------------------- |
@@ -167,19 +143,14 @@ These fields accept a **JSON-formatted array** of integers.
 
 #### Status Code Ranges
 
-You can define ranges using the **X99** notation:
+Ranges use the **X99** notation:
 
 - `499` matches every code from **400 to 499**.
 - `599` matches every code from **500 to 599**.
 
 #### Domain Exclusions
 
-Use `ignoreResourceHttpStatusDomains` to prevent failures for specific third-party assets (e.g., analytics or tracking scripts that might fail without affecting the PDF).
-
-**Matching Rules:**
-Gotenberg matches if the asset's hostname **equals** or is a **subdomain** of the entry.
-
-Input values are automatically normalized (trimmed, lowercased, port/scheme removed):
+Exclude third-party assets (analytics, tracking scripts) from status code checks with `ignoreResourceHttpStatusDomains`. Matches if the hostname equals or is a subdomain of the entry. Values are normalized (trimmed, lowercased, port/scheme stripped):
 
 - `example.com`
 - `*.example.com` or `.example.com`
@@ -213,9 +184,7 @@ Body: Invalid HTTP status code from the main page: 400: Bad Request
 
 ### Network Errors
 
-Gotenberg automatically validates the connection to the **main page** URL. If the browser encounters any of the following critical network errors, the API immediately returns `400 Bad Request` to indicate the page could not be reached.
-
-**Critical Error List**
+If the browser hits a critical network error on the main page, the API returns `400 Bad Request`:
 
 - `net::ERR_CONNECTION_CLOSED`
 - `net::ERR_CONNECTION_RESET`
@@ -230,8 +199,4 @@ Gotenberg automatically validates the connection to the **main page** URL. If th
 - `net::ERR_FILE_NOT_FOUND`
 - `net::ERR_HTTP2_PROTOCOL_ERROR`
 
-:::tip Strict Resource Validation
-By default, if an **image** or **stylesheet** fails to load (e.g., a broken 404 image link), the PDF is still generated with a missing asset icon.
-
-To force the conversion to **fail** completely when _any_ resource encounters a network error, set the `failOnResourceLoadingFailed` form field to `true`.
-:::
+By default, a broken image or stylesheet won't fail the conversion. The PDF is generated with missing assets. Set `failOnResourceLoadingFailed` to `true` to fail on any resource network error.

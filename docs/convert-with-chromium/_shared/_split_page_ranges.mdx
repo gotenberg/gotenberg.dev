@@ -5,16 +5,7 @@ import SyntaxValidationSplitPDFEngines from "../../_shared/_syntax_validation_sp
 
 ### Native Printing (Chromium)
 
-Happens _during_ conversion — faster, as unused pages are never rendered.
-
-:::info Page Breaks
-
-Unlike word processors, HTML has no intrinsic concept of "pages" until it is printed. Use CSS fragmentation properties to control breaks:
-
-- `break-inside: avoid;` (prevents an element from being split across two pages).
-- `break-before: always;` or `break-after: always;` (forces a new page).
-
-:::
+Happens _during_ conversion. Faster, as unused pages are never rendered. Control page breaks with CSS: `break-inside: avoid`, `break-before: always`, `break-after: always`.
 
 <ApiEndpoint
   formFields={[

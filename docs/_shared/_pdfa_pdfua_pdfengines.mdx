@@ -1,28 +1,10 @@
 import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
 
-Use the `pdfa` and `pdfua` form fields to convert the result into a standardized PDF format during _post-processing_.
+Converts to PDF/A (archival) or PDF/UA (accessibility) during post-processing using LibreOffice. Slower than native conversion (requires a second pass).
 
-- **Process:** Gotenberg generates the result, then re-processes it using LibreOffice (the only engine supporting these standards).
-- **Performance:** Slower (requires a second conversion pass).
-- **Result:** A compliant PDF/A (Archival) or PDF/UA (Universal Accessibility) document.
+PDF/A and encryption are mutually exclusive: requesting both returns `400 Bad Request`. PDF/A-1b and PDF/A-2b don't support file attachments; use PDF/A-3b if you need both.
 
-:::danger
-
-PDF/A and encryption are mutually exclusive — requesting both returns a `400 Bad Request`.
-
-:::
-
-:::warning
-
-PDF/A-1b and PDF/A-2b do not support file attachments. Use PDF/A-3b if you need both archival compliance and embedded files.
-
-:::
-
-:::info Metadata Limitation
-
-When PDF/A conversion runs alongside other post-processing features, LibreOffice overwrites certain XMP metadata fields during the compliance pass. The `CreateDate`, `ModDate`, and `Keywords` fields are not reliably user-controllable in these scenarios. Other metadata fields (`Author`, `Copyright`, `Creator`, `Producer`, `Subject`, `Title`, `Trapped`, `Marked`) are correctly preserved.
-
-:::
+When PDF/A runs alongside other post-processing, LibreOffice overwrites `CreateDate`, `ModDate`, and `Keywords`. Other metadata fields are preserved.
 
 {props.showFormFields && props.showCurlExample && (
 

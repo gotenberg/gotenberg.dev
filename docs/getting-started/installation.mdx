@@ -5,26 +5,15 @@ title: Installation
 
 import Sponsors from "@site/src/components/documentation/Sponsors";
 
-This guide is not intended to provide a comprehensive tour of Docker and its orchestrators. Rather, it's designed to
-be concise enough to assist beginners in getting started while helping power users sidestep potential pitfalls.
+Don't expose Gotenberg to the public internet. Treat it like a database: keep it behind your firewall.
 
-:::danger
+## Live Demo
 
-We do not recommend exposing your instances to the external world. In terms of security, you should consider Gotenberg
-as a database.
-
-:::
-
-## Live Demo 🔥
-
-Before downloading the Docker image, you might want to experiment with Gotenberg. We offer a demo API for this purpose:
+Try the API without installing anything:
 
 - https://demo.gotenberg.dev
 
-As you navigate through the documentation, feel free to open a terminal or [Bruno](https://www.usebruno.com/) and try
-out the routes using the demo URL.
-
-For instance:
+Open a terminal and run:
 
 ```bash
 curl \
@@ -33,46 +22,23 @@ curl \
 -o my.pdf
 ```
 
-:::info
-
-The demo operates on a [Render](https://render.com) instance with 512MB of RAM and 0.5 CPU.
-
-:::
-
-At present, the restrictions are:
-
-- A maximum of two requests per second per IP.
-- A body limit of 5MB.
+The demo runs on a [Render](https://render.com) instance (512MB RAM, 0.5 CPU) with rate limits: 2 requests/second per IP, 5MB body limit.
 
 ## Docker
-
-To start a default Docker container of Gotenberg, run:
 
 ```bash
 docker run --rm -p "3000:3000" gotenberg/gotenberg:8
 ```
 
-:::info
+The API is now available at [http://localhost:3000](http://localhost:3000).
 
-The API will be available at [http://localhost:3000](http://localhost:3000).
-
-:::
-
-:::caution
-
-Publishing container ports is insecure by default. Meaning, when you publish a container's ports it becomes available not only to the Docker host, but to the outside world as well.
-
-If you include the localhost IP address (127.0.0.1, or ::1) with the publish flag, only the Docker host and its containers can access the published container port.
-
-:::
+By default, published ports are accessible from the outside world. Bind to localhost for a more secure setup:
 
 ```bash
 docker run --rm -p "127.0.0.1:3000:3000" gotenberg/gotenberg:8
 ```
 
 ## Docker Compose
-
-Incorporating Gotenberg into your Docker Compose services stack is as straightforward as:
 
 ```yaml title="compose.yaml"
 services:
@@ -82,16 +48,9 @@ services:
     image: gotenberg/gotenberg:8
 ```
 
-:::info
+Other services in the same Compose network can reach Gotenberg at `gotenberg:3000`.
 
-The API will be accessible at [gotenberg:3000](http://gotenberg:3000) within your Docker Compose network.
-This means your other services can interact with Gotenberg using [gotenberg:3000](http://gotenberg:3000).
-
-:::
-
----
-
-If you want to expose the API on your host, consider adding a `ports` section:
+To also expose it on your host, add a `ports` section:
 
 ```yaml title="compose.yaml"
 services:
@@ -105,23 +64,11 @@ services:
       # - "127.0.0.1:3000:3000"
 ```
 
-:::info
-
-The API will be available at [http://localhost:3000](http://localhost:3000).
-
-:::
-
 ## Kubernetes
 
-The Docker image runs as a non-root user named _gotenberg_, with a user ID (UID) and group ID (GID) of **1001**.
+The image runs as a non-root user `gotenberg` (UID/GID **1001**). Since _8.21.0_, [arbitrary user IDs (OpenShift)](https://docs.redhat.com/en/documentation/openshift_container_platform/4.15/html/images/creating-images#enable-images-for-source-to-image_create-images) are also supported.
 
-:::info
-
-Since Gotenberg _8.21.0_, the image also supports [arbitrary user IDs (OpenShift)](https://docs.redhat.com/en/documentation/openshift_container_platform/4.15/html/images/creating-images#enable-images-for-source-to-image_create-images).
-
-:::
-
-When defining the pod’s deployment spec, make sure to include the following:
+Include this in your pod’s deployment spec:
 
 ```yaml
 securityContext:
@@ -131,43 +78,32 @@ securityContext:
   runAsUser: 1001 # unless using an arbitrarily assigned user ID.
 ```
 
-Additionally, ensure the container has adequate resource allocations — at least 512Mi of memory and 0.2 CPU.
-
-A community-maintained Helm chart is also available at [MaikuMori/helm-charts](https://github.com/MaikuMori/helm-charts) and on
-[ArtifactHub](https://artifacthub.io/packages/helm/maikumori/gotenberg).
+Allocate at least 512Mi of memory and 0.2 CPU. A community-maintained Helm chart is available at [MaikuMori/helm-charts](https://github.com/MaikuMori/helm-charts) ([ArtifactHub](https://artifacthub.io/packages/helm/maikumori/gotenberg)).
 
 ## Cloud Run
-
-We have a dedicated Docker image tag specifically for this provider:
 
 ```
 gotenberg/gotenberg:8-cloudrun
 ```
 
-This image is preconfigured for Cloud Run:
+Preconfigured for Cloud Run:
 
 - Uses the `PORT` environment variable provided by Cloud Run.
 - Logs in a format compatible with Cloud Run.
 - Auto-starts Chromium and LibreOffice for faster readiness.
 - Uses synchronous webhook mode, since Cloud Run may stop the container if there’s no HTTP activity.
 
-:::tip
-
-At least 1Gi of memory is required for a [smooth experience](https://github.com/gotenberg/gotenberg/issues/950#issuecomment-2329228662).
-
-Consider using HTTP/2 to bypass the [32MB request size limit](https://cloud.google.com/run/quotas?hl=en).
-
-:::
+Allocate at least 1Gi of memory for a [smooth experience](https://github.com/gotenberg/gotenberg/issues/950#issuecomment-2329228662). Consider HTTP/2 to bypass the [32MB request size limit](https://cloud.google.com/run/quotas?hl=en).
 
 ## AWS Lambda (Beta)
 
-We provide a dedicated Docker image tag, available on both `linux/amd64` and `linux/arm64` architectures:
+Available on `linux/amd64` and `linux/arm64`:
 
 ```
 gotenberg/gotenberg:8-aws-lambda
 ```
 
-This image is preconfigured for AWS Lambda:
+Preconfigured for AWS Lambda:
 
 - Uses the `AWS_LWA_PORT` environment variable to configure its port.
 - Set `AWS_LWA_READINESS_CHECK_PATH` with the route `/health`.
@@ -175,25 +111,12 @@ This image is preconfigured for AWS Lambda:
 - Uses synchronous webhook mode, since AWS may stop the container if there’s no HTTP activity.
 - See https://github.com/awslabs/aws-lambda-web-adapter for more AWS related options.
 
-:::tip
+The `buffered` invoke mode supports responses up to 6MB. For larger outputs, use the webhook feature to upload results to S3.
 
-The `buffered` invoke mode supports responses of up to 6MB only.
-
-For larger outputs, consider using the webhook feature to upload results to S3.
-
-:::
-
-:::info
-
-There is an [ongoing discussion](https://github.com/gotenberg/gotenberg/issues/540) about improving this variant.
-
-If you have feedback, please feel free to share it in the thread!
-
-:::
+There is an [ongoing discussion](https://github.com/gotenberg/gotenberg/issues/540) about improving this variant. Feedback welcome.
 
 ## What's Next?
 
-Now that you have Gotenberg up and running, you can start using it. Install a custom [client](clients) or
-read the [routes guide](/docs/convert-with-chromium/convert-url-to-pdf) to learn more.
+Install a [client](clients) or jump to the [routes guide](/docs/convert-with-chromium/convert-url-to-pdf).
 
 <Sponsors />

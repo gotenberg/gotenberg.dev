@@ -6,15 +6,7 @@ title: Prometheus Metrics
 import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
 import Sponsors from "@site/src/components/documentation/Sponsors";
 
-This endpoint exposes internal telemetry data in a plain-text format ready to be scraped by [Prometheus](https://prometheus.io/). U
-se this route to monitor internal performance metrics to integrate Gotenberg into your observability stack.
-
-:::info Configuration
-
-You can configure the Prometheus module behavior.
-See the [Prometheus module configuration](/docs/configuration#prometheus) for details.
-
-:::
+Exposes internal metrics in [Prometheus](https://prometheus.io/) format. See the [Prometheus module configuration](/docs/configuration#prometheus) for details.
 
 <ApiEndpoint
   method="GET"

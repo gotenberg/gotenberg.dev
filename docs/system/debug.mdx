@@ -6,15 +6,9 @@ title: Debug
 import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
 import Sponsors from "@site/src/components/documentation/Sponsors";
 
-Retrieves the current configuration and module details.
+Returns the runtime configuration, active modules, and dependency versions (Chromium, LibreOffice). Useful for troubleshooting and verifying startup flags.
 
-This route returns a structured list of the application's runtime configuration, active modules, and the specific versions of underlying dependencies (such as the Chromium or LibreOffice binaries). It is primarily used for troubleshooting environment setups and verifying that startup flags have been correctly applied.
-
-:::info
-
-This route is only available if the `API_ENABLE_DEBUG_DATA` environment variable is set to true.
-
-:::
+Only available when `API_ENABLE_DEBUG_DATA` is set to `true`.
 
 <ApiEndpoint
   method="GET"

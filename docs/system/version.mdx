@@ -6,17 +6,9 @@ title: Version
 import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
 import Sponsors from "@site/src/components/documentation/Sponsors";
 
-Retrieves the build version and package details of the running Gotenberg instance.
+Returns the version of the running Gotenberg instance. Useful for verifying deployments.
 
-This route returns a JSON object containing the specific version tag (e.g., `8.0.0`) and the package name. It is useful for verifying deployments or logging environment details.
-
-:::info
-
-Custom variants of Gotenberg may not print a strict semver version.
-
-For instance, the live demo prints `{semver}-live-demo-snapshot`.
-
-:::
+Custom variants may not print strict semver. For instance, the live demo prints `{semver}-live-demo-snapshot`.
 
 <ApiEndpoint
   method="GET"

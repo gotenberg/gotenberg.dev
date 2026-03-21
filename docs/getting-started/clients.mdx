@@ -5,31 +5,18 @@ title: Clients & SDKs
 
 import Sponsors from "@site/src/components/documentation/Sponsors";
 
-Gotenberg exposes a standard HTTP API that accepts `multipart/form-data` requests. While you can interact with it using any standard HTTP library (like Axios, Guzzle, etc.), dedicated clients provide a smoother developer experience.
-
-## Why use a Client?
-
-- **Fluent Interfaces:** Build requests using clean, chainable methods.
-- **Type Safety:** Get autocomplete and validation for supported parameters.
-- **File Handling:** Simplified stream and file attachment management.
+Gotenberg is a standard HTTP API. Any HTTP library works. Dedicated clients offer fluent interfaces, type safety, and simpler file handling.
 
 ## Official Client
 
-We maintain an official client for **PHP**, ensuring day-one support for new Gotenberg features.
+The official **PHP** client has day-one support for new features:
 
 - [gotenberg/gotenberg-php](https://github.com/gotenberg/gotenberg-php)
 
 ## Community Clients
 
-Thanks to our active community, robust clients are available for most major languages.
-You can find these libraries and more on the [**Awesome Gotenberg**](https://github.com/gotenberg/awesome-gotenberg#clients) list.
+Clients for most major languages are available on the [**Awesome Gotenberg**](https://github.com/gotenberg/awesome-gotenberg#clients) list.
 
-:::tip Build your own
-
-Don't see your language? Since Gotenberg uses standard HTTP protocols, building a wrapper is straightforward.
-
-Check out the [routes guide](/docs/convert-with-chromium/convert-url-to-pdf) to see how the endpoints work, and feel free to submit your client to the [Awesome List](https://github.com/gotenberg/awesome-gotenberg)!
-
-:::
+Don't see your language? The API uses standard `multipart/form-data`, so building a wrapper is straightforward. Check the [routes guide](/docs/convert-with-chromium/convert-url-to-pdf) to get started.
 
 <Sponsors />

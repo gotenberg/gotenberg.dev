@@ -30,11 +30,7 @@ import PDFAPDFUAPDFEngines from "../../_shared/_pdfa_pdfua_pdfengines.mdx";
 
 ### Native Accessibility (Chromium)
 
-Use the `generateTaggedPdf` form field to instruct Chromium to structure the PDF for accessibility (tagging).
-
-- **Process:** Happens _during_ the initial HTML-to-PDF conversion.
-- **Performance:** High (negligible overhead).
-- **Result:** A logical structure tree (headings, paragraphs) embedded in the PDF, essential for screen readers.
+Embeds a logical structure tree (headings, paragraphs) during conversion. Essential for screen readers.
 
 <ApiEndpoint
   curl={`

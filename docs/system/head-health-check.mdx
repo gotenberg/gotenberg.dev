@@ -6,9 +6,7 @@ title: Health Check
 import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
 import Sponsors from "@site/src/components/documentation/Sponsors";
 
-Performs the same checks as the GET route but returns no response body.
-
-This endpoint is optimized for high-frequency health checks where parsing the JSON body is unnecessary. It returns a 200 OK status if the system is healthy, or an error status code otherwise.
+Same as the GET health check but returns no body. Ideal for high-frequency polling where you only need the status code.
 
 <ApiEndpoint
   method="HEAD"

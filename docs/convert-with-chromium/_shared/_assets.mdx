@@ -3,7 +3,7 @@ import CodeBlock from "@theme/CodeBlock";
 
 ## Assets
 
-You can send local files - such as images, fonts, and stylesheets - alongside your HTML to create a rich document.
+Send images, fonts, and stylesheets alongside your HTML.
 
 <ApiEndpoint
   curl={`
@@ -15,9 +15,7 @@ ${props.curlOutput}
 `}
 />
 
-When you upload files to Gotenberg, they are stored in a single temporary directory. Consequently, your HTML must reference these assets by **filename only**, regardless of their original folder structure on your machine.
-
-**Do not use absolute paths (`/img.png`) or subdirectories (`./assets/img.png`).**
+All uploaded files are stored in a single flat directory. Reference assets by **filename only**: no absolute paths (`/img.png`) or subdirectories (`./assets/img.png`).
 
 **✅ Correct Reference**
 
@@ -87,23 +85,6 @@ Gotenberg does not recreate your local folder structure (e.g., images/) inside t
 </CodeBlock>
 )}
 
-:::info Remote Assets
+For remote URLs (CDNs, Google Fonts), make sure the container can resolve the domain. You cannot use `localhost` from inside the container. Use `host.docker.internal` or your host's network IP instead.
 
-If your HTML references remote URLs (e.g., CDNs, Google Fonts, localhost):
-
-- **DNS & Firewalls:** Ensure the container can resolve the domain name and that no firewalls are blocking the connection from the container's IP.
-- **Localhost:** If you are trying to convert a page running on the host machine (e.g., `http://localhost:8080`), you cannot use `localhost` inside the container. You must use the host's network IP or a special Docker DNS name like `host.docker.internal` (depending on your OS and Docker version).
-
-:::
-
-:::info Base64
-
-For small assets, embedding them directly as Base64 data URIs eliminates network dependencies entirely.
-
-:::
-
-:::warning The Base Tag
-
-Avoid using the HTML \<base\> element. It alters how relative paths are resolved and often breaks the link between your HTML and the uploaded local assets.
-
-:::
+For small assets, Base64 data URIs eliminate network dependencies entirely. Avoid the HTML `<base>` element: it breaks the link between your HTML and uploaded assets.

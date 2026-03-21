@@ -16,12 +16,7 @@ import Sponsors from "@site/src/components/documentation/Sponsors";
 
 Converts documents to PDF using LibreOffice. Accepts Microsoft Office (Word, Excel, PowerPoint), OpenDocument, plain text, and many other formats. You can upload one or more files per request.
 
-:::info Configuration
-
-You can configure the LibreOffice module behavior.
-See the [LibreOffice module configuration](/docs/configuration#libreoffice) for details.
-
-:::
+See the [LibreOffice module configuration](/docs/configuration#libreoffice) for startup and behavior flags.
 
 ## Basics
 
@@ -265,28 +260,18 @@ curl \\
 | **Images**             | `.jpg`, `.jpeg`, `.png`, `.bmp`, `.gif`, `.tif`, `.tiff`, `.pbm`, `.pgm`, `.ppm`, `.xbm`, `.xpm`, `.pcx`, `.pcd`, `.pct`, `.psd`, `.tga`, `.ras`, `.pwp`                                                                                              |
 | **Web & Other**        | `.html`, `.htm`, `.xhtml`, `.epub`, `.pdf`, `.pdb`, `.ltx`, `.mml`, `.smf`, `.sxm`, `.sxg`, `.oth`, `.odm`, `.swf`                                                                                                                                    |
 
-:::info Microsoft Office Compatibility
-
-While LibreOffice provides excellent support for Microsoft Office formats (e.g., `.docx`, `.xlsx`, `.pptx`), it is not a 1:1 clone.
-Documents containing complex styling, proprietary Smart Art, or highly specific formatting features may render slightly differently than they do in Microsoft Word or Excel.
-
-:::
+LibreOffice is not a 1:1 clone of Microsoft Office. Documents with complex styling, Smart Art, or highly specific formatting may render slightly differently.
 
 ### Fonts & Layout Fidelity
 
 LibreOffice relies on installed fonts to calculate page breaks and layout. Missing fonts are the most common cause of layout issues and shifted pagination.
 
-:::info
-
-For the best results, ensure all required fonts are installed in your Docker image (e.g., via a custom `Dockerfile`).
-See the [Fonts configuration](/docs/configuration#fonts) for more details.
-
-:::
+Install all required fonts in your Docker image (via a custom `Dockerfile`). See [Fonts configuration](/docs/configuration#fonts).
 
 ### Image Compression
 
 - **Lossless (PNG):** Best for line art, diagrams, or images with flat colors. Enable with `losslessImageCompression`.
-- **Lossy (JPEG):** The default. Best for photographs or complex gradients — significantly smaller file size.
+- **Lossy (JPEG):** The default. Best for photographs or complex gradients. Significantly smaller file size.
 
 ### Macros
 
@@ -382,7 +367,7 @@ curl \\
 
 ### Native Flattening (LibreOffice)
 
-Set `exportFormFields` to false to prevent LibreOffice from creating interactive PDF widgets. Happens _during_ conversion — faster than post-processing.
+Set `exportFormFields` to false to prevent LibreOffice from creating interactive PDF widgets. Happens _during_ conversion, faster than post-processing.
 
 <ApiEndpoint
   curl={`

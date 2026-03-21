@@ -1,11 +1,7 @@
 import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
 import SyntaxWatermarkPDFEngines from "./_syntax_watermark_pdfengines.mdx";
 
-Adds a watermark _behind_ the content of each page using a PDF Engine during post-processing.
-
-- **Process:** Gotenberg generates the PDF, then applies the watermark using a PDF Engine.
-- **Performance:** Slower (requires a second pass).
-- **Sources:** Use `text` for a simple label, `image` to tile an uploaded image, or `pdf` to stamp a full-page PDF underneath.
+Adds a watermark _behind_ the content of each page during post-processing. Sources: `text`, `image`, or `pdf`.
 
 <SyntaxWatermarkPDFEngines />
 
