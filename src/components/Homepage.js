@@ -153,7 +153,7 @@ export default function Homepage() {
           <div className="row">
             <div className={clsx("col col--6", styles.heroContent)}>
               <h1 className={styles.title}>
-                A containerized API for seamless
+                A Docker-based API built for
                 <br />
                 <span className={styles.highlight}>PDF conversion</span>
               </h1>
@@ -229,7 +229,7 @@ export default function Homepage() {
             >
               <StatCard
                 icon={DockerIcon}
-                number="50M+"
+                number="55M+"
                 label="Docker Pulls"
                 colorClass="blue"
               />
@@ -343,8 +343,8 @@ export default function Homepage() {
                 </h3>
                 <p>
                   Convert URLs, HTML templates, and Markdown files into PDFs.
-                  Powered by a headless Chromium engine, it executes JavaScript,
-                  loads web fonts, and renders exactly like a real browser.
+                  Headless Chromium executes JavaScript, loads web fonts, and
+                  renders exactly like a browser.
                 </p>
                 <div className={styles.capabilitiesGrid}>
                   <div className={styles.capItem}>
@@ -375,9 +375,8 @@ export default function Homepage() {
                   Automate <span className={styles.highlight}>LibreOffice</span>
                 </h3>
                 <p>
-                  Got Word documents, Excel spreadsheets, or PowerPoint
-                  presentations? Gotenberg handles them effortlessly by
-                  orchestrating LibreOffice under the hood.
+                  Convert Word, Excel, PowerPoint, and 100+ other formats.
+                  LibreOffice runs under the hood.
                 </p>
                 <div className={styles.capabilitiesGrid}>
                   <div className={styles.capItem}>
@@ -409,9 +408,8 @@ export default function Homepage() {
                   <span className={styles.highlight}>Engines</span>
                 </h3>
                 <p>
-                  Manipulate existing PDFs using powerful tools like QPDF,
-                  pdfcpu, and ExifTool. Gotenberg allows you to alter, secure,
-                  and inspect your documents via a unified API.
+                  Merge, split, encrypt, and inspect PDFs using QPDF, pdfcpu,
+                  and ExifTool through a unified API.
                 </p>
                 <div className={styles.capabilitiesGrid}>
                   <div className={styles.capItem}>
@@ -492,12 +490,12 @@ export default function Homepage() {
         <div className={styles.ctaGlow} />
         <div className="container">
           <h2>
-            Ready to transform your{" "}
-            <span className={styles.highlight}>workflows?</span>
+            Start converting{" "}
+            <span className={styles.highlight}>documents to PDF.</span>
           </h2>
           <p>
-            Join thousands of developers and start generating high-quality PDFs
-            with Gotenberg's powerful containerized API.
+            Trusted in production by thousands of companies. Open source, MIT
+            licensed.
           </p>
 
           <div className={styles.finalButtons}>
