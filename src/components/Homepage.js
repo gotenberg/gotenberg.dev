@@ -490,12 +490,12 @@ export default function Homepage() {
         <div className={styles.ctaGlow} />
         <div className="container">
           <h2>
-            Start converting{" "}
-            <span className={styles.highlight}>documents to PDF.</span>
+            Ready to transform your{" "}
+            <span className={styles.highlight}>workflows?</span>
           </h2>
           <p>
-            Trusted in production by thousands of companies. Open source, MIT
-            licensed.
+            Join thousands of developers and start generating high-quality PDFs
+            with Gotenberg's powerful containerized API.
           </p>
 
           <div className={styles.finalButtons}>
