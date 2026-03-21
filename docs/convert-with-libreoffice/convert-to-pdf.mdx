@@ -136,7 +136,29 @@ curl \\
 -o my.pdf`}
 />
 
+### Supported Extensions
+
+| Family                 | Supported Extensions                                                                                                                                                                                                                                  |
+| :--------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Word Processing**    | `.doc`, `.docx`, `.docm`, `.dot`, `.dotm`, `.dotx`, `.odt`, `.fodt`, `.ott`, `.rtf`, `.txt`, `.wps`, `.wpd`, `.pages`, `.abw`, `.zabw`, `.lwp`, `.mw`, `.mcw`, `.hwp`, `.sxw`, `.stw`, `.sgl`, `.vor`, `.602`, `.bib`, `.xml`, `.cwk`, `.psw`, `.uof` |
+| **Spreadsheets**       | `.xls`, `.xlsx`, `.xlsm`, `.xlsb`, `.xlt`, `.xltm`, `.xltx`, `.xlw`, `.ods`, `.fods`, `.ots`, `.csv`, `.numbers`, `.123`, `.wk1`, `.wks`, `.wb2`, `.dbf`, `.dif`, `.slk`, `.sxc`, `.stc`, `.uos`, `.pxl`, `.sdc`                                      |
+| **Presentations**      | `.ppt`, `.pptx`, `.pptm`, `.pot`, `.potm`, `.potx`, `.pps`, `.odp`, `.fodp`, `.otp`, `.key`, `.sxi`, `.sti`, `.uop`, `.sdd`, `.sdp`, `.fopd`                                                                                                          |
+| **Graphics & Drawing** | `.odg`, `.fodg`, `.otg`, `.vsd`, `.vsdx`, `.vsdm`, `.vdx`, `.cdr`, `.svg`, `.svm`, `.wmf`, `.emf`, `.cgm`, `.dxf`, `.std`, `.sxd`, `.pub`, `.wpg`, `.sda`, `.odd`, `.met`, `.cmx`, `.eps`                                                             |
+| **Images**             | `.jpg`, `.jpeg`, `.png`, `.bmp`, `.gif`, `.tif`, `.tiff`, `.pbm`, `.pgm`, `.ppm`, `.xbm`, `.xpm`, `.pcx`, `.pcd`, `.pct`, `.psd`, `.tga`, `.ras`, `.pwp`                                                                                              |
+| **Web & Other**        | `.html`, `.htm`, `.xhtml`, `.epub`, `.pdf`, `.pdb`, `.ltx`, `.mml`, `.smf`, `.sxm`, `.sxg`, `.oth`, `.odm`, `.swf`                                                                                                                                    |
+
+LibreOffice is not a 1:1 clone of Microsoft Office. Documents with complex styling, Smart Art, or highly specific formatting may render slightly differently.
+
+### Fonts & Layout Fidelity
+
+LibreOffice relies on installed fonts to calculate page breaks and layout. Missing fonts are the most common cause of layout issues and shifted pagination.
+
+Install all required fonts in your Docker image (via a custom `Dockerfile`). See [Fonts configuration](/docs/configuration#fonts).
+
 ### Image Compression
+
+- **Lossless (PNG):** Best for line art, diagrams, or images with flat colors. Enable with `losslessImageCompression`.
+- **Lossy (JPEG):** The default. Best for photographs or complex gradients. Significantly smaller file size.
 
 <ApiEndpoint
   formFields={[
@@ -249,30 +271,6 @@ curl \\
   ]}
 />
 
-### Supported Extensions
-
-| Family                 | Supported Extensions                                                                                                                                                                                                                                  |
-| :--------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Word Processing**    | `.doc`, `.docx`, `.docm`, `.dot`, `.dotm`, `.dotx`, `.odt`, `.fodt`, `.ott`, `.rtf`, `.txt`, `.wps`, `.wpd`, `.pages`, `.abw`, `.zabw`, `.lwp`, `.mw`, `.mcw`, `.hwp`, `.sxw`, `.stw`, `.sgl`, `.vor`, `.602`, `.bib`, `.xml`, `.cwk`, `.psw`, `.uof` |
-| **Spreadsheets**       | `.xls`, `.xlsx`, `.xlsm`, `.xlsb`, `.xlt`, `.xltm`, `.xltx`, `.xlw`, `.ods`, `.fods`, `.ots`, `.csv`, `.numbers`, `.123`, `.wk1`, `.wks`, `.wb2`, `.dbf`, `.dif`, `.slk`, `.sxc`, `.stc`, `.uos`, `.pxl`, `.sdc`                                      |
-| **Presentations**      | `.ppt`, `.pptx`, `.pptm`, `.pot`, `.potm`, `.potx`, `.pps`, `.odp`, `.fodp`, `.otp`, `.key`, `.sxi`, `.sti`, `.uop`, `.sdd`, `.sdp`, `.fopd`                                                                                                          |
-| **Graphics & Drawing** | `.odg`, `.fodg`, `.otg`, `.vsd`, `.vsdx`, `.vsdm`, `.vdx`, `.cdr`, `.svg`, `.svm`, `.wmf`, `.emf`, `.cgm`, `.dxf`, `.std`, `.sxd`, `.pub`, `.wpg`, `.sda`, `.odd`, `.met`, `.cmx`, `.eps`                                                             |
-| **Images**             | `.jpg`, `.jpeg`, `.png`, `.bmp`, `.gif`, `.tif`, `.tiff`, `.pbm`, `.pgm`, `.ppm`, `.xbm`, `.xpm`, `.pcx`, `.pcd`, `.pct`, `.psd`, `.tga`, `.ras`, `.pwp`                                                                                              |
-| **Web & Other**        | `.html`, `.htm`, `.xhtml`, `.epub`, `.pdf`, `.pdb`, `.ltx`, `.mml`, `.smf`, `.sxm`, `.sxg`, `.oth`, `.odm`, `.swf`                                                                                                                                    |
-
-LibreOffice is not a 1:1 clone of Microsoft Office. Documents with complex styling, Smart Art, or highly specific formatting may render slightly differently.
-
-### Fonts & Layout Fidelity
-
-LibreOffice relies on installed fonts to calculate page breaks and layout. Missing fonts are the most common cause of layout issues and shifted pagination.
-
-Install all required fonts in your Docker image (via a custom `Dockerfile`). See [Fonts configuration](/docs/configuration#fonts).
-
-### Image Compression
-
-- **Lossless (PNG):** Best for line art, diagrams, or images with flat colors. Enable with `losslessImageCompression`.
-- **Lossy (JPEG):** The default. Best for photographs or complex gradients. Significantly smaller file size.
-
 ### Macros
 
 Macros in documents (e.g., `.docm`, `.xlsm`, `.pptm`) are **disabled** by default during conversion. Files are still converted, but macro-generated content will not execute.
@@ -322,7 +320,9 @@ curl \\
 -o my.pdf`}
 />
 
-### Form Fields (LibreOffice)
+### Native Flattening (LibreOffice)
+
+Set `exportFormFields` to `false` to prevent LibreOffice from creating interactive PDF widgets, effectively flattening them during conversion. Faster than post-processing.
 
 <ApiEndpoint
   formFields={[
@@ -341,6 +341,12 @@ curl \\
         "Allows multiple exported form fields to share the same field name.",
     },
   ]}
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/libreoffice/convert \\
+--form files=@/path/to/document.docx \\
+--form exportFormFields=false \\
+-o my.pdf`}
 />
 
 ### Metadata (PDF Engines)
@@ -363,19 +369,6 @@ curl \\
   path="/forms/libreoffice/convert"
   curlFormData={`--form files=@/path/to/document.docx \\`}
   curlOutput={`-o my.pdf`}
-/>
-
-### Native Flattening (LibreOffice)
-
-Set `exportFormFields` to false to prevent LibreOffice from creating interactive PDF widgets. Happens _during_ conversion, faster than post-processing.
-
-<ApiEndpoint
-  curl={`
-curl \\
---request POST http://localhost:3000/forms/libreoffice/convert \\
---form files=@/path/to/document.docx \\
---form exportFormFields=false \\
--o my.pdf`}
 />
 
 ### Flatten (PDF Engines)

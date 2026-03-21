@@ -52,32 +52,6 @@ import WaitFor from "./_wait_for.mdx";
       description:
         "Optimizes image encoding for speed rather than resulting file size.",
     },
-    {
-      name: "emulatedMediaFeatures",
-      type: "json",
-      defaultValue: "None",
-      description:
-        "A JSON array of objects to override CSS media features (e.g., prefers-color-scheme).",
-    },
-    {
-      name: "waitDelay",
-      type: "string",
-      defaultValue: "None",
-      description: "Duration to wait before converting (e.g. '5s').",
-    },
-    {
-      name: "waitForExpression",
-      type: "string",
-      defaultValue: "None",
-      description: "Waits until this JavaScript expression returns true.",
-    },
-    {
-      name: "waitForSelector",
-      type: "string",
-      defaultValue: "None",
-      description:
-        "Waits until the given selector (e.g., '#id') is visible on the page.",
-    },
   ]}
   curl={`
 curl \\

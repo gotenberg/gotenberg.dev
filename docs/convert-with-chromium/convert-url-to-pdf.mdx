@@ -12,6 +12,7 @@ import HeaderFooter from "./_shared/_header_footer.mdx";
 import StructureMetadata from "./_shared/_structure_metadata.mdx";
 import SplitPageRanges from "./_shared/_split_page_ranges.mdx";
 import WatermarkStamp from "./_shared/_watermark_stamp.mdx";
+import Rotate from "./_shared/_rotate.mdx";
 import PdfaPdfua from "./_shared/_pdfa_pdfua.mdx";
 import Encryption from "./_shared/_encryption.mdx";
 import Sponsors from "@site/src/components/documentation/Sponsors";
@@ -143,6 +144,13 @@ Body: Service Unavailable
 />
 
 <WatermarkStamp
+  method="POST"
+  path="/forms/chromium/convert/url"
+  curlFormData={`--form url=https://my.url \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<Rotate
   method="POST"
   path="/forms/chromium/convert/url"
   curlFormData={`--form url=https://my.url \\`}

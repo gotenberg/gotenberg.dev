@@ -92,7 +92,7 @@ ${props.curlOutput}
 `}
 />
 
-### Background & Media
+### Background Logic
 
 <ApiEndpoint
   formFields={[
@@ -108,55 +108,26 @@ ${props.curlOutput}
       defaultValue: "false",
       description: "Hides the default white background (allows transparency).",
     },
-    {
-      name: "emulatedMediaType",
-      type: "enum",
-      defaultValue: "print",
-      description: "Media type to emulate ('screen' or 'print').",
-    },
-    {
-      name: "emulatedMediaFeatures",
-      type: "json",
-      defaultValue: "None",
-      description:
-        "A JSON array of objects to override CSS media features (e.g., prefers-color-scheme).",
-    },
   ]}
   curl={`
 curl \\
 --request ${props.method} http://localhost:3000${props.path} \\
 ${props.curlFormData}
 --form printBackground=true \\
---form emulatedMediaType=screen \\
 ${props.curlOutput}
 `}
 />
 
-### Wait Strategy
+The final background depends on `printBackground`, `omitBackground`, and your document's CSS:
 
-<ApiEndpoint
-  formFields={[
-    {
-      name: "waitDelay",
-      type: "string",
-      defaultValue: "None",
-      description: "Duration to wait before converting (e.g. '5s').",
-    },
-    {
-      name: "waitForExpression",
-      type: "string",
-      defaultValue: "None",
-      description: "Waits until this JavaScript expression returns true.",
-    },
-    {
-      name: "waitForSelector",
-      type: "string",
-      defaultValue: "None",
-      description:
-        "Waits until the given selector (e.g., '#id') is visible on the page.",
-    },
-  ]}
-/>
+| Print Background? | Omit Background? | HTML CSS has BG? | **Resulting Output**         |
+| :---------------- | :--------------- | :--------------- | :--------------------------- |
+| `false`           | _(Any)_          | _(Any)_          | **No Background**            |
+| `true`            | _(Any)_          | **Yes**          | **Uses HTML CSS Background** |
+| `true`            | `true`           | **No**           | **Transparent**              |
+| `true`            | `false`          | **No**           | **White (Default)**          |
+
+When `singlePage` is `true`, it overrides `paperHeight` and `nativePageRanges`.
 
 ### Standard Paper Sizes
 
@@ -172,10 +143,6 @@ Dimensions in inches (width × height):
 | **A1** | 23.4 x 33.1  |             |                    |
 | **A0** | 33.1 x 46.8  |             |                    |
 
-### Single Page
-
-When `singlePage` is `true`, it overrides `paperHeight` and `nativePageRanges`.
-
 ### Print Media
 
 Chromium defaults to `print` media: backgrounds are removed and layout is optimized for ink. If your PDF looks different from the browser, this is probably why.
@@ -185,23 +152,30 @@ Chromium defaults to `print` media: backgrounds are removed and layout is optimi
 - Enable `printBackground` to include background colors and images.
 - Control paper size and margins via the CSS `@page` rule (requires `preferCssPageSize`).
 
+<ApiEndpoint
+  formFields={[
+    {
+      name: "emulatedMediaType",
+      type: "enum",
+      defaultValue: "print",
+      description: "Media type to emulate ('screen' or 'print').",
+    },
+  ]}
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form emulatedMediaType=screen \\
+${props.curlOutput}
+`}
+/>
+
 <EmulatedMediaFeatures
   method={props.method}
   path={props.path}
   curlFormData={props.curlFormData}
   curlOutput={props.curlOutput}
 />
-
-### Background Logic
-
-The final background depends on `printBackground`, `omitBackground`, and your document's CSS:
-
-| Print Background? | Omit Background? | HTML CSS has BG? | **Resulting Output**         |
-| :---------------- | :--------------- | :--------------- | :--------------------------- |
-| `false`           | _(Any)_          | _(Any)_          | **No Background**            |
-| `true`            | _(Any)_          | **Yes**          | **Uses HTML CSS Background** |
-| `true`            | `true`           | **No**           | **Transparent**              |
-| `true`            | `false`          | **No**           | **White (Default)**          |
 
 <WaitFor
   method={props.method}

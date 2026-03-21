@@ -16,6 +16,15 @@ The `emulatedMediaFeatures` field expects a JSON array of objects, where each ob
 | `forced-colors`          | `none`, `active`          | Emulates "High Contrast" modes where the browser restricts colors.       |
 
 <ApiEndpoint
+  formFields={[
+    {
+      name: "emulatedMediaFeatures",
+      type: "json",
+      defaultValue: "None",
+      description:
+        "A JSON array of objects to override CSS media features (e.g., prefers-color-scheme).",
+    },
+  ]}
   curl={`
 curl \\
 --request ${props.method} http://localhost:3000${props.path} \\

@@ -2,92 +2,9 @@ import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
 
 ## HTTP & Networking
 
-### Request Configuration
-
-<ApiEndpoint
-  formFields={[
-    {
-      name: "cookies",
-      type: "json",
-      defaultValue: "None",
-      description: "Array of cookies to add to the request.",
-    },
-    {
-      name: "extraHttpHeaders",
-      type: "json",
-      defaultValue: "None",
-      description: "Custom HTTP headers for the request.",
-    },
-    {
-      name: "userAgent",
-      type: "string",
-      defaultValue: "None",
-      description: "Overrides the default User-Agent header.",
-    },
-  ]}
-  curl={`
-curl \\
---request ${props.method} http://localhost:3000${props.path} \\
-${props.curlFormData}
---form 'userAgent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)"' \\
-${props.curlOutput}
-`}
-/>
-
-### Error Handling
-
-<ApiEndpoint
-  formFields={[
-    {
-      name: "skipNetworkIdleEvent",
-      type: "boolean",
-      defaultValue: "true",
-      description: "Does not wait for Chromium network to be idle.",
-    },
-    {
-      name: "failOnHttpStatusCodes",
-      type: "json",
-      defaultValue: "[499,599]",
-      description:
-        "Returns a 409 Conflict if Gotenberg receives these codes for the main URL.",
-    },
-    {
-      name: "failOnResourceHttpStatusCodes",
-      type: "json",
-      defaultValue: "None",
-      description:
-        "Returns a 409 Conflict if Gotenberg receives these codes for at least one resource (images/css/etc.).",
-    },
-    {
-      name: "ignoreResourceHttpStatusDomains",
-      type: "json",
-      defaultValue: "None",
-      description:
-        "Excludes resources from failOnResourceHttpStatusCodes checks based on their hostname.",
-    },
-    {
-      name: "failOnResourceLoadingFailed",
-      type: "boolean",
-      defaultValue: "false",
-      description:
-        "Returns a 400 Bad Request if assets (images/css/etc.) fail to load due to network errors.",
-    },
-  ]}
-  curl={`
-curl \\
---request ${props.method} http://localhost:3000${props.path} \\
-${props.curlFormData}
---form skipNetworkIdleEvent=false \\
---form failOnResourceLoadingFailed=true \\
-${props.curlOutput}
-`}
-/>
-
 ### Cookies
 
 A JSON array of cookie objects for authentication or session state.
-
-**Cookie Object Schema**
 
 | Key            | Description                                                              | Default                                                          |
 | :------------- | :----------------------------------------------------------------------- | :--------------------------------------------------------------- |
@@ -102,6 +19,14 @@ A JSON array of cookie objects for authentication or session state.
 Cookies expire when the request reaches its time limit. For strict isolation between conversions, configure the API to clear the cookie jar after every request. See [API Configuration](/docs/configuration#api).
 
 <ApiEndpoint
+  formFields={[
+    {
+      name: "cookies",
+      type: "json",
+      defaultValue: "None",
+      description: "Array of cookies to add to the request.",
+    },
+  ]}
   curl={`
 curl \\
 --request ${props.method} http://localhost:3000${props.path} \\
@@ -123,10 +48,25 @@ To restrict a header to specific URLs, append `;scope=` with a regex. The scope 
 - `https://google.com/fonts` → header not sent
 
 <ApiEndpoint
+  formFields={[
+    {
+      name: "extraHttpHeaders",
+      type: "json",
+      defaultValue: "None",
+      description: "Custom HTTP headers for the request.",
+    },
+    {
+      name: "userAgent",
+      type: "string",
+      defaultValue: "None",
+      description: "Overrides the default User-Agent header.",
+    },
+  ]}
   curl={`
 curl \\
 --request ${props.method} http://localhost:3000${props.path} \\
 ${props.curlFormData}
+--form 'userAgent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)"' \\
 --form-string 'extraHttpHeaders={"X-Header":"value","X-Scoped-Header":"value;scope=https?:\\/\\/([a-zA-Z0-9-]+\\.)*domain\\.com\\/.*"}' \\
 ${props.curlOutput}
 `}
@@ -158,6 +98,29 @@ Exclude third-party assets (analytics, tracking scripts) from status code checks
 - `https://example.com/path` (scheme/path are ignored)
 
 <ApiEndpoint
+  formFields={[
+    {
+      name: "failOnHttpStatusCodes",
+      type: "json",
+      defaultValue: "[499,599]",
+      description:
+        "Returns a 409 Conflict if Gotenberg receives these codes for the main URL.",
+    },
+    {
+      name: "failOnResourceHttpStatusCodes",
+      type: "json",
+      defaultValue: "None",
+      description:
+        "Returns a 409 Conflict if Gotenberg receives these codes for at least one resource (images/css/etc.).",
+    },
+    {
+      name: "ignoreResourceHttpStatusDomains",
+      type: "json",
+      defaultValue: "None",
+      description:
+        "Excludes resources from failOnResourceHttpStatusCodes checks based on their hostname.",
+    },
+  ]}
   curl={`
 curl \\
 --request ${props.method} http://localhost:3000${props.path} \\
@@ -200,3 +163,29 @@ If the browser hits a critical network error on the main page, the API returns `
 - `net::ERR_HTTP2_PROTOCOL_ERROR`
 
 By default, a broken image or stylesheet won't fail the conversion. The PDF is generated with missing assets. Set `failOnResourceLoadingFailed` to `true` to fail on any resource network error.
+
+<ApiEndpoint
+  formFields={[
+    {
+      name: "skipNetworkIdleEvent",
+      type: "boolean",
+      defaultValue: "true",
+      description: "Does not wait for Chromium network to be idle.",
+    },
+    {
+      name: "failOnResourceLoadingFailed",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Returns a 400 Bad Request if assets (images/css/etc.) fail to load due to network errors.",
+    },
+  ]}
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form skipNetworkIdleEvent=false \\
+--form failOnResourceLoadingFailed=true \\
+${props.curlOutput}
+`}
+/>
