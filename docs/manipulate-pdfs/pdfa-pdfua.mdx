@@ -6,16 +6,15 @@ title: PDF/A & PDF/UA
 import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
 import Sponsors from "@site/src/components/documentation/Sponsors";
 
-Converts one or more PDF files into a standardized format.
-
-- **PDF/A:** Specialized for the digital preservation of electronic documents (Archival).
-- **PDF/UA:** Specialized for Universal Accessibility, ensuring documents are accessible to assistive technologies.
+Converts one or more PDF files into PDF/A (archival) or PDF/UA (accessibility) format.
 
 :::info LibreOffice Dependency
 
-This endpoint relies on **LibreOffice** to re-process documents. This operation is generally more resource-intensive (CPU & RAM) than simple merges or splits.
+This endpoint relies on **LibreOffice** to re-process documents. This operation is more resource-intensive (CPU & RAM) than simple merges or splits.
 
 :::
+
+## Basics
 
 <ApiEndpoint
   method="POST"

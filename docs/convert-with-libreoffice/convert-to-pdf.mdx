@@ -13,11 +13,7 @@ import RotatePDFEngines from "../_shared/_rotate_pdfengines.mdx";
 import EncryptionPDFEngines from "../_shared/_encryption_pdfengines.mdx";
 import Sponsors from "@site/src/components/documentation/Sponsors";
 
-Converts uploaded documents to PDF using LibreOffice.
-
-This endpoint processes files provided directly in the `multipart/form-data` request body.
-It accepts a wide range of formats, including Microsoft Office (Word, Excel, PowerPoint), OpenOffice, and plain text files.
-You can upload one or more documents, and the API will convert all supported files found in the request.
+Converts documents to PDF using LibreOffice. Accepts Microsoft Office (Word, Excel, PowerPoint), OpenDocument, plain text, and many other formats. You can upload one or more files per request.
 
 :::info Configuration
 
@@ -104,6 +100,8 @@ Body: Service Unavailable
 
 ## Rendering Behavior
 
+### Layout & Pages
+
 <ApiEndpoint
   formFields={[
     {
@@ -111,96 +109,6 @@ Body: Service Unavailable
       type: "boolean",
       defaultValue: "false",
       description: "Sets the paper orientation to landscape.",
-    },
-    {
-      name: "losslessImageCompression",
-      type: "boolean",
-      defaultValue: "false",
-      description:
-        "Specifies if images are exported to PDF using a lossless compression format like PNG or compressed using the JPEG format.",
-    },
-    {
-      name: "quality",
-      type: "integer",
-      defaultValue: "90",
-      description:
-        "Specifies the quality of the JPG export. A higher value produces a higher-quality image and a larger file. Between 1 and 100.",
-    },
-    {
-      name: "reduceImageResolution",
-      type: "boolean",
-      defaultValue: "false",
-      description: (
-        <span>
-          Specifies if the resolution of each image is reduced to the resolution
-          specified by the form field <code>maxImageResolution</code>.
-        </span>
-      ),
-    },
-    {
-      name: "maxImageResolution",
-      type: "integer",
-      defaultValue: "300",
-      description:
-        "If the form field reduceImageResolution is set to true, tell if all images will be reduced to the given value in DPI. Possible values are: 75, 150, 300, 600 and 1200.",
-    },
-    {
-      name: "exportPlaceholders",
-      type: "boolean",
-      defaultValue: "false",
-      description:
-        "Exports the placeholders fields visual markings only. The exported placeholder is ineffective.",
-    },
-    {
-      name: "exportNotes",
-      type: "boolean",
-      defaultValue: "false",
-      description: "Specifies if notes are exported to PDF.",
-    },
-    {
-      name: "exportNotesPages",
-      type: "boolean",
-      defaultValue: "false",
-      description:
-        "Specifies if notes pages are exported to PDF. Notes pages are available in Impress documents only.",
-    },
-    {
-      name: "exportOnlyNotesPages",
-      type: "boolean",
-      defaultValue: "false",
-      description: (
-        <span>
-          Specifies, if the form field <code>exportNotesPages</code> is set to
-          true, if only notes pages are exported to PDF.
-        </span>
-      ),
-    },
-    {
-      name: "exportNotesInMargin",
-      type: "boolean",
-      defaultValue: "false",
-      description: "Specifies if notes in margin are exported to PDF.",
-    },
-    {
-      name: "convertOooTargetToPdfTarget",
-      type: "boolean",
-      defaultValue: "false",
-      description:
-        "Specifies that the target documents with .od[tpgs] extension, will have that extension changed to .pdf when the link is exported to PDF. The source document remains untouched.",
-    },
-    {
-      name: "exportLinksRelativeFsys",
-      type: "boolean",
-      defaultValue: "false",
-      description:
-        "Specifies that the file system related hyperlinks (file:// protocol) present in the document will be exported as relative to the source document location.",
-    },
-    {
-      name: "exportHiddenSlides",
-      type: "boolean",
-      defaultValue: "false",
-      description:
-        "Exports, for LibreOffice Impress, slides that are not included in slide shows.",
     },
     {
       name: "singlePageSheets",
@@ -214,7 +122,59 @@ Body: Service Unavailable
       type: "boolean",
       defaultValue: "false",
       description:
-        "Specifies that automatically inserted empty pages are suppressed. This option is active only if storing Writer documents.",
+        "Suppresses automatically inserted empty pages. Active only for Writer documents.",
+    },
+    {
+      name: "exportPlaceholders",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Exports placeholder fields as visual markings only (non-functional).",
+    },
+  ]}
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/libreoffice/convert \\
+--form files=@/path/to/document.docx \\
+--form landscape=true \\
+-o my.pdf`}
+/>
+
+### Image Compression
+
+<ApiEndpoint
+  formFields={[
+    {
+      name: "losslessImageCompression",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Uses lossless (PNG) compression instead of lossy (JPEG) for images.",
+    },
+    {
+      name: "quality",
+      type: "integer",
+      defaultValue: "90",
+      description:
+        "JPEG export quality. Higher values produce better quality but larger files. Between 1 and 100.",
+    },
+    {
+      name: "reduceImageResolution",
+      type: "boolean",
+      defaultValue: "false",
+      description: (
+        <span>
+          Reduces each image to the resolution specified by{" "}
+          <code>maxImageResolution</code>.
+        </span>
+      ),
+    },
+    {
+      name: "maxImageResolution",
+      type: "integer",
+      defaultValue: "300",
+      description:
+        "Target resolution in DPI when reduceImageResolution is true. Possible values: 75, 150, 300, 600, 1200.",
     },
   ]}
   curl={`
@@ -228,10 +188,72 @@ curl \\
 -o my.pdf`}
 />
 
-### Supported Extensions
+### Notes & Slides
 
-The LibreOffice route supports converting a vast array of document formats into PDF. From modern office standards and
-open-source formats to legacy files and vector graphics, below is the comprehensive list of supported file extensions grouped by document family.
+<ApiEndpoint
+  formFields={[
+    {
+      name: "exportNotes",
+      type: "boolean",
+      defaultValue: "false",
+      description: "Exports notes to PDF.",
+    },
+    {
+      name: "exportNotesPages",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Exports notes pages to PDF. Available in Impress documents only.",
+    },
+    {
+      name: "exportOnlyNotesPages",
+      type: "boolean",
+      defaultValue: "false",
+      description: (
+        <span>
+          When <code>exportNotesPages</code> is true, exports only the notes
+          pages.
+        </span>
+      ),
+    },
+    {
+      name: "exportNotesInMargin",
+      type: "boolean",
+      defaultValue: "false",
+      description: "Exports notes in margin to PDF.",
+    },
+    {
+      name: "exportHiddenSlides",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Exports Impress slides that are not included in slide shows.",
+    },
+  ]}
+/>
+
+### Links
+
+<ApiEndpoint
+  formFields={[
+    {
+      name: "convertOooTargetToPdfTarget",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Changes .od[tpgs] extensions to .pdf in exported links. The source document remains untouched.",
+    },
+    {
+      name: "exportLinksRelativeFsys",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Exports file:// hyperlinks as relative to the source document location.",
+    },
+  ]}
+/>
+
+### Supported Extensions
 
 | Family                 | Supported Extensions                                                                                                                                                                                                                                  |
 | :--------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -251,8 +273,7 @@ Documents containing complex styling, proprietary Smart Art, or highly specific 
 
 ### Fonts & Layout Fidelity
 
-**Fonts are critical.** LibreOffice relies on installed fonts to calculate page breaks and layout.
-If a specific font used in your document is missing from the Gotenberg container, LibreOffice will substitute it with a default one. This is the most common cause of layout issues and shifted pagination.
+LibreOffice relies on installed fonts to calculate page breaks and layout. Missing fonts are the most common cause of layout issues and shifted pagination.
 
 :::info
 
@@ -263,17 +284,18 @@ See the [Fonts configuration](/docs/configuration#fonts) for more details.
 
 ### Image Compression
 
-How LibreOffice compresses images inside your PDF impacts both visual quality and the final file size:
-
-- **Lossless (PNG):** Best for documents containing line art, diagrams, or images with text and flat colors. It prevents visual artifacts and ensures sharp edges. Enable the `losslessImageCompression` form field to use this method.
-- **Lossy (JPEG):** The default behavior. Best for documents containing high-resolution photographs or complex gradients, as it significantly reduces the PDF's file size.
+- **Lossless (PNG):** Best for line art, diagrams, or images with flat colors. Enable with `losslessImageCompression`.
+- **Lossy (JPEG):** The default. Best for photographs or complex gradients — significantly smaller file size.
 
 ### Macros
 
-For security reasons, macros contained in documents (e.g., `.docm`, `.xlsm`, `.pptm`) are **disabled** by default during the conversion process.
-The files will still be converted, but any dynamic content or scripts generated by macros will not be executed.
+Macros in documents (e.g., `.docm`, `.xlsm`, `.pptm`) are **disabled** by default during conversion. Files are still converted, but macro-generated content will not execute.
 
 ## Structure & Metadata
+
+### Document Outline (LibreOffice)
+
+Configure how LibreOffice generates PDF bookmarks (the sidebar) and internal indexes like the Table of Contents. Your source document must use proper heading styles (e.g., Heading 1, Heading 2) or explicit bookmarks to generate the hierarchy.
 
 <ApiEndpoint
   formFields={[
@@ -282,42 +304,63 @@ The files will still be converted, but any dynamic content or scripts generated 
       type: "boolean",
       defaultValue: "true",
       description:
-        "LibreOffice feature. Updates indexes (e.g., Table of Contents) before conversion. May cause missing links.",
+        "Updates indexes (e.g., Table of Contents) before conversion. May cause missing links.",
     },
     {
       name: "exportBookmarks",
       type: "boolean",
       defaultValue: "true",
-      description: "LibreOffice feature. Exports bookmarks to the PDF.",
+      description: "Exports bookmarks to the PDF.",
     },
     {
       name: "exportBookmarksToPdfDestination",
       type: "boolean",
       defaultValue: "false",
-      description:
-        "LibreOffice feature. Exports bookmarks as Named Destinations.",
+      description: "Exports bookmarks as Named Destinations.",
     },
     {
       name: "addOriginalDocumentAsStream",
       type: "boolean",
       defaultValue: "false",
       description:
-        "LibreOffice feature. Embeds the original document as a stream in the PDF for archiving.",
+        "Embeds the original document as a stream in the PDF for archiving.",
     },
+  ]}
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/libreoffice/convert \\
+--form files=@/path/to/document.docx \\
+--form exportBookmarks=false \\
+--form exportBookmarksToPdfDestination=true \\
+--form updateIndexes=false \\
+-o my.pdf`}
+/>
+
+### Form Fields (LibreOffice)
+
+<ApiEndpoint
+  formFields={[
     {
       name: "exportFormFields",
       type: "boolean",
       defaultValue: "true",
       description:
-        "LibreOffice feature. Specifies whether form fields are exported as widgets or only their fixed print representation is exported.",
+        "Exports form fields as interactive widgets. Set to false to flatten them during conversion.",
     },
     {
       name: "allowDuplicateFieldNames",
       type: "boolean",
       defaultValue: "false",
       description:
-        "LibreOffice feature. Specifies whether multiple form fields exported are allowed to have the same field name.",
+        "Allows multiple exported form fields to share the same field name.",
     },
+  ]}
+/>
+
+### Metadata, Flatten & Attachments (PDF Engines)
+
+<ApiEndpoint
+  formFields={[
     {
       name: "metadata",
       type: "json",
@@ -342,24 +385,6 @@ The files will still be converted, but any dynamic content or scripts generated 
   ]}
 />
 
-### Document Outline & Navigation (LibreOffice)
-
-Configure how LibreOffice generates PDF bookmarks (the sidebar) and internal indexes like the Table of Contents.
-
-- **Process:** Happens _during_ the document-to-PDF conversion.
-- **Requirement:** Your source document must use proper heading styles (e.g., Heading 1, Heading 2) or explicit bookmarks to generate the hierarchy.
-
-<ApiEndpoint
-  curl={`
-curl \\
---request POST http://localhost:3000/forms/libreoffice/convert \\
---form files=@/path/to/document.docx \\
---form exportBookmarks=false \\
---form exportBookmarksToPdfDestination=true \\
---form updateIndexes=false \\
--o my.pdf`}
-/>
-
 ### Metadata (PDF Engines)
 
 <MetadataPDFEngines
@@ -382,10 +407,7 @@ curl \\
 
 ### Native Flattening (LibreOffice)
 
-Use the `exportFormFields` form field to prevent LibreOffice from creating interactive PDF widgets, effectively "flattening" the form fields directly into the document's visual layout as static text and shapes.
-
-- **Process:** Happens _during_ the document-to-PDF conversion.
-- **Performance:** Faster and more efficient than post-processing, as the interactive PDF layers are never generated in the first place.
+Set `exportFormFields` to false to prevent LibreOffice from creating interactive PDF widgets. Happens _during_ conversion — faster than post-processing.
 
 <ApiEndpoint
   curl={`
@@ -398,11 +420,7 @@ curl \\
 
 ### Flatten (PDF Engines)
 
-Use the `flatten` form field to make the PDF non-interactive _after_ it has been generated.
-
-- **Process:** Gotenberg generates the full PDF, then uses a PDF Engine to merge all interactive form fields (text inputs, checkboxes, etc.) directly into the page content.
-- **Output:** A flattened PDF that cannot be modified by the end-user.
-- **Use Case:** Ideal if you are combining flattening with other post-processing operations (like merging or metadata extraction) handled by the PDF engines.
+Set `flatten` to true to make the PDF non-interactive _after_ generation. Useful when combining flattening with other post-processing operations like merging or metadata extraction.
 
 <ApiEndpoint
   curl={`
@@ -415,11 +433,7 @@ curl \\
 
 ## Merge (PDF Engines)
 
-Use the `merge` form field to combine multiple converted documents into a single PDF file.
-
-Gotenberg first converts each submitted file to PDF individually using LibreOffice. Once the conversions are complete,
-a PDF engine merges the resulting files together. The documents are appended in **alphanumeric order** based on
-their original filenames (numbers first, then alphabetical).
+Converts each file to PDF individually, then merges them in **alphanumeric order** (numbers first, then alphabetical).
 
 <ApiEndpoint
   formFiles={[
@@ -441,6 +455,10 @@ curl \\
 
 ## Split & Page Ranges
 
+### Native Printing (LibreOffice)
+
+Happens _during_ the conversion. Applied independently to each uploaded file.
+
 <ApiEndpoint
   formFields={[
     {
@@ -448,8 +466,25 @@ curl \\
       type: "string",
       defaultValue: "All pages",
       description:
-        "LibreOffice feature. Page ranges to print, e.g., '1-4'. Empty means all pages. Applied independently to each file.",
+        "Page ranges to print, e.g., '1-4'. Empty means all pages. Applied independently to each file.",
     },
+  ]}
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/libreoffice/convert \\
+--form files=@/path/to/document.docx \\
+--form nativePageRanges=1-5 \\
+-o my.pdf`}
+/>
+
+### Post-Processing (PDF Engines) {#post-processing-pdf-engines-split-page-ranges}
+
+Splits pages _after_ the PDF has been generated using a PDF Engine (pdfcpu, QPDF, or PDFtk). Applied to each file individually, or to the combined output _after_ the merge operation.
+
+<SyntaxValidationSplitPDFEngines />
+
+<ApiEndpoint
+  formFields={[
     {
       name: "splitMode",
       type: "enum",
@@ -472,36 +507,6 @@ curl \\
         "If true, puts extracted pages into a single file. Only works with 'pages' mode.",
     },
   ]}
-/>
-
-### Native Printing (LibreOffice)
-
-Use the `nativePageRanges` form field to tell LibreOffice which pages to print.
-
-- **Process:** Happens _during_ the conversion.
-- **Performance:** High.
-- **Behavior:** Applied independently to each uploaded file.
-
-<ApiEndpoint
-  curl={`
-curl \\
---request POST http://localhost:3000/forms/libreoffice/convert \\
---form files=@/path/to/document.docx \\
---form nativePageRanges=1-5 \\
--o my.pdf`}
-/>
-
-### Post-Processing (PDF Engines) {#post-processing-pdf-engines-split-page-ranges}
-
-Use the `splitMode` form fields to extract pages _after_ the PDF has been generated.
-
-- **Process:** Gotenberg generates the PDF, then splits it using a PDF Engine (pdfcpu, QPDF, or PDFtk).
-- **Performance:** Slower (requires a second pass).
-- **Behavior:** Applied to each uploaded file individually, or to the combined output _after_ the merge operation.
-
-<SyntaxValidationSplitPDFEngines />
-
-<ApiEndpoint
   curl={`
 curl \\
 --request POST http://localhost:3000/forms/libreoffice/convert \\
@@ -513,6 +518,10 @@ curl \\
 
 ## Watermark & Stamp
 
+### Native Watermarks (LibreOffice)
+
+Text-only watermarks applied _during_ conversion. For image or PDF watermarks, use the PDF Engines watermark below.
+
 <ApiEndpoint
   formFields={[
     {
@@ -520,43 +529,57 @@ curl \\
       type: "string",
       defaultValue: "None",
       description:
-        "LibreOffice feature. A single-line text watermark rendered behind the document content.",
+        "A single-line text watermark rendered behind the document content.",
     },
     {
       name: "nativeWatermarkColor",
       type: "integer",
       defaultValue: "8388223",
       description:
-        "LibreOffice feature. The color of the native watermark text as a decimal RGB value (e.g., 16711680 for red).",
+        "The color of the native watermark text as a decimal RGB value (e.g., 16711680 for red).",
     },
     {
       name: "nativeWatermarkFontHeight",
       type: "integer",
       defaultValue: "0",
-      description:
-        "LibreOffice feature. The font height (size) for the native watermark text, in points. 0 means auto-sized.",
+      description: "The font height (size) in points. 0 means auto-sized.",
     },
     {
       name: "nativeWatermarkRotateAngle",
       type: "integer",
       defaultValue: "0",
       description:
-        "LibreOffice feature. The rotation angle of the native watermark text, in tenths of a degree (e.g., 450 = 45°).",
+        "The rotation angle in tenths of a degree (e.g., 450 = 45°).",
     },
     {
       name: "nativeWatermarkFontName",
       type: "string",
       defaultValue: "Helvetica",
       description:
-        "LibreOffice feature. The font name for the native watermark text (e.g., 'Times New Roman').",
+        "The font name for the watermark text (e.g., 'Times New Roman').",
     },
     {
       name: "nativeTiledWatermarkText",
       type: "string",
       defaultValue: "None",
       description:
-        "LibreOffice feature. A tiled (repeating) text watermark rendered behind the document content.",
+        "A tiled (repeating) text watermark rendered behind the document content.",
     },
+  ]}
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/libreoffice/convert \\
+--form files=@/path/to/document.docx \\
+--form nativeWatermarkText=CONFIDENTIAL \\
+--form nativeWatermarkFontHeight=48 \\
+--form nativeWatermarkRotateAngle=450 \\
+-o my.pdf`}
+/>
+
+### Watermark (PDF Engines)
+
+<ApiEndpoint
+  formFields={[
     {
       name: "watermarkSource",
       type: "enum",
@@ -585,6 +608,29 @@ curl \\
       description:
         "Advanced watermark options in JSON format (e.g., font, color, rotation, opacity, scaling).",
     },
+  ]}
+  formFiles={[
+    {
+      name: "watermark",
+      type: "file",
+      defaultValue: "None",
+      description: "An image or PDF file used as watermark source.",
+    },
+  ]}
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/libreoffice/convert \\
+--form files=@/path/to/document.docx \\
+--form watermarkSource=text \\
+--form watermarkExpression=CONFIDENTIAL \\
+--form 'watermarkOptions={"opacity":0.25,"rotation":45}' \\
+-o my.pdf`}
+/>
+
+### Stamp (PDF Engines)
+
+<ApiEndpoint
+  formFields={[
     {
       name: "stampSource",
       type: "enum",
@@ -615,57 +661,20 @@ curl \\
   ]}
   formFiles={[
     {
-      name: "watermark",
-      type: "file",
-      defaultValue: "None",
-      description: "An image or PDF file used as watermark source.",
-    },
-    {
       name: "stamp",
       type: "file",
       defaultValue: "None",
       description: "An image or PDF file used as stamp source.",
     },
   ]}
-/>
-
-### Native Watermarks (LibreOffice)
-
-Use the `nativeWatermarkText` or `nativeTiledWatermarkText` form fields to add a text watermark directly during conversion.
-
-- **Process:** Happens _during_ the document-to-PDF conversion.
-- **Performance:** High (no additional processing pass).
-- **Limitation:** Text only — use the post-processing watermark for image or PDF sources.
-
-<ApiEndpoint
   curl={`
 curl \\
 --request POST http://localhost:3000/forms/libreoffice/convert \\
 --form files=@/path/to/document.docx \\
---form nativeWatermarkText=CONFIDENTIAL \\
---form nativeWatermarkFontHeight=48 \\
---form nativeWatermarkRotateAngle=450 \\
+--form stampSource=text \\
+--form stampExpression=APPROVED \\
+--form 'stampOptions={"opacity":0.5,"rotation":0}' \\
 -o my.pdf`}
-/>
-
-### Watermark (PDF Engines)
-
-<WatermarkPDFEngines
-  showCurlExample={true}
-  method="POST"
-  path="/forms/libreoffice/convert"
-  curlFormData={`--form files=@/path/to/document.docx \\`}
-  curlOutput={`-o my.pdf`}
-/>
-
-### Stamp (PDF Engines)
-
-<StampPDFEngines
-  showCurlExample={true}
-  method="POST"
-  path="/forms/libreoffice/convert"
-  curlFormData={`--form files=@/path/to/document.docx \\`}
-  curlOutput={`-o my.pdf`}
 />
 
 ## Rotate (PDF Engines)

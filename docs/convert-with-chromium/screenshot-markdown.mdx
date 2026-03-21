@@ -11,9 +11,7 @@ import HttpNetworking from "./_shared/_http_networking.mdx";
 import Console from "./_shared/_console.mdx";
 import Sponsors from "@site/src/components/documentation/Sponsors";
 
-Converts Markdown content (with [MathJaX](https://www.mathjax.org/) support) into an image using Headless Chromium.
-
-This route works by rendering Markdown files within a provided HTML template. You must upload an `index.html` file that acts as the container for the content. Gotenberg converts the Markdown syntax into HTML and injects it into this template, allowing you to style the document using standard CSS and external assets.
+Captures a screenshot of Markdown content (with [MathJaX](https://www.mathjax.org/) support) using Headless Chromium. You provide an `index.html` template and one or more `.md` files — Gotenberg converts the Markdown to HTML and injects it into your template.
 
 :::info Template Configuration
 

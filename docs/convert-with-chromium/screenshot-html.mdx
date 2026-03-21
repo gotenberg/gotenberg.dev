@@ -11,9 +11,7 @@ import HttpNetworking from "./_shared/_http_networking.mdx";
 import Console from "./_shared/_console.mdx";
 import Sponsors from "@site/src/components/documentation/Sponsors";
 
-Converts uploaded HTML content into an image using Headless Chromium.
-
-Unlike the URL route, this endpoint renders files provided directly in the request body. It requires an `index.html` file to serve as the entry point. You may also include additional assets (CSS, images, fonts) in the `multipart/form-data` request, which can be referenced in your HTML using relative paths.
+Captures a screenshot of an `index.html` file (and optional assets) using Headless Chromium. Reference additional CSS, images, and fonts in your HTML using relative paths.
 
 <ConfigurationInfo />
 

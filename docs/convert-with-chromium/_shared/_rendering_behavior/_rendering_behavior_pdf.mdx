@@ -4,6 +4,8 @@ import WaitFor from "./_wait_for.mdx";
 
 ## Rendering Behavior
 
+### Page Layout
+
 <ApiEndpoint
   formFields={[
     {
@@ -52,25 +54,13 @@ import WaitFor from "./_wait_for.mdx";
       name: "landscape",
       type: "boolean",
       defaultValue: "false",
-      description: "Sets the paper orientation to landscape",
+      description: "Sets the paper orientation to landscape.",
     },
     {
       name: "scale",
       type: "number",
       defaultValue: "1.0",
       description: "The scale of the page rendering (zoom factor).",
-    },
-    {
-      name: "printBackground",
-      type: "boolean",
-      defaultValue: "false",
-      description: "Includes background graphics/colors from the HTML.",
-    },
-    {
-      name: "omitBackground",
-      type: "boolean",
-      defaultValue: "false",
-      description: "Hides the default white background (allows transparency).",
     },
     {
       name: "singlePage",
@@ -85,6 +75,39 @@ import WaitFor from "./_wait_for.mdx";
       description:
         "Uses page sizes defined in CSS (@page) instead of API parameters.",
     },
+  ]}
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form paperWidth=8.27 \\
+--form paperHeight=11.7 \\
+--form marginTop=1 \\
+--form marginBottom=1 \\
+--form marginLeft=1 \\
+--form marginRight=1 \\
+--form landscape=true \\
+--form scale=2.0 \\
+${props.curlOutput}
+`}
+/>
+
+### Background & Media
+
+<ApiEndpoint
+  formFields={[
+    {
+      name: "printBackground",
+      type: "boolean",
+      defaultValue: "false",
+      description: "Includes background graphics/colors from the HTML.",
+    },
+    {
+      name: "omitBackground",
+      type: "boolean",
+      defaultValue: "false",
+      description: "Hides the default white background (allows transparency).",
+    },
     {
       name: "emulatedMediaType",
       type: "enum",
@@ -98,6 +121,21 @@ import WaitFor from "./_wait_for.mdx";
       description:
         "A JSON array of objects to override CSS media features (e.g., prefers-color-scheme).",
     },
+  ]}
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form printBackground=true \\
+--form emulatedMediaType=screen \\
+${props.curlOutput}
+`}
+/>
+
+### Wait Strategy
+
+<ApiEndpoint
+  formFields={[
     {
       name: "waitDelay",
       type: "string",
@@ -118,25 +156,6 @@ import WaitFor from "./_wait_for.mdx";
         "Waits until the given selector (e.g., '#id') is visible on the page.",
     },
   ]}
-  curl={`
-curl \\
---request ${props.method} http://localhost:3000${props.path} \\
-${props.curlFormData}
---form paperWidth=8.27 \\
---form paperHeight=11.7 \\
---form marginTop=1 \\
---form marginBottom=1 \\
---form marginLeft=1 \\
---form marginRight=1 \\
---form landscape=true \\
---form scale=2.0 \\
---form printBackground=true \\
---form omitBackground=true \\
---form singlePage=true \\
---form preferCssPageSize=false \\
---form emulatedMediaType=screen \\
-${props.curlOutput}
-`}
 />
 
 ### Standard Paper Sizes

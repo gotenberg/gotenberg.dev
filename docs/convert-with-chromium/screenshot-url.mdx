@@ -10,9 +10,7 @@ import HttpNetworking from "./_shared/_http_networking.mdx";
 import Console from "./_shared/_console.mdx";
 import Sponsors from "@site/src/components/documentation/Sponsors";
 
-Converts a target URL into an image using Headless Chromium.
-
-This route works by simulating a standard browser navigation: it connects to the URL, executes the necessary JavaScript, loads assets (CSS, images, fonts), and captures the final state of the DOM as a PDF. It supports Single Page Applications (SPAs) and dynamic content rendering.
+Captures a screenshot of a target URL using Headless Chromium. Supports JavaScript execution, SPAs, and dynamic content rendering.
 
 <ConfigurationInfo />
 
@@ -42,7 +40,7 @@ This route works by simulating a standard browser navigation: it connects to the
       name: "url",
       type: "string",
       required: true,
-      description: "URL of the page to convert into PDF.",
+      description: "URL of the page to screenshot.",
     },
   ]}
   curl={`

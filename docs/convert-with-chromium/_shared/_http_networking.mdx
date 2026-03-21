@@ -2,6 +2,8 @@ import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
 
 ## HTTP & Networking
 
+### Request Configuration
+
 <ApiEndpoint
   formFields={[
     {
@@ -22,6 +24,20 @@ import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
       defaultValue: "None",
       description: "Overrides the default User-Agent header.",
     },
+  ]}
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form 'userAgent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)"' \\
+${props.curlOutput}
+`}
+/>
+
+### Error Handling
+
+<ApiEndpoint
+  formFields={[
     {
       name: "skipNetworkIdleEvent",
       type: "boolean",
@@ -61,7 +77,6 @@ import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
 curl \\
 --request ${props.method} http://localhost:3000${props.path} \\
 ${props.curlFormData}
---form 'userAgent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)"' \\
 --form skipNetworkIdleEvent=false \\
 --form failOnResourceLoadingFailed=true \\
 ${props.curlOutput}

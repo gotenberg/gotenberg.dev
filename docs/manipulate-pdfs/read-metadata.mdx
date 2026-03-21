@@ -6,14 +6,14 @@ title: Read Metadata
 import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
 import Sponsors from "@site/src/components/documentation/Sponsors";
 
-Extracts metadata (Exif, XMP, PDF properties, etc.) from one or more PDF files.
-
-This endpoint relies on **ExifTool** to parse the documents and returns the data as a structured JSON object where keys are the filenames.
+Extracts metadata (Exif, XMP, PDF properties, etc.) from one or more PDF files using **ExifTool**. Returns a JSON object keyed by filename.
 
 :::info ExifTool Tags
 The returned keys correspond to ExifTool tag names.
 [See the ExifTool Tag Names documentation](https://exiftool.org/TagNames/PDF.html) for reference on what fields might be returned.
 :::
+
+## Basics
 
 <ApiEndpoint
   method="POST"

@@ -17,9 +17,7 @@ import PdfaPdfua from "./_shared/_pdfa_pdfua.mdx";
 import Encryption from "./_shared/_encryption.mdx";
 import Sponsors from "@site/src/components/documentation/Sponsors";
 
-Converts Markdown content (with [MathJaX](https://www.mathjax.org/) support) to PDF using Headless Chromium.
-
-This route works by rendering Markdown files within a provided HTML template. You must upload an `index.html` file that acts as the container for the content. Gotenberg converts the Markdown syntax into HTML and injects it into this template, allowing you to style the document using standard CSS and external assets.
+Converts Markdown content (with [MathJaX](https://www.mathjax.org/) support) to PDF using Headless Chromium. You provide an `index.html` template and one or more `.md` files — Gotenberg converts the Markdown to HTML and injects it into your template.
 
 :::info Template Configuration
 
