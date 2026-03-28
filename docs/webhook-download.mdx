@@ -57,6 +57,13 @@ See the [Webhook module configuration](/docs/configuration#webhook) for retries,
       description:
         "JSON object containing extra headers to send to the callback URLs.",
     },
+    {
+      name: "Gotenberg-Webhook-Events-Url",
+      type: "string",
+      defaultValue: "None",
+      description:
+        "A URL to receive structured JSON events after each webhook operation.",
+    },
   ]}
   curl={`
 curl \\
@@ -123,6 +130,36 @@ User-Agent: Gotenberg
     },
   ]}
 />
+
+## Webhook Events
+
+Set the `Gotenberg-Webhook-Events-Url` header to receive structured JSON events after each webhook operation. Events fire after the main webhook callbacks and do not affect the result delivery.
+
+**Success event:**
+
+```json
+{
+  "event": "webhook.success",
+  "correlationId": "unique-request-id",
+  "timestamp": "2025-01-15T10:30:00.000000000Z"
+}
+```
+
+**Error event:**
+
+```json
+{
+  "event": "webhook.error",
+  "correlationId": "unique-request-id",
+  "timestamp": "2025-01-15T10:30:00.000000000Z",
+  "error": {
+    "status": 500,
+    "message": "conversion failed"
+  }
+}
+```
+
+Delivery failures to the events URL are logged but do not cascade to the main webhook flow.
 
 ## Download From
 

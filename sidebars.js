@@ -181,6 +181,11 @@ module.exports = {
     },
     {
       type: "doc",
+      id: "telemetry",
+      label: "Telemetry",
+    },
+    {
+      type: "doc",
       id: "configuration",
       label: "Configuration",
     },

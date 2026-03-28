@@ -721,4 +721,119 @@ curl \\
   curlOutput={`-o my.pdf`}
 />
 
+## PDF Viewer Preferences
+
+Control how PDF viewers display the document on open. These preferences are embedded during conversion and take effect when a reader (Adobe Acrobat, browser PDF viewer, etc.) opens the file.
+
+<ApiEndpoint
+  formFields={[
+    {
+      name: "initialView",
+      type: "integer",
+      defaultValue: "0",
+      description:
+        "Initial view when opening the PDF. 0: neither document outline nor thumbnails. 1: document outline visible. 2: thumbnail images visible.",
+    },
+    {
+      name: "initialPage",
+      type: "integer",
+      defaultValue: "1",
+      description: "The page on which the PDF opens.",
+    },
+    {
+      name: "magnification",
+      type: "integer",
+      defaultValue: "0",
+      description:
+        "Initial magnification level. 0: default. 1: fit page. 2: fit width. 3: fit visible. 4: use zoom value.",
+    },
+    {
+      name: "zoom",
+      type: "integer",
+      defaultValue: "100",
+      description: "Initial zoom percentage when magnification is set to 4.",
+    },
+    {
+      name: "pageLayout",
+      type: "integer",
+      defaultValue: "0",
+      description:
+        "Page layout. 0: default. 1: single page. 2: one column. 3: two columns.",
+    },
+    {
+      name: "firstPageOnLeft",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Place the first page on the left when using two-column page layout.",
+    },
+    {
+      name: "resizeWindowToInitialPage",
+      type: "boolean",
+      defaultValue: "false",
+      description: "Resize the viewer window to the size of the first page.",
+    },
+    {
+      name: "centerWindow",
+      type: "boolean",
+      defaultValue: "false",
+      description: "Center the viewer window on the screen.",
+    },
+    {
+      name: "openInFullScreenMode",
+      type: "boolean",
+      defaultValue: "false",
+      description: "Open the PDF in full-screen mode.",
+    },
+    {
+      name: "displayPDFDocumentTitle",
+      type: "boolean",
+      defaultValue: "true",
+      description:
+        "Display the document title in the viewer title bar instead of the filename.",
+    },
+    {
+      name: "hideViewerMenubar",
+      type: "boolean",
+      defaultValue: "false",
+      description: "Hide the viewer menu bar.",
+    },
+    {
+      name: "hideViewerToolbar",
+      type: "boolean",
+      defaultValue: "false",
+      description: "Hide the viewer toolbar.",
+    },
+    {
+      name: "hideViewerWindowControls",
+      type: "boolean",
+      defaultValue: "false",
+      description: "Hide the viewer window controls.",
+    },
+    {
+      name: "useTransitionEffects",
+      type: "boolean",
+      defaultValue: "true",
+      description:
+        "Use transition effects when advancing slides in Impress presentations.",
+    },
+    {
+      name: "openBookmarkLevels",
+      type: "integer",
+      defaultValue: "-1",
+      description:
+        "Number of bookmark levels to show when opening the PDF. -1 shows all levels.",
+    },
+  ]}
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/libreoffice/convert \\
+--form files=@/path/to/document.docx \\
+--form initialView=1 \\
+--form magnification=2 \\
+--form displayPDFDocumentTitle=true \\
+--form hideViewerToolbar=true \\
+-o my.pdf`}
+/>
+
 <Sponsors />

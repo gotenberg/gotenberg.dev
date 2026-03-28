@@ -8,6 +8,12 @@ import Sponsors from "@site/src/components/documentation/Sponsors";
 
 Exposes internal metrics in [Prometheus](https://prometheus.io/) format. See the [Prometheus module configuration](/docs/configuration#prometheus) for details.
 
+:::warning
+
+As of Gotenberg _8.29.0_, this endpoint is deprecated. Use [OpenTelemetry](/docs/telemetry) for observability, including for [migrating from Prometheus](/docs/telemetry#migrating-from-prometheus).
+
+:::
+
 <ApiEndpoint
   method="GET"
   path="/prometheus/metrics"
