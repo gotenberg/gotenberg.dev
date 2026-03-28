@@ -142,7 +142,10 @@ export default function Homepage() {
 }]'
 # 2. Tell Gotenberg where to upload the result (S3 PUT) \\
 --header 'Gotenberg-Webhook-Url: https://my-bucket.s3.amazonaws.com/out.pdf?Start=...' \\
---header 'Gotenberg-Webhook-Method: PUT'
+--header 'Gotenberg-Webhook-Error-Url: https://my-api.com/errors' \\
+--header 'Gotenberg-Webhook-Method: PUT' \\
+# 3. Get notified when it's done \\
+--header 'Gotenberg-Webhook-Events-Url: https://my-api.com/events'
 `;
 
   return (
@@ -459,6 +462,13 @@ export default function Homepage() {
                     <strong>Auto Upload</strong>
                     <span>
                       Gotenberg pushes the result to an S3 Presigned PUT URL.
+                    </span>
+                  </div>
+                  <div className={styles.capItem}>
+                    <strong>Webhook Events</strong>
+                    <span>
+                      Get notified with structured JSON events on completion or
+                      failure, separate from the result delivery.
                     </span>
                   </div>
                   <div className={styles.capItem}>

@@ -811,7 +811,15 @@
 }
 
 @media (max-width: 996px) {
+  .radiantSection {
+    overflow: visible;
+  }
   .splitVisual {
+    position: relative;
+    top: auto;
+    padding-top: 0;
+  }
+  .splitVisual::before {
     display: none;
   }
   .splitRow {
