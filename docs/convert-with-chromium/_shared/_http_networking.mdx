@@ -162,7 +162,14 @@ If the browser hits a critical network error on the main page, the API returns `
 - `net::ERR_FILE_NOT_FOUND`
 - `net::ERR_HTTP2_PROTOCOL_ERROR`
 
-By default, a broken image or stylesheet won't fail the conversion. The PDF is generated with missing assets. Set `failOnResourceLoadingFailed` to `true` to fail on any resource network error.
+By default, Chromium does not wait for network activity to settle before converting. Two form fields control this behavior:
+
+- `skipNetworkIdleEvent` set to `false`: waits until **zero** open connections persist for 500ms. Strictest option, but pages with long-polling or analytics connections may never reach this state.
+- `skipNetworkAlmostIdleEvent` set to `false`: waits until **at most 2** open connections persist for 500ms. A practical middle ground for pages that keep a background connection alive (WebSockets, analytics pings, heartbeat polls).
+
+Both default to `true` (no wait). If both are set to `false`, both events must fire before conversion proceeds.
+
+A broken image or stylesheet won't fail the conversion on its own. The PDF is generated with missing assets. Set `failOnResourceLoadingFailed` to `true` to fail on any resource network error.
 
 <ApiEndpoint
   formFields={[
@@ -170,7 +177,15 @@ By default, a broken image or stylesheet won't fail the conversion. The PDF is g
       name: "skipNetworkIdleEvent",
       type: "boolean",
       defaultValue: "true",
-      description: "Does not wait for Chromium network to be idle.",
+      description:
+        "Does not wait for Chromium network to be idle (0 open connections for 500ms).",
+    },
+    {
+      name: "skipNetworkAlmostIdleEvent",
+      type: "boolean",
+      defaultValue: "true",
+      description:
+        "Does not wait for Chromium network to be almost idle (at most 2 open connections for 500ms).",
     },
     {
       name: "failOnResourceLoadingFailed",
@@ -185,6 +200,7 @@ curl \\
 --request ${props.method} http://localhost:3000${props.path} \\
 ${props.curlFormData}
 --form skipNetworkIdleEvent=false \\
+--form skipNetworkAlmostIdleEvent=false \\
 --form failOnResourceLoadingFailed=true \\
 ${props.curlOutput}
 `}
