@@ -34,8 +34,9 @@ See the [Webhook module configuration](/docs/configuration#webhook) for retries,
       name: "Gotenberg-Webhook-Error-Url",
       type: "string",
       defaultValue: "None",
-      description: "The callback URL to use if the conversion fails.",
-      required: true,
+      description:
+        "Deprecated. The callback URL to use if the conversion fails. Not required when Gotenberg-Webhook-Events-Url is set.",
+      required: false,
     },
     {
       name: "Gotenberg-Webhook-Method",
@@ -69,7 +70,7 @@ See the [Webhook module configuration](/docs/configuration#webhook) for retries,
 curl \\
 --request POST http://localhost:3000/forms/chromium/convert/url \\
 --header 'Gotenberg-Webhook-Url: https://my.webhook/success' \\
---header 'Gotenberg-Webhook-Error-Url: https://my.webhook/error' \\
+--header 'Gotenberg-Webhook-Events-Url: https://my.webhook/events' \\
 --header 'Gotenberg-Webhook-Extra-Http-Headers: {"Authorization": "Bearer 123"}' \\
 --form url=https://my.url
 `}
