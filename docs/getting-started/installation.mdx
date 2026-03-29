@@ -38,6 +38,35 @@ By default, published ports are accessible from the outside world. Bind to local
 docker run --rm -p "127.0.0.1:3000:3000" gotenberg/gotenberg:8
 ```
 
+## Image Variants
+
+Gotenberg ships three image variants:
+
+| Image                               | Size         | Includes                                                                     |
+| :---------------------------------- | :----------- | :--------------------------------------------------------------------------- |
+| `gotenberg/gotenberg:8`             | Full         | Chromium, LibreOffice, and PDF Engines.                                      |
+| `gotenberg/gotenberg:8-chromium`    | ~30% smaller | Chromium and PDF Engines. No office document conversion.                     |
+| `gotenberg/gotenberg:8-libreoffice` | ~40% smaller | LibreOffice and PDF Engines. No URL/HTML/Markdown conversion or screenshots. |
+
+All variants include PDF Engines (merge, split, encrypt, watermark, metadata, bookmarks, attachments, etc.).
+
+### Feature Availability
+
+| Feature                                                | Full | Chromium | LibreOffice |
+| :----------------------------------------------------- | :--: | :------: | :---------: |
+| URL / HTML / Markdown to PDF                           |  ✅  |    ✅    |     ❌      |
+| Screenshots                                            |  ✅  |    ✅    |     ❌      |
+| Office document conversion (.docx, .xlsx, .pptx, etc.) |  ✅  |    ❌    |     ✅      |
+| Merge, split, rotate, flatten PDFs                     |  ✅  |    ✅    |     ✅      |
+| Encrypt, watermark, stamp PDFs                         |  ✅  |    ✅    |     ✅      |
+| Read/write metadata & bookmarks                        |  ✅  |    ✅    |     ✅      |
+| File attachments                                       |  ✅  |    ✅    |     ✅      |
+| PDF/A & PDF/UA conversion                              |  ✅  |    ❌    |     ✅      |
+| Webhooks & async processing                            |  ✅  |    ✅    |     ✅      |
+| Download from remote URLs                              |  ✅  |    ✅    |     ✅      |
+
+Requesting an unavailable feature returns an error.
+
 ## Docker Compose
 
 ```yaml title="compose.yaml"
@@ -84,6 +113,8 @@ Allocate at least 512Mi of memory and 0.2 CPU. A community-maintained Helm chart
 
 ```
 gotenberg/gotenberg:8-cloudrun
+gotenberg/gotenberg:8-chromium-cloudrun
+gotenberg/gotenberg:8-libreoffice-cloudrun
 ```
 
 Preconfigured for Cloud Run:
@@ -101,6 +132,8 @@ Available on `linux/amd64` and `linux/arm64`:
 
 ```
 gotenberg/gotenberg:8-aws-lambda
+gotenberg/gotenberg:8-chromium-aws-lambda
+gotenberg/gotenberg:8-libreoffice-aws-lambda
 ```
 
 Preconfigured for AWS Lambda:
