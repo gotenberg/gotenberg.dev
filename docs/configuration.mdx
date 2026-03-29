@@ -368,11 +368,15 @@ The following flag allows you to hide the startup banner with:
 
 ## Docker Image
 
+The examples below use the full image (`gotenberg/gotenberg:8`). Replace the base image tag to match your variant
+(`:8-chromium`, `:8-libreoffice`). See the [installation guide](/docs/getting-started/installation#image-variants) for
+available variants and their capabilities.
+
 ### Fonts
 
-The default Docker image is pre-packaged with an extensive assortment of fonts, including Asian ones. If your application
-requires additional or specific fonts not included in this collection, you'll need to construct a tailored Docker image
-to incorporate those fonts.
+The default Docker image is pre-packaged with fonts covering Latin, CJK, Arabic, Thai, and emoji scripts. If your
+application requires additional or specific fonts not included in this collection, you'll need to construct a tailored
+Docker image to incorporate those fonts.
 
 **Via .tff files**
 
