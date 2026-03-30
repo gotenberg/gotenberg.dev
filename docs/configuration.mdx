@@ -374,23 +374,78 @@ available variants and their capabilities.
 
 ### Fonts
 
-The default Docker image is pre-packaged with fonts covering Latin, CJK, Arabic, Thai, and emoji scripts. If your
-application requires additional or specific fonts not included in this collection, you'll need to construct a tailored
-Docker image to incorporate those fonts.
+Since _8.30.0_, the font stack has been simplified from 30+ packages down to 8, covering Latin, Greek, Cyrillic, CJK,
+and most world scripts through Noto, plus color emoji.
 
-**Via .tff files**
+| Package                   | Coverage                                                                                                                                                     |
+| :------------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `fonts-noto-core`         | Arabic, Bengali, Devanagari, Ethiopic, Georgian, Gujarati, Gurmukhi, Hebrew, Kannada, Khmer, Lao, Malayalam, Myanmar, Sinhala, Tamil, Telugu, Thai, and more |
+| `fonts-noto-cjk`          | Chinese, Japanese, Korean                                                                                                                                    |
+| `fonts-noto-color-emoji`  | Color emoji                                                                                                                                                  |
+| `fonts-dejavu`            | Latin, Greek, Cyrillic                                                                                                                                       |
+| `fonts-crosextra-carlito` | Metric-compatible with Calibri                                                                                                                               |
+| `fonts-crosextra-caladea` | Metric-compatible with Cambria                                                                                                                               |
+| `fonts-liberation`        | Metric-compatible with Arial, Times New Roman, Courier New                                                                                                   |
+| `fonts-liberation2`       | Updated Liberation metrics                                                                                                                                   |
+
+Microsoft Core Fonts (`ttf-mscorefonts-installer`) are not shipped due to licensing constraints. The image includes
+metric-compatible replacements instead: Carlito for Calibri, Caladea for Cambria, and Liberation for Arial, Times New
+Roman, and Courier New. These preserve document layout in most cases.
+
+#### Installing Additional Fonts
+
+Build a custom Dockerfile to add fonts. Three common scenarios:
+
+**Microsoft Core Fonts** (you accept the [Microsoft EULA](https://corefonts.sourceforge.net/eula.htm)):
 
 ```docker
 FROM gotenberg/gotenberg:8
 
 USER root
 
-COPY /local/path/to/{font}.ttf /usr/local/share/fonts/{font}.ttf
+RUN echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections \
+    && apt-get update -qq \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends ttf-mscorefonts-installer \
+    && rm -rf /var/lib/apt/lists/*
 
 USER gotenberg
 ```
 
-Or, if you have many fonts:
+**Specialized script fonts** for richer glyph sets, better hinting, or traditional typefaces beyond the basic Noto
+coverage:
+
+| Script             | Package                |
+| :----------------- | :--------------------- |
+| Arabic (Naskh)     | `fonts-hosny-amiri`    |
+| Bengali            | `fonts-beng`           |
+| Devanagari (Hindi) | `fonts-sarai`          |
+| Ethiopic           | `fonts-sil-abyssinica` |
+| Gujarati           | `fonts-samyak-gujr`    |
+| Gurmukhi (Punjabi) | `fonts-lohit-guru`     |
+| Hebrew             | `culmus`               |
+| Kannada            | `fonts-lohit-knda`     |
+| Malayalam          | `fonts-samyak-mlym`    |
+| Myanmar            | `fonts-sil-padauk`     |
+| Sinhala            | `fonts-lklug-sinhala`  |
+| Tamil              | `fonts-samyak-taml`    |
+| Telugu             | `fonts-telu`           |
+| Thai               | `fonts-thai-tlwg`      |
+
+```docker
+FROM gotenberg/gotenberg:8
+
+USER root
+
+RUN apt-get update -qq \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends \
+        fonts-hosny-amiri \
+        fonts-thai-tlwg \
+    && rm -rf /var/lib/apt/lists/*
+
+USER gotenberg
+```
+
+**Custom .ttf files** from your own collection:
 
 ```docker
 FROM gotenberg/gotenberg:8
@@ -402,25 +457,7 @@ COPY /local/path/to/fonts/* /usr/local/share/fonts/
 USER gotenberg
 ```
 
----
-
-**Via .deb packages**
-
-```docker
-FROM gotenberg/gotenberg:8
-
-USER root
-
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends my-fonts-package
-
-USER gotenberg
-```
-
----
-
-**Via mounted volumes**
-
-You could also mount a volume containing your fonts to _/usr/local/share/fonts/_ as suggested in this
+Alternatively, mount a volume to `/usr/local/share/fonts/` at runtime as described in this
 [comment](https://github.com/gotenberg/gotenberg/issues/602#issue-1580360200).
 
 ### Ownership
