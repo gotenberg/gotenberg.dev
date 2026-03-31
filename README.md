@@ -1,25 +1,14 @@
 # gotenberg.dev
 
-This is the source of the official [Gotenberg website](https://gotenberg.dev).
+The official documentation website for [Gotenberg](https://github.com/gotenberg/gotenberg), served at https://gotenberg.dev.
 
-## Installation
+Built with [Docusaurus 3.x](https://docusaurus.io/).
+
+## Quick Start
 
 ```bash
 npm install
-```
-
-## Local Development
-
-```bash
 npm start
 ```
 
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
-
-## Prettier
-
-```bash
-npm run format
-```
-
-This command formats the source code.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development guidelines, project layout, and how to submit changes.
