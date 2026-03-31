@@ -50,7 +50,8 @@ Issue not listed here? Check [GitHub issues](https://github.com/gotenberg/gotenb
 
 ### Layout & Font Shifts
 
-- **Missing Fonts:** LibreOffice relies on installed system fonts to calculate page breaks and layout. If your document uses a font not present in the container, LibreOffice will substitute it, causing shifted layouts. You must install the required fonts via a custom `Dockerfile` (see [Fonts configuration](configuration#fonts)).
+- **Missing Fonts:** LibreOffice relies on installed system fonts to calculate page breaks and layout. If your document uses a font not present in the container, LibreOffice will substitute it, causing shifted layouts. Install the required fonts via a custom Dockerfile (see [Fonts configuration](configuration#fonts)).
+- **After upgrading to 8.30.0:** The font stack was simplified from 30+ packages to 8. Documents relying on Microsoft Core Fonts (Arial, Times New Roman, Calibri) now use metric-compatible replacements. If you notice layout differences after upgrading, install `ttf-mscorefonts-installer` or the specific script fonts your documents need (see [Fonts configuration](configuration#installing-additional-fonts)).
 
 ### Server Errors (500)
 
