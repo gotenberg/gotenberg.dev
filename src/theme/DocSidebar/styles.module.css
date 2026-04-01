@@ -19,10 +19,11 @@
   background-color: var(--ifm-background-surface-color);
   border: 1px solid var(--ifm-border-color); /* Soft outline */
   border-radius: 8px; /* Matches the modern feel */
-  padding: 12px;
+  padding: 10px;
   position: relative;
   box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.03); /* Barely-there shadow */
   transition: all 0.2s ease;
+  font-size: 0.9em;
 }
 
 :global(#carbonads:hover) {
@@ -32,14 +33,20 @@
 
 :global(#carbonads .carbon-wrap) {
   display: flex;
-  align-items: flex-start;
-  gap: 12px; /* Adds clean space between the image and the text */
+  flex-direction: column;
+  gap: 8px;
+}
+
+:global(#carbonads .carbon-wrap img) {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
 }
 
 :global(#carbonads .carbon-text) {
   padding: 0;
-  font-size: 13px; /* Slightly smaller to feel less shouty */
-  line-height: 1.45;
+  font-size: 12px;
+  line-height: 1.4;
   color: var(--ifm-color-content-secondary);
 }
 
@@ -48,9 +55,9 @@
   text-align: right; /* Keeps it neatly tucked to the right */
 
   /* Creates a hard, guaranteed gap between the ad text and the link */
-  margin-top: 10px;
+  margin-top: 8px;
 
-  font-size: 9px;
+  font-size: 8px;
   font-weight: 700;
   line-height: 1;
   letter-spacing: 0.05em;
