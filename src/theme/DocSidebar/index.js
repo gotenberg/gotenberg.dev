@@ -36,12 +36,22 @@ export default function DocSidebar(props) {
     carbonWrapper.classList.add(styles.carbonWrapper);
 
     carbonWrapper.appendChild(script);
-    // append at the end
     sidebarWrapper.firstChild.insertBefore(carbonWrapper, null);
 
+    // If Carbon doesn't serve an ad, reclaim the space.
+    const checkTimer = setTimeout(() => {
+      if (!carbonWrapper.querySelector("#carbonads")) {
+        sidebarWrapper.classList.add(styles.roomForCarbon);
+        carbonWrapper.parentElement.removeChild(carbonWrapper);
+      }
+    }, 3000);
+
     return () => {
+      clearTimeout(checkTimer);
       sidebarWrapper.classList.add(styles.roomForCarbon);
-      carbonWrapper.parentElement.removeChild(carbonWrapper);
+      if (carbonWrapper.parentElement) {
+        carbonWrapper.parentElement.removeChild(carbonWrapper);
+      }
     };
   }, [pathname, windowSize]);
 

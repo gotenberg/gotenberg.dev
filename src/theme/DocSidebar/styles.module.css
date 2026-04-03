@@ -1,62 +1,75 @@
 /* avoids layout shift before Carbon gets a chance to initialize */
 .roomForCarbon > :first-child > :first-child {
-  height: calc(100% - 190px) !important;
+  height: calc(100% - 130px) !important;
   flex-grow: initial;
+}
+
+/* Fade at the bottom of the scrollable menu so items dissolve before the ad */
+.roomForCarbon > :first-child > :first-child {
+  position: relative;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    black calc(100% - 28px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    black calc(100% - 28px),
+    transparent 100%
+  );
 }
 
 .carbonWrapper {
   flex-shrink: 0;
-  min-height: 190px;
-  padding: 20px 15px 15px 15px; /* 20px gap at the top! */
+  min-height: 130px;
+  padding: 0 15px 15px 15px;
   overflow: hidden;
   display: flex;
-  justify-content: center; /* Centers the ad horizontally */
+  justify-content: center;
   align-items: flex-end;
 }
 
 :global(#carbonads) {
   display: block;
   background-color: var(--ifm-background-surface-color);
-  border: 1px solid var(--ifm-border-color); /* Soft outline */
-  border-radius: 8px; /* Matches the modern feel */
+  border: 1px solid var(--ifm-border-color);
+  border-radius: 8px;
   padding: 10px;
   position: relative;
-  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.03); /* Barely-there shadow */
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.03);
   transition: all 0.2s ease;
   font-size: 0.9em;
 }
 
 :global(#carbonads:hover) {
-  border-color: rgba(99, 102, 241, 0.3); /* Subtle Indigo tint on hover */
+  border-color: rgba(99, 102, 241, 0.3);
   box-shadow: 0 4px 10px -2px rgba(99, 102, 241, 0.1);
 }
 
 :global(#carbonads .carbon-wrap) {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 8px;
 }
 
 :global(#carbonads .carbon-wrap img) {
-  width: 100%;
+  width: 130px;
   height: auto;
   border-radius: 4px;
 }
 
 :global(#carbonads .carbon-text) {
   padding: 0;
-  font-size: 12px;
+  font-size: 11px;
   line-height: 1.4;
   color: var(--ifm-color-content-secondary);
 }
 
 :global(#carbonads .carbon-poweredby) {
   display: block;
-  text-align: right; /* Keeps it neatly tucked to the right */
-
-  /* Creates a hard, guaranteed gap between the ad text and the link */
-  margin-top: 8px;
-
+  text-align: right;
+  margin-top: 6px;
   font-size: 8px;
   font-weight: 700;
   line-height: 1;
