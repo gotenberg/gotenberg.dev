@@ -209,112 +209,50 @@
   z-index: 3;
 }
 
-.statsGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-  max-width: 1100px;
-  margin: 4rem auto 0 auto;
-  padding-top: 3rem;
-  border-top: 1px dashed #e2e8f0;
+/* --- STATS BAR (Final CTA) --- */
+.statsBar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+  position: relative;
+  z-index: 2;
 }
 
-.statLinkWrapper {
+.statInline {
+  font-size: 1.05rem;
+  color: #64748b !important;
   text-decoration: none !important;
-  color: inherit !important;
-  display: block;
-  height: 100%;
+  transition: color 0.2s ease;
 }
 
-.statCard {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  background-color: #ffffff;
-  padding: 2rem;
-  border-radius: 16px;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  transition: all 0.2s ease;
-  height: 100%;
+.statInline:hover {
+  color: #008ae6 !important;
 }
 
-.statLinkWrapper:hover .statCard {
-  border-color: rgba(99, 102, 241, 0.4);
-  box-shadow: 0 20px 40px -5px rgba(99, 102, 241, 0.15);
-  transform: translateY(-4px);
-  z-index: 10;
-}
-
-.statIconWrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 10px;
-  margin-bottom: 1.5rem;
-}
-
-.icon {
-  width: 24px;
-  height: 24px;
-}
-
-.statNumber {
-  font-family: var(--ifm-font-family-base);
+.statInline strong {
   font-weight: 800;
-  font-size: 3rem;
-  line-height: 1;
-  letter-spacing: -0.05em;
   color: #0f172a;
-  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
 }
 
-.statLabel {
-  font-size: 0.9rem;
-  color: #64748b;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+.statInline:hover strong {
+  color: #008ae6;
 }
 
-.statHighlight {
-  display: inline-block;
-  animation: heartbeat 1.5s ease-in-out infinite;
-}
-
-.blue .statIconWrapper {
-  background-color: #eff6ff;
-  color: #3b82f6;
-}
-.blue:hover .statNumber {
-  color: #3b82f6;
-}
-.yellow .statIconWrapper {
-  background-color: #fefce8;
-  color: #eab308;
-}
-.yellow:hover .statNumber {
-  color: #ca8a04;
-}
-.teal .statIconWrapper {
-  background-color: #ccfbf1;
-  color: #14b8a6;
-}
-.teal:hover .statNumber {
-  color: #14b8a6;
+.statDot {
+  color: #cbd5e1;
+  font-size: 1.5rem;
+  line-height: 1;
+  user-select: none;
 }
 
 .sponsorsStrip {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
+  gap: 3rem;
 }
 
 .sponsorRow {
@@ -354,7 +292,7 @@
 }
 
 .logoSquare {
-  height: 24px;
+  height: 32px;
 }
 
 .heartBtnStrip {
@@ -702,10 +640,10 @@
 }
 
 .finalCta p {
-  font-size: 1.1rem;
+  font-size: 1.35rem;
   color: #64748b;
-  max-width: 550px;
-  margin: 0 auto 3rem auto;
+  max-width: 600px;
+  margin: 0 auto 2rem auto;
   line-height: 1.6;
   position: relative;
   z-index: 2;
@@ -777,26 +715,12 @@
   .logoWide {
     height: 64px;
   }
-  .statsGrid {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    gap: 1rem;
-    padding: 0.5rem 1.5rem 1.5rem 1.5rem;
-    margin: 0 -1rem;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+  .statsBar {
+    flex-direction: column;
+    gap: 0.5rem;
   }
-  .statsGrid::-webkit-scrollbar {
+  .statDot {
     display: none;
-  }
-  .statLinkWrapper,
-  .statCard {
-    min-width: 260px;
-    scroll-snap-align: center;
-  }
-  .statCard {
-    padding: 1.5rem;
   }
   .finalCta {
     padding: 0 0 20rem;
@@ -830,6 +754,13 @@
   .splitContent {
     margin: 0 auto;
     max-width: 600px;
+  }
+  .splitVisual {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+  .terminalWindow {
+    min-width: 0;
   }
   .capabilitiesGrid {
     text-align: left;
