@@ -28,6 +28,32 @@ function useReveal(threshold = 0.15) {
   return [ref, visible];
 }
 
+// --- COUNT UP HOOK ---
+function useCountUp(target, duration, start) {
+  const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    if (!start) return;
+    let startTime = null;
+    let raf;
+
+    const step = (timestamp) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setValue(Math.round(eased * target));
+      if (progress < 1) {
+        raf = requestAnimationFrame(step);
+      }
+    };
+
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [target, duration, start]);
+
+  return value;
+}
+
 // --- ICONS ---
 const HeartIcon = () => (
   <svg
@@ -136,12 +162,16 @@ export default function Homepage() {
 
   const [sponsorRowRef, sponsorRowVisible] = useReveal(0.1);
   const [poweredByRowRef, poweredByRowVisible] = useReveal(0.1);
+  const [sponsorBtnRef, sponsorBtnVisible] = useReveal(0.1);
   const [sectionHeaderRef, sectionHeaderVisible] = useReveal(0.2);
   const [feature1Ref, feature1Visible] = useReveal(0.15);
   const [feature2Ref, feature2Visible] = useReveal(0.15);
   const [feature3Ref, feature3Visible] = useReveal(0.15);
   const [feature4Ref, feature4Visible] = useReveal(0.15);
   const [ctaRef, ctaVisible] = useReveal(0.2);
+
+  const dockerCount = useCountUp(55, 1800, ctaVisible);
+  const starsCount = useCountUp(11, 1800, ctaVisible);
 
   return (
     <main className={styles.mainContainer}>
@@ -316,13 +346,22 @@ export default function Homepage() {
               </div>
             </div>
 
-            <Link
-              to="https://github.com/sponsors/gulien"
-              className={styles.heartBtnStrip}
+            <div
+              ref={sponsorBtnRef}
+              className={clsx(
+                styles.reveal,
+                sponsorBtnVisible && styles.revealVisible
+              )}
+              style={{ animationDelay: "1s" }}
             >
-              <HeartIcon />
-              <span>Become a sponsor</span>
-            </Link>
+              <Link
+                to="https://github.com/sponsors/gulien"
+                className={styles.heartBtnStrip}
+              >
+                <HeartIcon />
+                <span>Become a sponsor</span>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -567,21 +606,24 @@ export default function Homepage() {
               href="https://hub.docker.com/r/gotenberg/gotenberg"
               className={styles.statInline}
             >
-              <strong>55M+</strong> Docker Pulls
+              <span className={styles.statNumber}>{dockerCount}M+</span>
+              <span className={styles.statLabel}>Docker Pulls</span>
             </a>
             <span className={styles.statDot}>&middot;</span>
             <a
               href="https://github.com/gotenberg/gotenberg"
               className={styles.statInline}
             >
-              <strong>11k+</strong> GitHub Stars
+              <span className={styles.statNumber}>{starsCount}k+</span>
+              <span className={styles.statLabel}>GitHub Stars</span>
             </a>
             <span className={styles.statDot}>&middot;</span>
             <a
               href="https://github.com/gotenberg/gotenberg?tab=MIT-1-ov-file#readme"
               className={styles.statInline}
             >
-              <strong>MIT</strong> License
+              <span className={styles.statNumber}>MIT</span>
+              <span className={styles.statLabel}>License</span>
             </a>
           </div>
 
