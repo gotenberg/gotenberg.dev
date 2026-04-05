@@ -134,7 +134,8 @@ export default function Homepage() {
 --header 'Gotenberg-Webhook-Events-Url: https://my-api.com/events'
 `;
 
-  const [sponsorsRef, sponsorsVisible] = useReveal(0.2);
+  const [sponsorRowRef, sponsorRowVisible] = useReveal(0.1);
+  const [poweredByRowRef, poweredByRowVisible] = useReveal(0.1);
   const [sectionHeaderRef, sectionHeaderVisible] = useReveal(0.2);
   const [feature1Ref, feature1Visible] = useReveal(0.15);
   const [feature2Ref, feature2Visible] = useReveal(0.15);
@@ -248,15 +249,16 @@ export default function Homepage() {
       {/* --- COMMUNITY & SPONSORS SECTION --- */}
       <section className={styles.communitySection}>
         <div className="container">
-          <div
-            ref={sponsorsRef}
-            className={clsx(
-              styles.sponsorsStrip,
-              styles.reveal,
-              sponsorsVisible && styles.revealVisible
-            )}
-          >
-            <div className={styles.sponsorRow}>
+          <div className={styles.sponsorsStrip}>
+            <div
+              ref={sponsorRowRef}
+              className={clsx(
+                styles.sponsorRow,
+                styles.reveal,
+                sponsorRowVisible && styles.revealVisible
+              )}
+              style={{ animationDelay: "0.4s" }}
+            >
               <span className={styles.sponsorStripLabel}>Sponsors</span>
               <div className={styles.sponsorLogos}>
                 <a href="https://thecodingmachine.com" target="_blank">
@@ -283,7 +285,15 @@ export default function Homepage() {
               </div>
             </div>
 
-            <div className={styles.sponsorRow}>
+            <div
+              ref={poweredByRowRef}
+              className={clsx(
+                styles.sponsorRow,
+                styles.reveal,
+                poweredByRowVisible && styles.revealVisible
+              )}
+              style={{ animationDelay: "0.7s" }}
+            >
               <span className={styles.sponsorStripLabel}>Powered By</span>
               <div className={styles.sponsorLogos}>
                 <a
