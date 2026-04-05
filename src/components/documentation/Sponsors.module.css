@@ -1,10 +1,9 @@
 /* --- SHARED STRIP STYLES --- */
 .sponsorsStrip {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 2.5rem;
+  gap: 2rem;
   margin-top: 4rem;
   padding: 3rem 1rem;
   border-top: 1px dashed #e2e8f0;
@@ -20,11 +19,17 @@
   align-items: center;
 }
 
-.sponsorCategory {
+.sponsorRow {
   display: flex;
   align-items: center;
   gap: 1.5rem;
   flex-shrink: 0;
+}
+
+.sponsorLogos {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
 }
 
 .sponsorStripLabel {
@@ -34,12 +39,6 @@
   color: #94a3b8;
   letter-spacing: 0.1em;
   user-select: none;
-}
-
-.sponsorDivider {
-  width: 1px;
-  height: 24px;
-  background-color: #e2e8f0;
 }
 
 .logoStrip {
@@ -55,8 +54,9 @@
 }
 
 .logoWide {
-  height: 52px;
+  height: 72px;
 }
+
 .logoSquare {
   height: 22px;
 }
@@ -123,23 +123,23 @@
 /* --- MOBILE VARIANT: TWO STRIPS + CTA --- */
 @media (max-width: 996px) {
   .sponsorsStrip {
-    flex-direction: column; /* Stack the groups */
-    gap: 2rem;
+    gap: 1.5rem;
     padding-top: 2rem;
   }
 
-  .sponsorDivider {
-    display: none; /* Dividers aren't needed when stacked */
+  .sponsorRow {
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
   }
 
-  .sponsorCategory {
-    width: 100%;
-    justify-content: center; /* Keep the logos in a row within their strip */
+  .sponsorLogos {
+    justify-content: center;
     gap: 1.25rem;
   }
 
   .logoWide {
-    height: 36px; /* Slightly smaller for mobile */
+    height: 48px;
   }
 
   .logoSquare {

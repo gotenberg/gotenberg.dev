@@ -5,60 +5,73 @@ import styles from "./Sponsors.module.css";
 export default function Sponsors() {
   return (
     <div className={styles.sponsorsStrip}>
-      {/* Group 1: The Sponsors */}
-      <div className={styles.sponsorCategory}>
+      {/* Group 1: Sponsors */}
+      <div className={styles.sponsorRow}>
         <span className={styles.sponsorStripLabel}>Sponsors</span>
-        <a
-          href="https://thecodingmachine.com"
-          target="_blank"
-          className={styles.cleanLink}
-        >
-          <img
-            src="https://user-images.githubusercontent.com/8983173/130324668-9d6e7b35-53a3-49c7-a574-38190d2bd6b0.png"
-            alt="TCM"
-            className={`${styles.logoStrip} ${styles.logoWide}`}
-          />
-        </a>
-        <a
-          href="https://pdfme.com"
-          target="_blank"
-          className={styles.cleanLink}
-        >
-          <img
-            src="https://github.com/user-attachments/assets/2a75dd40-ca18-4d34-acd5-5dd474595168"
-            alt="pdfme"
-            className={`${styles.logoStrip} ${styles.logoWide}`}
-          />
-        </a>
+        <div className={styles.sponsorLogos}>
+          <a
+            href="https://thecodingmachine.com"
+            target="_blank"
+            className={styles.cleanLink}
+          >
+            <img
+              src={useBaseUrl("/img/thecodingmachine-logo.png")}
+              alt="TheCodingMachine"
+              className={`${styles.logoStrip} ${styles.logoWide}`}
+            />
+          </a>
+          <a
+            href="https://pdfme.com"
+            target="_blank"
+            className={styles.cleanLink}
+          >
+            <img
+              src={useBaseUrl("/img/pdfme-logo.png")}
+              alt="pdfme"
+              className={`${styles.logoStrip} ${styles.logoWide}`}
+            />
+          </a>
+          <a
+            href="https://pdfbolt.com"
+            target="_blank"
+            className={styles.cleanLink}
+          >
+            <img
+              src={useBaseUrl("/img/pdfbolt-logo.svg")}
+              alt="PdfBolt"
+              className={`${styles.logoStrip} ${styles.logoWide}`}
+            />
+          </a>
+        </div>
       </div>
 
-      <div className={styles.sponsorDivider} />
-
       {/* Group 2: Powered By */}
-      <div className={styles.sponsorCategory}>
+      <div className={styles.sponsorRow}>
         <span className={styles.sponsorStripLabel}>Powered by</span>
-        <a
-          href="https://docs.docker.com/docker-hub/repos/manage/trusted-content/dsos-program/"
-          target="_blank"
-          className={styles.cleanLink}
-        >
-          <img
-            src={useBaseUrl("/img/docker-logo-blue.svg")}
-            alt="Docker"
-            className={`${styles.logoStrip} ${styles.logoSquare}`}
-          />
-        </a>
-        <a
-          href="https://jb.gg/OpenSourceSupport"
-          target="_blank"
-          className={styles.cleanLink}
-        >
-          <img
-            src={useBaseUrl("/img/jetbrains-logo.svg")}
-            alt="JetBrains"
-            className={`${styles.logoStrip} ${styles.logoSquare}`}
-          />
-        </a>
+        <div className={styles.sponsorLogos}>
+          <a
+            href="https://docs.docker.com/docker-hub/repos/manage/trusted-content/dsos-program/"
+            target="_blank"
+            className={styles.cleanLink}
+          >
+            <img
+              src={useBaseUrl("/img/docker-logo-blue.svg")}
+              alt="Docker"
+              className={`${styles.logoStrip} ${styles.logoSquare}`}
+            />
+          </a>
+          <a
+            href="https://jb.gg/OpenSourceSupport"
+            target="_blank"
+            className={styles.cleanLink}
+          >
+            <img
+              src={useBaseUrl("/img/jetbrains-logo.svg")}
+              alt="JetBrains"
+              className={`${styles.logoStrip} ${styles.logoSquare}`}
+            />
+          </a>
+        </div>
       </div>
 
       {/* Group 3: CTA */}

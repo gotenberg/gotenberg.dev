@@ -225,6 +225,66 @@ export default function Homepage() {
       {/* --- COMMUNITY & SPONSORS SECTION --- */}
       <section className={styles.communitySection}>
         <div className="container">
+          <div className={styles.sponsorsStrip}>
+            <div className={styles.sponsorRow}>
+              <span className={styles.sponsorStripLabel}>Sponsors</span>
+              <div className={styles.sponsorLogos}>
+                <a href="https://thecodingmachine.com" target="_blank">
+                  <img
+                    src={useBaseUrl("/img/thecodingmachine-logo.png")}
+                    alt="TheCodingMachine"
+                    className={clsx(styles.logoStrip, styles.logoWide)}
+                  />
+                </a>
+                <a href="https://pdfme.com" target="_blank">
+                  <img
+                    src={useBaseUrl("/img/pdfme-logo.png")}
+                    alt="pdfme"
+                    className={clsx(styles.logoStrip, styles.logoWide)}
+                  />
+                </a>
+                <a href="https://pdfbolt.com" target="_blank">
+                  <img
+                    src={useBaseUrl("/img/pdfbolt-logo.svg")}
+                    alt="PdfBolt"
+                    className={clsx(styles.logoStrip, styles.logoWide)}
+                  />
+                </a>
+              </div>
+            </div>
+
+            <div className={styles.sponsorRow}>
+              <span className={styles.sponsorStripLabel}>Powered By</span>
+              <div className={styles.sponsorLogos}>
+                <a
+                  href="https://docs.docker.com/docker-hub/repos/manage/trusted-content/dsos-program/"
+                  target="_blank"
+                >
+                  <img
+                    src={useBaseUrl("/img/docker-logo-blue.svg")}
+                    alt="Docker"
+                    className={clsx(styles.logoStrip, styles.logoSquare)}
+                  />
+                </a>
+                <a href="https://jb.gg/OpenSourceSupport" target="_blank">
+                  <img
+                    src={useBaseUrl("/img/jetbrains-logo.svg")}
+                    alt="JetBrains"
+                    className={clsx(styles.logoStrip, styles.logoSquare)}
+                  />
+                </a>
+              </div>
+            </div>
+
+            <Link
+              to="https://github.com/sponsors/gulien"
+              className={styles.heartBtnStrip}
+            >
+              <HeartIcon />
+              <span>Become a sponsor</span>
+            </Link>
+          </div>
+
           <div className={styles.statsGrid}>
             <a
               href="https://hub.docker.com/r/gotenberg/gotenberg"
@@ -260,59 +320,6 @@ export default function Homepage() {
                 colorClass="teal"
               />
             </a>
-          </div>
-
-          <div className={styles.sponsorsStrip}>
-            <div className={styles.sponsorCategory}>
-              <span className={styles.sponsorStripLabel}>Sponsors</span>
-              <a href="https://thecodingmachine.com" target="_blank">
-                <img
-                  src="https://user-images.githubusercontent.com/8983173/130324668-9d6e7b35-53a3-49c7-a574-38190d2bd6b0.png"
-                  alt="TheCodingMachine"
-                  className={clsx(styles.logoStrip, styles.logoWide)}
-                />
-              </a>
-              <a href="https://pdfme.com" target="_blank">
-                <img
-                  src="https://github.com/user-attachments/assets/2a75dd40-ca18-4d34-acd5-5dd474595168"
-                  alt="pdfme"
-                  className={clsx(styles.logoStrip, styles.logoWide)}
-                />
-              </a>
-            </div>
-
-            <div className={styles.sponsorDivider} />
-
-            <div className={styles.sponsorCategory}>
-              <span className={styles.sponsorStripLabel}>Powered By</span>
-              <a
-                href="https://docs.docker.com/docker-hub/repos/manage/trusted-content/dsos-program/"
-                target="_blank"
-              >
-                <img
-                  src={useBaseUrl("/img/docker-logo-blue.svg")}
-                  alt="Docker"
-                  className={clsx(styles.logoStrip, styles.logoSquare)}
-                />
-              </a>
-              <a href="https://jb.gg/OpenSourceSupport" target="_blank">
-                <img
-                  src={useBaseUrl("/img/jetbrains-logo.svg")}
-                  alt="JetBrains"
-                  className={clsx(styles.logoStrip, styles.logoSquare)}
-                />
-              </a>
-            </div>
-
-            <div className={styles.sponsorDivider} />
-
-            <Link
-              to="https://github.com/sponsors/gulien"
-              className={styles.heartBtnStrip}
-            >
-              <HeartIcon />
-              <span>Become a sponsor</span>
-            </Link>
           </div>
         </div>
       </section>

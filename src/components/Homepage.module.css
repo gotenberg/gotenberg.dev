@@ -214,7 +214,9 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
   max-width: 1100px;
-  margin: 0 auto;
+  margin: 4rem auto 0 auto;
+  padding-top: 3rem;
+  border-top: 1px dashed #e2e8f0;
 }
 
 .statLinkWrapper {
@@ -310,16 +312,18 @@
 
 .sponsorsStrip {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 2.5rem;
-  margin-top: 4rem;
-  padding-top: 3rem;
-  border-top: 1px dashed #e2e8f0;
+  gap: 2rem;
 }
 
-.sponsorCategory {
+.sponsorRow {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.sponsorLogos {
   display: flex;
   align-items: center;
   gap: 1.5rem;
@@ -331,12 +335,6 @@
   text-transform: uppercase;
   color: #94a3b8;
   letter-spacing: 0.1em;
-}
-
-.sponsorDivider {
-  width: 1px;
-  height: 24px;
-  background-color: #e2e8f0;
 }
 
 .logoStrip {
@@ -352,7 +350,7 @@
 }
 
 .logoWide {
-  height: 72px;
+  height: 96px;
 }
 
 .logoSquare {
@@ -762,20 +760,22 @@
     font-size: 2rem;
   }
   .sponsorsStrip {
-    flex-direction: column;
     gap: 1.5rem;
-  }
-  .sponsorDivider {
-    width: 60px;
-    height: 1px;
   }
   .sponsorStripLabel {
     font-size: 0.65rem;
     letter-spacing: 0.05em;
     margin-bottom: -0.5rem;
   }
-  .sponsorCategory {
+  .sponsorRow {
+    flex-direction: column;
     gap: 1rem;
+  }
+  .sponsorLogos {
+    gap: 1rem;
+  }
+  .logoWide {
+    height: 64px;
   }
   .statsGrid {
     display: flex;
