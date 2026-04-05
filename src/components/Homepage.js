@@ -1,8 +1,32 @@
-import React from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import styles from "./Homepage.module.css";
 import clsx from "clsx";
 import Link from "@docusaurus/Link";
 import useBaseUrl from "@docusaurus/useBaseUrl";
+
+// --- REVEAL HOOK ---
+function useReveal(threshold = 0.15) {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [threshold]);
+
+  return [ref, visible];
+}
 
 // --- ICONS ---
 const HeartIcon = () => (
@@ -110,6 +134,14 @@ export default function Homepage() {
 --header 'Gotenberg-Webhook-Events-Url: https://my-api.com/events'
 `;
 
+  const [sponsorsRef, sponsorsVisible] = useReveal(0.2);
+  const [sectionHeaderRef, sectionHeaderVisible] = useReveal(0.2);
+  const [feature1Ref, feature1Visible] = useReveal(0.15);
+  const [feature2Ref, feature2Visible] = useReveal(0.15);
+  const [feature3Ref, feature3Visible] = useReveal(0.15);
+  const [feature4Ref, feature4Visible] = useReveal(0.15);
+  const [ctaRef, ctaVisible] = useReveal(0.2);
+
   return (
     <main className={styles.mainContainer}>
       {/* --- HERO SECTION --- */}
@@ -117,19 +149,40 @@ export default function Homepage() {
         <div className="container">
           <div className="row">
             <div className={clsx("col col--6", styles.heroContent)}>
-              <h1 className={styles.title}>
+              <h1
+                className={clsx(
+                  styles.title,
+                  styles.reveal,
+                  styles.revealVisible
+                )}
+                style={{ animationDelay: "0s" }}
+              >
                 A Docker-based API built for
                 <br />
                 <span className={styles.highlight}>PDF conversion</span>
               </h1>
 
-              <p className={styles.subtitle}>
+              <p
+                className={clsx(
+                  styles.subtitle,
+                  styles.reveal,
+                  styles.revealVisible
+                )}
+                style={{ animationDelay: "0.1s" }}
+              >
                 Available on <strong>amd64</strong>, <strong>arm64</strong>,{" "}
                 <strong>armhf</strong>, <strong>i386</strong>, and{" "}
                 <strong>ppc64le</strong>
               </p>
 
-              <div className={styles.buttons}>
+              <div
+                className={clsx(
+                  styles.buttons,
+                  styles.reveal,
+                  styles.revealVisible
+                )}
+                style={{ animationDelay: "0.2s" }}
+              >
                 <Link
                   className={clsx(
                     "button button--primary button--lg",
@@ -173,7 +226,15 @@ export default function Homepage() {
               </div>
             </div>
 
-            <div className={clsx("col col--6", styles.heroImage)}>
+            <div
+              className={clsx(
+                "col col--6",
+                styles.heroImage,
+                styles.reveal,
+                styles.revealVisible
+              )}
+              style={{ animationDelay: "0.15s" }}
+            >
               <img
                 className={styles.logo}
                 src={useBaseUrl("/img/logo_jed.png")}
@@ -187,7 +248,14 @@ export default function Homepage() {
       {/* --- COMMUNITY & SPONSORS SECTION --- */}
       <section className={styles.communitySection}>
         <div className="container">
-          <div className={styles.sponsorsStrip}>
+          <div
+            ref={sponsorsRef}
+            className={clsx(
+              styles.sponsorsStrip,
+              styles.reveal,
+              sponsorsVisible && styles.revealVisible
+            )}
+          >
             <div className={styles.sponsorRow}>
               <span className={styles.sponsorStripLabel}>Sponsors</span>
               <div className={styles.sponsorLogos}>
@@ -260,7 +328,14 @@ export default function Homepage() {
         )}
       >
         <div className="container">
-          <div className={styles.sectionHeader}>
+          <div
+            ref={sectionHeaderRef}
+            className={clsx(
+              styles.sectionHeader,
+              styles.reveal,
+              sectionHeaderVisible && styles.revealVisible
+            )}
+          >
             <h2>
               Everything you need for{" "}
               <span className={styles.highlight}>PDFs</span>
@@ -269,7 +344,14 @@ export default function Homepage() {
           </div>
 
           <div className={styles.featureBlocks}>
-            <div className={styles.splitRow}>
+            <div
+              ref={feature1Ref}
+              className={clsx(
+                styles.splitRow,
+                styles.reveal,
+                feature1Visible && styles.revealVisible
+              )}
+            >
               <div className={styles.splitContent}>
                 <div className={styles.badge}>Web to PDF</div>
                 <h3 className={styles.blockTitle}>
@@ -303,7 +385,15 @@ export default function Homepage() {
               </div>
             </div>
 
-            <div className={clsx(styles.splitRow, styles.splitRowReverse)}>
+            <div
+              ref={feature2Ref}
+              className={clsx(
+                styles.splitRow,
+                styles.splitRowReverse,
+                styles.reveal,
+                feature2Visible && styles.revealVisible
+              )}
+            >
               <div className={styles.splitContent}>
                 <div className={styles.badge}>Office Suite</div>
                 <h3 className={styles.blockTitle}>
@@ -335,7 +425,14 @@ export default function Homepage() {
               </div>
             </div>
 
-            <div className={styles.splitRow}>
+            <div
+              ref={feature3Ref}
+              className={clsx(
+                styles.splitRow,
+                styles.reveal,
+                feature3Visible && styles.revealVisible
+              )}
+            >
               <div className={styles.splitContent}>
                 <div className={styles.badge}>PDF Operations</div>
                 <h3 className={styles.blockTitle}>
@@ -368,7 +465,15 @@ export default function Homepage() {
               </div>
             </div>
 
-            <div className={clsx(styles.splitRow, styles.splitRowReverse)}>
+            <div
+              ref={feature4Ref}
+              className={clsx(
+                styles.splitRow,
+                styles.splitRowReverse,
+                styles.reveal,
+                feature4Visible && styles.revealVisible
+              )}
+            >
               <div className={styles.splitContent}>
                 <div className={styles.badge}>Cloud Native</div>
                 <h3 className={styles.blockTitle}>
@@ -430,7 +535,14 @@ export default function Homepage() {
         )}
       >
         <div className={styles.ctaGlow} />
-        <div className="container">
+        <div
+          ref={ctaRef}
+          className={clsx(
+            "container",
+            styles.reveal,
+            ctaVisible && styles.revealVisible
+          )}
+        >
           <h2>
             Ready to transform your{" "}
             <span className={styles.highlight}>workflows?</span>
