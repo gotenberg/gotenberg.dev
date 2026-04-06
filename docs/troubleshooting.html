@@ -11,8 +11,8 @@
 
 
 <link rel="search" type="application/opensearchdescription+xml" title="Gotenberg" href="/opensearch.xml"><link rel="stylesheet" href="/assets/css/styles.b88339fa.css">
-<script src="/assets/js/runtime~main.ed9b9251.js" defer="defer"></script>
-<script src="/assets/js/main.ea5571fe.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.7df70ee6.js" defer="defer"></script>
+<script src="/assets/js/main.7e5008da.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
 <svg style="display: none;"><defs>
@@ -60,7 +60,8 @@
 <h2 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="libreoffice">LibreOffice<a href="#libreoffice" class="hash-link" aria-label="Direct link to LibreOffice" title="Direct link to LibreOffice" translate="no">​</a></h2>
 <h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="layout--font-shifts">Layout &amp; Font Shifts<a href="#layout--font-shifts" class="hash-link" aria-label="Direct link to Layout &amp; Font Shifts" title="Direct link to Layout &amp; Font Shifts" translate="no">​</a></h3>
 <ul>
-<li class=""><strong>Missing Fonts:</strong> LibreOffice relies on installed system fonts to calculate page breaks and layout. If your document uses a font not present in the container, LibreOffice will substitute it, causing shifted layouts. You must install the required fonts via a custom <code>Dockerfile</code> (see <a class="" href="/docs/configuration#fonts">Fonts configuration</a>).</li>
+<li class=""><strong>Missing Fonts:</strong> LibreOffice relies on installed system fonts to calculate page breaks and layout. If your document uses a font not present in the container, LibreOffice will substitute it, causing shifted layouts. Install the required fonts via a custom Dockerfile (see <a class="" href="/docs/configuration#fonts">Fonts configuration</a>).</li>
+<li class=""><strong>After upgrading to 8.30.0:</strong> The font stack was simplified from 30+ packages to 8. Documents relying on Microsoft Core Fonts (Arial, Times New Roman, Calibri) now use metric-compatible replacements. If you notice layout differences after upgrading, install <code>ttf-mscorefonts-installer</code> or the specific script fonts your documents need (see <a class="" href="/docs/configuration#installing-additional-fonts">Fonts configuration</a>).</li>
 </ul>
 <h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="server-errors-500">Server Errors (500)<a href="#server-errors-500" class="hash-link" aria-label="Direct link to Server Errors (500)" title="Direct link to Server Errors (500)" translate="no">​</a></h3>
 <ul>
