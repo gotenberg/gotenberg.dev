@@ -10,6 +10,13 @@
   animation: revealIn 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+.revealInstant {
+  opacity: 1;
+  filter: none;
+  transform: none;
+  animation: none;
+}
+
 @keyframes revealIn {
   to {
     opacity: 1;

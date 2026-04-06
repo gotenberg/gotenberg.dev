@@ -5,27 +5,54 @@ import Link from "@docusaurus/Link";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 
 // --- REVEAL HOOK ---
+// Elements already in or above the viewport on mount (e.g., page refreshed
+// while scrolled down) are shown instantly without animation.
+// We wait a frame for the browser to restore scroll position, then check
+// whether the element is in or above the viewport. If so, show instantly.
+// Otherwise, use IntersectionObserver for the scroll-triggered reveal.
 function useReveal(threshold = 0.15) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
+  const [skipAnimation, setSkipAnimation] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
+
+    // Wait one rAF so the browser has restored scroll position after refresh.
+    const raf = requestAnimationFrame(() => {
+      const rect = el.getBoundingClientRect();
+      // Element is above the viewport (scrolled past) or currently visible
+      if (rect.bottom <= 0 || rect.top < window.innerHeight) {
+        setSkipAnimation(true);
+        setVisible(true);
+        return;
+      }
+
+      // Element is below the viewport — observe for scroll-triggered reveal
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setVisible(true);
+            observer.disconnect();
+          }
+        },
+        { threshold }
+      );
+      observer.observe(el);
+      // Store for cleanup
+      el._revealObserver = observer;
+    });
+
+    return () => {
+      cancelAnimationFrame(raf);
+      if (el._revealObserver) {
+        el._revealObserver.disconnect();
+      }
+    };
   }, [threshold]);
 
-  return [ref, visible];
+  return [ref, visible, skipAnimation];
 }
 
 // --- COUNT UP HOOK ---
@@ -34,6 +61,10 @@ function useCountUp(target, duration, start) {
 
   useEffect(() => {
     if (!start) return;
+    if (duration <= 0) {
+      setValue(target);
+      return;
+    }
     let startTime = null;
     let raf;
 
@@ -160,18 +191,22 @@ export default function Homepage() {
 --header 'Gotenberg-Webhook-Events-Url: https://my-api.com/events'
 `;
 
-  const [sponsorRowRef, sponsorRowVisible] = useReveal(0.1);
-  const [poweredByRowRef, poweredByRowVisible] = useReveal(0.1);
-  const [sponsorBtnRef, sponsorBtnVisible] = useReveal(0.1);
-  const [sectionHeaderRef, sectionHeaderVisible] = useReveal(0.2);
-  const [feature1Ref, feature1Visible] = useReveal(0.15);
-  const [feature2Ref, feature2Visible] = useReveal(0.15);
-  const [feature3Ref, feature3Visible] = useReveal(0.15);
-  const [feature4Ref, feature4Visible] = useReveal(0.15);
-  const [ctaRef, ctaVisible] = useReveal(0.2);
+  const [sectionHeaderRef, sectionHeaderVisible, sectionHeaderSkip] =
+    useReveal(0.2);
+  const [feature1Ref, feature1Visible, feature1Skip] = useReveal(0.15);
+  const [feature2Ref, feature2Visible, feature2Skip] = useReveal(0.15);
+  const [feature3Ref, feature3Visible, feature3Skip] = useReveal(0.15);
+  const [feature4Ref, feature4Visible, feature4Skip] = useReveal(0.15);
+  const [ctaRef, ctaVisible, ctaSkip] = useReveal(0.2);
 
-  const dockerCount = useCountUp(55, 1800, ctaVisible);
-  const starsCount = useCountUp(11, 1800, ctaVisible);
+  // Helper: returns the right CSS classes for reveal animations
+  const revealClasses = (visible, skip) =>
+    skip
+      ? styles.revealInstant
+      : clsx(styles.reveal, visible && styles.revealVisible);
+
+  const dockerCount = useCountUp(55, ctaSkip ? 0 : 1800, ctaVisible);
+  const starsCount = useCountUp(11, ctaSkip ? 0 : 1800, ctaVisible);
 
   return (
     <main className={styles.mainContainer}>
@@ -280,15 +315,7 @@ export default function Homepage() {
       <section className={styles.communitySection}>
         <div className="container">
           <div className={styles.sponsorsStrip}>
-            <div
-              ref={sponsorRowRef}
-              className={clsx(
-                styles.sponsorRow,
-                styles.reveal,
-                sponsorRowVisible && styles.revealVisible
-              )}
-              style={{ animationDelay: "0.4s" }}
-            >
+            <div className={styles.sponsorRow}>
               <span className={styles.sponsorStripLabel}>Sponsors</span>
               <div className={styles.sponsorLogos}>
                 <a href="https://thecodingmachine.com" target="_blank">
@@ -315,15 +342,7 @@ export default function Homepage() {
               </div>
             </div>
 
-            <div
-              ref={poweredByRowRef}
-              className={clsx(
-                styles.sponsorRow,
-                styles.reveal,
-                poweredByRowVisible && styles.revealVisible
-              )}
-              style={{ animationDelay: "0.7s" }}
-            >
+            <div className={styles.sponsorRow}>
               <span className={styles.sponsorStripLabel}>Powered By</span>
               <div className={styles.sponsorLogos}>
                 <a
@@ -346,14 +365,7 @@ export default function Homepage() {
               </div>
             </div>
 
-            <div
-              ref={sponsorBtnRef}
-              className={clsx(
-                styles.reveal,
-                sponsorBtnVisible && styles.revealVisible
-              )}
-              style={{ animationDelay: "1s" }}
-            >
+            <div>
               <Link
                 to="https://github.com/sponsors/gulien"
                 className={styles.heartBtnStrip}
@@ -381,8 +393,7 @@ export default function Homepage() {
             ref={sectionHeaderRef}
             className={clsx(
               styles.sectionHeader,
-              styles.reveal,
-              sectionHeaderVisible && styles.revealVisible
+              revealClasses(sectionHeaderVisible, sectionHeaderSkip)
             )}
           >
             <h2>
@@ -397,8 +408,7 @@ export default function Homepage() {
               ref={feature1Ref}
               className={clsx(
                 styles.splitRow,
-                styles.reveal,
-                feature1Visible && styles.revealVisible
+                revealClasses(feature1Visible, feature1Skip)
               )}
             >
               <div className={styles.splitContent}>
@@ -439,8 +449,7 @@ export default function Homepage() {
               className={clsx(
                 styles.splitRow,
                 styles.splitRowReverse,
-                styles.reveal,
-                feature2Visible && styles.revealVisible
+                revealClasses(feature2Visible, feature2Skip)
               )}
             >
               <div className={styles.splitContent}>
@@ -478,8 +487,7 @@ export default function Homepage() {
               ref={feature3Ref}
               className={clsx(
                 styles.splitRow,
-                styles.reveal,
-                feature3Visible && styles.revealVisible
+                revealClasses(feature3Visible, feature3Skip)
               )}
             >
               <div className={styles.splitContent}>
@@ -519,8 +527,7 @@ export default function Homepage() {
               className={clsx(
                 styles.splitRow,
                 styles.splitRowReverse,
-                styles.reveal,
-                feature4Visible && styles.revealVisible
+                revealClasses(feature4Visible, feature4Skip)
               )}
             >
               <div className={styles.splitContent}>
@@ -586,11 +593,7 @@ export default function Homepage() {
         <div className={styles.ctaGlow} />
         <div
           ref={ctaRef}
-          className={clsx(
-            "container",
-            styles.reveal,
-            ctaVisible && styles.revealVisible
-          )}
+          className={clsx("container", revealClasses(ctaVisible, ctaSkip))}
         >
           <h2>
             Ready to transform your{" "}
