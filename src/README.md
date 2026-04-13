@@ -1,16 +1,16 @@
 # Site Design and Components
 
-Guidelines for modifying site design, React components, styles, or layout: CSS, theme, homepage, `.js`/`.css` files.
+Guidelines for modifying site design, React components, styles, or layout.
 
-## Technology Stack
+## Stack
 
-- **Framework:** Docusaurus 3.8.1 (React 18)
-- **Styling:** CSS Modules (`.module.css`) for components, global CSS (`src/css/custom.css`) for theme overrides
-- **Fonts:** Inter (body, headings), JetBrains Mono (code), loaded via Google Fonts
-- **Icons:** Inline SVGs in React components (no icon library)
-- **Images:** `@docusaurus/plugin-ideal-image` for optimized images
+- Docusaurus 3.8.1 (React 18)
+- CSS Modules (`.module.css`) for components, global CSS (`src/css/custom.css`) for theme overrides
+- Fonts: Inter (body, headings), JetBrains Mono (code), loaded via Google Fonts
+- Icons: inline SVGs in React components (no icon library)
+- Images: `@docusaurus/plugin-ideal-image` for optimization
 
-## Design System
+## Design system
 
 ### Colors
 
@@ -22,13 +22,7 @@ Guidelines for modifying site design, React components, styles, or layout: CSS, 
 | `--ifm-color-content-secondary` | `#64748b` | Secondary text, sidebar links |
 | `--ifm-border-color`            | `#e2e8f0` | Borders, dividers             |
 
-HTTP method badge colors:
-
-- POST: `#49cc90` (green)
-- GET: `#61affe` (blue)
-- PUT: `#fca130` (orange)
-- DELETE: `#f93e3e` (red)
-- HEAD: `#9061f9` (purple)
+HTTP method badge colors: POST `#49cc90`, GET `#61affe`, PUT `#fca130`, DELETE `#f93e3e`, HEAD `#9061f9`.
 
 ### Typography
 
@@ -38,64 +32,44 @@ HTTP method badge colors:
 - Body: 1.05rem, line-height 1.75
 - Code: 0.85em, weight 500, subtle gray background
 
-### Spacing and Layout
+### Spacing
 
 - Max content width: 840px (`.theme-doc-markdown`)
 - Container width: 1366px
 - Navbar height: 4rem
-- Light mode only (dark mode switch is disabled)
+- Light mode only (dark mode switch disabled)
 
-## Component Architecture
+## Components
 
 ### Homepage (`src/components/Homepage.js`)
 
-A standalone React component with CSS Modules (`Homepage.module.css`). Contains:
-
-- Hero section with logo, tagline, and CTA buttons
-- Community stats strip (Docker pulls, GitHub stars, license)
-- Feature blocks with `SimpleTerminal` code previews
-- Final CTA section
-
-The `SimpleTerminal` component renders syntax-highlighted bash commands with a macOS-style window chrome (red/yellow/green dots).
+Standalone React component with CSS Modules (`Homepage.module.css`). Contains hero section, community stats strip, feature blocks with `SimpleTerminal` code previews, and final CTA section.
 
 ### ApiEndpoint (`src/components/documentation/ApiEndpoint.js`)
 
-The core documentation component. Renders API endpoint information with:
-
-- Method badge + path header
-- Collapsible parameter lists (headers, form fields, form files)
-- cURL example via Docusaurus `<CodeBlock>`
-- Tabbed response display via Docusaurus `<Tabs>`
-
-This component has its own CSS Module (`ApiEndpoint.module.css`).
+Core documentation component. Renders method badge + path header, collapsible parameter lists, cURL example via Docusaurus `<CodeBlock>`, and tabbed response display via `<Tabs>`. Has its own CSS Module (`ApiEndpoint.module.css`).
 
 ### Sponsors (`src/components/documentation/Sponsors.js`)
 
 Renders sponsor logos at the bottom of documentation pages.
 
-## Theme Overrides
+## Theme overrides
 
-- `src/theme/DocSidebar/index.js`: Custom sidebar with HTTP method badges via CSS pseudo-elements
-- Sidebar badges are implemented purely in CSS using `::before` pseudo-elements on `.sidebar-method-*` classes
+- `src/theme/DocSidebar/index.js`: custom sidebar with HTTP method badges via CSS pseudo-elements on `.sidebar-method-*` classes.
 
-## CSS Conventions
+## CSS conventions
 
-- Use CSS custom properties (`--ifm-*`) for Docusaurus theme values
-- Use CSS Modules for component-scoped styles
-- Use `src/css/custom.css` only for global overrides (admonitions, sidebar, footer, typography)
-- Transitions: `0.2s ease` for interactive elements, `0.3s cubic-bezier(0.4, 0, 0.2, 1)` for larger animations
-- Hover effects: subtle `translateY(-1px)` lift with colored box-shadow
-- Use `clsx` for conditional class composition in React components
+- Use CSS custom properties (`--ifm-*`) for Docusaurus theme values.
+- Use CSS Modules for component-scoped styles.
+- Use `src/css/custom.css` only for global overrides (admonitions, sidebar, footer, typography).
+- Transitions: `0.2s ease` for interactive elements, `0.3s cubic-bezier(0.4, 0, 0.2, 1)` for larger animations.
+- Hover effects: subtle `translateY(-1px)` lift with colored box-shadow.
+- Use `clsx` for conditional class composition in React components.
+- Respect Docusaurus's Infima CSS framework. Override with specificity, not `!important`.
+- Use `@docusaurus/Link` for internal navigation. Use `useBaseUrl` for static asset paths.
 
-## Docusaurus Integration
+## Responsive design
 
-- Respect Docusaurus's Infima CSS framework. Override with specificity, not `!important` (except documented exceptions).
-- Use `@docusaurus/Link` for internal navigation, not `<a>` tags
-- Use `useBaseUrl` for static asset paths
-- Swizzled components live in `src/theme/`. Be cautious when upgrading Docusaurus.
-
-## Responsive Design
-
-- Tables switch to horizontal scroll below 1280px
-- Content padding adjusts at 996px and 1400px breakpoints
-- Homepage uses Docusaurus grid system (`col col--6`, `row`, `container`)
+- Tables switch to horizontal scroll below 1280px.
+- Content padding adjusts at 996px and 1400px breakpoints.
+- Homepage uses Docusaurus grid system (`col col--6`, `row`, `container`).
