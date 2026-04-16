@@ -85,7 +85,7 @@ Plan non-trivial changes before coding. Present what you're changing, why, and w
 
 [Conventional Commits](https://www.conventionalcommits.org/): `docs:`, `feat:`, `fix:`, `style:`.
 
-Stage specific files. Never `git add -A` or `git add .`. Do not push unless asked.
+Stage specific files. Never `git add -A` or `git add .`.
 
 ## Scoped guidelines
 
