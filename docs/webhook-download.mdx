@@ -216,4 +216,12 @@ curl \\
 `}
 />
 
+## Outbound URL Security
+
+Gotenberg resolves every outbound URL (webhook delivery, `downloadFrom` fetches, Chromium asset loads) and rejects non-public addresses: loopback, RFC1918, link-local, unspecified, multicast, IPv6 unique-local (`fc00::/7`), and IPv4-mapped IPv6 wrappers such as `[::ffff:127.0.0.1]`. The dial pins to the validated IP to prevent DNS rebinding between validation and connect.
+
+Since _8.31.0_, `--webhook-deny-list` and `--api-download-from-deny-list` default to a regex matching the same internal ranges. An allow-list match bypasses the IP check and lets you opt into specific internal destinations. The deny-list always applies and cannot be bypassed.
+
+Rejected URLs return `403 Forbidden` to the caller. See the [Webhook](/docs/configuration#webhook) and [API](/docs/configuration#api) configuration flags.
+
 <Sponsors />
