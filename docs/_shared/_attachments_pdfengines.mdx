@@ -2,6 +2,8 @@ import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
 
 Attach external files directly inside the PDF container. Commonly used for e-invoicing standards like **[ZUGFeRD / Factur-X](https://fnfe-mpe.org/factur-x/)**, which require a machine-readable XML invoice as an attachment.
 
+Provide per-attachment metadata with `embedsMetadata` to satisfy PDF/A-3 and Factur-X requirements: each entry sets the embedded file stream's `/Subtype`, writes `/AFRelationship` on the file specification, and references the attachment from the Document Catalog's `/AF` array.
+
 {(props.showFormFields || props.showCurlExample) && (
 
 <ApiEndpoint
@@ -17,14 +19,28 @@ Attach external files directly inside the PDF container. Commonly used for e-inv
         ]
       : undefined
   }
+  formFields={
+    props.showFormFields
+      ? [
+          {
+            name: "embedsMetadata",
+            type: "json",
+            defaultValue: "None",
+            description:
+              "Per-attachment metadata keyed by filename. Each entry accepts `mimeType` (written to the embedded file stream's `/Subtype`) and `relationship` (the `/AFRelationship` value, e.g., `Source`, `Data`, `Alternative`, `Supplement`, `Unspecified`). Requires a PDF engine that supports the feature (QPDF by default).",
+          },
+        ]
+      : undefined
+  }
   curl={
     props.showCurlExample
       ? `
 curl \\
 --request ${props.method} http://localhost:3000${props.path} \\
 ${props.curlFormData}
---form embeds=@invoice.xml \\
+--form embeds=@factur-x.xml \\
 --form embeds=@logo.png \\
+--form embedsMetadata='{"factur-x.xml":{"mimeType":"text/xml","relationship":"Alternative"},"logo.png":{"mimeType":"image/png","relationship":"Supplement"}}' \\
 ${props.curlOutput}
 `
       : undefined

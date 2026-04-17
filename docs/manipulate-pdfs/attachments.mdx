@@ -8,6 +8,8 @@ import Sponsors from "@site/src/components/documentation/Sponsors";
 
 Embeds external files directly inside the PDF container. Commonly used for e-invoicing standards like **[ZUGFeRD / Factur-X](https://fnfe-mpe.org/factur-x/)**, which require a machine-readable XML invoice as an attachment.
 
+Provide per-attachment metadata with `embedsMetadata` to satisfy PDF/A-3 and Factur-X requirements: each entry sets the embedded file stream's `/Subtype`, writes `/AFRelationship` on the file specification, and references the attachment from the Document Catalog's `/AF` array.
+
 <ApiEndpoint
   method="POST"
   path="/forms/pdfengines/embed"
@@ -41,11 +43,21 @@ Embeds external files directly inside the PDF container. Commonly used for e-inv
       description: "Files to embed (e.g., .xml, .png, etc.).",
     },
   ]}
+  formFields={[
+    {
+      name: "embedsMetadata",
+      type: "json",
+      defaultValue: "None",
+      description:
+        "Per-attachment metadata keyed by filename. Each entry accepts `mimeType` (written to the embedded file stream's `/Subtype`) and `relationship` (the `/AFRelationship` value, e.g., `Source`, `Data`, `Alternative`, `Supplement`, `Unspecified`). Requires a PDF engine that supports the feature (QPDF by default).",
+    },
+  ]}
   curl={`
 curl \\
 --request POST http://localhost:3000/forms/pdfengines/embed \\
 --form files=@/path/to/invoice.pdf \\
 --form embeds=@/path/to/factur-x.xml \\
+--form embedsMetadata='{"factur-x.xml":{"mimeType":"text/xml","relationship":"Alternative"}}' \\
 -o my.pdf`}
   responses={[
     {
