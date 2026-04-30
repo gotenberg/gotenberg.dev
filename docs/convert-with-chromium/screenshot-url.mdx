@@ -40,7 +40,8 @@ Captures a screenshot of a target URL using Headless Chromium. Supports JavaScri
       name: "url",
       type: "string",
       required: true,
-      description: "URL of the page to screenshot.",
+      description:
+        "URL of the page to screenshot. file:// URLs return 400; render local HTML via /forms/chromium/screenshot/html or /forms/chromium/screenshot/markdown.",
     },
   ]}
   curl={`

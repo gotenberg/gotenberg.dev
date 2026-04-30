@@ -3,6 +3,8 @@ import SyntaxWatermarkPDFEngines from "./_syntax_watermark_pdfengines.mdx";
 
 Adds a watermark _behind_ the content of each page during post-processing. Sources: `text`, `image`, or `pdf`.
 
+`image` and `pdf` sources require an uploaded `watermark` file. `watermarkExpression` cannot reference an arbitrary filesystem path; the route returns `400 Bad Request`.
+
 <SyntaxWatermarkPDFEngines />
 
 {props.showCurlExample && (

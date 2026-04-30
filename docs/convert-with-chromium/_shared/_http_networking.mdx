@@ -205,3 +205,11 @@ ${props.curlFormData}
 ${props.curlOutput}
 `}
 />
+
+### Outbound URL Filtering
+
+Chromium routes every HTTP/HTTPS request through an in-process pinning proxy. The proxy resolves DNS once and dials the validated IP, closing the rebind window.
+
+`file://` sub-resources are scoped to the request's own working directory. Sibling requests' files are unreachable.
+
+Forbidden URLs return `403`. See [Outbound URL Filtering](/docs/outbound-url-filtering) for posture, recipes, and configuration.

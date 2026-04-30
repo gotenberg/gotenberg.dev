@@ -181,6 +181,11 @@ module.exports = {
     },
     {
       type: "doc",
+      id: "outbound-url-filtering",
+      label: "Outbound URL Filtering",
+    },
+    {
+      type: "doc",
       id: "telemetry",
       label: "Telemetry",
     },

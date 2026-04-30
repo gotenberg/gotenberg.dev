@@ -3,6 +3,8 @@ import SyntaxStampPDFEngines from "./_syntax_stamp_pdfengines.mdx";
 
 Adds a stamp _on top of_ the content of each page during post-processing. Sources: `text`, `image`, or `pdf`.
 
+`image` and `pdf` sources require an uploaded `stamp` file. `stampExpression` cannot reference an arbitrary filesystem path; the route returns `400 Bad Request`.
+
 <SyntaxStampPDFEngines />
 
 {props.showCurlExample && (

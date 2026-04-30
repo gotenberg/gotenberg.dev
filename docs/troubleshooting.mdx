@@ -16,6 +16,22 @@ Issue not listed here? Check [GitHub issues](https://github.com/gotenberg/gotenb
 - **Network Idle:** For versions after _8.11.0_, try setting the `skipNetworkIdleEvent` field to _false_.
 - **Updates:** Consider upgrading to the latest Gotenberg version to benefit from debugging features like _Network Errors_ or _Invalid HTTP Status Codes_.
 
+### Blank Charts or Empty Google Maps
+
+Charting libraries (`@visx/responsive`, ApexCharts) and Google Maps rendered as empty rectangles between _8.29.0_ and _8.31.0_.
+
+The chromedp _0.15.0_ print pipeline suspended `requestAnimationFrame`, `ResizeObserver`, `IntersectionObserver`, and CSS `transitionend` / `animationend` between the load event and `Page.printToPDF`. Libraries measuring their container inside an `rAF` callback never received a frame.
+
+Fixed in _8.32.0_ by pinning `chromedp` back to _v0.14.2_. Upgrade to _8.32.0_ or later (issues [#1531](https://github.com/gotenberg/gotenberg/issues/1531), [#1534](https://github.com/gotenberg/gotenberg/issues/1534), [#1535](https://github.com/gotenberg/gotenberg/issues/1535)).
+
+### Sub-Resources Stopped Loading After 8.31.0
+
+_8.31.0_ blocked Chromium sub-resources resolving to private IPs by default. CSS, images, and iframes hosted on internal hostnames stopped loading.
+
+_8.32.0_ restores permissive defaults. Private-IP sub-resources load again without configuration.
+
+Set `CHROMIUM_DENY_PRIVATE_IPS=true` to keep the strict 8.31.0-style posture. See [Outbound URL Filtering](outbound-url-filtering).
+
 ### Localhost / Missing Assets
 
 - **Container Networking:** The Gotenberg container has its own network. If you try to convert `http://localhost:3000`, it looks inside the container, not your host machine. Use your host's actual network IP, or Docker's DNS (e.g., `host.docker.internal`).
@@ -62,6 +78,14 @@ Issue not listed here? Check [GitHub issues](https://github.com/gotenberg/gotenb
 - Increase the startup timeout ([LibreOffice module configuration](configuration#libreoffice)).
 - Debian users should ensure they are using a current version of the distribution ([Issue #794](https://github.com/gotenberg/gotenberg/issues/794)).
 - For Synology and Paperless-ngx users, consult [this configuration comment](https://github.com/gotenberg/gotenberg/issues/763#issuecomment-1890472047).
+
+### First Request Times Out, Subsequent Requests Fail Until Container Restart
+
+Before _8.32.0_, the supervisor cached a failed first launch and returned the same error to every subsequent request. This happened when `LIBREOFFICE_START_TIMEOUT` was shorter than soffice's cold start.
+
+Fixed in _8.32.0_. A failed launch leaves state clean and the next request retries from scratch ([Issue #1538](https://github.com/gotenberg/gotenberg/issues/1538)).
+
+For older versions, increase `LIBREOFFICE_START_TIMEOUT` (default 20s) to comfortably exceed soffice cold-start time.
 
 ### PDF/A-1a Support
 

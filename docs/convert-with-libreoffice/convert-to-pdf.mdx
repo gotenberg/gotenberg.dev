@@ -275,6 +275,14 @@ curl \\
 
 Macros in documents (e.g., `.docm`, `.xlsm`, `.pptm`) are **disabled** by default during conversion. Files are still converted, but macro-generated content will not execute.
 
+### Embedded Outbound Fetches
+
+LibreOffice resolves external URLs referenced by uploaded documents: OOXML images marked `TargetMode="External"`, RTF `INCLUDEPICTURE`, ODT linked images.
+
+Since _8.32.0_, those fetches route through the same pinning proxy used by Chromium. Allow/deny lists and IP-class checks apply. Forbidden destinations return `403 Forbidden`.
+
+See [Outbound URL Filtering](/docs/outbound-url-filtering).
+
 ## Structure & Metadata
 
 ### Document Outline (LibreOffice)
@@ -529,6 +537,8 @@ curl \\
 
 ### Watermark (PDF Engines)
 
+`image` and `pdf` sources require an uploaded `watermark` file. `watermarkExpression` cannot reference an arbitrary filesystem path; the route returns `400 Bad Request`.
+
 <ApiEndpoint
   formFields={[
     {
@@ -579,6 +589,8 @@ curl \\
 />
 
 ### Stamp (PDF Engines)
+
+`image` and `pdf` sources require an uploaded `stamp` file. `stampExpression` cannot reference an arbitrary filesystem path; the route returns `400 Bad Request`.
 
 <ApiEndpoint
   formFields={[
