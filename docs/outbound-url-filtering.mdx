@@ -36,8 +36,6 @@ Correctness fixes for specific primitives. No setting turns them off.
 
 **`file://` sub-resources scoped per request.** Routes that render local HTML load assets relative to the request's own working directory. Sibling requests' files are unreachable.
 
-**Stamp and watermark file required for `image` and `pdf` sources.** `/forms/pdfengines/merge`, `/forms/pdfengines/split`, `/forms/libreoffice/convert`, and the three Chromium `/convert/*` routes return `400 Bad Request` when the source is `image` or `pdf` and no file is uploaded.
-
 ## Per-Module Variables
 
 Each module exposes the same two boolean variables. All default to `false`.
