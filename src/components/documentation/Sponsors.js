@@ -42,6 +42,17 @@ export default function Sponsors() {
               className={`${styles.logoStrip} ${styles.logoWide}`}
             />
           </a>
+          <a
+            href="https://filetopdf.dev"
+            target="_blank"
+            className={styles.cleanLink}
+          >
+            <img
+              src={useBaseUrl("/img/filetopdf-logo.png")}
+              alt="FileToPDF"
+              className={`${styles.logoStrip} ${styles.logoWordmark}`}
+            />
+          </a>
         </div>
       </div>
 

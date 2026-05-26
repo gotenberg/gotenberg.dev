@@ -342,6 +342,10 @@
   height: 96px;
 }
 
+.logoWordmark {
+  height: 42px;
+}
+
 .logoSquare {
   height: 32px;
 }
@@ -765,6 +769,9 @@
   }
   .logoWide {
     height: 64px;
+  }
+  .logoWordmark {
+    height: 28px;
   }
   .statsBar {
     flex-direction: column;

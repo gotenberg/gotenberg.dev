@@ -134,6 +134,14 @@ module.exports = {
               href: "https://pdfme.com?utm_source=gotenberg_github&utm_medium=website",
             },
             {
+              label: "PDFBolt",
+              href: "https://pdfbolt.com",
+            },
+            {
+              label: "FileToPDF",
+              href: "https://filetopdf.dev",
+            },
+            {
               label: "Become a sponsor",
               href: "https://github.com/sponsors/gulien",
             },

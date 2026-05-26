@@ -338,6 +338,13 @@ export default function Homepage() {
                     className={clsx(styles.logoStrip, styles.logoWide)}
                   />
                 </a>
+                <a href="https://filetopdf.dev" target="_blank">
+                  <img
+                    src={useBaseUrl("/img/filetopdf-logo.png")}
+                    alt="FileToPDF"
+                    className={clsx(styles.logoStrip, styles.logoWordmark)}
+                  />
+                </a>
               </div>
             </div>
 

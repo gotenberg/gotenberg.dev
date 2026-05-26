@@ -57,6 +57,10 @@
   height: 72px;
 }
 
+.logoWordmark {
+  height: 32px;
+}
+
 .logoSquare {
   height: 28px;
 }
@@ -140,6 +144,10 @@
 
   .logoWide {
     height: 48px;
+  }
+
+  .logoWordmark {
+    height: 22px;
   }
 
   .logoSquare {
