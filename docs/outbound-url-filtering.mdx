@@ -51,7 +51,7 @@ Each module exposes the same two boolean variables. All default to `false`.
 | `LIBREOFFICE_DENY_PRIVATE_IPS`       | Rejects LibreOffice outbound fetches resolving to a non-public IP.           |
 | `LIBREOFFICE_DENY_PUBLIC_IPS`        | Rejects LibreOffice outbound fetches resolving to a public IP.               |
 
-Non-public means loopback, RFC1918, link-local, or IPv6 unique-local.
+Non-public means loopback, RFC1918, link-local, or IPv6 unique-local. The check also unwraps IPv6 forms that embed an IPv4 destination, IPv4-mapped (`::ffff:10.0.0.1`), IPv4-translated, 6to4 (`2002::/16`), and Teredo (`2001::/32`), and rejects them when the embedded IPv4 is non-public.
 
 LibreOffice also exposes `LIBREOFFICE_ALLOW_LIST` and `LIBREOFFICE_DENY_LIST`, mirroring Chromium and webhook.
 

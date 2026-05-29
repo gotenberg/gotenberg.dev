@@ -26,6 +26,13 @@ import WaitFor from "./_wait_for.mdx";
         "Define whether to clip the screenshot according to the device dimensions.",
     },
     {
+      name: "deviceScaleFactor",
+      type: "number",
+      defaultValue: "1",
+      description:
+        "The device scale ratio, controlling the screenshot pixel density. Set to '2' for retina-quality output.",
+    },
+    {
       name: "format",
       type: "enum",
       defaultValue: "png",
@@ -71,6 +78,7 @@ ${props.curlOutput}
 **The viewport defines the image.** Unlike PDFs which paginate content, screenshots capture the browser's viewport exactly as rendered.
 
 - **Resolution:** Ensure you set the `width` and `height` form fields to match your desired target device (e.g., `1920`x`1080` for desktop, `375`x`812` for mobile).
+- **Pixel density:** Raise `deviceScaleFactor` for high-DPI output. A value of `2` doubles the captured pixels, matching a retina display.
 - If your screenshot's content is repeated and clipped, consider setting the `skipNetworkIdleEvent` form field to false (see issue [#1065](https://github.com/gotenberg/gotenberg/issues/1065#issuecomment-2670882337)).
 
 :::tip
