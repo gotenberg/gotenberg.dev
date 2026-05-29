@@ -11,7 +11,7 @@
 
 
 <link rel="search" type="application/opensearchdescription+xml" title="Gotenberg" href="/opensearch.xml"><link rel="stylesheet" href="/assets/css/styles.69f716db.css">
-<script src="/assets/js/runtime~main.5cfe8588.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.8113f105.js" defer="defer"></script>
 <script src="/assets/js/main.aaf37824.js" defer="defer"></script>
 </head>
 <body>
@@ -43,7 +43,7 @@
 <h2 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="per-module-variables">Per-Module Variables<a href="#per-module-variables" class="hash-link" aria-label="Direct link to Per-Module Variables" title="Direct link to Per-Module Variables" translate="no">​</a></h2>
 <p>Each module exposes the same two boolean variables. All default to <code>false</code>.</p>
 <table><thead><tr><th>Environment variable</th><th>Effect</th></tr></thead><tbody><tr><td><code>CHROMIUM_DENY_PRIVATE_IPS</code></td><td>Rejects Chromium navigations and sub-resources resolving to a non-public IP.</td></tr><tr><td><code>CHROMIUM_DENY_PUBLIC_IPS</code></td><td>Rejects Chromium navigations and sub-resources resolving to a public IP.</td></tr><tr><td><code>WEBHOOK_DENY_PRIVATE_IPS</code></td><td>Rejects webhook URLs (success, error, events) resolving to a non-public IP.</td></tr><tr><td><code>WEBHOOK_DENY_PUBLIC_IPS</code></td><td>Rejects webhook URLs resolving to a public IP.</td></tr><tr><td><code>API_DOWNLOAD_FROM_DENY_PRIVATE_IPS</code></td><td>Rejects <code>downloadFrom</code> URLs resolving to a non-public IP.</td></tr><tr><td><code>API_DOWNLOAD_FROM_DENY_PUBLIC_IPS</code></td><td>Rejects <code>downloadFrom</code> URLs resolving to a public IP.</td></tr><tr><td><code>LIBREOFFICE_DENY_PRIVATE_IPS</code></td><td>Rejects LibreOffice outbound fetches resolving to a non-public IP.</td></tr><tr><td><code>LIBREOFFICE_DENY_PUBLIC_IPS</code></td><td>Rejects LibreOffice outbound fetches resolving to a public IP.</td></tr></tbody></table>
-<p>Non-public means loopback, RFC1918, link-local, or IPv6 unique-local.</p>
+<p>Non-public means loopback, RFC1918, link-local, or IPv6 unique-local. The check also unwraps IPv6 forms that embed an IPv4 destination, IPv4-mapped (<code>::ffff:10.0.0.1</code>), IPv4-translated, 6to4 (<code>2002::/16</code>), and Teredo (<code>2001::/32</code>), and rejects them when the embedded IPv4 is non-public.</p>
 <p>LibreOffice also exposes <code>LIBREOFFICE_ALLOW_LIST</code> and <code>LIBREOFFICE_DENY_LIST</code>, mirroring Chromium and webhook.</p>
 <p>Rejected URLs return <code>403 Forbidden</code>.</p>
 <h2 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="precedence">Precedence<a href="#precedence" class="hash-link" aria-label="Direct link to Precedence" title="Direct link to Precedence" translate="no">​</a></h2>
