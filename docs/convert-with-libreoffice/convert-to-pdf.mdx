@@ -6,6 +6,7 @@ title: Convert to PDF
 import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
 import MetadataPDFEngines from "../_shared/_metadata_pdfengines.mdx";
 import AttachmentsPDFEngines from "../_shared/_attachments_pdfengines.mdx";
+import FacturXPDFEngines from "../_shared/_facturx_pdfengines.mdx";
 import SyntaxValidationSplitPDFEngines from "../_shared/_syntax_validation_split_pdfengines.mdx";
 import WatermarkPDFEngines from "../_shared/_watermark_pdfengines.mdx";
 import StampPDFEngines from "../_shared/_stamp_pdfengines.mdx";
@@ -376,6 +377,17 @@ curl \\
   method="POST"
   path="/forms/libreoffice/convert"
   curlFormData={`--form files=@/path/to/document.docx \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+### Factur-X (PDF Engines)
+
+<FacturXPDFEngines
+  showFormFields={true}
+  showCurlExample={true}
+  method="POST"
+  path="/forms/libreoffice/convert"
+  curlFormData={`--form files=@/path/to/invoice.docx \\`}
   curlOutput={`-o my.pdf`}
 />
 

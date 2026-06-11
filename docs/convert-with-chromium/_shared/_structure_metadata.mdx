@@ -1,6 +1,7 @@
 import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
 import MetadataPDFEngines from "../../_shared/_metadata_pdfengines.mdx";
 import AttachmentsPDFEngines from "../../_shared/_attachments_pdfengines.mdx";
+import FacturXPDFEngines from "../../_shared/_facturx_pdfengines.mdx";
 import FlattenPDFEngines from "../../_shared/_flatten_pdfengines.mdx";
 
 ## Structure & Metadata
@@ -41,6 +42,17 @@ ${props.curlOutput}
 ### Attachments (PDF Engines)
 
 <AttachmentsPDFEngines
+  showFormFields={true}
+  showCurlExample={true}
+  method={props.method}
+  path={props.path}
+  curlFormData={props.curlFormData}
+  curlOutput={props.curlOutput}
+/>
+
+### Factur-X (PDF Engines)
+
+<FacturXPDFEngines
   showFormFields={true}
   showCurlExample={true}
   method={props.method}

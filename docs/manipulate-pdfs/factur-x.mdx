@@ -1,0 +1,129 @@
+---
+id: factur-x
+title: Factur-X
+---
+
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import Sponsors from "@site/src/components/documentation/Sponsors";
+
+Turns existing PDFs into [Factur-X / ZUGFeRD](https://fnfe-mpe.org/factur-x/) e-invoices: embeds the CII invoice XML under the canonical `factur-x.xml` name with the `Alternative` relationship, injects the Factur-X XMP metadata, and converts the PDF to PDF/A-3, the only PDF/A family that allows embedded files.
+
+Inputs already carrying PDF/A-3 identification are left untouched; everything else converts to PDF/A-3b, or to the PDF/A-3 variant requested with `pdfa`. Requires a PDF engine that supports the feature (QPDF by default).
+
+The conversion routes accept the same form fields, so a single request can go from an office document to a compliant e-invoice. See [Office Documents into PDFs](/docs/convert-with-libreoffice/convert-to-pdf#factur-x-pdf-engines).
+
+<ApiEndpoint
+  method="POST"
+  path="/forms/pdfengines/factur-x"
+  headers={[
+    {
+      name: "Gotenberg-Output-Filename",
+      type: "string",
+      required: false,
+      description:
+        "The filename of the resulting file - Gotenberg automatically appends the file extension. Defaults to a random UUID filename.",
+    },
+    {
+      name: "Gotenberg-Trace",
+      type: "string",
+      required: false,
+      description:
+        "A custom request ID to identify the request in the logs; overrides the default UUID.",
+    },
+  ]}
+  formFiles={[
+    {
+      name: "files",
+      type: "file[]",
+      required: true,
+      description: "PDF files to turn into Factur-X documents.",
+    },
+    {
+      name: "facturxXml",
+      type: "file",
+      required: true,
+      description:
+        "The Factur-X CII invoice XML. Embedded as `factur-x.xml` regardless of the uploaded filename.",
+    },
+  ]}
+  formFields={[
+    {
+      name: "facturxConformanceLevel",
+      type: "enum",
+      required: true,
+      description:
+        "The Factur-X conformance level recorded in the XMP metadata. Options: 'MINIMUM', 'BASIC WL', 'BASIC', 'EN 16931', 'EXTENDED', 'XRECHNUNG'.",
+    },
+    {
+      name: "facturxDocumentType",
+      type: "enum",
+      defaultValue: "INVOICE",
+      description:
+        "The Factur-X document type. Options: 'INVOICE', 'ORDER', 'ORDER_RESPONSE', 'ORDER_CHANGE'.",
+    },
+    {
+      name: "facturxVersion",
+      type: "string",
+      defaultValue: "1.0",
+      description: "The Factur-X version recorded in the XMP metadata.",
+    },
+    {
+      name: "pdfa",
+      type: "enum",
+      required: false,
+      description:
+        "Converts to a specific PDF/A-3 variant. Options: 'PDF/A-3a', 'PDF/A-3b', 'PDF/A-3u'. Other PDF/A formats return `400 Bad Request`. Defaults to PDF/A-3b when the input is not already PDF/A-3.",
+    },
+    {
+      name: "pdfua",
+      type: "boolean",
+      defaultValue: "false",
+      description: "Enables PDF/UA (Universal Accessibility) compliance.",
+    },
+  ]}
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/pdfengines/factur-x \\
+--form files=@/path/to/invoice.pdf \\
+--form facturxXml=@/path/to/factur-x.xml \\
+--form 'facturxConformanceLevel=EN 16931' \\
+-o my.pdf`}
+  responses={[
+    {
+      status: 200,
+      message: "OK",
+      description:
+        "The Factur-X PDF file. Multiple input files produce a ZIP archive.",
+      body: `
+Content-Disposition: attachment; filename={output-filename.pdf}
+Content-Type: {content-type}
+Content-Length: {content-length}
+Gotenberg-Trace: {trace}
+Body: {output-file}
+      `,
+    },
+    {
+      status: 400,
+      message: "Bad Request",
+      description: "The request had one or more invalid form fields.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+      `,
+    },
+    {
+      status: 503,
+      message: "Service Unavailable",
+      description:
+        "The request did not complete within the configured maximum duration.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+      `,
+    },
+  ]}
+/>
+
+<Sponsors />

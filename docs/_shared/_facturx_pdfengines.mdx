@@ -1,0 +1,64 @@
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+
+Produces a [Factur-X / ZUGFeRD](https://fnfe-mpe.org/factur-x/) e-invoice in one request: upload the CII invoice XML with `facturxXml` and set `facturxConformanceLevel`. Both fields are required together.
+
+Gotenberg embeds the XML under the canonical `factur-x.xml` name with the `Alternative` relationship, injects the Factur-X XMP metadata, and outputs PDF/A-3, defaulting to PDF/A-3b. The `facturxXml` upload is never treated as a document to convert. Requires a PDF engine that supports the feature (QPDF by default).
+
+See the dedicated [Factur-X](/docs/manipulate-pdfs/factur-x) route for transforming existing PDFs.
+
+{(props.showFormFields || props.showCurlExample) && (
+
+<ApiEndpoint
+  formFiles={
+    props.showFormFields
+      ? [
+          {
+            name: "facturxXml",
+            type: "file",
+            defaultValue: "None",
+            description:
+              "The Factur-X CII invoice XML. Embedded as `factur-x.xml` regardless of the uploaded filename.",
+          },
+        ]
+      : undefined
+  }
+  formFields={
+    props.showFormFields
+      ? [
+          {
+            name: "facturxConformanceLevel",
+            type: "enum",
+            defaultValue: "None",
+            description:
+              "The Factur-X conformance level recorded in the XMP metadata. Options: 'MINIMUM', 'BASIC WL', 'BASIC', 'EN 16931', 'EXTENDED', 'XRECHNUNG'.",
+          },
+          {
+            name: "facturxDocumentType",
+            type: "enum",
+            defaultValue: "INVOICE",
+            description:
+              "The Factur-X document type. Options: 'INVOICE', 'ORDER', 'ORDER_RESPONSE', 'ORDER_CHANGE'.",
+          },
+          {
+            name: "facturxVersion",
+            type: "string",
+            defaultValue: "1.0",
+            description: "The Factur-X version recorded in the XMP metadata.",
+          },
+        ]
+      : undefined
+  }
+  curl={
+    props.showCurlExample
+      ? `
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form facturxXml=@/path/to/factur-x.xml \\
+--form 'facturxConformanceLevel=EN 16931' \\
+${props.curlOutput}
+`
+      : undefined
+  }
+/>
+)}

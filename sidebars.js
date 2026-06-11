@@ -102,6 +102,11 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "manipulate-pdfs/factur-x",
+          className: "sidebar-method-post",
+        },
+        {
+          type: "doc",
           id: "manipulate-pdfs/flatten-pdfs",
           className: "sidebar-method-post",
         },

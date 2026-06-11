@@ -7,6 +7,7 @@ import SyntaxValidationSplitPDFEngines from "../_shared/_syntax_validation_split
 import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
 import MetadataPDFEngines from "../_shared/_metadata_pdfengines.mdx";
 import AttachmentsPDFEngines from "../_shared/_attachments_pdfengines.mdx";
+import FacturXPDFEngines from "../_shared/_facturx_pdfengines.mdx";
 import FlattenPDFEngines from "../_shared/_flatten_pdfengines.mdx";
 import WatermarkPDFEngines from "../_shared/_watermark_pdfengines.mdx";
 import StampPDFEngines from "../_shared/_stamp_pdfengines.mdx";
@@ -133,6 +134,19 @@ Body: Service Unavailable
 ### Attachments (PDF Engines)
 
 <AttachmentsPDFEngines
+  showFormFields={true}
+  showCurlExample={true}
+  method="POST"
+  path="/forms/pdfengines/split"
+  curlFormData={`--form files=@/path/to/file.pdf \\
+--form splitMode=intervals \\
+--form splitSpan=1 \\`}
+  curlOutput={`-o my.zip`}
+/>
+
+### Factur-X (PDF Engines)
+
+<FacturXPDFEngines
   showFormFields={true}
   showCurlExample={true}
   method="POST"
