@@ -276,11 +276,13 @@ curl \\
 
 Macros in documents (e.g., `.docm`, `.xlsm`, `.pptm`) are **disabled** by default during conversion. Files are still converted, but macro-generated content will not execute.
 
-### Embedded Outbound Fetches
+### Linked Content
 
-LibreOffice resolves external URLs referenced by uploaded documents: OOXML images marked `TargetMode="External"`, RTF `INCLUDEPICTURE`, ODT linked images.
+Documents can reference content by link instead of storing it: OOXML images marked `TargetMode="External"`, RTF `INCLUDEPICTURE`, ODT linked images.
 
-Since _8.32.0_, those fetches route through the same pinning proxy used by Chromium. Allow/deny lists and IP-class checks apply. Forbidden destinations return `403 Forbidden`.
+Since _8.33.0_, LibreOffice drops linked content. An uploaded document always loads from an untrusted location, so LibreOffice refuses to resolve anything it links, whether an absolute `file://` path or an external URL. The conversion still returns `200 OK`; the linked content is simply absent from the PDF. There is no opt-out, and an allow-list match cannot re-enable linked content: the block happens before any fetch. Embedded content stored inside the document converts as before. Embed images instead of linking them.
+
+Since _8.32.0_, any outbound fetch LibreOffice still performs routes through the same pinning proxy used by Chromium. Allow/deny lists and IP-class checks apply. Forbidden destinations return `403 Forbidden`.
 
 See [Outbound URL Filtering](/docs/outbound-url-filtering).
 

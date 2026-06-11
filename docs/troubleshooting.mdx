@@ -69,6 +69,12 @@ Set `CHROMIUM_DENY_PRIVATE_IPS=true` to keep the strict 8.31.0-style posture. Se
 - **Missing Fonts:** LibreOffice relies on installed system fonts to calculate page breaks and layout. If your document uses a font not present in the container, LibreOffice will substitute it, causing shifted layouts. Install the required fonts via a custom Dockerfile (see [Fonts configuration](configuration#fonts)).
 - **After upgrading to 8.30.0:** The font stack was simplified from 30+ packages to 8. Documents relying on Microsoft Core Fonts (Arial, Times New Roman, Calibri) now use metric-compatible replacements. If you notice layout differences after upgrading, install `ttf-mscorefonts-installer` or the specific script fonts your documents need (see [Fonts configuration](configuration#installing-additional-fonts)).
 
+### Linked Images Missing After 8.33.0
+
+_8.33.0_ blocks content linked from untrusted locations. Uploaded documents always load from an untrusted location, so LibreOffice drops linked images and other linked content (absolute `file://` paths, external URLs) instead of resolving them. The conversion succeeds with `200 OK`; the linked content is simply absent.
+
+Embedded content is unaffected. Embed images in the document instead of linking them. There is no opt-out: the block closes a local-file-read and SSRF vector. See [Outbound URL Filtering](outbound-url-filtering).
+
 ### Server Errors (500)
 
 - **Resource Limits:** Office document conversion is resource-heavy. Try increasing Gotenberg’s memory and CPU allocations ([Issue #465](https://github.com/gotenberg/gotenberg/issues/465)).
