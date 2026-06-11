@@ -175,7 +175,7 @@ The following flags allow you to configure the LibreOffice module:
 
 :::info
 
-Since Gotenberg _8.32.0_, LibreOffice routes outbound HTTP/HTTPS fetches (OOXML external images, RTF `INCLUDEPICTURE`, ODT linked images) through the same in-process pinning proxy used by Chromium. See [Outbound URL Filtering](/docs/outbound-url-filtering).
+Since Gotenberg _8.32.0_, LibreOffice routes outbound HTTP/HTTPS fetches (OOXML external images, RTF `INCLUDEPICTURE`, ODT linked images) through the same in-process pinning proxy used by Chromium. Since _8.33.0_, LibreOffice also drops content linked from untrusted locations; uploaded documents never count as trusted, so linked `file://` paths and external URLs are blocked before any fetch, and the flags above govern only the fetches LibreOffice still performs. See [Outbound URL Filtering](/docs/outbound-url-filtering).
 
 :::
 
@@ -252,6 +252,7 @@ Currently, Gotenberg supports the following PDF engines:
 | Write metadata           |                ✅                 |                      ❌                      |                     ❌                     |                  ❌                  |                    ❌                     |
 | Encrypt                  |                ❌                 |                      ✅                      |                     ✅                     |                  ✅                  |                    ❌                     |
 | Embed files              |                ❌                 |                      ❌                      |                     ✅                     |                  ❌                  |                    ❌                     |
+| Factur-X (XMP metadata)  |                ❌                 |                      ❌                      |                     ❌                     |                  ✅                  |                    ❌                     |
 | Watermark                |                ❌                 |                      ✅                      |                     ✅                     |                  ❌                  |                    ❌                     |
 | Stamp                    |                ❌                 |                      ✅                      |                     ✅                     |                  ❌                  |                    ❌                     |
 | Read bookmarks           |                ❌                 |                      ❌                      |                     ✅                     |                  ❌                  |                    ❌                     |
@@ -266,9 +267,9 @@ PDFtk and QPDF only support the split mode _pages_ with unification.
 
 :::info
 
-PDFTk’s encryption feature requires both a user password and an owner password, and they must be different.
+PDFTk’s encryption feature requires both a user password and an owner password, and they must be different. It supports neither owner-only encryption (an owner password without a user password) nor document permission restrictions. The encryption strength is limited to AES-128, contrary to other PDF engines (AES-256).
 
-The encryption strength is limited to AES-128, contrary to other PDF engines (AES-256).
+QPDF, first in the default encryption chain, honors each document permission individually. pdfcpu applies permissions coarsely: restricting any permission denies them all.
 
 :::
 
@@ -281,15 +282,16 @@ The following flags allow you to configure the PDF Engines module:
 | <span class="badge badge--secondary">--pdfengines-flatten-engines</span>         | <span class="badge badge--secondary">PDFENGINES_FLATTEN_ENGINES</span>         | Set the PDF engines and their order for the flatten feature - empty means all.             | qpdf                  |
 | <span class="badge badge--secondary">--pdfengines-convert-engines</span>         | <span class="badge badge--secondary">PDFENGINES_CONVERT_ENGINES</span>         | Set the PDF engines and their order for the convert feature - empty means all.             | libreoffice-pdfengine |
 | <span class="badge badge--secondary">--pdfengines-read-metadata-engines</span>   | <span class="badge badge--secondary">PDFENGINES_READ_METADATA_ENGINES</span>   | Set the PDF engines and their order for the read metadata feature - empty means all.       | exiftool              |
-| <span class="badge badge--secondary">--pdfengines-write-metadata-engines</span>  | <span class="badge badge--secondary">PDFENGINES_WRITE_METADATA_ENGINES</span>  | Set the PDF engines and their order for the read metadata feature - empty means all.       | exiftool              |
+| <span class="badge badge--secondary">--pdfengines-write-metadata-engines</span>  | <span class="badge badge--secondary">PDFENGINES_WRITE_METADATA_ENGINES</span>  | Set the PDF engines and their order for the write metadata feature - empty means all.      | exiftool              |
 | <span class="badge badge--secondary">--pdfengines-encrypt-engines</span>         | <span class="badge badge--secondary">PDFENGINES_ENCRYPT_ENGINES</span>         | Set the PDF engines and their order for the password protection feature - empty means all. | qpdf,pdftk,pdfcpu     |
-| <span class="badge badge--secondary">--pdfengines-embed-engines</span>           | <span class="badge badge--secondary">PDFENGINES_EMBED_ENGINES</span>           | Set the PDF engines and their order for the file embedding feature - empty means all.      | qpdf,pdfcpu           |
+| <span class="badge badge--secondary">--pdfengines-embed-engines</span>           | <span class="badge badge--secondary">PDFENGINES_EMBED_ENGINES</span>           | Set the PDF engines and their order for the file embedding feature - empty means all.      | pdfcpu                |
 | <span class="badge badge--secondary">--pdfengines-embed-metadata-engines</span>  | <span class="badge badge--secondary">PDFENGINES_EMBED_METADATA_ENGINES</span>  | Set the PDF engines and their order for the embed metadata feature - empty means all.      | qpdf                  |
 | <span class="badge badge--secondary">--pdfengines-watermark-engines</span>       | <span class="badge badge--secondary">PDFENGINES_WATERMARK_ENGINES</span>       | Set the PDF engines and their order for the watermark feature - empty means all.           | pdfcpu,pdftk          |
 | <span class="badge badge--secondary">--pdfengines-stamp-engines</span>           | <span class="badge badge--secondary">PDFENGINES_STAMP_ENGINES</span>           | Set the PDF engines and their order for the stamp feature - empty means all.               | pdfcpu,pdftk          |
 | <span class="badge badge--secondary">--pdfengines-write-bookmarks-engines</span> | <span class="badge badge--secondary">PDFENGINES_WRITE_BOOKMARKS_ENGINES</span> | Set the PDF engines and their order for the write bookmarks feature - empty means all.     | pdfcpu,pdftk          |
 | <span class="badge badge--secondary">--pdfengines-read-bookmarks-engines</span>  | <span class="badge badge--secondary">PDFENGINES_READ_BOOKMARKS_ENGINES</span>  | Set the PDF engines and their order for the read bookmarks feature - empty means all.      | pdfcpu                |
 | <span class="badge badge--secondary">--pdfengines-rotate-engines</span>          | <span class="badge badge--secondary">PDFENGINES_ROTATE_ENGINES</span>          | Set the PDF engines and their order for the rotate feature - empty means all.              | pdfcpu,pdftk          |
+| <span class="badge badge--secondary">--pdfengines-factur-x-engines</span>        | <span class="badge badge--secondary">PDFENGINES_FACTUR_X_ENGINES</span>        | Set the PDF engines and their order for the Factur-X XMP feature - empty means all.        | qpdf                  |
 | <span class="badge badge--secondary">--pdfengines-disable-routes</span>          | <span class="badge badge--secondary">PDFENGINES_DISABLE_ROUTES</span>          | Disable the routes.                                                                        | false                 |
 
 :::warning
@@ -371,6 +373,9 @@ The following flags control stdout log output:
 | <span class="badge badge--secondary">--log-level</span>                 | <span class="badge badge--secondary">LOG_LEVEL</span>                 | Choose the level of logging detail. Options include error, warn, info, or debug. | info    |
 | <span class="badge badge--secondary">--log-fields-prefix</span>         | <span class="badge badge--secondary">LOG_FIELDS_PREFIX</span>         | Prepend a specified prefix to each field in the logs.                            | None    |
 | <span class="badge badge--secondary">--log-std-enable-gcp-fields</span> | <span class="badge badge--secondary">LOG_STD_ENABLE_GCP_FIELDS</span> | Enable Google Cloud Platform fields: time, message, severity.                    | false   |
+| <span class="badge badge--secondary">--log-std-level-case</span>        | <span class="badge badge--secondary">LOG_STD_LEVEL_CASE</span>        | Set the case of the level field in the standard output: lower or upper.          | lower   |
+
+Since _8.33.0_, `--log-std-level-case` controls the casing of the level field; `upper` emits `INFO`, `WARN`, `ERROR`, `DEBUG`. The default `lower` matches the previous output. Any other value prevents Gotenberg from starting, and the flag has no effect when `--log-std-enable-gcp-fields` replaces the level with a GCP severity.
 
 :::warning
 
