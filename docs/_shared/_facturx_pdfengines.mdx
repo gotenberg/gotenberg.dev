@@ -1,10 +1,8 @@
 import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
 
-Produces a [Factur-X / ZUGFeRD](https://fnfe-mpe.org/factur-x/) e-invoice in one request: upload the CII invoice XML with `facturxXml` and set `facturxConformanceLevel`. Both fields are required together.
+Produces a [Factur-X / ZUGFeRD](https://fnfe-mpe.org/factur-x/) e-invoice in one request: upload the CII invoice XML with `facturxXml` and set `facturxConformanceLevel`. Both fields are required together, and the `facturxXml` upload is never treated as an input document. Requires a PDF engine that supports the feature (QPDF by default).
 
-Gotenberg embeds the XML under the canonical `factur-x.xml` name with the `Alternative` relationship, injects the Factur-X XMP metadata, and outputs PDF/A-3, defaulting to PDF/A-3b. The `facturxXml` upload is never treated as a document to convert. Requires a PDF engine that supports the feature (QPDF by default).
-
-See the dedicated [Factur-X](/docs/manipulate-pdfs/factur-x) route for transforming existing PDFs.
+See the dedicated [Factur-X](/docs/manipulate-pdfs/factur-x) route for the full behavior: canonical embedding, XMP metadata, and the PDF/A-3 requirement.
 
 {(props.showFormFields || props.showCurlExample) && (
 

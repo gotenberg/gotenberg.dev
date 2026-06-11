@@ -77,9 +77,9 @@ Since _8.33.0_, Gotenberg tolerates one transient probe failure and briefly cach
 
 ### Linked Images Missing After 8.33.0
 
-_8.33.0_ blocks content linked from untrusted locations. Uploaded documents always load from an untrusted location, so LibreOffice drops linked images and other linked content (absolute `file://` paths, external URLs) instead of resolving them. The conversion succeeds with `200 OK`; the linked content is simply absent.
+_8.33.0_ blocks content linked from untrusted locations, and uploaded documents always count as untrusted. The conversion succeeds with `200 OK`; linked images and other linked content are absent.
 
-Embedded content is unaffected. Embed images in the document instead of linking them. There is no opt-out: the block closes a local-file-read and SSRF vector. See [Outbound URL Filtering](outbound-url-filtering).
+Embed content in the document instead of linking it. There is no opt-out: the block closes a local-file-read and SSRF vector. See [Outbound URL Filtering](outbound-url-filtering).
 
 ### Server Errors (500)
 

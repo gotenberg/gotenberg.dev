@@ -57,7 +57,7 @@ Gotenberg configures no sampler, so the SDK default `parentbased_always_on` appl
 | `OTEL_TRACES_SAMPLER`     | Trace sampler (e.g., `parentbased_traceidratio`, `always_off`). | `parentbased_always_on` |
 | `OTEL_TRACES_SAMPLER_ARG` | Sampler argument (e.g., `0.1` for a 10% ratio).                 | None                    |
 
-Head sampling drops whole traces up front, including the rare slow or failed conversions that matter most for diagnosis. For high-throughput deployments, keep head sampling permissive and apply tail sampling in the collector, sampling on error or high latency. Since _8.33.0_, Gotenberg attaches trace-based exemplars to histograms, so conversion metrics still link to representative traces regardless of the sampling ratio.
+Head sampling drops whole traces up front, including the rare slow or failed conversions that matter most for diagnosis. For high-throughput deployments, keep head sampling permissive and apply tail sampling in the collector, sampling on error or high latency. Since _8.33.0_, Gotenberg attaches trace-based exemplars to histograms: as long as some traces are sampled, conversion metrics link to a representative trace.
 
 ## Metrics
 

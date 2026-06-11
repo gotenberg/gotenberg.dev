@@ -11,7 +11,9 @@ Embeds external files directly inside the PDF container. Commonly used for e-inv
 
 Provide per-attachment metadata with `embedsMetadata` to satisfy PDF/A-3 and Factur-X requirements: each entry sets the embedded file stream's `/Subtype`, writes `/AFRelationship` on the file specification, and references the attachment from the Document Catalog's `/AF` array.
 
-For Factur-X specifically, the dedicated [Factur-X](/docs/manipulate-pdfs/factur-x) route handles the XML embedding, the XMP metadata, and the PDF/A-3 conversion in one step.
+For Factur-X specifically, see the [Factur-X](#factur-x-pdf-engines) section below, or the dedicated [Factur-X](/docs/manipulate-pdfs/factur-x) route, where the fields are required and validated.
+
+## Basics
 
 <ApiEndpoint
   method="POST"
@@ -99,7 +101,7 @@ Body: {error}
   ]}
 />
 
-## Factur-X
+## Factur-X (PDF Engines)
 
 <FacturXPDFEngines
   showFormFields={true}

@@ -8,7 +8,7 @@ import Sponsors from "@site/src/components/documentation/Sponsors";
 
 Turns existing PDFs into [Factur-X / ZUGFeRD](https://fnfe-mpe.org/factur-x/) e-invoices: embeds the CII invoice XML under the canonical `factur-x.xml` name with the `Alternative` relationship, injects the Factur-X XMP metadata, and converts the PDF to PDF/A-3, the only PDF/A family that allows embedded files.
 
-Inputs already carrying PDF/A-3 identification are left untouched; everything else converts to PDF/A-3b, or to the PDF/A-3 variant requested with `pdfa`. Requires a PDF engine that supports the feature (QPDF by default).
+When every input already carries PDF/A-3 identification, the files are left untouched; otherwise the whole request converts to PDF/A-3b, or to the PDF/A-3 variant requested with `pdfa`. Requires a PDF engine that supports the feature (QPDF by default).
 
 The conversion routes accept the same form fields, so a single request can go from an office document to a compliant e-invoice. See [Office Documents into PDFs](/docs/convert-with-libreoffice/convert-to-pdf#factur-x-pdf-engines).
 
@@ -72,7 +72,7 @@ The conversion routes accept the same form fields, so a single request can go fr
       type: "enum",
       required: false,
       description:
-        "Converts to a specific PDF/A-3 variant. Options: 'PDF/A-3a', 'PDF/A-3b', 'PDF/A-3u'. Other PDF/A formats return `400 Bad Request`. Defaults to PDF/A-3b when the input is not already PDF/A-3.",
+        "Converts to a specific PDF/A-3 variant. Options: 'PDF/A-3a', 'PDF/A-3b', 'PDF/A-3u'. Other PDF/A formats return `400 Bad Request`. When unset, the whole request converts to PDF/A-3b unless every input is already PDF/A-3.",
     },
     {
       name: "pdfua",
