@@ -503,8 +503,9 @@ export default function Homepage() {
                   <span className={styles.highlight}>Engines</span>
                 </h3>
                 <p>
-                  Merge, split, encrypt, and inspect PDFs using QPDF, pdfcpu,
-                  and ExifTool through a unified API.
+                  Merge, split, encrypt, and inspect PDFs, or produce Factur-X
+                  e-invoices, using QPDF, pdfcpu, and ExifTool through a unified
+                  API.
                 </p>
                 <div className={styles.capabilitiesGrid}>
                   <div className={styles.capItem}>
@@ -517,8 +518,9 @@ export default function Homepage() {
                   <div className={styles.capItem}>
                     <strong>Security & Metadata</strong>
                     <span>
-                      Encrypt with user/owner passwords. Embed attachments. Read
-                      or write metadata and bookmarks.
+                      Encrypt with passwords and permissions. Embed attachments
+                      or build Factur-X / ZUGFeRD e-invoices. Read or write
+                      metadata and bookmarks.
                     </span>
                   </div>
                 </div>
