@@ -1,8 +1,10 @@
 import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
 
-Set passwords to control PDF access. The **user password** is required to open the PDF; the **owner password** controls permissions (printing, copying, editing).
+Set passwords and permissions to control PDF access. The **user password** is required to open the PDF. The **owner password** grants full access and lifts the permission restrictions; when empty, it defaults to the user password.
 
-Encryption strength (e.g., AES-256) depends on the active PDF Engine. See [PDF Engines Configuration](/docs/configuration#pdf-engines).
+Since _8.33.0_, an owner password alone produces an owner-only PDF: it opens without a password, but the document permissions apply. Permission restrictions require a `userPassword` or an `ownerPassword`, otherwise Gotenberg returns `400 Bad Request`. Restrictions are advisory: viewers honor them, but they are not cryptographically enforced once the document opens.
+
+Encryption strength (e.g., AES-256) and permission handling depend on the active PDF Engine: QPDF honors each permission individually, pdfcpu restricts all permissions if any one is denied, and PDFtk supports neither owner-only encryption nor permission restrictions. See [PDF Engines Configuration](/docs/configuration#pdf-engines).
 
 {props.showFormFields && props.showCurlExample && (
 
@@ -19,7 +21,43 @@ Encryption strength (e.g., AES-256) depends on the active PDF Engine. See [PDF E
       type: "string",
       defaultValue: "None",
       description:
-        "The password required to change permissions or edit the PDF.",
+        "The password granting full access; lifts the permission restrictions. Defaults to the user password.",
+    },
+    {
+      name: "allowPrinting",
+      type: "boolean",
+      defaultValue: "true",
+      description: "Permits printing the document.",
+    },
+    {
+      name: "allowCopying",
+      type: "boolean",
+      defaultValue: "true",
+      description: "Permits extracting text and graphics.",
+    },
+    {
+      name: "allowModifying",
+      type: "boolean",
+      defaultValue: "true",
+      description: "Permits changing the document content.",
+    },
+    {
+      name: "allowAnnotating",
+      type: "boolean",
+      defaultValue: "true",
+      description: "Permits adding or modifying annotations.",
+    },
+    {
+      name: "allowFillingForms",
+      type: "boolean",
+      defaultValue: "true",
+      description: "Permits filling in form fields.",
+    },
+    {
+      name: "allowAssembling",
+      type: "boolean",
+      defaultValue: "true",
+      description: "Permits inserting, deleting, and rotating pages.",
     },
   ]}
   curl={`
@@ -28,6 +66,7 @@ curl \\
 ${props.curlFormData}
 --form userPassword=my_user_password \\
 --form ownerPassword=my_owner_password \\
+--form allowCopying=false \\
 ${props.curlOutput}
 `}
 />
@@ -42,6 +81,7 @@ curl \\
 ${props.curlFormData}
 --form userPassword=my_user_password \\
 --form ownerPassword=my_owner_password \\
+--form allowCopying=false \\
 ${props.curlOutput}
 `}
 />

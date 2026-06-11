@@ -7,7 +7,7 @@ import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
 import EncryptionPDFEngines from "../_shared/_encryption_pdfengines.mdx";
 import Sponsors from "@site/src/components/documentation/Sponsors";
 
-Encrypts one or more PDF files with a user and/or owner password.
+Encrypts one or more PDF files with a user and/or owner password, and optionally restricts document permissions. An owner password alone produces an owner-only PDF: it opens without a password, but the permissions apply.
 
 <EncryptionPDFEngines showFormFields={false} showCurlExample={false} />
 
@@ -42,15 +42,52 @@ Encrypts one or more PDF files with a user and/or owner password.
     {
       name: "userPassword",
       type: "string",
-      required: true,
-      description: "The password required to open the PDF.",
+      required: false,
+      description:
+        "The password required to open the PDF. At least one of `userPassword` or `ownerPassword` is required.",
     },
     {
       name: "ownerPassword",
       type: "string",
       required: false,
       description:
-        "The password required to change permissions or edit the PDF.",
+        "The password granting full access; lifts the permission restrictions. Defaults to the user password.",
+    },
+    {
+      name: "allowPrinting",
+      type: "boolean",
+      defaultValue: "true",
+      description: "Permits printing the document.",
+    },
+    {
+      name: "allowCopying",
+      type: "boolean",
+      defaultValue: "true",
+      description: "Permits extracting text and graphics.",
+    },
+    {
+      name: "allowModifying",
+      type: "boolean",
+      defaultValue: "true",
+      description: "Permits changing the document content.",
+    },
+    {
+      name: "allowAnnotating",
+      type: "boolean",
+      defaultValue: "true",
+      description: "Permits adding or modifying annotations.",
+    },
+    {
+      name: "allowFillingForms",
+      type: "boolean",
+      defaultValue: "true",
+      description: "Permits filling in form fields.",
+    },
+    {
+      name: "allowAssembling",
+      type: "boolean",
+      defaultValue: "true",
+      description: "Permits inserting, deleting, and rotating pages.",
     },
   ]}
   curl={`
@@ -59,6 +96,7 @@ curl \\
 --form files=@/path/to/file.pdf \\
 --form userPassword=open \\
 --form ownerPassword=manage \\
+--form allowCopying=false \\
 -o my.pdf`}
   responses={[
     {

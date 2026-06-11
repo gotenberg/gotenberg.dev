@@ -716,7 +716,43 @@ curl \\
       type: "string",
       defaultValue: "None",
       description:
-        "The password required to change permissions or edit the PDF.",
+        "The password granting full access; lifts the permission restrictions. Defaults to the user password.",
+    },
+    {
+      name: "allowPrinting",
+      type: "boolean",
+      defaultValue: "true",
+      description: "Permits printing the document.",
+    },
+    {
+      name: "allowCopying",
+      type: "boolean",
+      defaultValue: "true",
+      description: "Permits extracting text and graphics.",
+    },
+    {
+      name: "allowModifying",
+      type: "boolean",
+      defaultValue: "true",
+      description: "Permits changing the document content.",
+    },
+    {
+      name: "allowAnnotating",
+      type: "boolean",
+      defaultValue: "true",
+      description: "Permits adding or modifying annotations.",
+    },
+    {
+      name: "allowFillingForms",
+      type: "boolean",
+      defaultValue: "true",
+      description: "Permits filling in form fields.",
+    },
+    {
+      name: "allowAssembling",
+      type: "boolean",
+      defaultValue: "true",
+      description: "Permits inserting, deleting, and rotating pages.",
     },
   ]}
 />
