@@ -11,6 +11,18 @@ Gotenberg integrates [OpenTelemetry](https://opentelemetry.io/) for distributed 
 
 Every HTTP request creates a server span. External tool calls (Chromium, LibreOffice, QPDF, pdfcpu, PDFtk, ExifTool) and outbound HTTP calls (webhooks, download-from) create child spans with client semantics. Trace context propagates to outbound requests via [W3C Trace Context](https://www.w3.org/TR/trace-context/) headers.
 
+Asynchronous webhook requests stay in the caller's trace. Since _8.33.0_, the background work runs under a `webhook.Async` span that links back to the originating request span, and the webhook delivery spans nest under it instead of starting a new trace. The span covers the whole background delivery, retries included.
+
+Since _8.33.0_, traces carry richer detail:
+
+- `chromium.Pdf`, `chromium.Screenshot`, and `libreoffice.Pdf` spans record the engine version (`gotenberg.chromium.version`, `gotenberg.libreoffice.version`), the queue depth when the request arrived (`gotenberg.queue.depth_at_arrival`), and the number of conversions since the engine last restarted (`gotenberg.conversions_since_last_restart`).
+- Conversion sizes: `chromium.Pdf` records `gotenberg.conversion.input.files.count`, `gotenberg.conversion.input.html.bytes`, and `gotenberg.conversion.output.bytes`; `libreoffice.Pdf` records `gotenberg.conversion.input.bytes` and `gotenberg.conversion.output.bytes`.
+- Chromium spans, screenshots included, carry per-conversion network attributes and a `chromium.heaviest_resource` event with a redacted URL of the heaviest resource.
+- Failed conversions record a bounded `error.type` attribute (e.g., `timeout`, `context_cancelled`, `invalid_input`, `chromium_unavailable`, `libreoffice_exception`, `unknown`).
+- `chromium.queue.wait` and `libreoffice.queue.wait` sub-spans measure time spent waiting for an engine slot. `chromium.process.start` and `libreoffice.process.start` wrap engine starts and restarts, tagged with `gotenberg.process.start.reason` (`first_start`, `unhealthy`, or `max_requests`). Restarts triggered by `max_requests` run in the background, so their spans appear as standalone root traces. `chromium.print_to_pdf` wraps Chromium's print call.
+- External binary calls run inside `process.exec` client spans, and PDF engine spans record the backing binary version (`gotenberg.qpdf.version`, `gotenberg.pdftk.version`, `gotenberg.pdfcpu.version`, `gotenberg.exiftool.version`), captured at image build time.
+- The Factur-X and PDF/A features record their parameters on QPDF spans: `gotenberg.facturx.conformance_level` and `gotenberg.facturx.document_type` on `qpdf.InjectFacturXXMP`, `gotenberg.pdfa.part` and `gotenberg.pdfa.conformance` on `qpdf.ReadPdfAConformance`.
+
 Configure tracing with standard OTEL environment variables:
 
 | Environment variable                 | Description                                                              | Default     |
@@ -36,17 +48,31 @@ services:
     # Configure your collector pipeline as needed.
 ```
 
+### Sampling
+
+Gotenberg configures no sampler, so the SDK default `parentbased_always_on` applies: every trace is recorded and exported. Tune sampling with the standard environment variables:
+
+| Environment variable      | Description                                                     | Default                 |
+| ------------------------- | --------------------------------------------------------------- | ----------------------- |
+| `OTEL_TRACES_SAMPLER`     | Trace sampler (e.g., `parentbased_traceidratio`, `always_off`). | `parentbased_always_on` |
+| `OTEL_TRACES_SAMPLER_ARG` | Sampler argument (e.g., `0.1` for a 10% ratio).                 | None                    |
+
+Head sampling drops whole traces up front, including the rare slow or failed conversions that matter most for diagnosis. For high-throughput deployments, keep head sampling permissive and apply tail sampling in the collector, sampling on error or high latency. Since _8.33.0_, Gotenberg attaches trace-based exemplars to histograms, so conversion metrics still link to representative traces regardless of the sampling ratio.
+
 ## Metrics
 
 HTTP server metrics (request count, duration, size) follow OTEL semantic conventions. Module-specific metrics (conversion duration, output size, queue size, restarts) are exposed as OTEL observable gauges.
 
+Since _8.33.0_, Chromium conversions also record per-conversion network metrics: `chromium.network.requests.total` (a counter with an `outcome` label, `ok` or `failed`) and `chromium.network.bytes` (a histogram). LibreOffice counts conversion retries after a crash in `libreoffice.conversion.retries.total`. Histograms attach trace-based exemplars by default, linking each measurement to a representative trace.
+
 Configure metrics export with standard OTEL environment variables:
 
-| Environment variable                  | Description                                                             | Default |
-| ------------------------------------- | ----------------------------------------------------------------------- | ------- |
-| `OTEL_METRICS_EXPORTER`               | Metrics exporter. Options: `none`, `otlp`, `prometheus`.                | `none`  |
-| `OTEL_EXPORTER_OTLP_ENDPOINT`         | OTLP endpoint for all signals (traces, metrics, logs).                  | None    |
-| `OTEL_EXPORTER_OTLP_METRICS_ENDPOINT` | OTLP endpoint specifically for metrics. Overrides the generic endpoint. | None    |
+| Environment variable                  | Description                                                             | Default       |
+| ------------------------------------- | ----------------------------------------------------------------------- | ------------- |
+| `OTEL_METRICS_EXPORTER`               | Metrics exporter. Options: `none`, `otlp`, `prometheus`.                | `none`        |
+| `OTEL_EXPORTER_OTLP_ENDPOINT`         | OTLP endpoint for all signals (traces, metrics, logs).                  | None          |
+| `OTEL_EXPORTER_OTLP_METRICS_ENDPOINT` | OTLP endpoint specifically for metrics. Overrides the generic endpoint. | None          |
+| `OTEL_METRICS_EXEMPLAR_FILTER`        | Exemplar filter. Options: `trace_based`, `always_on`, `always_off`.     | `trace_based` |
 
 ### Migrating from Prometheus
 
