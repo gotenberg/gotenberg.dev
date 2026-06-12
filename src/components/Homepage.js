@@ -111,7 +111,7 @@ curl \\
       <header className={styles.hero}>
         <div className="container">
           <div className="row">
-            <div className={clsx("col col--5", styles.heroContent)}>
+            <div className={clsx("col col--6", styles.heroContent)}>
               <h1 className={styles.title}>
                 A Docker-based API built for
                 <br />
@@ -151,12 +151,29 @@ curl \\
               </div>
             </div>
 
-            <div className={clsx("col col--7", styles.heroVisual)}>
-              <SimpleTerminal content={codeHero} />
+            <div className={clsx("col col--6", styles.heroImage)}>
+              <img
+                className={styles.logo}
+                src={useBaseUrl("/img/logo_jed.png")}
+                alt="Gotenberg Hero Logo"
+              />
             </div>
           </div>
         </div>
       </header>
+
+      {/* --- QUICK START --- */}
+      <section className={styles.quickstart}>
+        <div className="container">
+          <div className={styles.quickstartInner}>
+            <h2>
+              Up and running in{" "}
+              <span className={styles.highlight}>two commands</span>
+            </h2>
+            <SimpleTerminal content={codeHero} />
+          </div>
+        </div>
+      </section>
 
       {/* --- COMMUNITY & SPONSORS SECTION --- */}
       <section className={styles.communitySection}>
@@ -231,162 +248,163 @@ curl \\
         </div>
       </section>
 
-      {/* --- FEATURES SECTION --- */}
-      <section className={styles.section}>
+      {/* --- FEATURES --- */}
+      <section className={styles.featureSection}>
         <div className="container">
-          <div className={styles.sectionHeader}>
-            <h2>
-              Everything you need for{" "}
-              <span className={styles.highlight}>PDFs</span>
-            </h2>
-            <p className={styles.sectionSub}>Powerful tools, one container.</p>
+          <div className={styles.splitRow}>
+            <div className={styles.splitContent}>
+              <h2 className={styles.blockTitle}>
+                Pixel-Perfect <span className={styles.highlight}>Chromium</span>
+              </h2>
+              <p>
+                Convert URLs, HTML templates, and Markdown files into PDFs.
+                Headless Chromium executes JavaScript, loads web fonts, and
+                renders exactly like a browser.
+              </p>
+              <div className={styles.capabilitiesGrid}>
+                <div className={styles.capItem}>
+                  <strong>Dynamic Content Ready</strong>
+                  <span>
+                    Wait for network idle, JavaScript expressions, or specific
+                    DOM selectors before rendering SPAs.
+                  </span>
+                </div>
+                <div className={styles.capItem}>
+                  <strong>Network Control</strong>
+                  <span>
+                    Inject custom cookies, HTTP headers, and configure how to
+                    handle network errors or specific status codes.
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className={styles.splitVisual}>
+              <SimpleTerminal content={codeChromium} />
+            </div>
           </div>
+        </div>
+      </section>
 
-          <div className={styles.featureBlocks}>
-            <div className={styles.splitRow}>
-              <div className={styles.splitContent}>
-                <h3 className={styles.blockTitle}>
-                  Pixel-Perfect{" "}
-                  <span className={styles.highlight}>Chromium</span>
-                </h3>
-                <p>
-                  Convert URLs, HTML templates, and Markdown files into PDFs.
-                  Headless Chromium executes JavaScript, loads web fonts, and
-                  renders exactly like a browser.
-                </p>
-                <div className={styles.capabilitiesGrid}>
-                  <div className={styles.capItem}>
-                    <strong>Dynamic Content Ready</strong>
-                    <span>
-                      Wait for network idle, JavaScript expressions, or specific
-                      DOM selectors before rendering SPAs.
-                    </span>
-                  </div>
-                  <div className={styles.capItem}>
-                    <strong>Network Control</strong>
-                    <span>
-                      Inject custom cookies, HTTP headers, and configure how to
-                      handle network errors or specific status codes.
-                    </span>
-                  </div>
+      <section className={clsx(styles.featureSection, styles.featureAlt)}>
+        <div className="container">
+          <div className={clsx(styles.splitRow, styles.splitRowReverse)}>
+            <div className={styles.splitContent}>
+              <h2 className={styles.blockTitle}>
+                Automate <span className={styles.highlight}>LibreOffice</span>
+              </h2>
+              <p>
+                Convert Word, Excel, PowerPoint, and 100+ other formats.
+                LibreOffice runs under the hood.
+              </p>
+              <div className={styles.capabilitiesGrid}>
+                <div className={styles.capItem}>
+                  <strong>Extensive Formats</strong>
+                  <span>
+                    Support for .docx, .xlsx, .pptx, and dozens of other legacy
+                    or standard document formats.
+                  </span>
                 </div>
-              </div>
-              <div className={styles.splitVisual}>
-                <SimpleTerminal content={codeChromium} />
+                <div className={styles.capItem}>
+                  <strong>Page Ranges & PDF/A</strong>
+                  <span>
+                    Extract specific pages during conversion and instantly
+                    conform to PDF/A archival standards.
+                  </span>
+                </div>
               </div>
             </div>
+            <div className={styles.splitVisual}>
+              <SimpleTerminal content={codeLibreOffice} />
+            </div>
+          </div>
+        </div>
+      </section>
 
-            <div className={clsx(styles.splitRow, styles.splitRowReverse)}>
-              <div className={styles.splitContent}>
-                <h3 className={styles.blockTitle}>
-                  Automate <span className={styles.highlight}>LibreOffice</span>
-                </h3>
-                <p>
-                  Convert Word, Excel, PowerPoint, and 100+ other formats.
-                  LibreOffice runs under the hood.
-                </p>
-                <div className={styles.capabilitiesGrid}>
-                  <div className={styles.capItem}>
-                    <strong>Extensive Formats</strong>
-                    <span>
-                      Support for .docx, .xlsx, .pptx, and dozens of other
-                      legacy or standard document formats.
-                    </span>
-                  </div>
-                  <div className={styles.capItem}>
-                    <strong>Page Ranges & PDF/A</strong>
-                    <span>
-                      Extract specific pages during conversion and instantly
-                      conform to PDF/A archival standards.
-                    </span>
-                  </div>
+      <section className={styles.featureSection}>
+        <div className="container">
+          <div className={styles.splitRow}>
+            <div className={styles.splitContent}>
+              <h2 className={styles.blockTitle}>
+                Post-Processing{" "}
+                <span className={styles.highlight}>Engines</span>
+              </h2>
+              <p>
+                Merge, split, encrypt, and inspect PDFs, or produce Factur-X
+                e-invoices, using QPDF, pdfcpu, and ExifTool through a unified
+                API.
+              </p>
+              <div className={styles.capabilitiesGrid}>
+                <div className={styles.capItem}>
+                  <strong>Merge, Split & Transform</strong>
+                  <span>
+                    Combine PDFs, extract page ranges, rotate, flatten form
+                    fields, watermark, and stamp.
+                  </span>
                 </div>
-              </div>
-              <div className={styles.splitVisual}>
-                <SimpleTerminal content={codeLibreOffice} />
+                <div className={styles.capItem}>
+                  <strong>Security & Metadata</strong>
+                  <span>
+                    Encrypt with passwords and permissions. Embed attachments or
+                    build Factur-X / ZUGFeRD e-invoices. Read or write metadata
+                    and bookmarks.
+                  </span>
+                </div>
               </div>
             </div>
+            <div className={styles.splitVisual}>
+              <SimpleTerminal content={codePdfEngines} />
+            </div>
+          </div>
+        </div>
+      </section>
 
-            <div className={styles.splitRow}>
-              <div className={styles.splitContent}>
-                <h3 className={styles.blockTitle}>
-                  Post-Processing{" "}
-                  <span className={styles.highlight}>Engines</span>
-                </h3>
-                <p>
-                  Merge, split, encrypt, and inspect PDFs, or produce Factur-X
-                  e-invoices, using QPDF, pdfcpu, and ExifTool through a unified
-                  API.
-                </p>
-                <div className={styles.capabilitiesGrid}>
-                  <div className={styles.capItem}>
-                    <strong>Merge, Split & Transform</strong>
-                    <span>
-                      Combine PDFs, extract page ranges, rotate, flatten form
-                      fields, watermark, and stamp.
-                    </span>
-                  </div>
-                  <div className={styles.capItem}>
-                    <strong>Security & Metadata</strong>
-                    <span>
-                      Encrypt with passwords and permissions. Embed attachments
-                      or build Factur-X / ZUGFeRD e-invoices. Read or write
-                      metadata and bookmarks.
-                    </span>
-                  </div>
+      <section className={clsx(styles.featureSection, styles.featureAlt)}>
+        <div className="container">
+          <div className={clsx(styles.splitRow, styles.splitRowReverse)}>
+            <div className={styles.splitContent}>
+              <h2 className={styles.blockTitle}>
+                Zero-Transfer{" "}
+                <span className={styles.highlight}>Pipelines</span>
+              </h2>
+              <p>
+                Process files without burdening your application. Gotenberg can
+                stream documents directly from your Cloud Storage (S3, MinIO,
+                GCS) and upload the resulting PDF back to it, bypassing your API
+                entirely.
+              </p>
+
+              <div className={styles.capabilitiesGrid}>
+                <div className={styles.capItem}>
+                  <strong>Direct Fetch</strong>
+                  <span>
+                    Gotenberg pulls the file directly from an S3 Presigned GET
+                    URL.
+                  </span>
                 </div>
-              </div>
-              <div className={styles.splitVisual}>
-                <SimpleTerminal content={codePdfEngines} />
+                <div className={styles.capItem}>
+                  <strong>Auto Upload</strong>
+                  <span>
+                    Gotenberg pushes the result to an S3 Presigned PUT URL.
+                  </span>
+                </div>
+                <div className={styles.capItem}>
+                  <strong>Webhook Events</strong>
+                  <span>
+                    Get notified with structured JSON events on completion or
+                    failure, separate from the result delivery.
+                  </span>
+                </div>
+                <div className={styles.capItem}>
+                  <strong>Efficiency</strong>
+                  <span>
+                    Save bandwidth. Your server orchestrates; Gotenberg does the
+                    heavy lifting.
+                  </span>
+                </div>
               </div>
             </div>
-
-            <div className={clsx(styles.splitRow, styles.splitRowReverse)}>
-              <div className={styles.splitContent}>
-                <h3 className={styles.blockTitle}>
-                  Zero-Transfer{" "}
-                  <span className={styles.highlight}>Pipelines</span>
-                </h3>
-                <p>
-                  Process files without burdening your application. Gotenberg
-                  can stream documents directly from your Cloud Storage (S3,
-                  MinIO, GCS) and upload the resulting PDF back to it, bypassing
-                  your API entirely.
-                </p>
-
-                <div className={styles.capabilitiesGrid}>
-                  <div className={styles.capItem}>
-                    <strong>Direct Fetch</strong>
-                    <span>
-                      Gotenberg pulls the file directly from an S3 Presigned GET
-                      URL.
-                    </span>
-                  </div>
-                  <div className={styles.capItem}>
-                    <strong>Auto Upload</strong>
-                    <span>
-                      Gotenberg pushes the result to an S3 Presigned PUT URL.
-                    </span>
-                  </div>
-                  <div className={styles.capItem}>
-                    <strong>Webhook Events</strong>
-                    <span>
-                      Get notified with structured JSON events on completion or
-                      failure, separate from the result delivery.
-                    </span>
-                  </div>
-                  <div className={styles.capItem}>
-                    <strong>Efficiency</strong>
-                    <span>
-                      Save bandwidth. Your server orchestrates; Gotenberg does
-                      the heavy lifting.
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div className={styles.splitVisual}>
-                <SimpleTerminal content={codeS3Workflow} />
-              </div>
+            <div className={styles.splitVisual}>
+              <SimpleTerminal content={codeS3Workflow} />
             </div>
           </div>
         </div>
