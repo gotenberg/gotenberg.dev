@@ -16,7 +16,7 @@ By default, requests are synchronous: you send a file and wait for the PDF. For 
 2. The conversion runs in the background.
 3. The result is POSTed to your `Gotenberg-Webhook-Url`.
 
-Webhook callbacks carry a W3C [`traceparent`](https://www.w3.org/TR/trace-context/) header. Since _8.33.0_, asynchronous processing continues the caller's trace: send a `traceparent` header with the request and every callback (success, error, events) carries the same trace id. This is distinct from `Gotenberg-Trace`, a plain correlation id unrelated to OpenTelemetry. See [Telemetry](/docs/telemetry).
+Webhook callbacks carry a W3C [`traceparent`](https://www.w3.org/TR/trace-context/) header. Since _8.34.0_, asynchronous processing continues the caller's trace: send a `traceparent` header with the request and every callback (success, error, events) carries the same trace id. This is distinct from `Gotenberg-Trace`, a plain correlation id unrelated to OpenTelemetry. See [Telemetry](/docs/telemetry).
 
 See the [Webhook module configuration](/docs/configuration#webhook) for retries, timeouts, and allowed URLs. Tools like [PipeDream](https://pipedream.com/) or [Webhook.site](https://webhook.site) are great for testing.
 

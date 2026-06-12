@@ -11,9 +11,9 @@ Gotenberg integrates [OpenTelemetry](https://opentelemetry.io/) for distributed 
 
 Every HTTP request creates a server span. External tool calls (Chromium, LibreOffice, QPDF, pdfcpu, PDFtk, ExifTool) and outbound HTTP calls (webhooks, download-from) create child spans with client semantics. Trace context propagates to outbound requests via [W3C Trace Context](https://www.w3.org/TR/trace-context/) headers.
 
-Asynchronous webhook requests stay in the caller's trace. Since _8.33.0_, the background work runs under a `webhook.Async` span that links back to the originating request span, and the webhook delivery spans nest under it instead of starting a new trace. The span covers the whole background delivery, retries included.
+Asynchronous webhook requests stay in the caller's trace. Since _8.34.0_, the background work runs under a `webhook.Async` span that links back to the originating request span, and the webhook delivery spans nest under it instead of starting a new trace. The span covers the whole background delivery, retries included.
 
-Since _8.33.0_, traces carry richer detail:
+Since _8.34.0_, traces carry richer detail:
 
 - `chromium.Pdf`, `chromium.Screenshot`, and `libreoffice.Pdf` spans record the engine version (`gotenberg.chromium.version`, `gotenberg.libreoffice.version`), the queue depth when the request arrived (`gotenberg.queue.depth_at_arrival`), and the number of conversions since the engine last restarted (`gotenberg.conversions_since_last_restart`).
 - Conversion sizes: `chromium.Pdf` records `gotenberg.conversion.input.files.count`, `gotenberg.conversion.input.html.bytes`, and `gotenberg.conversion.output.bytes`; `libreoffice.Pdf` records `gotenberg.conversion.input.bytes` and `gotenberg.conversion.output.bytes`.
@@ -57,13 +57,13 @@ Gotenberg configures no sampler, so the SDK default `parentbased_always_on` appl
 | `OTEL_TRACES_SAMPLER`     | Trace sampler (e.g., `parentbased_traceidratio`, `always_off`). | `parentbased_always_on` |
 | `OTEL_TRACES_SAMPLER_ARG` | Sampler argument (e.g., `0.1` for a 10% ratio).                 | None                    |
 
-Head sampling drops whole traces up front, including the rare slow or failed conversions that matter most for diagnosis. For high-throughput deployments, keep head sampling permissive and apply tail sampling in the collector, sampling on error or high latency. Since _8.33.0_, Gotenberg attaches trace-based exemplars to histograms: as long as some traces are sampled, conversion metrics link to a representative trace.
+Head sampling drops whole traces up front, including the rare slow or failed conversions that matter most for diagnosis. For high-throughput deployments, keep head sampling permissive and apply tail sampling in the collector, sampling on error or high latency. Since _8.34.0_, Gotenberg attaches trace-based exemplars to histograms: as long as some traces are sampled, conversion metrics link to a representative trace.
 
 ## Metrics
 
 HTTP server metrics (request count, duration, size) follow OTEL semantic conventions. Module-specific metrics (conversion duration, output size, queue size, restarts) are exposed as OTEL observable gauges.
 
-Since _8.33.0_, Chromium conversions also record per-conversion network metrics: `chromium.network.requests.total` (a counter with an `outcome` label, `ok` or `failed`) and `chromium.network.bytes` (a histogram). LibreOffice counts conversion retries after a crash in `libreoffice.conversion.retries.total`. Histograms attach trace-based exemplars by default, linking each measurement to a representative trace.
+Since _8.34.0_, Chromium conversions also record per-conversion network metrics: `chromium.network.requests.total` (a counter with an `outcome` label, `ok` or `failed`) and `chromium.network.bytes` (a histogram). LibreOffice counts conversion retries after a crash in `libreoffice.conversion.retries.total`. Histograms attach trace-based exemplars by default, linking each measurement to a representative trace.
 
 Configure metrics export with standard OTEL environment variables:
 

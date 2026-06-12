@@ -10,7 +10,7 @@ Gotenberg makes outbound HTTP calls in four places:
 - Chromium navigations and sub-resources.
 - Webhook callbacks.
 - `downloadFrom` fetches.
-- LibreOffice fetches for document references (OOXML external images, RTF `INCLUDEPICTURE`, ODT linked images). Since _8.33.0_, content linked from uploaded documents is dropped at the source; the filters below cover any fetch LibreOffice still performs.
+- LibreOffice fetches for document references (OOXML external images, RTF `INCLUDEPICTURE`, ODT linked images). Since _8.34.0_, content linked from uploaded documents is dropped at the source; the filters below cover any fetch LibreOffice still performs.
 
 Each surface routes through the same pipeline: allow/deny regex, IP-class checks, and a DNS-rebind pinning proxy.
 
@@ -36,7 +36,7 @@ Hardening for specific primitives. No setting turns them off.
 
 **`file://` sub-resources scoped per request.** Routes that render local HTML load assets relative to the request's own working directory. Sibling requests' files are unreachable.
 
-**Linked content dropped in LibreOffice documents.** Since _8.33.0_, LibreOffice refuses to load content linked from an untrusted location. Uploaded documents always load from a per-request temporary directory, which is never trusted, so linked `file://` paths and external URLs are dropped before any fetch happens. An allow-list match cannot re-enable them. Embedded content stored inside the document is unaffected.
+**Linked content dropped in LibreOffice documents.** Since _8.34.0_, LibreOffice refuses to load content linked from an untrusted location. Uploaded documents always load from a per-request temporary directory, which is never trusted, so linked `file://` paths and external URLs are dropped before any fetch happens. An allow-list match cannot re-enable them. Embedded content stored inside the document is unaffected.
 
 ## Per-Module Variables
 

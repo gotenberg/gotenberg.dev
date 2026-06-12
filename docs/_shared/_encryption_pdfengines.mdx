@@ -2,7 +2,7 @@ import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
 
 Set passwords and permissions to control PDF access. The **user password** is required to open the PDF. The **owner password** grants full access and lifts the permission restrictions; when empty, it defaults to the user password.
 
-Since _8.33.0_, an owner password alone produces an owner-only PDF: it opens without a password, but the document permissions apply. Permission restrictions require a `userPassword` or an `ownerPassword`, otherwise Gotenberg returns `400 Bad Request`. Restrictions are advisory: viewers honor them, but they are not cryptographically enforced once the document opens.
+Since _8.34.0_, an owner password alone produces an owner-only PDF: it opens without a password, but the document permissions apply. Permission restrictions require a `userPassword` or an `ownerPassword`, otherwise Gotenberg returns `400 Bad Request`. Restrictions are advisory: viewers honor them, but they are not cryptographically enforced once the document opens.
 
 Encryption strength (e.g., AES-256) and permission handling depend on the active PDF Engine: QPDF honors each permission individually, pdfcpu restricts all permissions if any one is denied, and PDFtk supports neither owner-only encryption nor permission restrictions. See [PDF Engines Configuration](/docs/configuration#pdf-engines).
 

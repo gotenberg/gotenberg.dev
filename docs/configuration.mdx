@@ -175,7 +175,7 @@ The following flags allow you to configure the LibreOffice module:
 
 :::info
 
-Since Gotenberg _8.32.0_, LibreOffice routes outbound HTTP/HTTPS fetches (OOXML external images, RTF `INCLUDEPICTURE`, ODT linked images) through the same in-process pinning proxy used by Chromium. Since _8.33.0_, LibreOffice also drops content linked from untrusted locations; uploaded documents never count as trusted, so linked `file://` paths and external URLs are blocked before any fetch, and the flags above govern only the fetches LibreOffice still performs. See [Outbound URL Filtering](/docs/outbound-url-filtering).
+Since Gotenberg _8.32.0_, LibreOffice routes outbound HTTP/HTTPS fetches (OOXML external images, RTF `INCLUDEPICTURE`, ODT linked images) through the same in-process pinning proxy used by Chromium. Since _8.34.0_, LibreOffice also drops content linked from untrusted locations; uploaded documents never count as trusted, so linked `file://` paths and external URLs are blocked before any fetch, and the flags above govern only the fetches LibreOffice still performs. See [Outbound URL Filtering](/docs/outbound-url-filtering).
 
 :::
 
@@ -375,7 +375,7 @@ The following flags control stdout log output:
 | <span class="badge badge--secondary">--log-std-enable-gcp-fields</span> | <span class="badge badge--secondary">LOG_STD_ENABLE_GCP_FIELDS</span> | Enable Google Cloud Platform fields: time, message, severity.                    | false   |
 | <span class="badge badge--secondary">--log-std-level-case</span>        | <span class="badge badge--secondary">LOG_STD_LEVEL_CASE</span>        | Set the case of the level field in the standard output: lower or upper.          | lower   |
 
-Since _8.33.0_, `--log-std-level-case` controls the casing of the level field; `upper` emits `INFO`, `WARN`, `ERROR`, `DEBUG`. The default `lower` matches the previous output. Any other value prevents Gotenberg from starting, and the flag has no effect when `--log-std-enable-gcp-fields` replaces the level with a GCP severity.
+Since _8.34.0_, `--log-std-level-case` controls the casing of the level field; `upper` emits `INFO`, `WARN`, `ERROR`, `DEBUG`. The default `lower` matches the previous output. Any other value prevents Gotenberg from starting, and the flag has no effect when `--log-std-enable-gcp-fields` replaces the level with a GCP severity.
 
 :::warning
 

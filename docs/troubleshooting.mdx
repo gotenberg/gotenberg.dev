@@ -75,9 +75,9 @@ Since _8.33.0_, Gotenberg tolerates one transient probe failure and briefly cach
 - **Missing Fonts:** LibreOffice relies on installed system fonts to calculate page breaks and layout. If your document uses a font not present in the container, LibreOffice will substitute it, causing shifted layouts. Install the required fonts via a custom Dockerfile (see [Fonts configuration](configuration#fonts)).
 - **After upgrading to 8.30.0:** The font stack was simplified from 30+ packages to 8. Documents relying on Microsoft Core Fonts (Arial, Times New Roman, Calibri) now use metric-compatible replacements. If you notice layout differences after upgrading, install `ttf-mscorefonts-installer` or the specific script fonts your documents need (see [Fonts configuration](configuration#installing-additional-fonts)).
 
-### Linked Images Missing After 8.33.0
+### Linked Images Missing After 8.34.0
 
-_8.33.0_ blocks content linked from untrusted locations, and uploaded documents always count as untrusted. The conversion succeeds with `200 OK`; linked images and other linked content are absent.
+_8.34.0_ blocks content linked from untrusted locations, and uploaded documents always count as untrusted. The conversion succeeds with `200 OK`; linked images and other linked content are absent.
 
 Embed content in the document instead of linking it. There is no opt-out: the block closes a local-file-read and SSRF vector. See [Outbound URL Filtering](outbound-url-filtering).
 
@@ -87,9 +87,9 @@ Embed content in the document instead of linking it. There is no opt-out: the bl
 
 ### UUID Printed in CSV Page Headers
 
-Before _8.33.0_, converting a `.csv` file printed a random UUID as a centered page header. LibreOffice names the Calc sheet after the input file, which Gotenberg stores under a UUID-based filename, and the default page style prints that sheet name as a header.
+Before _8.34.0_, converting a `.csv` file printed a random UUID as a centered page header. LibreOffice names the Calc sheet after the input file, which Gotenberg stores under a UUID-based filename, and the default page style prints that sheet name as a header.
 
-Fixed in _8.33.0_: Gotenberg suppresses the auto-generated header for CSV inputs. Spreadsheets with their own page styles (`.xlsx`, `.ods`) are unaffected ([Issue #1568](https://github.com/gotenberg/gotenberg/issues/1568)).
+Fixed in _8.34.0_: Gotenberg suppresses the auto-generated header for CSV inputs. Spreadsheets with their own page styles (`.xlsx`, `.ods`) are unaffected ([Issue #1568](https://github.com/gotenberg/gotenberg/issues/1568)).
 
 ### Fails to Start
 
@@ -119,8 +119,8 @@ For older versions, increase `LIBREOFFICE_START_TIMEOUT` (default 20s) to comfor
 
 ### HTTPS Webhooks Fail in the Chromium Variant
 
-Before _8.33.0_, the `gotenberg/gotenberg:8-chromium` image variant shipped without `ca-certificates`, so webhook calls to HTTPS endpoints failed TLS certificate verification. Conversions themselves were unaffected: Chromium bundles its own certificates.
+Before _8.34.0_, the `gotenberg/gotenberg:8-chromium` image variant shipped without `ca-certificates`, so webhook calls to HTTPS endpoints failed TLS certificate verification. Conversions themselves were unaffected: Chromium bundles its own certificates.
 
-Fixed in _8.33.0_; the full and LibreOffice variants were never affected. For older versions, install `ca-certificates` in a custom Dockerfile.
+Fixed in _8.34.0_; the full and LibreOffice variants were never affected. For older versions, install `ca-certificates` in a custom Dockerfile.
 
 <Sponsors />
