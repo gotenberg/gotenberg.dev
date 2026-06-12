@@ -7,21 +7,25 @@ import styles from "./ApiEndpoint.module.css";
 
 const MethodBadge = ({ method = "" }) => {
   const colors = {
-    GET: "#61affe",
-    POST: "#49cc90",
-    PUT: "#fca130",
-    DELETE: "#f93e3e",
-    PATCH: "#50e3c2",
-    HEAD: "#9061f9",
+    GET: { bg: "rgba(97, 175, 254, 0.18)", fg: "#0060a1" },
+    POST: { bg: "rgba(73, 204, 144, 0.16)", fg: "#047857" },
+    PUT: { bg: "rgba(252, 161, 48, 0.18)", fg: "#92400e" },
+    DELETE: { bg: "rgba(249, 62, 62, 0.12)", fg: "#b91c1c" },
+    PATCH: { bg: "rgba(80, 227, 194, 0.18)", fg: "#0f766e" },
+    HEAD: { bg: "rgba(144, 97, 249, 0.14)", fg: "#6d28d9" },
   };
 
   const isMultipart = !method;
   const safeMethod = isMultipart ? "multipart/form-data" : method.toUpperCase();
+  const color = colors[safeMethod] || {
+    bg: "rgba(100, 116, 139, 0.14)",
+    fg: "#475569",
+  };
 
   return (
     <span
       className={clsx(styles.methodBadge, isMultipart && styles.multipartBadge)}
-      style={{ backgroundColor: colors[safeMethod] || "#64748b" }}
+      style={{ backgroundColor: color.bg, color: color.fg }}
     >
       {safeMethod}
     </span>

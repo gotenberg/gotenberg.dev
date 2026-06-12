@@ -26,6 +26,38 @@
   --ifm-navbar-background-color: rgba(255, 255, 255, 0.95);
   --ifm-navbar-height: 4rem;
   --ifm-container-width: 1366px;
+
+  /* #008ae6 is 3.63:1 on white: fine for fills, buttons, and large text,
+     below WCAG AA (4.5:1) for body-size text. */
+  --accent-text: var(--ifm-color-primary-darker);
+}
+
+/* --- ACCESSIBILITY --- */
+:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.menu__link:focus-visible,
+.button:focus-visible,
+.navbar__link:focus-visible {
+  outline-offset: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* --- GLOBAL RESET --- */
@@ -97,7 +129,7 @@ body {
 }
 
 .markdown a {
-  color: var(--ifm-color-primary);
+  color: var(--accent-text);
   text-decoration: underline;
   text-decoration-thickness: 1.5px;
   text-underline-offset: 3px;
@@ -339,7 +371,7 @@ button[class*="closeButton_"]:hover {
 }
 
 .menu__link--active {
-  color: var(--ifm-color-primary);
+  color: var(--accent-text);
   background-color: rgba(0, 138, 230, 0.08);
   font-weight: 600;
 }
@@ -377,8 +409,6 @@ button[class*="closeButton_"]:hover {
   font-size: 0.65rem;
   font-weight: 800;
   text-align: center;
-  color: white;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   border-radius: 4px;
   vertical-align: middle;
   line-height: 1.5;
@@ -386,27 +416,32 @@ button[class*="closeButton_"]:hover {
 
 .sidebar-method-post .menu__link::before {
   content: "POST";
-  background-color: #49cc90;
+  background-color: rgba(73, 204, 144, 0.16);
+  color: #047857;
 }
 
 .sidebar-method-get .menu__link::before {
   content: "GET";
-  background-color: #61affe;
+  background-color: rgba(97, 175, 254, 0.18);
+  color: #0060a1;
 }
 
 .sidebar-method-put .menu__link::before {
   content: "PUT";
-  background-color: #fca130;
+  background-color: rgba(252, 161, 48, 0.18);
+  color: #92400e;
 }
 
 .sidebar-method-delete .menu__link::before {
   content: "DEL";
-  background-color: #f93e3e;
+  background-color: rgba(249, 62, 62, 0.12);
+  color: #b91c1c;
 }
 
 .sidebar-method-head .menu__link::before {
   content: "HEAD";
-  background-color: #9061f9;
+  background-color: rgba(144, 97, 249, 0.14);
+  color: #6d28d9;
 }
 
 /* --- FOOTER --- */
@@ -443,7 +478,6 @@ button[class*="closeButton_"]:hover {
 .footer__copyright {
   font-size: 0.85em;
   text-align: left;
-  opacity: 0.7;
   color: #94a3b8;
 }
 

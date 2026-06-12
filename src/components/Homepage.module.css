@@ -174,7 +174,7 @@
 .sponsorLink {
   font-size: 0.9rem;
   font-weight: 600;
-  color: var(--ifm-color-primary);
+  color: var(--accent-text);
   white-space: nowrap;
 }
 
@@ -388,11 +388,11 @@
 }
 
 .cOperator {
-  color: #64748b;
+  color: #94a3b8;
 }
 
 .cComment {
-  color: #64748b;
+  color: #94a3b8;
   font-style: italic;
 }
 

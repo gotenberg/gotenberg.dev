@@ -18,7 +18,23 @@ module.exports = {
   favicon: "img/favicon.ico",
   organizationName: "gotenberg",
   projectName: "gotenberg.dev",
+  headTags: [
+    {
+      tagName: "link",
+      attributes: {
+        rel: "apple-touch-icon",
+        sizes: "180x180",
+        href: "/img/apple-touch-icon.png",
+      },
+    },
+    {
+      tagName: "meta",
+      attributes: { name: "theme-color", content: "#008ae6" },
+    },
+  ],
   themeConfig: {
+    image: "img/og-image.png",
+    metadata: [{ name: "twitter:card", content: "summary_large_image" }],
     algolia: {
       appId: "JP2Q0HN2DE",
       apiKey: "67f1a7e15197ecf88d4c85f39a2e1789",

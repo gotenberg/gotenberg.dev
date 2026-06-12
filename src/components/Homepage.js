@@ -156,6 +156,9 @@ curl \\
                 className={styles.logo}
                 src={useBaseUrl("/img/logo_jed.png")}
                 alt="Gotenberg Hero Logo"
+                width="759"
+                height="760"
+                fetchpriority="high"
               />
             </div>
           </div>
