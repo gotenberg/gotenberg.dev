@@ -125,7 +125,7 @@ curl \\
       <header className={styles.hero}>
         <div className="container">
           <div className="row">
-            <div className={clsx("col col--6", styles.heroContent)}>
+            <div className={clsx("col col--7", styles.heroContent)}>
               <h1 className={styles.title}>
                 A Docker-based API built for
                 <br />
@@ -163,12 +163,17 @@ curl \\
                   <span>GitHub</span>
                 </Link>
               </div>
+
+              <p className={styles.archNote}>
+                Available for <code>amd64</code>, <code>arm64</code>,{" "}
+                <code>armhf</code>, <code>i386</code>, and <code>ppc64le</code>.
+              </p>
             </div>
 
-            <div className={clsx("col col--6", styles.heroImage)}>
+            <div className={clsx("col col--5", styles.heroImage)}>
               <IdealImage
                 className={styles.logo}
-                img={require("@site/static/img/logo_jed.png")}
+                img={require("@site/static/img/logo_hero.png")}
                 alt="Gotenberg Hero Logo"
               />
             </div>
@@ -193,67 +198,65 @@ curl \\
       <section className={styles.communitySection}>
         <div className="container">
           <div className={styles.sponsorsStrip}>
-            <div className={styles.sponsorRow}>
-              <span className={styles.sponsorStripLabel}>Sponsors</span>
-              <div className={styles.sponsorLogos}>
-                <a href="https://thecodingmachine.com" target="_blank">
-                  <img
-                    src={useBaseUrl("/img/thecodingmachine-logo.png")}
-                    alt="TheCodingMachine"
-                    className={clsx(styles.logoStrip, styles.logoWide)}
-                  />
-                </a>
-                <a href="https://pdfme.com" target="_blank">
-                  <img
-                    src={useBaseUrl("/img/pdfme-logo.png")}
-                    alt="pdfme"
-                    className={clsx(styles.logoStrip, styles.logoWide)}
-                  />
-                </a>
-                <a href="https://pdfbolt.com" target="_blank">
-                  <img
-                    src={useBaseUrl("/img/pdfbolt-logo.svg")}
-                    alt="PdfBolt"
-                    className={clsx(styles.logoStrip, styles.logoWide)}
-                  />
-                </a>
-                <a href="https://filetopdf.dev" target="_blank">
-                  <img
-                    src={useBaseUrl("/img/filetopdf-logo.png")}
-                    alt="FileToPDF"
-                    className={clsx(styles.logoStrip, styles.logoWordmark)}
-                  />
-                </a>
-              </div>
+            <span className={styles.sponsorStripLabel}>Sponsors</span>
+
+            <div className={styles.sponsorLogos}>
+              <a href="https://thecodingmachine.com" target="_blank">
+                <img
+                  src={useBaseUrl("/img/thecodingmachine-logo.png")}
+                  alt="TheCodingMachine"
+                  className={clsx(styles.logoStrip, styles.logoWide)}
+                />
+              </a>
+              <a href="https://pdfme.com" target="_blank">
+                <img
+                  src={useBaseUrl("/img/pdfme-logo.png")}
+                  alt="pdfme"
+                  className={clsx(styles.logoStrip, styles.logoWide)}
+                />
+              </a>
+              <a href="https://pdfbolt.com" target="_blank">
+                <img
+                  src={useBaseUrl("/img/pdfbolt-logo.svg")}
+                  alt="PdfBolt"
+                  className={clsx(styles.logoStrip, styles.logoWide)}
+                />
+              </a>
+              <a href="https://filetopdf.dev" target="_blank">
+                <img
+                  src={useBaseUrl("/img/filetopdf-logo.png")}
+                  alt="FileToPDF"
+                  className={clsx(styles.logoStrip, styles.logoWordmark)}
+                />
+              </a>
+            </div>
+
+            <div className={styles.poweredByRow}>
+              <span className={styles.poweredByLabel}>Powered by</span>
+              <a
+                href="https://docs.docker.com/docker-hub/repos/manage/trusted-content/dsos-program/"
+                target="_blank"
+              >
+                <img
+                  src={useBaseUrl("/img/docker-logo-blue.svg")}
+                  alt="Docker"
+                  className={clsx(styles.logoStrip, styles.logoSmall)}
+                />
+              </a>
+              <a href="https://jb.gg/OpenSourceSupport" target="_blank">
+                <img
+                  src={useBaseUrl("/img/jetbrains-logo.svg")}
+                  alt="JetBrains"
+                  className={clsx(styles.logoStrip, styles.logoSmall)}
+                />
+              </a>
+              <span className={styles.poweredBySep}>&middot;</span>
               <Link
                 to="https://github.com/sponsors/gulien"
                 className={styles.sponsorLink}
               >
                 Become a sponsor
               </Link>
-            </div>
-
-            <div className={clsx(styles.sponsorRow, styles.poweredByRow)}>
-              <span className={styles.sponsorStripLabel}>Powered By</span>
-              <div className={styles.sponsorLogos}>
-                <a
-                  href="https://docs.docker.com/docker-hub/repos/manage/trusted-content/dsos-program/"
-                  target="_blank"
-                >
-                  <img
-                    src={useBaseUrl("/img/docker-logo-blue.svg")}
-                    alt="Docker"
-                    className={clsx(styles.logoStrip, styles.logoSmall)}
-                  />
-                </a>
-                <a href="https://jb.gg/OpenSourceSupport" target="_blank">
-                  <img
-                    src={useBaseUrl("/img/jetbrains-logo.svg")}
-                    alt="JetBrains"
-                    className={clsx(styles.logoStrip, styles.logoSmall)}
-                  />
-                </a>
-              </div>
             </div>
           </div>
         </div>

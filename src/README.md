@@ -53,7 +53,7 @@ HTTP method badges: tinted background with dark text (WCAG AA), e.g. POST `rgba(
 
 ### Homepage (`src/components/Homepage.js`)
 
-Standalone React component with CSS Modules (`Homepage.module.css`). Static by design: hero with a `SimpleTerminal` two-command demo, sponsors strip, four text-plus-code feature rows, and a final CTA. No scroll-triggered animation, counters, or gradients; motion is hover-scoped only.
+Standalone React component with CSS Modules (`Homepage.module.css`). Static by design: hero with the portrait logo (via `@theme/IdealImage`) and an architecture note, a "two commands" `SimpleTerminal` quickstart, a centered sponsors strip, four text-plus-code feature rows, and a final CTA. No scroll-triggered animation, counters, or gradients; motion is hover-scoped only (terminal caret excepted).
 
 ### ApiEndpoint (`src/components/documentation/ApiEndpoint.js`)
 
