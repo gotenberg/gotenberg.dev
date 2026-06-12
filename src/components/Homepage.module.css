@@ -34,6 +34,7 @@
   letter-spacing: -0.02em;
   color: var(--ifm-heading-color);
   margin-bottom: 1.25rem;
+  text-wrap: balance;
 }
 
 .subtitle {
@@ -42,6 +43,7 @@
   color: var(--ifm-color-content-secondary);
   margin-bottom: 2rem;
   max-width: 34rem;
+  text-wrap: pretty;
 }
 
 .buttons {
@@ -299,6 +301,7 @@
   font-size: 1.3rem;
   font-weight: 800;
   color: var(--ifm-color-primary);
+  font-variant-numeric: tabular-nums;
 }
 
 .statLabel {
@@ -361,10 +364,62 @@
   font-size: 0.85rem;
   line-height: 1.7;
   overflow-x: auto;
+  font-variant-ligatures: none;
+  scrollbar-width: thin;
+  scrollbar-color: #334155 transparent;
+}
+
+.terminalBody::-webkit-scrollbar {
+  height: 8px;
+}
+
+.terminalBody::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+
+.terminalBody::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.terminalBody ::selection {
+  background: rgba(125, 211, 252, 0.3);
+  color: #f8fafc;
+}
+
+.terminalBody .codeLine:last-of-type::after {
+  content: "";
+  display: inline-block;
+  width: 0.55em;
+  height: 1.05em;
+  margin-left: 0.15em;
+  vertical-align: text-bottom;
+  background: #7dd3fc;
+  animation: blink 1.1s steps(2, jump-none) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .terminalBody .codeLine:last-of-type::after {
+    animation: none;
+    opacity: 0.6;
+  }
 }
 
 .codeLine {
   white-space: pre;
+}
+
+.promptLine::before {
+  content: "$ ";
+  color: #64748b;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .cPlain {

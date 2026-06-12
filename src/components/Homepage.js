@@ -16,14 +16,27 @@ const SimpleTerminal = ({ content }) => {
         </div>
       </div>
       <div className={styles.terminalBody}>
-        {content
-          .trim()
-          .split("\n")
-          .map((line, i) => (
-            <div key={i} className={styles.codeLine}>
-              {highlightLine(line)}
-            </div>
-          ))}
+        {(() => {
+          const lines = content.trim().split("\n");
+          let previousContinues = false;
+          return lines.map((line, i) => {
+            const isComment = line.trim().startsWith("#");
+            const isCommandStart =
+              !isComment && line.trim() !== "" && !previousContinues;
+            previousContinues = line.trimEnd().endsWith("\\");
+            return (
+              <div
+                key={i}
+                className={clsx(
+                  styles.codeLine,
+                  isCommandStart && styles.promptLine
+                )}
+              >
+                {highlightLine(line)}
+              </div>
+            );
+          });
+        })()}
       </div>
     </div>
   );

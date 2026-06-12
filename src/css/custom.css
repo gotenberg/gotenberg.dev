@@ -60,6 +60,141 @@
   }
 }
 
+@media (pointer: coarse) {
+  .menu__link {
+    padding: 12px;
+  }
+
+  .menu__caret {
+    padding: 12px;
+  }
+
+  .navbar__toggle,
+  button[class*="closeButton_"] {
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* --- DETAILS --- */
+::selection {
+  background: rgba(0, 138, 230, 0.18);
+  color: inherit;
+}
+
+code,
+kbd,
+samp,
+pre code {
+  font-variant-ligatures: none;
+  font-feature-settings: "liga" 0, "calt" 0;
+}
+
+.markdown h2,
+.markdown h3,
+.markdown h4 {
+  scroll-margin-top: calc(var(--ifm-navbar-height) + 1rem);
+}
+
+.hash-link {
+  opacity: 0;
+  font-weight: 400;
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+h2:hover > .hash-link,
+h3:hover > .hash-link,
+h4:hover > .hash-link,
+.hash-link:focus-visible {
+  opacity: 1;
+}
+
+@media (pointer: coarse) {
+  .hash-link {
+    opacity: 0.45;
+  }
+}
+
+.theme-code-block button[class*="copyButton"] {
+  opacity: 0.4;
+  transition: opacity 0.15s ease;
+}
+
+.theme-code-block:hover button[class*="copyButton"],
+.theme-code-block button[class*="copyButton"]:focus-visible {
+  opacity: 1;
+}
+
+@media (pointer: coarse) {
+  .theme-code-block button[class*="copyButton"] {
+    opacity: 0.7;
+  }
+}
+
+.theme-code-block pre {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.5) transparent;
+}
+
+/* --- PRINT --- */
+@media print {
+  .navbar,
+  .theme-doc-sidebar-container,
+  .theme-doc-toc-desktop,
+  .theme-doc-toc-mobile,
+  .theme-doc-breadcrumbs,
+  .theme-edit-this-page,
+  .theme-last-updated,
+  .pagination-nav,
+  .footer,
+  div[class*="announcementBar_"] {
+    display: none !important;
+  }
+
+  main[class^="docMainContainer_"],
+  div[class^="docMainContainer_"] {
+    padding-left: 0 !important;
+  }
+
+  .theme-doc-markdown {
+    max-width: 100%;
+  }
+
+  .markdown a {
+    color: #0f172a;
+    text-decoration: none;
+  }
+
+  .markdown a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    color: #64748b;
+    word-break: break-all;
+  }
+
+  .markdown h2,
+  .markdown h3 {
+    break-after: avoid;
+  }
+
+  pre,
+  .markdown table,
+  .alert {
+    break-inside: avoid;
+  }
+
+  .theme-code-block pre,
+  .theme-code-block code {
+    white-space: pre-wrap !important;
+    background: #f8fafc !important;
+    color: #0f172a !important;
+  }
+}
+
 /* --- GLOBAL RESET --- */
 body {
   -webkit-font-smoothing: antialiased;
@@ -78,6 +213,7 @@ body {
   letter-spacing: -0.01em;
   margin-bottom: 1rem;
   line-height: 1.25;
+  text-wrap: balance;
 }
 
 .markdown h1 {
@@ -121,6 +257,7 @@ body {
   color: var(--ifm-color-content);
   margin-bottom: 1.5rem;
   letter-spacing: 0;
+  text-wrap: pretty;
 }
 
 .markdown ul,
@@ -192,6 +329,7 @@ body {
   border-bottom: 1px solid rgba(0, 0, 0, 0.04);
   color: var(--ifm-color-content);
   line-height: 1.6;
+  font-variant-numeric: tabular-nums;
 }
 
 .markdown table tr:last-child td {
