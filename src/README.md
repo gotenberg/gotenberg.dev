@@ -26,11 +26,12 @@ HTTP method badge colors: POST `#49cc90`, GET `#61affe`, PUT `#fca130`, DELETE `
 
 ### Typography
 
-- H1: 3rem, weight 900, letter-spacing -0.03em, blue bottom border
-- H2: 1.8rem, weight 800, letter-spacing -0.02em, gray bottom border
-- H3: 1.4rem, weight 700, blue left border with padding
-- Body: 1.05rem, line-height 1.75
+- H1: 2.6rem, weight 800, letter-spacing -0.03em, no decoration
+- H2: 1.8rem, weight 800, letter-spacing -0.02em, 1px bottom border
+- H3: 1.4rem, weight 700, no decoration
+- Body: 1.05rem, line-height 1.75, 17px base
 - Code: 0.85em, weight 500, subtle gray background
+- Links: underline with muted decoration color, full color on hover
 
 ### Spacing
 
@@ -43,7 +44,7 @@ HTTP method badge colors: POST `#49cc90`, GET `#61affe`, PUT `#fca130`, DELETE `
 
 ### Homepage (`src/components/Homepage.js`)
 
-Standalone React component with CSS Modules (`Homepage.module.css`). Contains hero section, community stats strip, feature blocks with `SimpleTerminal` code previews, and final CTA section.
+Standalone React component with CSS Modules (`Homepage.module.css`). Static by design: hero with a `SimpleTerminal` two-command demo, sponsors strip, four text-plus-code feature rows, and a final CTA. No scroll-triggered animation, counters, or gradients; motion is hover-scoped only.
 
 ### ApiEndpoint (`src/components/documentation/ApiEndpoint.js`)
 
@@ -62,8 +63,7 @@ Renders sponsor logos at the bottom of documentation pages.
 - Use CSS custom properties (`--ifm-*`) for Docusaurus theme values.
 - Use CSS Modules for component-scoped styles.
 - Use `src/css/custom.css` only for global overrides (admonitions, sidebar, footer, typography).
-- Transitions: `0.2s ease` for interactive elements, `0.3s cubic-bezier(0.4, 0, 0.2, 1)` for larger animations.
-- Hover effects: subtle `translateY(-1px)` lift with colored box-shadow.
+- Transitions: `0.2s ease`, color and text-decoration only. No lifts, glows, or keyframe animations.
 - Use `clsx` for conditional class composition in React components.
 - Respect Docusaurus's Infima CSS framework. Override with specificity, not `!important`.
 - Use `@docusaurus/Link` for internal navigation. Use `useBaseUrl` for static asset paths.
