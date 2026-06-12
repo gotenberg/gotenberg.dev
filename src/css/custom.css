@@ -16,8 +16,8 @@
 
   --ifm-font-family-base: "Inter", system-ui, -apple-system, sans-serif;
   --ifm-font-family-monospace: "JetBrains Mono", "Fira Code", monospace;
-  --ifm-font-size-base: 16px;
-  --ifm-line-height-base: 1.6;
+  --ifm-font-size-base: 17px;
+  --ifm-line-height-base: 1.65;
 
   --ifm-color-content: #334155;
   --ifm-color-content-secondary: #64748b;
@@ -49,15 +49,11 @@ body {
 }
 
 .markdown h1 {
-  font-weight: 900;
-  font-size: 3rem;
+  font-weight: 800;
+  font-size: 2.6rem;
   letter-spacing: -0.03em;
   color: #0f172a;
-  margin-bottom: 2.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 6px solid var(--ifm-color-primary);
-  display: inline-block;
-  min-width: 120px;
+  margin-bottom: 2rem;
 }
 
 .markdown h2 {
@@ -68,7 +64,7 @@ body {
   margin-top: 4rem;
   margin-bottom: 1.5rem;
   padding-bottom: 0.75rem;
-  border-bottom: 3px solid var(--ifm-color-emphasis-300);
+  border-bottom: 1px solid var(--ifm-border-color);
 }
 
 .markdown h3 {
@@ -78,8 +74,6 @@ body {
   color: #334155;
   margin-top: 2.5rem;
   margin-bottom: 1rem;
-  border-left: 4px solid var(--ifm-color-primary);
-  padding-left: 12px;
 }
 
 .markdown h4 {
@@ -104,17 +98,17 @@ body {
 
 .markdown a {
   color: var(--ifm-color-primary);
-  text-shadow: 0 0 15px rgba(0, 138, 230, 0.1);
-  text-decoration: none;
-  border-bottom: 1px solid rgba(0, 138, 230, 0.3);
-  transition: all 0.2s ease;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(0, 138, 230, 0.3);
+  transition: text-decoration-color 0.2s ease, color 0.2s ease;
   font-weight: 500;
 }
 
 .markdown a:hover {
-  text-shadow: 0 0 20px rgba(0, 138, 230, 0.4);
-  border-bottom-color: var(--ifm-color-primary);
-  background-color: rgba(0, 138, 230, 0.05);
+  color: var(--ifm-color-primary-dark);
+  text-decoration-color: var(--ifm-color-primary);
 }
 
 /* --- INLINE CODE --- */
@@ -144,15 +138,6 @@ body {
   border: 1px solid var(--ifm-border-color);
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.markdown table:hover {
-  border-color: rgba(99, 102, 241, 0.4);
-  box-shadow: 0 10px 10px -5px rgba(99, 102, 241, 0.15);
-  transform: translateY(-1px);
-  z-index: 10;
 }
 
 .markdown table th {
@@ -175,15 +160,10 @@ body {
   border-bottom: 1px solid rgba(0, 0, 0, 0.04);
   color: var(--ifm-color-content);
   line-height: 1.6;
-  transition: background-color 0.2s ease;
 }
 
 .markdown table tr:last-child td {
   border-bottom: none;
-}
-
-.markdown table tbody tr:hover td {
-  background-color: rgba(99, 102, 241, 0.03);
 }
 
 @media screen and (max-width: 1280px) {
@@ -205,12 +185,6 @@ body {
   box-shadow: none;
 }
 
-.alert table:hover {
-  transform: none;
-  border-color: rgba(0, 0, 0, 0.12);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-}
-
 .alert table th {
   background-color: rgba(0, 0, 0, 0.03);
   padding: 10px 14px;
@@ -222,11 +196,6 @@ body {
   border-bottom: 1px solid rgba(0, 0, 0, 0.04);
 }
 
-.alert table tbody tr:hover td {
-  background-color: rgba(99, 102, 241, 0.03);
-  color: inherit;
-}
-
 /* --- CRISP ADMONITIONS --- */
 .alert {
   border: 1px solid transparent;
@@ -236,7 +205,6 @@ body {
   padding: 16px 20px;
   margin-bottom: 24px;
   color: var(--ifm-color-content);
-  transition: all 0.3s ease;
 }
 
 .alert .alert__heading {
@@ -300,95 +268,36 @@ body {
   color: #b91c1c;
 }
 
-.alert--info:hover {
-  box-shadow: 0 10px 10px -5px rgba(0, 138, 230, 0.15);
-  transform: translateY(-1px);
-  z-index: 10;
-}
-
-.alert--success:hover {
-  box-shadow: 0 10px 10px -5px rgba(16, 185, 129, 0.15);
-  transform: translateY(-1px);
-  z-index: 10;
-}
-
-.alert--warning:hover {
-  box-shadow: 0 10px 10px -5px rgba(245, 158, 11, 0.15);
-  transform: translateY(-1px);
-  z-index: 10;
-}
-
-.alert--danger:hover {
-  box-shadow: 0 10px 10px -5px rgba(239, 68, 68, 0.15);
-  transform: translateY(-1px);
-  z-index: 10;
-}
-
 .markdown .alert a {
-  border-bottom: none;
-  text-decoration: underline;
   text-decoration-thickness: 1px;
-  text-underline-offset: 3px;
-  transition: all 0.3s ease;
-}
-
-.markdown .alert a:hover {
-  background-color: transparent;
-  opacity: 1;
 }
 
 .markdown .alert--info a {
   color: var(--ifm-color-primary-darkest);
   text-decoration-color: rgba(0, 138, 230, 0.4);
 }
-.markdown .alert--info a:hover {
-  text-shadow: 0 0 12px rgba(0, 138, 230, 0.5);
-}
 
 .markdown .alert--success a {
   color: #064e3b;
   text-decoration-color: rgba(16, 185, 129, 0.5);
-}
-.markdown .alert--success a:hover {
-  text-shadow: 0 0 12px rgba(16, 185, 129, 0.5);
 }
 
 .markdown .alert--warning a {
   color: #78350f;
   text-decoration-color: rgba(245, 158, 11, 0.5);
 }
-.markdown .alert--warning a:hover {
-  text-shadow: 0 0 12px rgba(245, 158, 11, 0.5);
-}
 
 .markdown .alert--danger a {
   color: #7f1d1d;
   text-decoration-color: rgba(239, 68, 68, 0.5);
 }
-.markdown .alert--danger a:hover {
-  text-shadow: 0 0 12px rgba(239, 68, 68, 0.5);
-}
 
 /* --- ANNOUNCEMENT BAR --- */
 div[class*="announcementBar_"] {
-  background: linear-gradient(90deg, #008ae6 0%, #6366f1 100%);
+  background: var(--ifm-color-primary);
   color: white;
   font-weight: 600;
   border: none;
-  background-size: 200% 200%;
-  animation: gradientShift 6s ease infinite;
-}
-
-@keyframes gradientShift {
-  0% {
-    background-position: 0 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0 50%;
-  }
 }
 
 div[class*="announcementBarContent_"] a {
@@ -431,7 +340,7 @@ button[class*="closeButton_"]:hover {
 
 .menu__link--active {
   color: var(--ifm-color-primary);
-  background-color: var(--ifm-color-primary-lightest);
+  background-color: rgba(0, 138, 230, 0.08);
   font-weight: 600;
 }
 

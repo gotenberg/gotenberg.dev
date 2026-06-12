@@ -199,27 +199,3 @@
   border-radius: 8px;
   box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.03);
 }
-
-/* --- GLOWING CONTAINER HOVER --- */
-.apiContainer:hover {
-  border-color: rgba(99, 102, 241, 0.4);
-  box-shadow: 0 10px 10px -5px rgba(99, 102, 241, 0.15);
-  transform: translateY(-1px);
-  z-index: 10;
-}
-
-/* --- GLOWING BADGE HOVER --- */
-.apiHeader:hover .methodBadge {
-  box-shadow: 0 10px 20px -5px currentColor;
-  transform: translateY(-1px);
-}
-
-/* --- GLOWING PARAMETER HOVER --- */
-.paramItem:hover {
-  background-color: rgba(99, 102, 241, 0.03);
-  border-radius: 8px;
-  padding-left: 12px;
-  padding-right: 12px;
-  margin-left: -12px;
-  margin-right: -12px;
-}
