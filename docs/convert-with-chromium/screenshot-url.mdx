@@ -48,7 +48,7 @@ Captures a screenshot of a target URL using Headless Chromium. Supports JavaScri
 curl \\
 --request POST http://localhost:3000/forms/chromium/screenshot/url \\
 --form url=https://my.url \\
--o my.jpeg`}
+-o my.png`}
   responses={[
     {
       status: 200,
@@ -65,7 +65,7 @@ Body: {output-file}
     {
       status: 400,
       message: "Bad Request",
-      description: "The request had one ore more invalid form fields.",
+      description: "The request had one or more invalid form fields.",
       body: `
 Content-Type: text/plain; charset=UTF-8
 Gotenberg-Trace: {trace}
@@ -107,14 +107,14 @@ Body: {error}
   method="POST"
   path="/forms/chromium/screenshot/url"
   curlFormData={`--form url=https://my.url \\`}
-  curlOutput={`-o my.jpeg`}
+  curlOutput={`-o my.png`}
 />
 
 <Console
   method="POST"
   path="/forms/chromium/screenshot/url"
   curlFormData={`--form url=https://my.url \\`}
-  curlOutput={`-o my.jpeg`}
+  curlOutput={`-o my.png`}
 />
 
 <Sponsors />

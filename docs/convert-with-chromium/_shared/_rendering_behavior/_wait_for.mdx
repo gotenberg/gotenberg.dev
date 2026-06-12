@@ -24,6 +24,14 @@ This method is "brute force". If the page loads faster, time is wasted. If it lo
 :::
 
 <ApiEndpoint
+  formFields={[
+    {
+      name: "waitDelay",
+      type: "duration",
+      defaultValue: "None",
+      description: "Duration to wait before rendering, e.g. '5s' or '500ms'.",
+    },
+  ]}
   curl={`
 curl \\
 --request ${props.method} http://localhost:3000${props.path} \\
@@ -51,11 +59,20 @@ fetchData().then(() => {
 ```
 
 <ApiEndpoint
+  formFields={[
+    {
+      name: "waitForExpression",
+      type: "string",
+      defaultValue: "None",
+      description:
+        "JavaScript expression evaluated in the page; rendering starts when it returns true.",
+    },
+  ]}
   curl={`
 curl \\
 --request ${props.method} http://localhost:3000${props.path} \\
 ${props.curlFormData}
--- form 'waitForExpression=window.status === '\\''ready'\\''' \\
+--form 'waitForExpression=window.status === '\\''ready'\\''' \\
 ${props.curlOutput}
 `}
 />
@@ -76,6 +93,15 @@ document.body.appendChild(completionMarker);
 ```
 
 <ApiEndpoint
+  formFields={[
+    {
+      name: "waitForSelector",
+      type: "string",
+      defaultValue: "None",
+      description:
+        "CSS selector; rendering starts when a matching element appears in the DOM.",
+    },
+  ]}
   curl={`
 curl \\
 --request ${props.method} http://localhost:3000${props.path} \\

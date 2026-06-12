@@ -57,14 +57,9 @@ curl \\
     {
       status: 200,
       message: "OK",
-      description: (
-        <span>
-          The PDF file has been successfully created. Returns a{" "}
-          <strong>ZIP archives</strong> if many files have been uploaded.
-        </span>
-      ),
+      description: "The PDF file. Multiple input files produce a ZIP archive.",
       body: `
-Content-Disposition: attachment; filename={output-filename.pdf}
+Content-Disposition: attachment; filename={output-filename.ext}
 Content-Type: {content-type}
 Content-Length: {content-length}
 Gotenberg-Trace: {trace}
@@ -74,7 +69,7 @@ Body: {output-file}
     {
       status: 400,
       message: "Bad Request",
-      description: "The request had one ore more invalid form fields.",
+      description: "The request had one or more invalid form fields.",
       body: `
 Content-Type: text/plain; charset=UTF-8
 Gotenberg-Trace: {trace}
@@ -282,7 +277,7 @@ Documents can reference content by link instead of storing it: OOXML images mark
 
 Since _8.34.0_, LibreOffice drops linked content: an uploaded document always loads from an untrusted location, so linked `file://` paths and external URLs are not resolved. The conversion still returns `200 OK` with the linked content absent. There is no opt-out; embedded content is unaffected, so embed images instead of linking them.
 
-Since _8.32.0_, any outbound fetch LibreOffice still performs routes through the same pinning proxy used by Chromium. Allow/deny lists and IP-class checks apply. Forbidden destinations return `403 Forbidden`.
+Since _8.32.0_, any outbound fetch LibreOffice still performs routes through the same pinning proxy used by Chromium. Allow/deny lists and IP-class checks apply. The proxy rejects forbidden destinations inside the conversion, which succeeds without the resource.
 
 See [Outbound URL Filtering](/docs/outbound-url-filtering).
 

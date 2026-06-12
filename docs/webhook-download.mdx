@@ -37,7 +37,7 @@ See the [Webhook module configuration](/docs/configuration#webhook) for retries,
       type: "string",
       defaultValue: "None",
       description:
-        "Deprecated. The callback URL to use if the conversion fails. Not required when Gotenberg-Webhook-Events-Url is set.",
+        "Deprecated. Use Gotenberg-Webhook-Events-Url instead. The callback URL receiving the error JSON below if the conversion fails. At least one of the two headers is required, otherwise Gotenberg returns 400 Bad Request.",
       required: false,
     },
     {
@@ -85,7 +85,7 @@ curl \\
     {
       status: "400",
       message: "Bad Request",
-      description: "At least one of the header is invalid or missing.",
+      description: "At least one header is invalid or missing.",
       body: `
 Content-Type: text/plain; charset=UTF-8
 Gotenberg-Trace: {trace}
@@ -128,8 +128,8 @@ Gotenberg-Trace: {trace}
 traceparent: {traceparent}
 User-Agent: Gotenberg
 {
-    "status": "{status}",
-    "message": "{message}"
+    "status": 500,
+    "message": "conversion failed"
 }
       `,
     },

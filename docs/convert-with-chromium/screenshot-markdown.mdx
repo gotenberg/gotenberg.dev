@@ -75,7 +75,7 @@ curl \\
 --request POST http://localhost:3000/forms/chromium/screenshot/markdown \\
 --form files=@/path/to/index.html \\
 --form files=@/path/to/file.md \\
--o my.jpeg`}
+-o my.png`}
   responses={[
     {
       status: 200,
@@ -92,7 +92,7 @@ Body: {output-file}
     {
       status: 400,
       message: "Bad Request",
-      description: "The request had one ore more invalid form fields.",
+      description: "The request had one or more invalid form fields.",
       body: `
 Content-Type: text/plain; charset=UTF-8
 Gotenberg-Trace: {trace}
@@ -118,7 +118,7 @@ Body: {error}
   path="/forms/chromium/screenshot/markdown"
   curlFormData={`--form files=@/path/to/index.html \\
 --form files=@/path/to/file.md \\`}
-  curlOutput={`-o my.jpeg`}
+  curlOutput={`-o my.png`}
   isMarkdown={true}
 />
 
@@ -135,7 +135,7 @@ Body: {error}
   path="/forms/chromium/screenshot/markdown"
   curlFormData={`--form files=@/path/to/index.html \\
 --form files=@/path/to/file.md \\`}
-  curlOutput={`-o my.jpeg`}
+  curlOutput={`-o my.png`}
 />
 
 <Console
@@ -143,7 +143,7 @@ Body: {error}
   path="/forms/chromium/screenshot/markdown"
   curlFormData={`--form files=@/path/to/index.html \\
 --form files=@/path/to/file.md \\`}
-  curlOutput={`-o my.jpeg`}
+  curlOutput={`-o my.png`}
 />
 
 <Sponsors />

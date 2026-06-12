@@ -57,9 +57,10 @@ curl \\
     {
       status: 200,
       message: "OK",
-      description: "The updated PDF file.",
+      description:
+        "The updated PDF file. Multiple input files produce a ZIP archive.",
       body: `
-Content-Disposition: attachment; filename={output-filename.pdf}
+Content-Disposition: attachment; filename={output-filename.ext}
 Content-Type: {content-type}
 Content-Length: {content-length}
 Gotenberg-Trace: {trace}
@@ -69,7 +70,7 @@ Body: {output-file}
     {
       status: 400,
       message: "Bad Request",
-      description: "The request had one ore more invalid form fields.",
+      description: "The request had one or more invalid form fields.",
       body: `
 Content-Type: text/plain; charset=UTF-8
 Gotenberg-Trace: {trace}

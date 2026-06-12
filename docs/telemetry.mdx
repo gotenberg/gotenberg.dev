@@ -127,8 +127,10 @@ services:
       - "9464:9464"
     environment:
       OTEL_METRICS_EXPORTER: "prometheus"
-      # Optional: customize host and port.
-      # OTEL_EXPORTER_PROMETHEUS_HOST: "0.0.0.0"
+      # Required when Prometheus scrapes from another container or host:
+      # the exporter binds localhost by default.
+      OTEL_EXPORTER_PROMETHEUS_HOST: "0.0.0.0"
+      # Optional: customize the port.
       # OTEL_EXPORTER_PROMETHEUS_PORT: "9464"
 
   prometheus:

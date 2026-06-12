@@ -57,7 +57,7 @@ Non-public means loopback, RFC1918, link-local, or IPv6 unique-local. The check 
 
 LibreOffice also exposes `LIBREOFFICE_ALLOW_LIST` and `LIBREOFFICE_DENY_LIST`, mirroring Chromium and webhook.
 
-Rejected URLs return `403 Forbidden`.
+Rejected URLs return `403 Forbidden`. LibreOffice fetches are the exception: the proxy rejects them inside the conversion, which succeeds without the resource.
 
 ## Precedence
 

@@ -83,7 +83,8 @@ curl \\
     {
       status: 200,
       message: "OK",
-      description: "The split PDF files (ZIP) or unified PDF.",
+      description:
+        "A ZIP archive of the split files, or a single PDF when one input file is split in 'pages' mode with splitUnify=true.",
       body: `
 Content-Disposition: attachment; filename={output-filename.ext}
 Content-Type: {content-type}
@@ -95,7 +96,7 @@ Body: {output-file}
     {
       status: 400,
       message: "Bad Request",
-      description: "The request had one ore more invalid form fields.",
+      description: "The request had one or more invalid form fields.",
       body: `
 Content-Type: text/plain; charset=UTF-8
 Gotenberg-Trace: {trace}
