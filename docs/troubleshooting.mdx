@@ -13,7 +13,7 @@ Issue not listed here? Check [GitHub issues](https://github.com/gotenberg/gotenb
 
 - **Dynamic Content:** If your page relies on JavaScript to render, Chromium might print before it finishes. Use `waitDelay` or `waitForExpression` to pause the conversion until the page is ready.
 - **Backgrounds:** By default, browsers remove backgrounds for printing. Enable the `printBackground` form field, or use the CSS property `-webkit-print-color-adjust: exact;`.
-- **Network Idle:** For versions after _8.11.0_, try setting the `skipNetworkIdleEvent` field to _false_.
+- **Network Idle:** For versions after _8.11.0_, try setting the `skipNetworkIdleEvent` form field to _false_.
 - **Updates:** Consider upgrading to the latest Gotenberg version to benefit from debugging features like _Network Errors_ or _Invalid HTTP Status Codes_.
 
 ### Blank Charts or Empty Google Maps
@@ -60,7 +60,7 @@ Since _8.33.0_, Gotenberg tolerates one transient probe failure and briefly cach
 
 ### Clipped Screenshots
 
-- If your screenshots are repeating or clipped, set the `skipNetworkIdleEvent` field to _false_ ([Issue #1065](https://github.com/gotenberg/gotenberg/issues/1065#issuecomment-2670882337)).
+- If your screenshots are repeating or clipped, set the `skipNetworkIdleEvent` form field to _false_ ([Issue #1065](https://github.com/gotenberg/gotenberg/issues/1065#issuecomment-2670882337)).
 
 ### Timeouts (503)
 

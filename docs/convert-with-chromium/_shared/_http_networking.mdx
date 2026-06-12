@@ -16,7 +16,7 @@ A JSON array of cookie objects for authentication or session state.
 | **`httpOnly`** | If `true`, the cookie is inaccessible to JavaScript (`document.cookie`). | `None`                                                           |
 | **`sameSite`** | Controls cross-site behavior. Values: `"Strict"`, `"Lax"`, `"None"`.     | `None`                                                           |
 
-Cookies expire when the request reaches its time limit. For strict isolation between conversions, configure the API to clear the cookie jar after every request. See [API Configuration](/docs/configuration#api).
+Cookies expire when the request reaches its time limit. For strict isolation between conversions, configure the API to clear the cookie jar after every request. See [API module configuration](/docs/configuration#api).
 
 <ApiEndpoint
   formFields={[

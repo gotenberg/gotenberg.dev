@@ -5,8 +5,11 @@ title: Read Bookmarks
 
 import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
 import Sponsors from "@site/src/components/documentation/Sponsors";
+import ConfigurationInfoPDFEngines from "../_shared/_configuration_info_pdfengines.mdx";
 
 Extracts bookmarks (the document outline / table of contents) from one or more PDF files. Returns a JSON object keyed by filename, where each bookmark contains a `title`, a `page` number, and optional `children`.
+
+<ConfigurationInfoPDFEngines />
 
 <ApiEndpoint
   method="POST"

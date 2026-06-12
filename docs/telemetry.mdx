@@ -178,16 +178,15 @@ As of Gotenberg _8.29.0_, `--log-format` has been deprecated in favor of `--log-
 
 ## Telemetry Control
 
-Suppress telemetry (traces, metrics, logs) on high-frequency system routes to reduce noise. All default to `true` (disabled).
+Telemetry (traces, metrics, logs) on high-frequency system routes is disabled by default to reduce noise. Set these flags to `false` to re-enable it.
 
-| Flag                                                                                   | Environment variable                                                                 | Description                                         | Default         |
-| -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ | --------------------------------------------------- | --------------- |
-| <span class="badge badge--secondary">--api-correlation-id-header</span>                | <span class="badge badge--secondary">API_CORRELATION_ID_HEADER</span>                | Header name for identifying requests.               | Gotenberg-Trace |
-| <span class="badge badge--secondary">--api-disable-root-route-telemetry</span>         | <span class="badge badge--secondary">API_DISABLE_ROOT_ROUTE_TELEMETRY</span>         | Disable telemetry for the root route.               | true            |
-| <span class="badge badge--secondary">--api-disable-debug-route-telemetry</span>        | <span class="badge badge--secondary">API_DISABLE_DEBUG_ROUTE_TELEMETRY</span>        | Disable telemetry for the debug route.              | true            |
-| <span class="badge badge--secondary">--api-disable-version-route-telemetry</span>      | <span class="badge badge--secondary">API_DISABLE_VERSION_ROUTE_TELEMETRY</span>      | Disable telemetry for the version route.            | true            |
-| <span class="badge badge--secondary">--api-disable-health-check-route-telemetry</span> | <span class="badge badge--secondary">API_DISABLE_HEALTH_CHECK_ROUTE_TELEMETRY</span> | Disable telemetry for the health check route.       | true            |
-| <span class="badge badge--secondary">--prometheus-disable-route-telemetry</span>       | <span class="badge badge--secondary">PROMETHEUS_DISABLE_ROUTE_TELEMETRY</span>       | Disable telemetry for the Prometheus metrics route. | true            |
+| Flag                                                                                   | Environment variable                                                                 | Description                                         | Default |
+| -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ | --------------------------------------------------- | ------- |
+| <span class="badge badge--secondary">--api-disable-root-route-telemetry</span>         | <span class="badge badge--secondary">API_DISABLE_ROOT_ROUTE_TELEMETRY</span>         | Disable telemetry for the root route.               | true    |
+| <span class="badge badge--secondary">--api-disable-debug-route-telemetry</span>        | <span class="badge badge--secondary">API_DISABLE_DEBUG_ROUTE_TELEMETRY</span>        | Disable telemetry for the debug route.              | true    |
+| <span class="badge badge--secondary">--api-disable-version-route-telemetry</span>      | <span class="badge badge--secondary">API_DISABLE_VERSION_ROUTE_TELEMETRY</span>      | Disable telemetry for the version route.            | true    |
+| <span class="badge badge--secondary">--api-disable-health-check-route-telemetry</span> | <span class="badge badge--secondary">API_DISABLE_HEALTH_CHECK_ROUTE_TELEMETRY</span> | Disable telemetry for the health check route.       | true    |
+| <span class="badge badge--secondary">--prometheus-disable-route-telemetry</span>       | <span class="badge badge--secondary">PROMETHEUS_DISABLE_ROUTE_TELEMETRY</span>       | Disable telemetry for the Prometheus metrics route. | true    |
 
 :::warning
 

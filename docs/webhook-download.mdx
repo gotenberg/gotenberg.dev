@@ -179,14 +179,14 @@ For further details, refer to the [API module configuration](/docs/configuration
 
 **Object Structure**
 
-The `downloadFrom` field accepts a **JSON-formatted array**. Each item in the array must be an object with the following keys:
+The `downloadFrom` form field accepts a **JSON-formatted array**. Each item in the array must be an object with the following keys:
 
-| Key                | Description                                                                                                                                 | Default                                                          |
-| :----------------- | :------------------------------------------------------------------------------------------------------------------------------------------ | :--------------------------------------------------------------- |
-| `url`              | URL of the file. The remote server **MUST** return a `Content-Disposition` header with a `filename` parameter.                              | <span style={{color: 'var(--ifm-color-danger)'}}>Required</span> |
-| `extraHttpHeaders` | A JSON object containing extra HTTP headers to send when fetching this specific URL.                                                        | `None`                                                           |
-| `embedded`         | Whether this file should be embedded (legacy, prefer `field`).                                                                              | `false`                                                          |
-| `field`            | Routes the downloaded file to a specific form field: `"embedded"`, `"watermark"`, or `"stamp"`. When set, takes precedence over `embedded`. | `""` (regular file)                                              |
+| Key                | Description                                                                                                                                                                                                                                                                                             | Default                                                          |
+| :----------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :--------------------------------------------------------------- |
+| `url`              | URL of the file. The remote server **MUST** return a `Content-Disposition` header with a `filename` parameter.                                                                                                                                                                                          | <span style={{color: 'var(--ifm-color-danger)'}}>Required</span> |
+| `extraHttpHeaders` | A JSON object containing extra HTTP headers to send when fetching this specific URL.                                                                                                                                                                                                                    | `None`                                                           |
+| `embedded`         | Attaches the downloaded file inside the output PDF (legacy, prefer `field`). See [Attachments](/docs/manipulate-pdfs/attachments).                                                                                                                                                                      | `false`                                                          |
+| `field`            | Routes the downloaded file to a feature: `"embedded"` attaches it (see [Attachments](/docs/manipulate-pdfs/attachments)), `"watermark"` and `"stamp"` supply the [watermark](/docs/manipulate-pdfs/watermark-pdfs) or [stamp](/docs/manipulate-pdfs/stamp-pdfs) file. Takes precedence over `embedded`. | `""` (regular file)                                              |
 
 :::warning Known Issue: Empty Media Types
 
