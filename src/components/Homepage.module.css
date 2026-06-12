@@ -123,16 +123,23 @@
 
 .sponsorsStrip {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .sponsorRow {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.sponsorRow .sponsorLink {
+  margin-left: auto;
+}
+
+.poweredByRow {
+  opacity: 0.85;
 }
 
 .sponsorStripLabel {
@@ -142,6 +149,7 @@
   letter-spacing: 0.08em;
   color: var(--ifm-color-content-secondary);
   white-space: nowrap;
+  min-width: 6.5rem;
 }
 
 .sponsorLogos {
@@ -164,17 +172,17 @@
 }
 
 .logoWide {
-  height: 2.5rem;
+  height: 3rem;
   width: auto;
 }
 
 .logoWordmark {
-  height: 1.9rem;
+  height: 2.1rem;
   width: auto;
 }
 
-.logoSquare {
-  height: 2.75rem;
+.logoSmall {
+  height: 1.6rem;
   width: auto;
 }
 
@@ -420,9 +428,9 @@
   content: "";
   display: inline-block;
   width: 0.55em;
-  height: 1.05em;
+  height: 1.1em;
   margin-left: 0.15em;
-  vertical-align: text-bottom;
+  vertical-align: middle;
   background: #7dd3fc;
   animation: blink 1.1s steps(2, jump-none) infinite;
 }
@@ -460,7 +468,7 @@
 }
 
 .cFlag {
-  color: #94a3b8;
+  color: #c4b5fd;
 }
 
 .cString {

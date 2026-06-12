@@ -527,10 +527,46 @@ button[class*="closeButton_"]:hover {
   background: rgba(255, 255, 255, 0.1);
 }
 
+/* --- CHROME TYPE: match the typeset content --- */
+.navbar__title,
+.navbar__link {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+}
+
+.navbar__title {
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.navbar__link {
+  font-weight: 500;
+  font-size: 1.05rem;
+}
+
+.footer__title {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-weight: 600;
+}
+
+.footer__item a {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-size: 1.05rem;
+}
+
+.table-of-contents__link {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-size: 0.9rem;
+}
+
 /* --- MODERN SIDEBAR --- */
 .menu__link {
-  font-family: var(--ifm-font-family-base);
-  font-size: 0.9rem;
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-size: 0.95rem;
   font-weight: 500;
   line-height: 1.5;
   letter-spacing: -0.01em;

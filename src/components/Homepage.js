@@ -3,6 +3,7 @@ import styles from "./Homepage.module.css";
 import clsx from "clsx";
 import Link from "@docusaurus/Link";
 import useBaseUrl from "@docusaurus/useBaseUrl";
+import IdealImage from "@theme/IdealImage";
 
 // --- HELPER COMPONENTS ---
 const SimpleTerminal = ({ content }) => {
@@ -86,7 +87,7 @@ curl \\
   const codeChromium = `curl \\
 --request POST http://localhost:3000/forms/chromium/convert/url \\
 --form url=https://my.url \\
---form 'waitForExpression=window.status === '\''ready'\''' \\
+--form 'waitForExpression=window.status === '\\''ready'\\''' \\
 --form 'extraHttpHeaders={"Authorization": "Bearer 123"}' \\
 -o my.pdf`;
 
@@ -165,13 +166,10 @@ curl \\
             </div>
 
             <div className={clsx("col col--6", styles.heroImage)}>
-              <img
+              <IdealImage
                 className={styles.logo}
-                src={useBaseUrl("/img/logo_jed.png")}
+                img={require("@site/static/img/logo_jed.png")}
                 alt="Gotenberg Hero Logo"
-                width="759"
-                height="760"
-                fetchpriority="high"
               />
             </div>
           </div>
@@ -227,9 +225,15 @@ curl \\
                   />
                 </a>
               </div>
+              <Link
+                to="https://github.com/sponsors/gulien"
+                className={styles.sponsorLink}
+              >
+                Become a sponsor
+              </Link>
             </div>
 
-            <div className={styles.sponsorRow}>
+            <div className={clsx(styles.sponsorRow, styles.poweredByRow)}>
               <span className={styles.sponsorStripLabel}>Powered By</span>
               <div className={styles.sponsorLogos}>
                 <a
@@ -239,26 +243,17 @@ curl \\
                   <img
                     src={useBaseUrl("/img/docker-logo-blue.svg")}
                     alt="Docker"
-                    className={clsx(styles.logoStrip, styles.logoSquare)}
+                    className={clsx(styles.logoStrip, styles.logoSmall)}
                   />
                 </a>
                 <a href="https://jb.gg/OpenSourceSupport" target="_blank">
                   <img
                     src={useBaseUrl("/img/jetbrains-logo.svg")}
                     alt="JetBrains"
-                    className={clsx(styles.logoStrip, styles.logoSquare)}
+                    className={clsx(styles.logoStrip, styles.logoSmall)}
                   />
                 </a>
               </div>
-            </div>
-
-            <div>
-              <Link
-                to="https://github.com/sponsors/gulien"
-                className={styles.sponsorLink}
-              >
-                Become a sponsor
-              </Link>
             </div>
           </div>
         </div>
