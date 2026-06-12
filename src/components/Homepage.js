@@ -1,101 +1,8 @@
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React from "react";
 import styles from "./Homepage.module.css";
 import clsx from "clsx";
 import Link from "@docusaurus/Link";
 import useBaseUrl from "@docusaurus/useBaseUrl";
-
-// --- REVEAL HOOK ---
-// Elements already in or above the viewport on mount (e.g., page refreshed
-// while scrolled down) are shown instantly without animation.
-// We wait a frame for the browser to restore scroll position, then check
-// whether the element is in or above the viewport. If so, show instantly.
-// Otherwise, use IntersectionObserver for the scroll-triggered reveal.
-function useReveal(threshold = 0.15) {
-  const ref = useRef(null);
-  const [visible, setVisible] = useState(false);
-  const [skipAnimation, setSkipAnimation] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    // Wait one rAF so the browser has restored scroll position after refresh.
-    const raf = requestAnimationFrame(() => {
-      const rect = el.getBoundingClientRect();
-      // Element is above the viewport (scrolled past) or currently visible
-      if (rect.bottom <= 0 || rect.top < window.innerHeight) {
-        setSkipAnimation(true);
-        setVisible(true);
-        return;
-      }
-
-      // Element is below the viewport — observe for scroll-triggered reveal
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setVisible(true);
-            observer.disconnect();
-          }
-        },
-        { threshold }
-      );
-      observer.observe(el);
-      // Store for cleanup
-      el._revealObserver = observer;
-    });
-
-    return () => {
-      cancelAnimationFrame(raf);
-      if (el._revealObserver) {
-        el._revealObserver.disconnect();
-      }
-    };
-  }, [threshold]);
-
-  return [ref, visible, skipAnimation];
-}
-
-// --- COUNT UP HOOK ---
-function useCountUp(target, duration, start) {
-  const [value, setValue] = useState(0);
-
-  useEffect(() => {
-    if (!start) return;
-    if (duration <= 0) {
-      setValue(target);
-      return;
-    }
-    let startTime = null;
-    let raf;
-
-    const step = (timestamp) => {
-      if (!startTime) startTime = timestamp;
-      const progress = Math.min((timestamp - startTime) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setValue(Math.round(eased * target));
-      if (progress < 1) {
-        raf = requestAnimationFrame(step);
-      }
-    };
-
-    raf = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(raf);
-  }, [target, duration, start]);
-
-  return value;
-}
-
-// --- ICONS ---
-const HeartIcon = () => (
-  <svg
-    className={styles.heartIcon}
-    viewBox="0 0 24 24"
-    fill="currentColor"
-    stroke="none"
-  >
-    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-  </svg>
-);
 
 // --- HELPER COMPONENTS ---
 const SimpleTerminal = ({ content }) => {
@@ -155,6 +62,14 @@ const highlightLine = (line) => {
 
 // --- MAIN PAGE COMPONENT ---
 export default function Homepage() {
+  const codeHero = `# Start the container.
+docker run --rm -p "3000:3000" gotenberg/gotenberg:8
+# Convert a URL to PDF.
+curl \\
+--request POST http://localhost:3000/forms/chromium/convert/url \\
+--form url=https://my.url \\
+-o my.pdf`;
+
   const codeChromium = `curl \\
 --request POST http://localhost:3000/forms/chromium/convert/url \\
 --form url=https://my.url \\
@@ -190,93 +105,38 @@ export default function Homepage() {
 --header 'Gotenberg-Webhook-Events-Url: https://my-api.com/events'
 `;
 
-  const [sectionHeaderRef, sectionHeaderVisible, sectionHeaderSkip] =
-    useReveal(0.2);
-  const [feature1Ref, feature1Visible, feature1Skip] = useReveal(0.15);
-  const [feature2Ref, feature2Visible, feature2Skip] = useReveal(0.15);
-  const [feature3Ref, feature3Visible, feature3Skip] = useReveal(0.15);
-  const [feature4Ref, feature4Visible, feature4Skip] = useReveal(0.15);
-  const [ctaRef, ctaVisible, ctaSkip] = useReveal(0.2);
-
-  // Helper: returns the right CSS classes for reveal animations
-  const revealClasses = (visible, skip) =>
-    skip
-      ? styles.revealInstant
-      : clsx(styles.reveal, visible && styles.revealVisible);
-
-  const dockerCount = useCountUp(55, ctaSkip ? 0 : 1800, ctaVisible);
-  const starsCount = useCountUp(11, ctaSkip ? 0 : 1800, ctaVisible);
-
   return (
     <main className={styles.mainContainer}>
       {/* --- HERO SECTION --- */}
       <header className={styles.hero}>
         <div className="container">
           <div className="row">
-            <div className={clsx("col col--6", styles.heroContent)}>
-              <h1
-                className={clsx(
-                  styles.title,
-                  styles.reveal,
-                  styles.revealVisible
-                )}
-                style={{ animationDelay: "0s" }}
-              >
+            <div className={clsx("col col--5", styles.heroContent)}>
+              <h1 className={styles.title}>
                 A Docker-based API built for
                 <br />
                 <span className={styles.highlight}>PDF conversion</span>
               </h1>
 
-              <p
-                className={clsx(
-                  styles.subtitle,
-                  styles.reveal,
-                  styles.revealVisible
-                )}
-                style={{ animationDelay: "0.1s" }}
-              >
-                Available on <strong>amd64</strong>, <strong>arm64</strong>,{" "}
-                <strong>armhf</strong>, <strong>i386</strong>, and{" "}
-                <strong>ppc64le</strong>
+              <p className={styles.subtitle}>
+                Send a file, get a PDF back. Chromium, LibreOffice, and PDF
+                engines in one container.
               </p>
 
-              <div
-                className={clsx(
-                  styles.buttons,
-                  styles.reveal,
-                  styles.revealVisible
-                )}
-                style={{ animationDelay: "0.2s" }}
-              >
+              <div className={styles.buttons}>
                 <Link
                   className={clsx(
                     "button button--primary button--lg",
-                    styles.btnCrisp,
                     styles.btnPrimary
                   )}
                   to="/docs/getting-started/introduction"
                 >
                   Getting Started
-                  <svg
-                    width="13"
-                    height="12"
-                    viewBox="0 0 13 12"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className={styles.btnIcon}
-                  >
-                    <path
-                      d="M0 6H11M11 6L6 1M11 6L6 11"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    />
-                  </svg>
                 </Link>
 
                 <Link
                   className={clsx(
                     "button button--secondary button--lg",
-                    styles.btnCrisp,
                     styles.btnSecondary
                   )}
                   to="https://github.com/gotenberg/gotenberg"
@@ -286,25 +146,13 @@ export default function Homepage() {
                     src={useBaseUrl("/img/github.svg")}
                     alt="GitHub Logo"
                   />
-                  <span className={styles.githubButtonText}>GitHub</span>
+                  <span>GitHub</span>
                 </Link>
               </div>
             </div>
 
-            <div
-              className={clsx(
-                "col col--6",
-                styles.heroImage,
-                styles.reveal,
-                styles.revealVisible
-              )}
-              style={{ animationDelay: "0.15s" }}
-            >
-              <img
-                className={styles.logo}
-                src={useBaseUrl("/img/logo_jed.png")}
-                alt="Gotenberg Hero Logo"
-              />
+            <div className={clsx("col col--7", styles.heroVisual)}>
+              <SimpleTerminal content={codeHero} />
             </div>
           </div>
         </div>
@@ -374,34 +222,19 @@ export default function Homepage() {
             <div>
               <Link
                 to="https://github.com/sponsors/gulien"
-                className={styles.heartBtnStrip}
+                className={styles.sponsorLink}
               >
-                <HeartIcon />
-                <span>Become a sponsor</span>
+                Become a sponsor
               </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* --- FEATURES & ASYNC SECTION --- */}
-      <section
-        className={clsx(
-          styles.section,
-          styles.radiantSection,
-          styles.radiantBento,
-          styles.fadeTop,
-          styles.fadeBottom
-        )}
-      >
+      {/* --- FEATURES SECTION --- */}
+      <section className={styles.section}>
         <div className="container">
-          <div
-            ref={sectionHeaderRef}
-            className={clsx(
-              styles.sectionHeader,
-              revealClasses(sectionHeaderVisible, sectionHeaderSkip)
-            )}
-          >
+          <div className={styles.sectionHeader}>
             <h2>
               Everything you need for{" "}
               <span className={styles.highlight}>PDFs</span>
@@ -410,15 +243,8 @@ export default function Homepage() {
           </div>
 
           <div className={styles.featureBlocks}>
-            <div
-              ref={feature1Ref}
-              className={clsx(
-                styles.splitRow,
-                revealClasses(feature1Visible, feature1Skip)
-              )}
-            >
+            <div className={styles.splitRow}>
               <div className={styles.splitContent}>
-                <div className={styles.badge}>Web to PDF</div>
                 <h3 className={styles.blockTitle}>
                   Pixel-Perfect{" "}
                   <span className={styles.highlight}>Chromium</span>
@@ -450,16 +276,8 @@ export default function Homepage() {
               </div>
             </div>
 
-            <div
-              ref={feature2Ref}
-              className={clsx(
-                styles.splitRow,
-                styles.splitRowReverse,
-                revealClasses(feature2Visible, feature2Skip)
-              )}
-            >
+            <div className={clsx(styles.splitRow, styles.splitRowReverse)}>
               <div className={styles.splitContent}>
-                <div className={styles.badge}>Office Suite</div>
                 <h3 className={styles.blockTitle}>
                   Automate <span className={styles.highlight}>LibreOffice</span>
                 </h3>
@@ -489,15 +307,8 @@ export default function Homepage() {
               </div>
             </div>
 
-            <div
-              ref={feature3Ref}
-              className={clsx(
-                styles.splitRow,
-                revealClasses(feature3Visible, feature3Skip)
-              )}
-            >
+            <div className={styles.splitRow}>
               <div className={styles.splitContent}>
-                <div className={styles.badge}>PDF Operations</div>
                 <h3 className={styles.blockTitle}>
                   Post-Processing{" "}
                   <span className={styles.highlight}>Engines</span>
@@ -530,16 +341,8 @@ export default function Homepage() {
               </div>
             </div>
 
-            <div
-              ref={feature4Ref}
-              className={clsx(
-                styles.splitRow,
-                styles.splitRowReverse,
-                revealClasses(feature4Visible, feature4Skip)
-              )}
-            >
+            <div className={clsx(styles.splitRow, styles.splitRowReverse)}>
               <div className={styles.splitContent}>
-                <div className={styles.badge}>Cloud Native</div>
                 <h3 className={styles.blockTitle}>
                   Zero-Transfer{" "}
                   <span className={styles.highlight}>Pipelines</span>
@@ -588,36 +391,22 @@ export default function Homepage() {
           </div>
         </div>
       </section>
+
       {/* --- FINAL CTA SECTION --- */}
-      <section
-        className={clsx(
-          styles.section,
-          styles.radiantSection,
-          styles.radiantCta,
-          styles.fadeTop,
-          styles.finalCta
-        )}
-      >
-        <div className={styles.ctaGlow} />
-        <div
-          ref={ctaRef}
-          className={clsx("container", revealClasses(ctaVisible, ctaSkip))}
-        >
+      <section className={clsx(styles.section, styles.finalCta)}>
+        <div className="container">
           <h2>
             Ready to transform your{" "}
             <span className={styles.highlight}>workflows?</span>
           </h2>
-          <p>
-            Join thousands of developers and start generating high-quality PDFs
-            with Gotenberg's powerful containerized API.
-          </p>
+          <p>Two commands away from your first PDF.</p>
 
           <div className={styles.statsBar}>
             <a
               href="https://hub.docker.com/r/gotenberg/gotenberg"
               className={styles.statInline}
             >
-              <span className={styles.statNumber}>{dockerCount}M+</span>
+              <span className={styles.statNumber}>55M+</span>
               <span className={styles.statLabel}>Docker Pulls</span>
             </a>
             <span className={styles.statDot}>&middot;</span>
@@ -625,7 +414,7 @@ export default function Homepage() {
               href="https://github.com/gotenberg/gotenberg"
               className={styles.statInline}
             >
-              <span className={styles.statNumber}>{starsCount}k+</span>
+              <span className={styles.statNumber}>11k+</span>
               <span className={styles.statLabel}>GitHub Stars</span>
             </a>
             <span className={styles.statDot}>&middot;</span>
@@ -642,32 +431,16 @@ export default function Homepage() {
             <Link
               className={clsx(
                 "button button--primary button--lg",
-                styles.btnCrisp,
                 styles.btnPrimary
               )}
               to="/docs/getting-started/introduction"
             >
               Getting Started
-              <svg
-                width="13"
-                height="12"
-                viewBox="0 0 13 12"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className={styles.btnIcon}
-              >
-                <path
-                  d="M0 6H11M11 6L6 1M11 6L6 11"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                />
-              </svg>
             </Link>
 
             <Link
               className={clsx(
                 "button button--secondary button--lg",
-                styles.btnCrisp,
                 styles.btnSecondary
               )}
               to="https://github.com/gotenberg/gotenberg"
@@ -677,7 +450,7 @@ export default function Homepage() {
                 src={useBaseUrl("/img/github.svg")}
                 alt="GitHub Logo"
               />
-              <span className={styles.githubButtonText}>GitHub</span>
+              <span>GitHub</span>
             </Link>
           </div>
         </div>
