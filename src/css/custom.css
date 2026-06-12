@@ -602,9 +602,10 @@ a[class*="sidebarLogo"] b {
 .menu__list-item-collapsible > .menu__link {
   color: var(--ifm-color-content);
   font-weight: 700;
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
   padding-top: 12px;
   padding-bottom: 12px;
 }

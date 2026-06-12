@@ -138,8 +138,8 @@ curl \\
             </h1>
 
             <p className={styles.subtitle}>
-              Send a file, get a PDF back. Chromium, LibreOffice, and PDF
-              engines in one container.
+              Convert web pages and office documents into PDFs with a single API
+              call. Chromium, LibreOffice, and PDF engines included.
             </p>
 
             <div className={styles.buttons}>
