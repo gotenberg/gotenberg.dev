@@ -124,58 +124,50 @@ curl \\
       {/* --- HERO SECTION --- */}
       <header className={styles.hero}>
         <div className="container">
-          <div className="row">
-            <div className={clsx("col col--7", styles.heroContent)}>
-              <h1 className={styles.title}>
-                A Docker-based API built for
-                <br />
-                <span className={styles.highlight}>PDF conversion</span>
-              </h1>
+          <div className={styles.heroInner}>
+            <IdealImage
+              className={styles.logo}
+              img={require("@site/static/img/logo_hero.png")}
+              alt="Gotenberg Hero Logo"
+            />
 
-              <p className={styles.subtitle}>
-                Send a file, get a PDF back. Chromium, LibreOffice, and PDF
-                engines in one container.
-              </p>
+            <h1 className={styles.title}>
+              A Docker-based API built for
+              <br />
+              <span className={styles.highlight}>PDF conversion</span>
+            </h1>
 
-              <div className={styles.buttons}>
-                <Link
-                  className={clsx(
-                    "button button--primary button--lg",
-                    styles.btnPrimary
-                  )}
-                  to="/docs/getting-started/introduction"
-                >
-                  Getting Started
-                </Link>
+            <p className={styles.subtitle}>
+              Send a file, get a PDF back. Chromium, LibreOffice, and PDF
+              engines in one container. Available for amd64, arm64, armhf, i386,
+              and ppc64le.
+            </p>
 
-                <Link
-                  className={clsx(
-                    "button button--secondary button--lg",
-                    styles.btnSecondary
-                  )}
-                  to="https://github.com/gotenberg/gotenberg"
-                >
-                  <img
-                    className={styles.githubIcon}
-                    src={useBaseUrl("/img/github.svg")}
-                    alt="GitHub Logo"
-                  />
-                  <span>GitHub</span>
-                </Link>
-              </div>
+            <div className={styles.buttons}>
+              <Link
+                className={clsx(
+                  "button button--primary button--lg",
+                  styles.btnPrimary
+                )}
+                to="/docs/getting-started/introduction"
+              >
+                Getting Started
+              </Link>
 
-              <p className={styles.archNote}>
-                Available for <code>amd64</code>, <code>arm64</code>,{" "}
-                <code>armhf</code>, <code>i386</code>, and <code>ppc64le</code>.
-              </p>
-            </div>
-
-            <div className={clsx("col col--5", styles.heroImage)}>
-              <IdealImage
-                className={styles.logo}
-                img={require("@site/static/img/logo_hero.png")}
-                alt="Gotenberg Hero Logo"
-              />
+              <Link
+                className={clsx(
+                  "button button--secondary button--lg",
+                  styles.btnSecondary
+                )}
+                to="https://github.com/gotenberg/gotenberg"
+              >
+                <img
+                  className={styles.githubIcon}
+                  src={useBaseUrl("/img/github.svg")}
+                  alt="GitHub Logo"
+                />
+                <span>GitHub</span>
+              </Link>
             </div>
           </div>
         </div>
@@ -250,14 +242,14 @@ curl \\
                   className={clsx(styles.logoStrip, styles.logoSmall)}
                 />
               </a>
-              <span className={styles.poweredBySep}>&middot;</span>
-              <Link
-                to="https://github.com/sponsors/gulien"
-                className={styles.sponsorLink}
-              >
-                Become a sponsor
-              </Link>
             </div>
+
+            <Link
+              to="https://github.com/sponsors/gulien"
+              className={styles.sponsorLink}
+            >
+              Become a sponsor
+            </Link>
           </div>
         </div>
       </section>

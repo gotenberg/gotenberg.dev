@@ -283,13 +283,6 @@ h4:hover > .hash-link,
   margin-top: 1.5rem;
 }
 
-.markdown p,
-.markdown li {
-  font-family: var(--font-serif);
-  font-optical-sizing: auto;
-  font-variant-numeric: oldstyle-nums;
-}
-
 .markdown p {
   font-size: 1.05rem;
   line-height: 1.75;

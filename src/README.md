@@ -33,11 +33,11 @@ HTTP method badges: tinted background with dark text (WCAG AA), e.g. POST `rgba(
 
 ### Typography
 
-- Headings (h1-h3) and prose: Newsreader Variable, weight 600, `font-optical-sizing: auto`, letter-spacing -0.005em
+- Headings (h1-h3), navbar, sidebar, TOC, and footer links: Newsreader Variable, weight 600, `font-optical-sizing: auto`, letter-spacing -0.005em
+- Prose and UI (body text, buttons, badges, param lists): system sans
 - H2: short 2px ink rule above (chapter mark), no underline
 - Lede: the paragraph after h1 renders larger (1.2rem) in heading ink
-- Prose numerals: oldstyle; tables, stats, and code: lining tabular
-- UI chrome (navbar, sidebar, buttons, badges, param lists): system sans
+- Stats and tables: lining tabular numerals
 - Code: JetBrains Mono Variable, ligatures disabled
 - Links: `--accent-text` underline with muted decoration color, full color on hover
 - Chrome geometry: 2px buttons and tags, 4px cards (print geometry, no pills)
@@ -53,7 +53,7 @@ HTTP method badges: tinted background with dark text (WCAG AA), e.g. POST `rgba(
 
 ### Homepage (`src/components/Homepage.js`)
 
-Standalone React component with CSS Modules (`Homepage.module.css`). Static by design: hero with the portrait logo (via `@theme/IdealImage`) and an architecture note, a "two commands" `SimpleTerminal` quickstart, a centered sponsors strip, four text-plus-code feature rows, and a final CTA. No scroll-triggered animation, counters, or gradients; motion is hover-scoped only (terminal caret excepted).
+Standalone React component with CSS Modules (`Homepage.module.css`). Static by design: centered hero with the portrait logo (via `@theme/IdealImage`), a "two commands" `SimpleTerminal` quickstart, a centered sponsors strip, four text-plus-code feature rows, and a final CTA. No scroll-triggered animation, counters, or gradients; motion is hover-scoped only.
 
 ### ApiEndpoint (`src/components/documentation/ApiEndpoint.js`)
 
@@ -72,7 +72,7 @@ Renders sponsor logos at the bottom of documentation pages.
 - Use CSS custom properties (`--ifm-*`) for Docusaurus theme values.
 - Use CSS Modules for component-scoped styles.
 - Use `src/css/custom.css` only for global overrides (admonitions, sidebar, footer, typography).
-- Transitions: `0.2s ease`, color and text-decoration only. No lifts, glows, or keyframe animations; the single exception is the terminal caret blink, guarded by `prefers-reduced-motion`.
+- Transitions: `0.2s ease`, color and text-decoration only. No lifts, glows, or keyframe animations.
 - Use `clsx` for conditional class composition in React components.
 - Respect Docusaurus's Infima CSS framework. Override with specificity, not `!important`.
 - Use `@docusaurus/Link` for internal navigation. Use `useBaseUrl` for static asset paths.
