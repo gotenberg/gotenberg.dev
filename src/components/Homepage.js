@@ -193,62 +193,60 @@ curl \\
       <section className={styles.communitySection}>
         <div className="container">
           <div className={styles.sponsorsStrip}>
-            <div className={styles.sponsorRows}>
-              <div className={styles.sponsorRow}>
-                <span className={styles.sponsorStripLabel}>Sponsors</span>
-                <div className={styles.sponsorLogos}>
-                  <a href="https://thecodingmachine.com" target="_blank">
-                    <img
-                      src={useBaseUrl("/img/thecodingmachine-logo.png")}
-                      alt="TheCodingMachine"
-                      className={clsx(styles.logoStrip, styles.logoWide)}
-                    />
-                  </a>
-                  <a href="https://pdfme.com" target="_blank">
-                    <img
-                      src={useBaseUrl("/img/pdfme-logo.png")}
-                      alt="pdfme"
-                      className={clsx(styles.logoStrip, styles.logoWide)}
-                    />
-                  </a>
-                  <a href="https://pdfbolt.com" target="_blank">
-                    <img
-                      src={useBaseUrl("/img/pdfbolt-logo.svg")}
-                      alt="PdfBolt"
-                      className={clsx(styles.logoStrip, styles.logoWide)}
-                    />
-                  </a>
-                  <a href="https://filetopdf.dev" target="_blank">
-                    <img
-                      src={useBaseUrl("/img/filetopdf-logo.png")}
-                      alt="FileToPDF"
-                      className={clsx(styles.logoStrip, styles.logoWordmark)}
-                    />
-                  </a>
-                </div>
+            <div className={styles.sponsorRow}>
+              <span className={styles.sponsorStripLabel}>Sponsors</span>
+              <div className={styles.sponsorLogos}>
+                <a href="https://thecodingmachine.com" target="_blank">
+                  <img
+                    src={useBaseUrl("/img/thecodingmachine-logo.png")}
+                    alt="TheCodingMachine"
+                    className={clsx(styles.logoStrip, styles.logoWide)}
+                  />
+                </a>
+                <a href="https://pdfme.com" target="_blank">
+                  <img
+                    src={useBaseUrl("/img/pdfme-logo.png")}
+                    alt="pdfme"
+                    className={clsx(styles.logoStrip, styles.logoWide)}
+                  />
+                </a>
+                <a href="https://pdfbolt.com" target="_blank">
+                  <img
+                    src={useBaseUrl("/img/pdfbolt-logo.svg")}
+                    alt="PdfBolt"
+                    className={clsx(styles.logoStrip, styles.logoWide)}
+                  />
+                </a>
+                <a href="https://filetopdf.dev" target="_blank">
+                  <img
+                    src={useBaseUrl("/img/filetopdf-logo.png")}
+                    alt="FileToPDF"
+                    className={clsx(styles.logoStrip, styles.logoWordmark)}
+                  />
+                </a>
               </div>
+            </div>
 
-              <div className={styles.sponsorRow}>
-                <span className={styles.sponsorStripLabel}>Powered By</span>
-                <div className={styles.sponsorLogos}>
-                  <a
-                    href="https://docs.docker.com/docker-hub/repos/manage/trusted-content/dsos-program/"
-                    target="_blank"
-                  >
-                    <img
-                      src={useBaseUrl("/img/docker-logo-blue.svg")}
-                      alt="Docker"
-                      className={clsx(styles.logoStrip, styles.logoSmall)}
-                    />
-                  </a>
-                  <a href="https://jb.gg/OpenSourceSupport" target="_blank">
-                    <img
-                      src={useBaseUrl("/img/jetbrains-logo.svg")}
-                      alt="JetBrains"
-                      className={clsx(styles.logoStrip, styles.logoSmall)}
-                    />
-                  </a>
-                </div>
+            <div className={styles.sponsorRow}>
+              <span className={styles.sponsorStripLabel}>Powered By</span>
+              <div className={styles.sponsorLogos}>
+                <a
+                  href="https://docs.docker.com/docker-hub/repos/manage/trusted-content/dsos-program/"
+                  target="_blank"
+                >
+                  <img
+                    src={useBaseUrl("/img/docker-logo-blue.svg")}
+                    alt="Docker"
+                    className={clsx(styles.logoStrip, styles.logoSmall)}
+                  />
+                </a>
+                <a href="https://jb.gg/OpenSourceSupport" target="_blank">
+                  <img
+                    src={useBaseUrl("/img/jetbrains-logo.svg")}
+                    alt="JetBrains"
+                    className={clsx(styles.logoStrip, styles.logoSmall)}
+                  />
+                </a>
               </div>
             </div>
 
@@ -256,7 +254,8 @@ curl \\
               to="https://github.com/sponsors/gulien"
               className={styles.sponsorLink}
             >
-              Become a sponsor
+              <span className={styles.heart}>&#10084;</span>
+              <span>Become a sponsor</span>
             </Link>
           </div>
         </div>

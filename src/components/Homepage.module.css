@@ -131,15 +131,8 @@
 .sponsorsStrip {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
-}
-
-.sponsorRows {
-  display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
-  flex-wrap: wrap;
+  gap: 3rem;
 }
 
 .sponsorRow {
@@ -150,9 +143,9 @@
 
 .sponsorStripLabel {
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   color: var(--ifm-color-content-secondary);
   white-space: nowrap;
 }
@@ -160,7 +153,7 @@
 .sponsorLogos {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 1.5rem;
   flex-wrap: wrap;
 }
 
@@ -177,25 +170,43 @@
 }
 
 .logoWide {
-  height: 2.75rem;
+  height: 96px;
   width: auto;
 }
 
 .logoWordmark {
-  height: 2.1rem;
+  height: 42px;
   width: auto;
 }
 
 .logoSmall {
-  height: 1.75rem;
+  height: 32px;
   width: auto;
 }
 
 .sponsorLink {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--accent-text);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--ifm-background-color);
+  color: var(--ifm-heading-color);
+  border: 1px solid var(--ifm-border-color);
+  padding: 0.4rem 1.25rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 700;
   white-space: nowrap;
+}
+
+.sponsorLink:hover {
+  color: var(--ifm-heading-color);
+  text-decoration: none;
+  border-color: rgba(180, 35, 24, 0.4);
+}
+
+.heart {
+  color: var(--rubric);
+  font-size: 0.9rem;
 }
 
 /* --- FEATURES --- */
@@ -492,6 +503,32 @@
 
   .logo {
     width: 100px;
+  }
+
+  .sponsorsStrip {
+    gap: 1.5rem;
+  }
+
+  .sponsorRow {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .sponsorLogos {
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .logoWide {
+    height: 64px;
+  }
+
+  .logoWordmark {
+    height: 28px;
+  }
+
+  .logoSmall {
+    height: 24px;
   }
 }
 
