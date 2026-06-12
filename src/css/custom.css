@@ -32,7 +32,7 @@
   --ifm-color-content-secondary: #6e675e;
   --ifm-heading-color: #1f1c19;
 
-  --ifm-navbar-background-color: rgba(253, 252, 250, 0.95);
+  --ifm-navbar-background-color: #fdfcfa;
   --ifm-navbar-height: 4rem;
   --ifm-container-width: 1366px;
 
@@ -530,6 +530,23 @@ button[class*="closeButton_"]:hover {
 .navbar__title {
   font-weight: 600;
   font-size: 1.2rem;
+}
+
+.navbar__logo {
+  margin-right: 0.75rem;
+}
+
+/* Sidebar brand (shown when the navbar hides on scroll): match the navbar. */
+a[class*="sidebarLogo"] img {
+  margin-right: 0.75rem;
+}
+
+a[class*="sidebarLogo"] b {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: var(--ifm-heading-color);
 }
 
 .navbar__link {
