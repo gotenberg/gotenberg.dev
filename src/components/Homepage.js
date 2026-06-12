@@ -139,8 +139,7 @@ curl \\
 
             <p className={styles.subtitle}>
               Send a file, get a PDF back. Chromium, LibreOffice, and PDF
-              engines in one container. Available for amd64, arm64, armhf, i386,
-              and ppc64le.
+              engines in one container.
             </p>
 
             <div className={styles.buttons}>
@@ -169,6 +168,10 @@ curl \\
                 <span>GitHub</span>
               </Link>
             </div>
+
+            <p className={styles.archLine}>
+              amd64 &middot; arm64 &middot; armhf &middot; i386 &middot; ppc64le
+            </p>
           </div>
         </div>
       </header>
@@ -343,8 +346,9 @@ curl \\
                 <div className={styles.capItem}>
                   <strong>Merge, Split & Transform</strong>
                   <span>
-                    Combine PDFs, extract page ranges, rotate, flatten form
-                    fields, watermark, and stamp.
+                    Combine multiple PDFs into one, split them by page ranges or
+                    intervals, rotate pages, flatten form fields and
+                    annotations, and apply watermarks or stamps.
                   </span>
                 </div>
                 <div className={styles.capItem}>

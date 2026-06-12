@@ -83,9 +83,19 @@
 }
 
 .logo {
-  width: 130px;
+  width: 160px;
   height: auto;
   margin-bottom: 2rem;
+}
+
+/* Colophon line: the supported architectures, typeset. */
+.archLine {
+  margin: 2rem 0 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ifm-color-content-secondary);
 }
 
 /* --- QUICK START --- */
@@ -172,12 +182,12 @@
 }
 
 .logoWide {
-  height: 3rem;
+  height: 3.5rem;
   width: auto;
 }
 
 .logoWordmark {
-  height: 2.1rem;
+  height: 2.5rem;
   width: auto;
 }
 
