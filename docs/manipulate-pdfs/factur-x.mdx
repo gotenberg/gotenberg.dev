@@ -10,7 +10,7 @@ Turns existing PDFs into [Factur-X / ZUGFeRD](https://fnfe-mpe.org/factur-x/) e-
 
 When every input already carries PDF/A-3 identification, the files are left untouched; otherwise the whole request converts to PDF/A-3b, or to the PDF/A-3 variant requested with `pdfa`. Requires a PDF engine that supports the feature (QPDF by default).
 
-The conversion routes accept the same form fields, so a single request can go from an office document to a compliant e-invoice. See [Office Documents into PDFs](/docs/convert-with-libreoffice/convert-to-pdf#factur-x-pdf-engines).
+The [Chromium](/docs/convert-with-chromium/convert-html-to-pdf#factur-x-pdf-engines) and [LibreOffice](/docs/convert-with-libreoffice/convert-to-pdf#factur-x-pdf-engines) conversion routes accept the same form fields, so a single request can turn HTML or an office document into a compliant e-invoice.
 
 <ApiEndpoint
   method="POST"
