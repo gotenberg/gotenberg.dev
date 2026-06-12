@@ -176,7 +176,8 @@ h4:hover > .hash-link,
   .theme-last-updated,
   .pagination-nav,
   .footer,
-  div[class*="announcementBar_"] {
+  div[class*="announcementBar_"],
+  div[class*="sponsorsStrip"] {
     display: none !important;
   }
 
