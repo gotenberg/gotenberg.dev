@@ -19,6 +19,8 @@
     "@docusaurus/plugin-ideal-image": "^3.10.1",
     "@docusaurus/preset-classic": "^3.10.1",
     "@docusaurus/theme-search-algolia": "^3.10.1",
+    "@fontsource-variable/jetbrains-mono": "^5.2.8",
+    "@fontsource-variable/newsreader": "^5.2.10",
     "@mdx-js/react": "^3.0.0",
     "@svgr/webpack": "^5.5.0",
     "clsx": "^1.1.1",

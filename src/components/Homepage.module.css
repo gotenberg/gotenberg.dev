@@ -5,20 +5,21 @@
  */
 
 .mainContainer {
-  background: #ffffff;
+  background: var(--ifm-background-color);
   color: var(--ifm-color-content);
   overflow-x: hidden;
 }
 
 .highlight {
   color: var(--ifm-color-primary);
+  font-style: italic;
 }
 
 /* --- HERO --- */
 
 .hero {
   padding: 5rem 0 4rem;
-  background: #ffffff;
+  background: var(--ifm-background-color);
 }
 
 .heroContent {
@@ -28,10 +29,12 @@
 }
 
 .title {
-  font-size: clamp(2.4rem, 4.5vw, 3.4rem);
-  font-weight: 800;
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-size: clamp(2.6rem, 5vw, 3.6rem);
+  font-weight: 600;
   line-height: 1.1;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.005em;
   color: var(--ifm-heading-color);
   margin-bottom: 1.25rem;
   text-wrap: balance;
@@ -61,12 +64,12 @@
   align-items: center;
   gap: 0.5rem;
   border: 1px solid var(--ifm-border-color);
-  background: #ffffff;
+  background: var(--ifm-background-color);
   color: var(--ifm-heading-color);
 }
 
 .btnSecondary:hover {
-  background: #f8fafc;
+  background: var(--paper-shade);
   color: var(--ifm-heading-color);
 }
 
@@ -100,9 +103,11 @@
 }
 
 .quickstartInner h2 {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
   font-size: 2.25rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  font-weight: 600;
+  letter-spacing: -0.005em;
   text-align: center;
   margin-bottom: 2rem;
 }
@@ -113,7 +118,7 @@
   padding: 2rem 0;
   border-top: 1px solid var(--ifm-border-color);
   border-bottom: 1px solid var(--ifm-border-color);
-  background: #fafbfc;
+  background: var(--paper-shade);
 }
 
 .sponsorsStrip {
@@ -188,10 +193,15 @@
 
 .featureSection {
   padding: 7rem 0;
+  counter-increment: feature;
+}
+
+.mainContainer {
+  counter-reset: feature;
 }
 
 .featureAlt {
-  background: #f8fafc;
+  background: var(--paper-shade);
 }
 
 .splitRow {
@@ -222,10 +232,25 @@
 }
 
 .blockTitle {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
   font-size: 2.1rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  font-weight: 600;
+  letter-spacing: -0.005em;
   margin-bottom: 1rem;
+}
+
+/* Folio numeral: a printer's mark above each feature title. */
+.blockTitle::before {
+  content: counter(feature, decimal-leading-zero);
+  display: block;
+  font-family: var(--ifm-font-family-base);
+  font-style: normal;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--rubric);
+  margin-bottom: 0.75rem;
 }
 
 .capabilitiesGrid {
@@ -261,9 +286,11 @@
 }
 
 .finalCta h2 {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
   font-size: 2.25rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  font-weight: 600;
+  letter-spacing: -0.005em;
   margin-bottom: 0.5rem;
 }
 
@@ -298,10 +325,12 @@
 }
 
 .statNumber {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
   font-size: 1.3rem;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--ifm-color-primary);
-  font-variant-numeric: tabular-nums;
+  font-variant-numeric: lining-nums tabular-nums;
 }
 
 .statLabel {
@@ -323,16 +352,16 @@
 /* --- TERMINAL --- */
 
 .terminalWindow {
-  background: #0f172a;
-  border-radius: 10px;
-  border: 1px solid #1e293b;
-  box-shadow: 0 10px 30px -15px rgba(15, 23, 42, 0.4);
+  background: var(--ink-plate);
+  border-radius: 6px;
+  border: 1px solid #2b2724;
+  box-shadow: 0 10px 30px -15px rgba(28, 25, 23, 0.4);
   overflow: hidden;
 }
 
 .terminalHeader {
   padding: 0.6rem 0.9rem;
-  background: #1e293b;
+  background: #2b2724;
 }
 
 .dots {

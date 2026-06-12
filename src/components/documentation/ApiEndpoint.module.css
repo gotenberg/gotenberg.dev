@@ -2,7 +2,7 @@
 .apiContainer {
   margin-bottom: 2.5rem;
   border: 1px solid var(--ifm-border-color);
-  border-radius: 10px;
+  border-radius: 4px;
   background-color: var(--ifm-background-surface-color);
   overflow: hidden;
 }
@@ -13,7 +13,7 @@
   align-items: center;
   gap: 12px;
   padding: 12px 16px;
-  background-color: rgba(248, 250, 252, 0.8);
+  background-color: var(--paper-shade);
   border-bottom: 1px solid var(--ifm-border-color);
   overflow-x: auto;
   overflow-y: hidden;
@@ -52,11 +52,11 @@
 
 .sectionTechnical {
   padding: 1.25rem 1rem;
-  background-color: rgba(248, 250, 252, 0.5);
+  background-color: var(--paper-shade);
 }
 
 .sectionInput + .sectionTechnical {
-  border-top: 1px dashed var(--ifm-border-color);
+  border-top: 1px solid var(--ifm-border-color);
 }
 
 /* --- SECTION LABELS --- */
@@ -131,7 +131,7 @@
   font-family: var(--ifm-font-family-monospace);
   background-color: var(--ifm-border-color);
   padding: 2px 6px;
-  border-radius: 50px;
+  border-radius: 2px;
   font-weight: 500;
 }
 
@@ -139,12 +139,12 @@
   font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #ef4444;
+  color: var(--rubric);
   font-weight: 800;
   margin-left: auto;
-  background-color: rgba(239, 68, 68, 0.1);
+  background-color: rgba(180, 35, 24, 0.07);
   padding: 2px 6px;
-  border-radius: 50px;
+  border-radius: 2px;
 }
 
 /* --- PARAMETER BODY STYLING --- */
@@ -188,8 +188,7 @@
   padding: 12px 16px;
   margin-bottom: 12px;
   color: var(--ifm-color-content);
-  background-color: rgba(248, 250, 252, 0.8);
-  border: 1px dashed var(--ifm-border-color);
-  border-radius: 8px;
-  box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.03);
+  background-color: var(--paper-shade);
+  border: 1px solid var(--ifm-border-color);
+  border-radius: 4px;
 }

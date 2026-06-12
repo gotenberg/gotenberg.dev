@@ -6,32 +6,41 @@ Guidelines for modifying site design, React components, styles, or layout.
 
 - Docusaurus 3.8.1 (React 18)
 - CSS Modules (`.module.css`) for components, global CSS (`src/css/custom.css`) for theme overrides
-- Fonts: Inter (body, headings), JetBrains Mono (code), loaded via Google Fonts
+- Fonts: Newsreader Variable (headings, prose), system sans (UI chrome), JetBrains Mono Variable (code); self-hosted via Fontsource
 - Icons: inline SVGs in React components (no icon library)
 - Images: `@docusaurus/plugin-ideal-image` for optimization
 
 ## Design system
 
+"Rubric & Rule": ink on warm paper. The site about producing documents is itself typeset. Serif for headings and prose, system sans for UI, rubric red strictly rationed to printer's marks.
+
 ### Colors
 
-| Token                           | Value     | Usage                         |
-| ------------------------------- | --------- | ----------------------------- |
-| `--ifm-color-primary`           | `#008ae6` | Links, accents, primary CTA   |
-| `--ifm-heading-color`           | `#0f172a` | H1 headings                   |
-| `--ifm-color-content`           | `#334155` | Body text                     |
-| `--ifm-color-content-secondary` | `#64748b` | Secondary text, sidebar links |
-| `--ifm-border-color`            | `#e2e8f0` | Borders, dividers             |
+| Token                           | Value     | Usage                                                  |
+| ------------------------------- | --------- | ------------------------------------------------------ |
+| `--ifm-color-primary`           | `#008ae6` | Accents, primary CTA, italic highlights, large text    |
+| `--accent-text`                 | `#0060a1` | Body-size links and accents (WCAG AA on paper)         |
+| `--rubric`                      | `#b42318` | Printer's marks only: pilcrows, required flags, folios |
+| `--ifm-background-color`        | `#fdfcfa` | Paper                                                  |
+| `--paper-shade`                 | `#f6f5f1` | Alternating sections, table headers, technical zones   |
+| `--ink-plate`                   | `#1c1917` | Terminal windows, footer                               |
+| `--ifm-heading-color`           | `#1f1c19` | Headings, booktabs rules                               |
+| `--ifm-color-content`           | `#38332e` | Body text                                              |
+| `--ifm-color-content-secondary` | `#6e675e` | Secondary text, sidebar links                          |
+| `--ifm-border-color`            | `#e6e2da` | Hairlines, dividers                                    |
 
-HTTP method badge colors: POST `#49cc90`, GET `#61affe`, PUT `#fca130`, DELETE `#f93e3e`, HEAD `#9061f9`.
+HTTP method badges: tinted background with dark text (WCAG AA), e.g. POST `rgba(73,204,144,0.16)` / `#047857`. Never white text on pastel fills.
 
 ### Typography
 
-- H1: 2.6rem, weight 800, letter-spacing -0.03em, no decoration
-- H2: 1.8rem, weight 800, letter-spacing -0.02em, 1px bottom border
-- H3: 1.4rem, weight 700, no decoration
-- Body: 1.05rem, line-height 1.75, 17px base
-- Code: 0.85em, weight 500, subtle gray background
-- Links: underline with muted decoration color, full color on hover
+- Headings (h1-h3) and prose: Newsreader Variable, weight 600, `font-optical-sizing: auto`, letter-spacing -0.005em
+- H2: short 2px ink rule above (chapter mark), no underline
+- Lede: the paragraph after h1 renders larger (1.2rem) in heading ink
+- Prose numerals: oldstyle; tables, stats, and code: lining tabular
+- UI chrome (navbar, sidebar, buttons, badges, param lists): system sans
+- Code: JetBrains Mono Variable, ligatures disabled
+- Links: `--accent-text` underline with muted decoration color, full color on hover
+- Chrome geometry: 2px buttons and tags, 4px cards (print geometry, no pills)
 
 ### Spacing
 
@@ -63,7 +72,7 @@ Renders sponsor logos at the bottom of documentation pages.
 - Use CSS custom properties (`--ifm-*`) for Docusaurus theme values.
 - Use CSS Modules for component-scoped styles.
 - Use `src/css/custom.css` only for global overrides (admonitions, sidebar, footer, typography).
-- Transitions: `0.2s ease`, color and text-decoration only. No lifts, glows, or keyframe animations.
+- Transitions: `0.2s ease`, color and text-decoration only. No lifts, glows, or keyframe animations; the single exception is the terminal caret blink, guarded by `prefers-reduced-motion`.
 - Use `clsx` for conditional class composition in React components.
 - Respect Docusaurus's Infima CSS framework. Override with specificity, not `!important`.
 - Use `@docusaurus/Link` for internal navigation. Use `useBaseUrl` for static asset paths.

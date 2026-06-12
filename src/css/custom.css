@@ -1,4 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap");
+/* Self-hosted variable fonts: same-origin, latin-subset, font-display swap. */
+@import "@fontsource-variable/newsreader/opsz.css";
+@import "@fontsource-variable/newsreader/opsz-italic.css";
+@import "@fontsource-variable/jetbrains-mono";
 
 /* --- FONTS AND VARIABLES --- */
 :root {
@@ -10,26 +13,39 @@
   --ifm-color-primary-lighter: #3db1f0;
   --ifm-color-primary-lightest: #66c2f5;
 
-  --ifm-background-color: #ffffff;
-  --ifm-background-surface-color: #ffffff;
-  --ifm-border-color: #e2e8f0;
+  /* Paper and ink: warm neutrals so the serif reads typeset, never cream. */
+  --ifm-background-color: #fdfcfa;
+  --ifm-background-surface-color: #fdfcfa;
+  --ifm-border-color: #e6e2da;
+  --paper-shade: #f6f5f1;
+  --ink-plate: #1c1917;
 
-  --ifm-font-family-base: "Inter", system-ui, -apple-system, sans-serif;
-  --ifm-font-family-monospace: "JetBrains Mono", "Fira Code", monospace;
+  --font-serif: "Newsreader Variable", Georgia, "Times New Roman", serif;
+  --ifm-font-family-base: system-ui, -apple-system, "Segoe UI", Roboto,
+    sans-serif;
+  --ifm-font-family-monospace: "JetBrains Mono Variable", "JetBrains Mono",
+    "Fira Code", monospace;
   --ifm-font-size-base: 17px;
   --ifm-line-height-base: 1.65;
 
-  --ifm-color-content: #334155;
-  --ifm-color-content-secondary: #64748b;
-  --ifm-heading-color: #0f172a;
+  --ifm-color-content: #38332e;
+  --ifm-color-content-secondary: #6e675e;
+  --ifm-heading-color: #1f1c19;
 
-  --ifm-navbar-background-color: rgba(255, 255, 255, 0.95);
+  --ifm-navbar-background-color: rgba(253, 252, 250, 0.95);
   --ifm-navbar-height: 4rem;
   --ifm-container-width: 1366px;
 
-  /* #008ae6 is 3.63:1 on white: fine for fills, buttons, and large text,
+  --ifm-button-border-radius: 2px;
+  --ifm-code-border-radius: 3px;
+
+  /* #008ae6 is ~3.5:1 on paper: fine for fills, buttons, and large text,
      below WCAG AA (4.5:1) for body-size text. */
-  --accent-text: var(--ifm-color-primary-darker);
+  --accent-text: var(--ifm-color-primary-darkest);
+
+  /* Rubric red: printer's marks only. Never on links, buttons,
+     or backgrounds. */
+  --rubric: #b42318;
 }
 
 /* --- ACCESSIBILITY --- */
@@ -104,6 +120,15 @@ pre code {
   font-weight: 400;
   text-decoration: none;
   transition: opacity 0.15s ease;
+  color: var(--rubric);
+}
+
+.hash-link::before {
+  content: "\00B6";
+}
+
+.hash-link:hover {
+  color: var(--rubric);
 }
 
 h2:hover > .hash-link,
@@ -165,14 +190,14 @@ h4:hover > .hash-link,
   }
 
   .markdown a {
-    color: #0f172a;
+    color: var(--ifm-heading-color);
     text-decoration: none;
   }
 
   .markdown a[href^="http"]::after {
     content: " (" attr(href) ")";
     font-size: 0.8em;
-    color: #64748b;
+    color: var(--ifm-color-content-secondary);
     word-break: break-all;
   }
 
@@ -195,12 +220,6 @@ h4:hover > .hash-link,
   }
 }
 
-/* --- GLOBAL RESET --- */
-body {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
 /* --- TYPOGRAPHY --- */
 .markdown h1,
 .markdown h2,
@@ -208,38 +227,51 @@ body {
 .markdown h4,
 .markdown h5,
 .markdown h6 {
-  font-family: "Inter", var(--ifm-font-family-base), sans-serif;
-  color: var(--ifm-color-emphasis-900);
-  letter-spacing: -0.01em;
+  color: var(--ifm-heading-color);
   margin-bottom: 1rem;
   line-height: 1.25;
   text-wrap: balance;
 }
 
+.markdown h1,
+.markdown h2,
+.markdown h3 {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+
 .markdown h1 {
-  font-weight: 800;
   font-size: 2.6rem;
-  letter-spacing: -0.03em;
-  color: #0f172a;
   margin-bottom: 2rem;
 }
 
+/* The lede: the paragraph that opens every page. */
+.markdown h1 + p {
+  font-size: 1.2rem;
+  line-height: 1.65;
+  color: var(--ifm-heading-color);
+}
+
 .markdown h2 {
-  font-weight: 800;
   font-size: 1.8rem;
-  letter-spacing: -0.02em;
-  color: #1e293b;
   margin-top: 4rem;
   margin-bottom: 1.5rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid var(--ifm-border-color);
+}
+
+/* Chapter mark: a short ink rule above, instead of an underline. */
+.markdown h2::before {
+  content: "";
+  display: block;
+  width: 2.5rem;
+  height: 2px;
+  background: var(--ifm-heading-color);
+  margin-bottom: 1rem;
 }
 
 .markdown h3 {
-  font-family: "Inter", var(--ifm-font-family-base), sans-serif;
-  font-weight: 700;
   font-size: 1.4rem;
-  color: #334155;
   margin-top: 2.5rem;
   margin-bottom: 1rem;
 }
@@ -250,8 +282,14 @@ body {
   margin-top: 1.5rem;
 }
 
+.markdown p,
+.markdown li {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-variant-numeric: oldstyle-nums;
+}
+
 .markdown p {
-  font-family: "Inter", var(--ifm-font-family-base), sans-serif;
   font-size: 1.05rem;
   line-height: 1.75;
   color: var(--ifm-color-content);
@@ -285,7 +323,7 @@ body {
   font-family: var(--ifm-font-family-monospace);
   font-size: 0.85em;
   font-weight: 500;
-  background-color: rgba(148, 163, 184, 0.12);
+  background-color: rgba(110, 103, 94, 0.1);
   border: none;
   border-radius: 4px;
   box-shadow: none;
@@ -295,7 +333,7 @@ body {
   vertical-align: 1px;
 }
 
-/* --- MARKDOWN TABLES --- */
+/* --- MARKDOWN TABLES (booktabs) --- */
 .markdown table {
   display: table;
   width: 100%;
@@ -303,14 +341,14 @@ body {
   border-spacing: 0;
   margin-bottom: 2.5rem;
   font-size: 0.875rem;
-  background-color: var(--ifm-background-surface-color);
-  border: 1px solid var(--ifm-border-color);
-  border-radius: 10px;
-  overflow: hidden;
+  background-color: transparent;
+  border: none;
+  border-top: 2px solid var(--ifm-heading-color);
+  border-bottom: 2px solid var(--ifm-heading-color);
 }
 
 .markdown table th {
-  background-color: rgba(248, 250, 252, 0.9);
+  background-color: transparent;
   color: var(--ifm-color-content-secondary);
   font-family: var(--ifm-font-family-base);
   font-weight: 700;
@@ -428,9 +466,9 @@ body {
 }
 
 .alert--danger {
-  --alert-danger-color: #ef4444;
-  background-color: rgba(239, 68, 68, 0.06);
-  border-color: rgba(239, 68, 68, 0.2);
+  --alert-danger-color: var(--rubric);
+  background-color: rgba(180, 35, 24, 0.05);
+  border-color: rgba(180, 35, 24, 0.2);
   border-left-color: var(--alert-danger-color);
 }
 
@@ -495,7 +533,7 @@ button[class*="closeButton_"]:hover {
   font-weight: 500;
   line-height: 1.5;
   letter-spacing: -0.01em;
-  color: #64748b;
+  color: var(--ifm-color-content-secondary);
   padding: 8px 12px;
   margin-bottom: 4px;
   border-radius: 6px;
@@ -503,8 +541,8 @@ button[class*="closeButton_"]:hover {
 }
 
 .menu__link:hover {
-  color: #0f172a;
-  background-color: #f1f5f9;
+  color: var(--ifm-heading-color);
+  background-color: var(--paper-shade);
   text-decoration: none;
 }
 
@@ -515,7 +553,7 @@ button[class*="closeButton_"]:hover {
 }
 
 .menu__list-item-collapsible > .menu__link {
-  color: #334155;
+  color: var(--ifm-color-content);
   font-weight: 700;
   font-size: 0.85rem;
   text-transform: uppercase;
@@ -526,11 +564,11 @@ button[class*="closeButton_"]:hover {
 
 .menu__list-item-collapsible > .menu__link:hover {
   background-color: transparent;
-  color: #0f172a;
+  color: var(--ifm-heading-color);
 }
 
 .menu__caret:before {
-  background: #94a3b8;
+  background: #a8a29e;
   mask-size: 10px 10px;
 }
 
@@ -547,7 +585,7 @@ button[class*="closeButton_"]:hover {
   font-size: 0.65rem;
   font-weight: 800;
   text-align: center;
-  border-radius: 4px;
+  border-radius: 2px;
   vertical-align: middle;
   line-height: 1.5;
 }
@@ -584,9 +622,9 @@ button[class*="closeButton_"]:hover {
 
 /* --- FOOTER --- */
 .footer--dark {
-  --ifm-footer-background-color: #0f172a;
+  --ifm-footer-background-color: var(--ifm-heading-color);
   --ifm-footer-padding-vertical: 4rem;
-  border-top: 1px solid #1e293b;
+  border-top: 1px solid #2b2724;
 }
 
 .footer__links {
@@ -616,7 +654,7 @@ button[class*="closeButton_"]:hover {
 .footer__copyright {
   font-size: 0.85em;
   text-align: left;
-  color: #94a3b8;
+  color: #a8a29e;
 }
 
 .footer__copyright > a {
