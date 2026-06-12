@@ -91,4 +91,15 @@ Body: {error}
   ]}
 />
 
+The map form keys bookmarks by filename, matching the [read bookmarks](/docs/manipulate-pdfs/read-bookmarks) response, so you can read, edit, and write back the same JSON:
+
+<ApiEndpoint
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/pdfengines/bookmarks/write \\
+--form files=@/path/to/file.pdf \\
+--form 'bookmarks={"file.pdf":[{"title":"Chapter 1","page":1,"children":[]}]}' \\
+-o my.pdf`}
+/>
+
 <Sponsors />

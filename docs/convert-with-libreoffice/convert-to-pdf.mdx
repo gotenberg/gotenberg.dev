@@ -17,6 +17,8 @@ import Sponsors from "@site/src/components/documentation/Sponsors";
 
 Converts documents to PDF using LibreOffice. Accepts Microsoft Office (Word, Excel, PowerPoint), OpenDocument, plain text, and many other formats. You can upload one or more files per request.
 
+Sections marked **(LibreOffice)** apply during conversion. Sections marked **(PDF Engines)** post-process the resulting PDF with external tools such as QPDF, pdfcpu, and PDFtk; see [PDF Engines](/docs/configuration#pdf-engines).
+
 See the [LibreOffice module configuration](/docs/configuration#libreoffice) for startup and behavior flags.
 
 ## Basics
@@ -693,72 +695,19 @@ curl \\
 
 ## Encryption
 
+### Open Document (LibreOffice)
+
+The `password` form field opens a password-protected source file.
+
 <ApiEndpoint
   formFields={[
     {
       name: "password",
       type: "string",
       defaultValue: "None",
-      description:
-        "LibreOffice feature. The password for opening the source file.",
-    },
-    {
-      name: "userPassword",
-      type: "string",
-      defaultValue: "None",
-      description: "The password required to open the PDF.",
-    },
-    {
-      name: "ownerPassword",
-      type: "string",
-      defaultValue: "None",
-      description:
-        "The password granting full access; lifts the permission restrictions. Defaults to the user password.",
-    },
-    {
-      name: "allowPrinting",
-      type: "boolean",
-      defaultValue: "true",
-      description: "Permits printing the document.",
-    },
-    {
-      name: "allowCopying",
-      type: "boolean",
-      defaultValue: "true",
-      description: "Permits extracting text and graphics.",
-    },
-    {
-      name: "allowModifying",
-      type: "boolean",
-      defaultValue: "true",
-      description: "Permits changing the document content.",
-    },
-    {
-      name: "allowAnnotating",
-      type: "boolean",
-      defaultValue: "true",
-      description: "Permits adding or modifying annotations.",
-    },
-    {
-      name: "allowFillingForms",
-      type: "boolean",
-      defaultValue: "true",
-      description: "Permits filling in form fields.",
-    },
-    {
-      name: "allowAssembling",
-      type: "boolean",
-      defaultValue: "true",
-      description: "Permits inserting, deleting, and rotating pages.",
+      description: "The password for opening the source file.",
     },
   ]}
-/>
-
-### Open Document (LibreOffice)
-
-Use the `password` form field if the source file is password-protected.
-
-<ApiEndpoint
   curl={`
 curl \\
 --request POST http://localhost:3000/forms/libreoffice/convert \\
@@ -770,7 +719,7 @@ curl \\
 ### Post-Processing (PDF Engines) {#post-processing-pdf-engines-encryption}
 
 <EncryptionPDFEngines
-  showFormFields={false}
+  showFormFields={true}
   showCurlExample={true}
   method="POST"
   path="/forms/libreoffice/convert"

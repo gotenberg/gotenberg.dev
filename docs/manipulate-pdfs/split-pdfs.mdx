@@ -57,7 +57,7 @@ Splits one or more PDF files by extracting specific pages or splitting into inte
       type: "string",
       required: true,
       description:
-        "The rule for splitting. If mode is 'intervals', defines the chunk size (e.g. '2'). If mode is 'pages', defines the page ranges.",
+        "The rule for splitting. If mode is 'intervals', defines the chunk size (e.g. '2'). If mode is 'pages', defines the page ranges (e.g. '1-3').",
     },
     {
       name: "splitUnify",
@@ -118,6 +118,19 @@ Body: {error}
       `,
     },
   ]}
+/>
+
+In `pages` mode, `splitUnify=true` collects the extracted pages of each input into a single PDF:
+
+<ApiEndpoint
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/pdfengines/split \\
+--form files=@/path/to/file.pdf \\
+--form splitMode=pages \\
+--form splitSpan=1-3 \\
+--form splitUnify=true \\
+-o my.pdf`}
 />
 
 ## Structure & Metadata

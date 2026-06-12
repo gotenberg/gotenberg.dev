@@ -1,0 +1,58 @@
+---
+id: routes
+title: Routes Overview
+---
+
+import Sponsors from "@site/src/components/documentation/Sponsors";
+
+Every route accepts a `multipart/form-data` POST request and returns a file. Pick the route matching your task.
+
+## Convert to PDF
+
+| Task                                                      | Route                                                                                     |
+| :-------------------------------------------------------- | :---------------------------------------------------------------------------------------- |
+| Convert a web page by URL                                 | [`/forms/chromium/convert/url`](/docs/convert-with-chromium/convert-url-to-pdf)           |
+| Convert an HTML file                                      | [`/forms/chromium/convert/html`](/docs/convert-with-chromium/convert-html-to-pdf)         |
+| Convert Markdown files                                    | [`/forms/chromium/convert/markdown`](/docs/convert-with-chromium/convert-markdown-to-pdf) |
+| Convert office documents (`.docx`, `.xlsx`, `.pptx`, ...) | [`/forms/libreoffice/convert`](/docs/convert-with-libreoffice/convert-to-pdf)             |
+
+## Screenshots
+
+| Task                         | Route                                                                                    |
+| :--------------------------- | :--------------------------------------------------------------------------------------- |
+| Screenshot a web page by URL | [`/forms/chromium/screenshot/url`](/docs/convert-with-chromium/screenshot-url)           |
+| Screenshot an HTML file      | [`/forms/chromium/screenshot/html`](/docs/convert-with-chromium/screenshot-html)         |
+| Screenshot Markdown files    | [`/forms/chromium/screenshot/markdown`](/docs/convert-with-chromium/screenshot-markdown) |
+
+## Manipulate PDFs
+
+| Task                                  | Route                                                                        |
+| :------------------------------------ | :--------------------------------------------------------------------------- |
+| Merge PDFs                            | [`/forms/pdfengines/merge`](/docs/manipulate-pdfs/merge-pdfs)                |
+| Split PDFs                            | [`/forms/pdfengines/split`](/docs/manipulate-pdfs/split-pdfs)                |
+| Convert to PDF/A or PDF/UA            | [`/forms/pdfengines/convert`](/docs/manipulate-pdfs/pdfa-pdfua)              |
+| Read metadata                         | [`/forms/pdfengines/metadata/read`](/docs/manipulate-pdfs/read-metadata)     |
+| Write metadata                        | [`/forms/pdfengines/metadata/write`](/docs/manipulate-pdfs/write-metadata)   |
+| Read bookmarks                        | [`/forms/pdfengines/bookmarks/read`](/docs/manipulate-pdfs/read-bookmarks)   |
+| Write bookmarks                       | [`/forms/pdfengines/bookmarks/write`](/docs/manipulate-pdfs/write-bookmarks) |
+| Embed file attachments                | [`/forms/pdfengines/embed`](/docs/manipulate-pdfs/attachments)               |
+| Produce Factur-X / ZUGFeRD e-invoices | [`/forms/pdfengines/factur-x`](/docs/manipulate-pdfs/factur-x)               |
+| Flatten form fields and annotations   | [`/forms/pdfengines/flatten`](/docs/manipulate-pdfs/flatten-pdfs)            |
+| Watermark PDFs                        | [`/forms/pdfengines/watermark`](/docs/manipulate-pdfs/watermark-pdfs)        |
+| Stamp PDFs                            | [`/forms/pdfengines/stamp`](/docs/manipulate-pdfs/stamp-pdfs)                |
+| Rotate PDFs                           | [`/forms/pdfengines/rotate`](/docs/manipulate-pdfs/rotate-pdfs)              |
+| Encrypt PDFs                          | [`/forms/pdfengines/encrypt`](/docs/manipulate-pdfs/encrypt-pdfs)            |
+
+Conversion routes accept most PDF engine features (metadata, attachments, watermark, encryption, ...) in the same request; see each route's feature sections.
+
+## Operations
+
+| Task                          | Route                                                 |
+| :---------------------------- | :---------------------------------------------------- |
+| Health check                  | [`/health`](/docs/system/get-health-check)            |
+| Version                       | [`/version`](/docs/system/version)                    |
+| Runtime configuration dump    | [`/debug`](/docs/system/debug)                        |
+| Asynchronous processing       | [Webhooks](/docs/webhook-download)                    |
+| Fetch inputs from remote URLs | [Download From](/docs/webhook-download#download-from) |
+
+<Sponsors />

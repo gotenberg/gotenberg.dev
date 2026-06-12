@@ -93,7 +93,7 @@ module.exports = {
             },
             {
               label: "Explore All Routes",
-              to: "/docs/convert-with-chromium/convert-url-to-pdf",
+              to: "/docs/getting-started/routes",
             },
             {
               label: "Configuration",

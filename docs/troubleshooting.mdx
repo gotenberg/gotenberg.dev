@@ -7,6 +7,18 @@ import Sponsors from "@site/src/components/documentation/Sponsors";
 
 Issue not listed here? Check [GitHub issues](https://github.com/gotenberg/gotenberg/issues) and [discussions](https://github.com/gotenberg/gotenberg/discussions), or open a new one.
 
+## API
+
+### Bad Request (400)
+
+A `400 Bad Request` means the form data failed validation: a missing required form field, a malformed JSON value, an unsupported file extension, or an invalid field value. The body is plain text naming the offending field:
+
+```
+Invalid form data: a 'userPassword' or 'ownerPassword' is required
+```
+
+Match the `Gotenberg-Trace` response header against the logs for full context.
+
 ## Chromium
 
 ### Blank or Missing Content

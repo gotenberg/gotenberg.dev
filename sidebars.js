@@ -18,6 +18,7 @@ module.exports = {
       items: [
         "getting-started/introduction",
         "getting-started/installation",
+        "getting-started/routes",
         "getting-started/clients",
       ],
     },
