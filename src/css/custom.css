@@ -653,7 +653,7 @@ button[class*="closeButton_"]:hover {
 /* --- FOOTER --- */
 .footer--dark {
   --ifm-footer-background-color: var(--ifm-heading-color);
-  --ifm-footer-padding-vertical: 4rem;
+  --ifm-footer-padding-vertical: 5.5rem;
   border-top: 1px solid #2b2724;
 }
 
