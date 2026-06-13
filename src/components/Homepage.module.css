@@ -303,41 +303,57 @@
 }
 
 /* --- FINAL CTA --- */
+/* Colophon: the dark back-page that closes the document. Reuses the
+   terminal's ink-plate surface so the ending feels typeset, not tacked on. */
 
 .finalCta {
   text-align: center;
-  border-top: 1px solid var(--ifm-border-color);
-  padding: 8rem 0 10rem;
+  background: var(--ink-plate);
+  padding: 8rem 0 9rem;
 }
 
 .finalCta h2 {
   font-family: var(--font-serif);
   font-optical-sizing: auto;
-  font-size: 2.25rem;
+  font-size: clamp(2.25rem, 4vw, 2.9rem);
   font-weight: 600;
   letter-spacing: -0.005em;
-  margin-bottom: 0.5rem;
+  color: var(--ifm-background-color);
+  margin-bottom: 0.75rem;
+}
+
+/* Italic highlight is inherited; lift to a lighter blue that clears
+   contrast on ink. */
+.finalCta .highlight {
+  color: var(--ifm-color-primary-light);
 }
 
 .finalCta p {
   font-size: 1.1rem;
-  color: var(--ifm-color-content-secondary);
-  margin-bottom: 2.5rem;
+  color: #a8a29e;
+  margin-bottom: 3rem;
 }
 
+/* Stats set as a ruled band: hairlines above and below, numerals
+   stacked over small-cap labels. */
 .statsBar {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: center;
-  gap: 1.5rem;
-  margin-bottom: 2.5rem;
+  gap: 3rem;
+  max-width: 620px;
+  margin: 0 auto 3rem;
+  padding: 1.75rem 0;
+  border-top: 1px solid rgba(253, 252, 250, 0.12);
+  border-bottom: 1px solid rgba(253, 252, 250, 0.12);
   flex-wrap: wrap;
 }
 
 .statInline {
   display: inline-flex;
-  align-items: baseline;
-  gap: 0.4rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
   color: inherit;
 }
 
@@ -346,24 +362,29 @@
 }
 
 .statInline:hover .statNumber {
-  color: var(--ifm-color-primary-dark);
+  color: var(--ifm-color-primary-lighter);
 }
 
 .statNumber {
   font-family: var(--ifm-font-family-monospace);
-  font-size: 1.35rem;
+  font-size: 1.6rem;
   font-weight: 600;
-  color: var(--ifm-color-primary);
+  line-height: 1;
+  color: var(--ifm-color-primary-light);
   font-variant-numeric: tabular-nums;
 }
 
 .statLabel {
-  font-size: 0.9rem;
-  color: var(--ifm-color-content-secondary);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #a8a29e;
 }
 
+/* The ruled band carries the rhythm; the inline middots are redundant. */
 .statDot {
-  color: var(--ifm-border-color);
+  display: none;
 }
 
 .finalButtons {
@@ -371,6 +392,26 @@
   justify-content: center;
   gap: 0.75rem;
   flex-wrap: wrap;
+}
+
+/* Secondary button needs an outline-on-dark variant here; the base
+   .btnSecondary assumes a paper background. */
+.finalCta .btnSecondary {
+  background: transparent;
+  border-color: rgba(253, 252, 250, 0.25);
+  color: var(--ifm-background-color);
+}
+
+.finalCta .btnSecondary:hover {
+  background: rgba(253, 252, 250, 0.08);
+  border-color: rgba(253, 252, 250, 0.5);
+  color: var(--ifm-background-color);
+}
+
+/* The GitHub mark ships as a dark octocat that disappears on ink.
+   Flatten it to a white silhouette for the dark band only. */
+.finalCta .githubIcon {
+  filter: brightness(0) invert(1);
 }
 
 /* --- TERMINAL --- */
@@ -544,6 +585,14 @@
 
   .section {
     padding: 3.5rem 0;
+  }
+
+  .finalCta {
+    padding: 5rem 0 5.5rem;
+  }
+
+  .statsBar {
+    gap: 2rem;
   }
 
   .terminalBody {
