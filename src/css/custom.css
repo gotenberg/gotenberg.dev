@@ -627,9 +627,9 @@ a[class*="sidebarLogo"] b {
 .sidebar-method-delete .menu__link::before,
 .sidebar-method-head .menu__link::before {
   display: inline-block;
-  margin-right: 8px;
+  margin-right: 6px;
   padding: 2px 6px;
-  min-width: 45px;
+  min-width: 40px;
   font-size: 0.65rem;
   font-weight: 800;
   text-align: center;
