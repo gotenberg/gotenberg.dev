@@ -1,0 +1,13 @@
+/**
+ * Copied from @docusaurus/theme-classic DocRoot/Layout (v3.10.1), unchanged.
+ */
+
+.docRoot {
+  display: flex;
+  width: 100%;
+}
+
+.docsWrapper {
+  display: flex;
+  flex: 1 0 auto;
+}

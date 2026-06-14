@@ -5,7 +5,6 @@ title: Attachments
 
 import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
 import FacturXPDFEngines from "../_shared/_facturx_pdfengines.mdx";
-import Sponsors from "@site/src/components/documentation/Sponsors";
 import ConfigurationInfoPDFEngines from "../_shared/_configuration_info_pdfengines.mdx";
 
 Embeds external files directly inside the PDF container. Commonly used for e-invoicing standards like **[ZUGFeRD / Factur-X](https://fnfe-mpe.org/factur-x/)**, which require a machine-readable XML invoice as an attachment.
@@ -115,5 +114,3 @@ Body: {error}
   curlFormData={`--form files=@/path/to/invoice.pdf \\`}
   curlOutput={`-o my.pdf`}
 />
-
-<Sponsors />

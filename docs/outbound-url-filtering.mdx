@@ -3,8 +3,6 @@ id: outbound-url-filtering
 title: Outbound URL Filtering
 ---
 
-import Sponsors from "@site/src/components/documentation/Sponsors";
-
 Gotenberg makes outbound HTTP calls in four places:
 
 - Chromium navigations and sub-resources.
@@ -159,5 +157,3 @@ If you prefer textual matching, paste the previous regex back into the deny-list
 8.31.0 also blocked Chromium sub-resources resolving to private IPs by default. 8.32.0 restores the 8.30.x permissive behavior. Set `CHROMIUM_DENY_PRIVATE_IPS=true` for the strict 8.31.0-style posture.
 
 Operator-supplied deny-list patterns are honored as before. Only the baked-in defaults changed.
-
-<Sponsors />

@@ -1,126 +1,107 @@
-/* --- SHARED STRIP STYLES --- */
-.sponsorsStrip {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2.5rem;
-  margin-top: 4rem;
-  padding: 3rem 1rem;
-  border-top: 1px dashed #e2e8f0;
+/*
+ * Full-width light-gray sponsors bandeau for doc pages (mounted in
+ * src/theme/DocRoot/Layout). A single centered logo bar with hairline
+ * dividers (no text labels); logos use the homepage grayscale overlay
+ * (muted, color on hover). Sits between the doc content and the footer.
+ */
+
+.band {
+  background: var(--paper-shade);
+  border-top: 1px solid var(--ifm-border-color);
+  padding: 1.75rem 0;
 }
 
-/* Force override global Docusaurus link styles */
-.sponsorsStrip a {
-  text-decoration: none !important;
-  border-bottom: none !important;
-  background-color: transparent !important;
-  padding: 0 !important;
-  display: flex !important;
-  align-items: center;
-}
-
-.sponsorRow {
+.inner {
   display: flex;
   align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.25rem 1.5rem;
+}
+
+.logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 1.5rem;
-  flex-shrink: 0;
+  flex-wrap: wrap;
 }
 
-.sponsorLogos {
-  display: flex;
+.divider {
+  width: 1px;
+  height: 2.25rem;
+  background: var(--ifm-border-color);
+}
+
+.logoLink {
+  display: inline-flex;
   align-items: center;
-  gap: 1.5rem;
 }
 
-.sponsorStripLabel {
-  font-size: 0.75rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  color: #94a3b8;
-  letter-spacing: 0.1em;
-  user-select: none;
-}
-
-.logoStrip {
-  width: auto;
-  filter: grayscale(100%) opacity(0.6);
-  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+.logo {
   display: block;
+  width: auto;
+  filter: grayscale(100%);
+  opacity: 0.6;
+  transition: filter 0.2s ease, opacity 0.2s ease;
 }
 
-.logoStrip:hover {
-  filter: grayscale(0%) opacity(1);
-  transform: scale(1.08);
+.logoLink:hover .logo {
+  filter: grayscale(0%);
+  opacity: 1;
 }
 
 .logoWide {
-  height: 72px;
+  height: 40px;
 }
 
 .logoWordmark {
-  height: 32px;
-}
-
-.logoSquare {
   height: 28px;
 }
 
-.sponsorButton {
-  display: inline-flex !important;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #e11d48 !important;
-  text-decoration: underline;
-  text-decoration-color: rgba(225, 29, 72, 0.3);
-  text-underline-offset: 3px;
-  transition: text-decoration-color 0.2s ease;
+.logoSmall {
+  height: 26px;
 }
 
-.sponsorButton:hover {
-  opacity: 1;
-  text-decoration-color: #e11d48;
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--ifm-background-color);
+  color: var(--ifm-heading-color);
+  border: 1px solid var(--ifm-border-color);
+  padding: 0.45rem 1.25rem;
+  border-radius: 2px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.cta:hover {
+  color: var(--ifm-heading-color);
+  text-decoration: none;
+  border-color: rgba(180, 35, 24, 0.4);
 }
 
 .heart {
-  display: inline-block;
+  color: var(--rubric);
+  font-size: 0.9rem;
 }
 
-/* --- MOBILE VARIANT: TWO STRIPS + CTA --- */
 @media (max-width: 996px) {
-  .sponsorsStrip {
-    gap: 1.5rem;
-    padding-top: 2rem;
+  .band {
+    padding: 2rem 0;
   }
 
-  .sponsorRow {
+  .inner {
     flex-direction: column;
-    width: 100%;
-    gap: 1rem;
-  }
-
-  .sponsorLogos {
     justify-content: center;
-    gap: 1.25rem;
+    text-align: center;
+    gap: 1.5rem;
   }
 
-  .logoWide {
-    height: 48px;
-  }
-
-  .logoWordmark {
-    height: 22px;
-  }
-
-  .logoSquare {
-    height: 18px;
-  }
-
-  .ctaWrapper {
-    margin-top: 0.5rem;
-    width: 100%;
-    display: flex;
-    justify-content: center;
+  /* Vertical dividers don't make sense in the stacked layout. */
+  .divider {
+    display: none;
   }
 }
