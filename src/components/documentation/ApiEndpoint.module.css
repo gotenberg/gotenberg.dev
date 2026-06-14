@@ -177,7 +177,7 @@
   font-family: var(--ifm-font-family-monospace);
   font-size: 0.85em;
   color: var(--accent-text);
-  background-color: rgba(0, 138, 230, 0.06);
+  background-color: rgba(42, 111, 147, 0.06);
   padding: 0.05em 0.3em;
   border-radius: 3px;
 }
