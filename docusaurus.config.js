@@ -51,11 +51,6 @@ module.exports = {
     // },
     navbar: {
       title: "Gotenberg",
-      logo: {
-        alt: "Gotenberg Logo",
-
-        src: "img/logo.png",
-      },
       hideOnScroll: true,
       items: [
         {

@@ -2,6 +2,8 @@
 @import "@fontsource-variable/newsreader/opsz.css";
 @import "@fontsource-variable/newsreader/opsz-italic.css";
 @import "@fontsource-variable/jetbrains-mono";
+/* Blackletter, for the brand versal initial only (latin subset). */
+@import "@fontsource/unifrakturmaguntia/latin-400.css";
 
 /* --- FONTS AND VARIABLES --- */
 :root {
@@ -528,28 +530,44 @@ button[class*="closeButton_"]:hover {
    uppercase, letter-spaced label register used elsewhere (folio marks,
    section headers, sponsor labels) so they read as navigation rather
    than a smaller copy of the title. */
-.navbar__title {
-  font-family: var(--font-serif);
-  font-optical-sizing: auto;
-  font-weight: 600;
-  font-size: 1.2rem;
-}
-
-.navbar__logo {
-  margin-right: 0.75rem;
-}
-
-/* Sidebar brand (shown when the navbar hides on scroll): match the navbar. */
-a[class*="sidebarLogo"] img {
-  margin-right: 0.75rem;
-}
-
+/* Brand: the wordmark's initial set as a letterpress versal -- a blackletter
+   "G" reversed out of a centered ink block (Gutenberg's own script). The mark
+   IS the word's first letter (rendered in src/theme/Logo), so it doesn't
+   duplicate the "G" of "Gotenberg". Applies to the navbar and the sidebar
+   brand shown when the navbar hides on scroll. */
+.navbar__title,
 a[class*="sidebarLogo"] b {
   font-family: var(--font-serif);
   font-optical-sizing: auto;
   font-weight: 600;
   font-size: 1.2rem;
   color: var(--ifm-heading-color);
+}
+
+/* The block sits inline with the wordmark; vertical-align: middle anchors it
+   to the lowercase optical center of "otenberg" so the unit reads aligned. */
+.brand-versal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  margin-right: 0.2rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  background: var(--ifm-heading-color);
+  color: var(--ifm-background-color);
+  border-radius: 2px;
+  font-family: "UnifrakturMaguntia", var(--font-serif);
+  font-weight: 400;
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+/* Optically center the blackletter cap within the block (it sits high in its
+   line box). */
+.brand-versal__letter {
+  display: inline-block;
+  transform: translateY(0.04em);
 }
 
 .navbar__link {
