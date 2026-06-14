@@ -438,7 +438,7 @@ curl \\
               href="https://hub.docker.com/r/gotenberg/gotenberg"
               className={styles.statInline}
             >
-              <span className={styles.statNumber}>55M+</span>
+              <span className={styles.statNumber}>68M+</span>
               <span className={styles.statLabel}>Docker Pulls</span>
             </a>
             <span className={styles.statDot}>&middot;</span>
@@ -446,7 +446,7 @@ curl \\
               href="https://github.com/gotenberg/gotenberg"
               className={styles.statInline}
             >
-              <span className={styles.statNumber}>11k+</span>
+              <span className={styles.statNumber}>12k+</span>
               <span className={styles.statLabel}>GitHub Stars</span>
             </a>
             <span className={styles.statDot}>&middot;</span>
