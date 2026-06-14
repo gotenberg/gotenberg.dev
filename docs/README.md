@@ -10,9 +10,11 @@ Every API endpoint documentation page follows this layout:
 2. Imports: shared MDX partials and React components.
 3. Intro line: one direct sentence saying what the endpoint does.
 4. Configuration link: links to the configuration page for related flags.
-5. `## Basics`: the `<ApiEndpoint>` component with method, path, headers, form fields/files, cURL example, and responses. Skip this heading on single-section pages.
+5. `## Basics`: the `<ApiEndpoint>` component with method, path, headers, form fields/files, cURL example, and responses. Always include this heading, even on single-section pages, so the page reads `## Basics` -> `## What's Next?` rather than leaving a lone section.
 6. Feature sections: each sub-section owns its form fields directly. Shared partials with `showFormFields={true}` render their own field definitions.
-7. `<Sponsors />`: sponsor component at the bottom.
+7. `## What's Next?`: a short closing section (one sentence, one or two links) pointing to the logical next step(s). The last page in the reading order links to support (GitHub Discussions/issues) instead.
+
+Sponsor logos render automatically as a full-width bandeau below every doc page (mounted in `src/theme/DocRoot/Layout`). Do not add a `<Sponsors />` import or component to pages.
 
 New pages must follow existing pages as templates.
 
@@ -80,6 +82,8 @@ Rules:
 - Response descriptions must match Gotenberg's actual behavior.
 - Use `defaultValue` in form fields when a default exists.
 - Mark fields as `required: true` only when genuinely required.
+- `type` is one of `string`, `boolean`, `enum`, `integer`, `number`, `json`, `file`, `file[]`, `duration`. Use `enum` for a fixed set of allowed values (never `string`); pick `integer` vs `number` to match the value.
+- In `description` strings, wrap literal values in backticks (`` `intervals` ``, `` `PDF/A-3b` ``, `` `90` ``). The component renders them as subtly highlighted value spans, so don't use quotes.
 
 ## Shared partials
 

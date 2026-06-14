@@ -12,29 +12,33 @@ Guidelines for modifying site design, React components, styles, or layout.
 
 ## Design system
 
-"Rubric & Rule": ink on warm paper. The site about producing documents is itself typeset. Serif for headings and prose, system sans for UI, rubric red strictly rationed to printer's marks.
+"Rubric & Rule": ink on warm paper. The site about producing documents is itself typeset. Serif for headings and prose, system sans for UI, a single deep mineral ink-blue for interaction, and rubric red strictly rationed to printer's marks.
 
 ### Colors
 
-| Token                           | Value     | Usage                                                  |
-| ------------------------------- | --------- | ------------------------------------------------------ |
-| `--ifm-color-primary`           | `#008ae6` | Accents, primary CTA, italic highlights, large text    |
-| `--accent-text`                 | `#0060a1` | Body-size links and accents (WCAG AA on paper)         |
-| `--rubric`                      | `#b42318` | Printer's marks only: pilcrows, required flags, folios |
-| `--ifm-background-color`        | `#fdfcfa` | Paper                                                  |
-| `--paper-shade`                 | `#f6f5f1` | Alternating sections, table headers, technical zones   |
-| `--ink-plate`                   | `#1c1917` | Terminal windows, footer                               |
-| `--ifm-heading-color`           | `#1f1c19` | Headings, booktabs rules                               |
-| `--ifm-color-content`           | `#38332e` | Body text                                              |
-| `--ifm-color-content-secondary` | `#6e675e` | Secondary text, sidebar links                          |
-| `--ifm-border-color`            | `#e6e2da` | Hairlines, dividers                                    |
+One blue across the homepage and docs: a deep mineral ink-blue that sits with the warm paper and rubric red (it reads as a second ink, not a screen accent). It clears WCAG AA on paper (~5.4:1) and behind white button/announcement text, so no separate text shade is needed.
+
+| Token                           | Value                          | Usage                                                                        |
+| ------------------------------- | ------------------------------ | ---------------------------------------------------------------------------- |
+| `--ifm-color-primary`           | `#2a6f93`                      | The one ink-blue: links, CTAs, active states, highlights, field names, fills |
+| `--ifm-color-primary-light`     | `#4f95b8`                      | Lighter ink-blue for accents on the dark ink-plate band                      |
+| `--accent-text`                 | alias of `--ifm-color-primary` | Body-size links (kept as a name; the primary clears AA directly)             |
+| `--rubric`                      | `#b42318`                      | Printer's marks only: pilcrows, required flags, folios                       |
+| `--ifm-background-color`        | `#fdfcfa`                      | Paper                                                                        |
+| `--paper-shade`                 | `#f6f5f1`                      | Alternating sections, table headers, technical zones                         |
+| `--ink-plate`                   | `#1c1917`                      | Terminal windows, footer                                                     |
+| `--ifm-heading-color`           | `#1f1c19`                      | Headings, booktabs rules                                                     |
+| `--ifm-color-content`           | `#38332e`                      | Body text                                                                    |
+| `--ifm-color-content-secondary` | `#6e675e`                      | Secondary text, sidebar links                                                |
+| `--ifm-border-color`            | `#e6e2da`                      | Hairlines, dividers                                                          |
 
 HTTP method badges: tinted background with dark text (WCAG AA), e.g. POST `rgba(73,204,144,0.16)` / `#047857`. Never white text on pastel fills.
 
 ### Typography
 
-- Headings (h1-h3), navbar, sidebar, TOC, and footer links: Newsreader Variable, weight 600, `font-optical-sizing: auto`, letter-spacing -0.005em
-- Prose and UI (body text, buttons, badges, param lists): system sans
+- Headings (h1-h3), the brand wordmark, TOC, and footer links: Newsreader Variable, weight 600, `font-optical-sizing: auto`, letter-spacing -0.005em
+- Prose and UI (body text, buttons, badges, param lists, sidebar links): system sans
+- Navbar links: uppercase small-caps system sans (letter-spaced), distinct from the serif brand wordmark
 - H2: short 2px ink rule above (chapter mark), no underline
 - Lede: the paragraph after h1 renders larger (1.2rem) in heading ink
 - Stats and tables: lining tabular numerals
@@ -53,7 +57,7 @@ HTTP method badges: tinted background with dark text (WCAG AA), e.g. POST `rgba(
 
 ### Homepage (`src/components/Homepage.js`)
 
-Standalone React component with CSS Modules (`Homepage.module.css`). Static by design: centered hero with the portrait logo (via `@theme/IdealImage`), a "two commands" `SimpleTerminal` quickstart, a centered sponsors strip, four text-plus-code feature rows, and a final CTA. No scroll-triggered animation, counters, or gradients; motion is hover-scoped only.
+Standalone React component with CSS Modules (`Homepage.module.css`). Static by design: centered hero with the portrait logo (via `@theme/IdealImage`), a "two commands" `SimpleTerminal` quickstart, a centered sponsors strip, four text-plus-code feature rows, and a closing CTA on a dark ink-plate band (stats + buttons). No scroll-triggered animation, counters, or gradients; motion is hover-scoped only.
 
 ### ApiEndpoint (`src/components/documentation/ApiEndpoint.js`)
 
@@ -61,11 +65,12 @@ Core documentation component. Renders method badge + path header, collapsible pa
 
 ### Sponsors (`src/components/documentation/Sponsors.js`)
 
-Renders sponsor logos at the bottom of documentation pages.
+Full-width light-gray sponsors bandeau shown below the content on every doc page. Mounted once in `src/theme/DocRoot/Layout` (not imported per page); a single centered row of grayscale logos with a hairline divider, mirroring the homepage strip.
 
 ## Theme overrides
 
 - `src/theme/DocSidebar/index.js`: custom sidebar with HTTP method badges via CSS pseudo-elements on `.sidebar-method-*` classes.
+- `src/theme/DocRoot/Layout/index.js`: renders the full-width sponsors bandeau below the doc content (sidebar + article + TOC), above the footer.
 
 ## CSS conventions
 

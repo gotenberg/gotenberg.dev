@@ -29,7 +29,7 @@ module.exports = {
     },
     {
       tagName: "meta",
-      attributes: { name: "theme-color", content: "#008ae6" },
+      attributes: { name: "theme-color", content: "#2a6f93" },
     },
   ],
   themeConfig: {
