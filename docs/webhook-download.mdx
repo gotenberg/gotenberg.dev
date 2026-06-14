@@ -139,6 +139,8 @@ User-Agent: Gotenberg
 
 Set the `Gotenberg-Webhook-Events-Url` header to receive structured JSON events after each webhook operation. Events fire after the main webhook callbacks and do not affect the result delivery.
 
+Gotenberg delivers each event as a `POST` request, regardless of `Gotenberg-Webhook-Method`.
+
 **Success event:**
 
 ```json
