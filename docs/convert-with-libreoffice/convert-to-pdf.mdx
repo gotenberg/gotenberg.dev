@@ -405,7 +405,7 @@ curl \\
 Converts each file to PDF individually, then merges them in **alphanumeric order** (numbers first, then alphabetical).
 
 <ApiEndpoint
-  formFiles={[
+  formFields={[
     {
       name: "merge",
       type: "boolean",
@@ -435,7 +435,7 @@ Happens _during_ the conversion. Applied independently to each uploaded file.
       type: "string",
       defaultValue: "All pages",
       description:
-        "Page ranges to print, e.g., '1-4'. Empty means all pages. Applied independently to each file.",
+        "Page ranges to print, e.g., `1-4`. Empty means all pages. Applied independently to each file.",
     },
   ]}
   curl={`
@@ -459,7 +459,7 @@ Splits pages _after_ the PDF has been generated using a PDF engine (pdfcpu, QPDF
       type: "enum",
       defaultValue: "None",
       description:
-        "Either 'intervals' or 'pages'. Configures how the PDF should be split.",
+        "Either `intervals` or `pages`. Configures how the PDF should be split.",
     },
     {
       name: "splitSpan",
@@ -473,7 +473,7 @@ Splits pages _after_ the PDF has been generated using a PDF engine (pdfcpu, QPDF
       type: "boolean",
       defaultValue: "false",
       description:
-        "If true, puts extracted pages into a single file. Only works with 'pages' mode.",
+        "If true, puts extracted pages into a single file. Only works with `pages` mode.",
     },
   ]}
   curl={`
@@ -525,7 +525,7 @@ Text-only watermarks applied _during_ conversion. For image or PDF watermarks, u
       type: "string",
       defaultValue: "Helvetica",
       description:
-        "The font name for the watermark text (e.g., 'Times New Roman').",
+        "The font name for the watermark text (e.g., `Times New Roman`).",
     },
     {
       name: "nativeTiledWatermarkText",
@@ -556,21 +556,21 @@ curl \\
       type: "enum",
       defaultValue: "None",
       description:
-        "The watermark source type. Options: 'text', 'image', 'pdf'.",
+        "The watermark source type. Options: `text`, `image`, `pdf`.",
     },
     {
       name: "watermarkExpression",
       type: "string",
       defaultValue: "None",
       description:
-        "The watermark content. For 'text', the string to render. For 'image' or 'pdf', the filename of the uploaded watermark file.",
+        "The watermark content. For `text`, the string to render. For `image` or `pdf`, the filename of the uploaded watermark file.",
     },
     {
       name: "watermarkPages",
       type: "string",
       defaultValue: "None",
       description:
-        "Page ranges to watermark (e.g., '1-3', '5'). Empty means all pages.",
+        "Page ranges to watermark (e.g., `1-3`, `5`). Empty means all pages.",
     },
     {
       name: "watermarkOptions",
@@ -608,21 +608,21 @@ curl \\
       name: "stampSource",
       type: "enum",
       defaultValue: "None",
-      description: "The stamp source type. Options: 'text', 'image', 'pdf'.",
+      description: "The stamp source type. Options: `text`, `image`, `pdf`.",
     },
     {
       name: "stampExpression",
       type: "string",
       defaultValue: "None",
       description:
-        "The stamp content. For 'text', the string to render. For 'image' or 'pdf', the filename of the uploaded stamp file.",
+        "The stamp content. For `text`, the string to render. For `image` or `pdf`, the filename of the uploaded stamp file.",
     },
     {
       name: "stampPages",
       type: "string",
       defaultValue: "None",
       description:
-        "Page ranges to stamp (e.g., '1-3', '5'). Empty means all pages.",
+        "Page ranges to stamp (e.g., `1-3`, `5`). Empty means all pages.",
     },
     {
       name: "stampOptions",
@@ -674,7 +674,7 @@ Use the `pdfa` and `pdfua` form fields to convert the PDF into a standardized fo
       type: "enum",
       defaultValue: "None",
       description:
-        "Converts to a specific PDF/A archival standard. Options: 'PDF/A-1b', 'PDF/A-2b', 'PDF/A-3b'.",
+        "Converts to a specific PDF/A archival standard. Options: `PDF/A-1b`, `PDF/A-2b`, `PDF/A-3b`.",
     },
     {
       name: "pdfua",

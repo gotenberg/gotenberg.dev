@@ -5,6 +5,21 @@ import TabItem from "@theme/TabItem";
 import clsx from "clsx";
 import styles from "./ApiEndpoint.module.css";
 
+// Renders a description, turning `backtick`-wrapped literals into subtly
+// highlighted value spans (lighter than an inline code block).
+function renderValues(text) {
+  if (typeof text !== "string" || !text.includes("`")) return text;
+  return text.split("`").map((seg, i) =>
+    i % 2 === 1 ? (
+      <span key={i} className={styles.paramValue}>
+        {seg}
+      </span>
+    ) : (
+      seg
+    )
+  );
+}
+
 const MethodBadge = ({ method = "" }) => {
   const colors = {
     GET: { bg: "rgba(97, 175, 254, 0.18)", fg: "#0060a1" },
@@ -48,7 +63,9 @@ const ParamsList = ({ title, items }) => {
               )}
             </div>
             {item.description && (
-              <div className={styles.paramDescription}>{item.description}</div>
+              <div className={styles.paramDescription}>
+                {renderValues(item.description)}
+              </div>
             )}
             {item.defaultValue && (
               <div className={styles.paramDefault}>
@@ -120,7 +137,7 @@ export default function ApiEndpoint({
                   >
                     {res.description && (
                       <div className={styles.responseDescription}>
-                        {res.description}
+                        {renderValues(res.description)}
                       </div>
                     )}
                     {res.body && (

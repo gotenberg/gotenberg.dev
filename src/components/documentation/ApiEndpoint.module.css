@@ -171,6 +171,17 @@
   letter-spacing: 0.05em;
 }
 
+/* Inline literal values (`backtick`-wrapped) in descriptions: a slight
+   highlight, lighter than an inline code block. */
+.paramValue {
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.85em;
+  color: var(--accent-text);
+  background-color: rgba(0, 138, 230, 0.06);
+  padding: 0.05em 0.3em;
+  border-radius: 3px;
+}
+
 .paramDefault code {
   font-size: 0.75rem;
   background-color: rgba(241, 245, 249, 0.8);

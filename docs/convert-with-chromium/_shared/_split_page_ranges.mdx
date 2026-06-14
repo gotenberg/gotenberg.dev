@@ -13,7 +13,7 @@ Happens _during_ conversion. Faster, as unused pages are never rendered. Control
       name: "nativePageRanges",
       type: "string",
       defaultValue: "None",
-      description: "Define ranges to print (e.g., '1-5, 8, 11-13').",
+      description: "Define ranges to print (e.g., `1-5, 8, 11-13`).",
     },
   ]}
   curl={`
@@ -38,21 +38,21 @@ Splits pages _after_ the PDF has been generated using a PDF engine (like pdfcpu)
       type: "enum",
       defaultValue: "None",
       description:
-        "Activates the splitting engine. Options: 'intervals' or 'pages'.",
+        "Activates the splitting engine. Options: `intervals` or `pages`.",
     },
     {
       name: "splitSpan",
       type: "string",
       defaultValue: "None",
       description:
-        "The rule for splitting. If mode is 'intervals', defines the chunk size (e.g. '2'). If mode is 'pages', defines the page ranges.",
+        "The rule for splitting. If mode is `intervals`, defines the chunk size (e.g. `2`). If mode is `pages`, defines the page ranges.",
     },
     {
       name: "splitUnify",
       type: "boolean",
       defaultValue: "false",
       description:
-        "Only for 'pages' mode. If true, puts all extracted pages into a single PDF file. If false, creates a separate file for each range.",
+        "Only for `pages` mode. If true, puts all extracted pages into a single PDF file. If false, creates a separate file for each range.",
     },
   ]}
   curl={`

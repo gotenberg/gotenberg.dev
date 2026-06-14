@@ -8,13 +8,13 @@ import WaitFor from "./_wait_for.mdx";
   formFields={[
     {
       name: "width",
-      type: "number",
+      type: "integer",
       defaultValue: "800",
       description: "The device screen width in pixels.",
     },
     {
       name: "height",
-      type: "number",
+      type: "integer",
       defaultValue: "600",
       description: "The device screen height in pixels.",
     },
@@ -30,21 +30,21 @@ import WaitFor from "./_wait_for.mdx";
       type: "number",
       defaultValue: "1",
       description:
-        "The device scale ratio, controlling the screenshot pixel density. Set to '2' for retina-quality output.",
+        "The device scale ratio, controlling the screenshot pixel density. Set to `2` for retina-quality output.",
     },
     {
       name: "format",
       type: "enum",
       defaultValue: "png",
       description:
-        "The image compression format. Options: 'png', 'jpeg', 'webp'.",
+        "The image compression format. Options: `png`, `jpeg`, `webp`.",
     },
     {
       name: "quality",
-      type: "number",
+      type: "integer",
       defaultValue: "100",
       description:
-        "The compression quality (0-100). Only used if format is 'jpeg'.",
+        "The compression quality (0-100). Only used if format is `jpeg`.",
     },
     {
       name: "omitBackground",

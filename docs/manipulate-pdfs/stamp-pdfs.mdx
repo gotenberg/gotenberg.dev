@@ -39,21 +39,21 @@ Adds a stamp _on top of_ the content of each page of one or more PDF files. Use 
       name: "stampSource",
       type: "enum",
       required: true,
-      description: "The stamp source type. Options: 'text', 'image', 'pdf'.",
+      description: "The stamp source type. Options: `text`, `image`, `pdf`.",
     },
     {
       name: "stampExpression",
       type: "string",
       required: true,
       description:
-        "The stamp content. For 'text', the string to render. For 'image' or 'pdf', the filename of the uploaded stamp file.",
+        "The stamp content. For `text`, the string to render. For `image` or `pdf`, the filename of the uploaded stamp file.",
     },
     {
       name: "stampPages",
       type: "string",
       required: false,
       description:
-        "Page ranges to stamp (e.g., '1-3', '5'). Empty means all pages.",
+        "Page ranges to stamp (e.g., `1-3`, `5`). Empty means all pages.",
     },
     {
       name: "stampOptions",
@@ -75,7 +75,7 @@ Adds a stamp _on top of_ the content of each page of one or more PDF files. Use 
       type: "file",
       required: false,
       description:
-        "An image or PDF file used as stamp source (required when stampSource is 'image' or 'pdf').",
+        "An image or PDF file used as stamp source (required when stampSource is `image` or `pdf`).",
     },
   ]}
   curl={`

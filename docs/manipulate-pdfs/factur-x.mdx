@@ -56,14 +56,14 @@ The [Chromium](/docs/convert-with-chromium/convert-html-to-pdf#factur-x-pdf-engi
       type: "enum",
       required: true,
       description:
-        "The Factur-X conformance level recorded in the XMP metadata. Options: 'MINIMUM', 'BASIC WL', 'BASIC', 'EN 16931', 'EXTENDED', 'XRECHNUNG'.",
+        "The Factur-X conformance level recorded in the XMP metadata. Options: `MINIMUM`, `BASIC WL`, `BASIC`, `EN 16931`, `EXTENDED`, `XRECHNUNG`.",
     },
     {
       name: "facturxDocumentType",
       type: "enum",
       defaultValue: "INVOICE",
       description:
-        "The Factur-X document type. Options: 'INVOICE', 'ORDER', 'ORDER_RESPONSE', 'ORDER_CHANGE'.",
+        "The Factur-X document type. Options: `INVOICE`, `ORDER`, `ORDER_RESPONSE`, `ORDER_CHANGE`.",
     },
     {
       name: "facturxVersion",
@@ -76,7 +76,7 @@ The [Chromium](/docs/convert-with-chromium/convert-html-to-pdf#factur-x-pdf-engi
       type: "enum",
       required: false,
       description:
-        "Converts to a specific PDF/A-3 variant. Options: 'PDF/A-3a', 'PDF/A-3b', 'PDF/A-3u'. Other PDF/A formats return `400 Bad Request`. When unset, the whole request converts to PDF/A-3b unless every input is already PDF/A-3.",
+        "Converts to a specific PDF/A-3 variant. Options: `PDF/A-3a`, `PDF/A-3b`, `PDF/A-3u`. Other PDF/A formats return `400 Bad Request`. When unset, the whole request converts to PDF/A-3b unless every input is already PDF/A-3.",
     },
     {
       name: "pdfua",
