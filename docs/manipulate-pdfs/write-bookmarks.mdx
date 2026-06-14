@@ -10,6 +10,8 @@ Writes bookmarks (the document outline / table of contents) into one or more PDF
 
 <ConfigurationInfoPDFEngines />
 
+## Basics
+
 <ApiEndpoint
   method="POST"
   path="/forms/pdfengines/bookmarks/write"
@@ -100,3 +102,7 @@ curl \\
 --form 'bookmarks={"file.pdf":[{"title":"Chapter 1","page":1,"children":[]}]}' \\
 -o my.pdf`}
 />
+
+## What's Next?
+
+Embed files with [Attachments](/docs/manipulate-pdfs/attachments), or build electronic invoices with [Factur-X](/docs/manipulate-pdfs/factur-x).

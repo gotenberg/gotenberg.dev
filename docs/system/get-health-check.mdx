@@ -7,6 +7,8 @@ import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
 
 Reports whether the API and its modules (Chromium, LibreOffice) are healthy. Use it for Kubernetes liveness probes or monitoring agents.
 
+## Basics
+
 <ApiEndpoint
   method="GET"
   path="/health"
@@ -60,3 +62,7 @@ Reports whether the API and its modules (Chromium, LibreOffice) are healthy. Use
     },
   ]}
 />
+
+## What's Next?
+
+Probe without a response body using the [HEAD health check](/docs/system/head-health-check), or scrape runtime metrics with [Prometheus](/docs/system/prometheus-metrics).
