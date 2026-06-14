@@ -681,6 +681,65 @@ a[class*="sidebarLogo"] b {
   color: #6d28d9;
 }
 
+/* --- DOC FOOTER --- */
+/* "Edit this page" + prev/next, restyled on Docusaurus' default classes (no
+   theme swizzle needed) into a quiet gray block, set off from the article by
+   whitespace alone. The sponsors bandeau is the full-width block below
+   (src/theme/DocRoot/Layout). */
+.theme-doc-footer {
+  margin-top: 4.5rem;
+}
+
+/* "Edit this page": a quiet gray utility link (icon via currentColor) that
+   darkens to ink on hover. */
+.theme-edit-this-page {
+  color: var(--ifm-color-content-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.theme-edit-this-page:hover {
+  color: var(--ifm-heading-color);
+}
+
+/* Prev/next: a borderless, typeset "continue reading" footer — gray
+   small-caps labels and serif ink titles that warm to the accent on hover.
+   Extra bottom room so it does not crowd the sponsors band below. */
+.pagination-nav {
+  margin-top: 2.5rem;
+  margin-bottom: 4rem;
+}
+
+.pagination-nav__link {
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+}
+
+.pagination-nav__sublabel {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ifm-color-content-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.pagination-nav__label {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: var(--ifm-heading-color);
+  transition: color 0.2s ease;
+}
+
+.pagination-nav__link:hover .pagination-nav__label {
+  color: var(--accent-text);
+}
+
 /* --- FOOTER --- */
 .footer--dark {
   --ifm-footer-background-color: var(--ifm-heading-color);
