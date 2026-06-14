@@ -4,7 +4,7 @@ Guidelines for modifying site design, React components, styles, or layout.
 
 ## Stack
 
-- Docusaurus 3.8.1 (React 18)
+- Docusaurus 3.10.1 (React 18)
 - CSS Modules (`.module.css`) for components, global CSS (`src/css/custom.css`) for theme overrides
 - Fonts: Newsreader Variable (headings, prose), system sans (UI chrome), JetBrains Mono Variable (code); self-hosted via Fontsource
 - Icons: inline SVGs in React components (no icon library)
