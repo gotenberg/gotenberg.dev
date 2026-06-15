@@ -574,11 +574,11 @@ a[class*="sidebarLogo"] b {
   line-height: 1;
 }
 
-/* Optically center the blackletter cap within the block (it sits high in its
-   line box). */
+/* Center the blackletter cap's ink within the block (it sits high in its line
+   box). At 0.13em the black margin above and below the ink is equal. */
 .brand-versal__letter {
   display: inline-block;
-  transform: translateY(0.04em);
+  transform: translateY(0.13em);
 }
 
 .navbar__link {
