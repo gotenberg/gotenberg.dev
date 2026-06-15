@@ -642,6 +642,18 @@ a[class*="sidebarLogo"] b {
   color: var(--accent-text);
   background-color: rgba(42, 111, 147, 0.08);
   font-weight: 600;
+  border-left: 3px solid var(--ifm-color-primary);
+  border-radius: 0 6px 6px 0;
+  padding-left: 9px;
+}
+
+/* Category headers can be "active" when a page inside them is open, but they
+   are not leaf pages: no "you are here" bar on them. */
+.menu__list-item-collapsible > .menu__link--active {
+  border-left: none;
+  border-radius: 6px;
+  padding-left: 12px;
+  background-color: transparent;
 }
 
 .menu__list-item-collapsible > .menu__link {
