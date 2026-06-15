@@ -599,6 +599,34 @@ a[class*="sidebarLogo"] b {
   color: var(--accent-text);
 }
 
+/* Mobile navbar drawer: the navbar links render as .menu__link in the drawer's
+   first panel, so they pick up the doc-sidebar serif style. Restore the desktop
+   navbar treatment (uppercase, letter-spaced sans). The second panel is the doc
+   sidebar and keeps its own style. */
+.navbar-sidebar__items .navbar-sidebar__item:first-child .menu__link {
+  font-family: var(--ifm-font-family-base);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ifm-color-content-secondary);
+}
+
+.navbar-sidebar__items .navbar-sidebar__item:first-child .menu__link:hover {
+  color: var(--ifm-heading-color);
+  background-color: transparent;
+}
+
+/* Active navbar link: blue text like desktop, without the doc-sidebar's "you
+   are here" left bar. */
+.navbar-sidebar__items .navbar-sidebar__item:first-child .menu__link--active {
+  color: var(--accent-text);
+  border-left: none;
+  border-radius: 6px;
+  padding-left: 12px;
+  background-color: transparent;
+}
+
 .footer__title {
   font-family: var(--font-serif);
   font-optical-sizing: auto;
