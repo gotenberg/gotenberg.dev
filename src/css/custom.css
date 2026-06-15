@@ -685,7 +685,11 @@ a[class*="sidebarLogo"] b {
 .sidebar-method-head .menu__link::before {
   display: inline-block;
   margin-right: 6px;
-  padding: 2px 6px;
+  /* All-caps text sits high in its line box, so symmetric padding leaves the
+     pill bottom-heavy. More top padding than bottom optically centers the
+     background on the letters; the small lift keeps the label on the link's
+     baseline. */
+  padding: 4px 6px 0;
   min-width: 40px;
   font-size: 0.65rem;
   font-weight: 800;
@@ -693,6 +697,7 @@ a[class*="sidebarLogo"] b {
   border-radius: 2px;
   vertical-align: middle;
   line-height: 1.5;
+  transform: translateY(-1.5px);
 }
 
 .sidebar-method-post .menu__link::before {
