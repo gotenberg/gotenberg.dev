@@ -51,6 +51,17 @@
   /* Rubric red: printer's marks only. Never on links, buttons,
      or backgrounds. */
   --rubric: #b42318;
+
+  /* Code syntax palette, shared by the docs (Prism) and the homepage terminal
+     so both read identically, on the dark ink-plate. */
+  --code-bg: var(--ink-plate);
+  --code-plain: #e2e8f0;
+  --code-comment: #94a3b8;
+  --code-command: #7dd3fc;
+  --code-flag: #c4b5fd;
+  --code-string: #fbbf24;
+  --code-url: #6ee7b7;
+  --code-punct: #94a3b8;
 }
 
 /* --- ACCESSIBILITY --- */

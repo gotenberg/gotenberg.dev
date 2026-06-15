@@ -1,6 +1,55 @@
 const { themes } = require("prism-react-renderer");
 const lightTheme = themes.github;
 
+// Code theme driven by the shared --code-* CSS variables (custom.css), so the
+// docs code blocks and the homepage terminal render with one identical palette.
+// Inline style values may reference CSS variables.
+const codeTheme = {
+  plain: { color: "var(--code-plain)", backgroundColor: "var(--code-bg)" },
+  styles: [
+    {
+      types: ["comment", "prolog", "doctype", "cdata"],
+      style: { color: "var(--code-comment)", fontStyle: "italic" },
+    },
+    { types: ["namespace"], style: { opacity: 0.7 } },
+    {
+      types: ["punctuation", "operator", "entity"],
+      style: { color: "var(--code-punct)" },
+    },
+    {
+      types: ["string", "attr-value", "char", "inserted"],
+      style: { color: "var(--code-string)" },
+    },
+    {
+      types: ["number", "boolean", "constant", "symbol", "regex", "url"],
+      style: { color: "var(--code-url)" },
+    },
+    {
+      types: [
+        "attr-name",
+        "variable",
+        "property",
+        "parameter",
+        "selector",
+        "deleted",
+      ],
+      style: { color: "var(--code-flag)" },
+    },
+    {
+      types: [
+        "keyword",
+        "atrule",
+        "function",
+        "function-name",
+        "class-name",
+        "builtin",
+        "tag",
+      ],
+      style: { color: "var(--code-command)" },
+    },
+  ],
+};
+
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
   title: "Gotenberg",
@@ -151,7 +200,8 @@ module.exports = {
       copyright: `Copyright © ${new Date().getFullYear()} Julien Neuhart.<br /> Built with <a href="https://docusaurus.io" target="_blank">Docusaurus</a>.`,
     },
     prism: {
-      theme: themes.nightOwl,
+      theme: codeTheme,
+      darkTheme: codeTheme,
       additionalLanguages: ["bash", "docker", "json"],
     },
     colorMode: {

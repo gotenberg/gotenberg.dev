@@ -493,31 +493,31 @@
 }
 
 .cPlain {
-  color: #e2e8f0;
+  color: var(--code-plain);
 }
 
 .cCommand {
-  color: #7dd3fc;
+  color: var(--code-command);
 }
 
 .cFlag {
-  color: #c4b5fd;
+  color: var(--code-flag);
 }
 
 .cString {
-  color: #fbbf24;
+  color: var(--code-string);
 }
 
 .cUrl {
-  color: #6ee7b7;
+  color: var(--code-url);
 }
 
 .cOperator {
-  color: #94a3b8;
+  color: var(--code-punct);
 }
 
 .cComment {
-  color: #94a3b8;
+  color: var(--code-comment);
   font-style: italic;
 }
 
