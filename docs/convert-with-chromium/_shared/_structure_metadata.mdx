@@ -10,13 +10,20 @@ import FlattenPDFEngines from "../../_shared/_flatten_pdfengines.mdx";
 
 Automatically creates a PDF bookmark pane (sidebar) based on your HTML headings (`<h1>` to `<h6>`). Your HTML must use proper heading tags to generate the hierarchy.
 
+:::info Implies tagged PDF
+
+Chromium builds the outline from the tagged PDF structure tree. Setting `generateDocumentOutline=true` therefore enables `generateTaggedPdf` automatically. An outline cannot be produced without it.
+
+:::
+
 <ApiEndpoint
   formFields={[
     {
       name: "generateDocumentOutline",
       type: "boolean",
       defaultValue: "false",
-      description: "Embeds the document outline (bookmarks) into the PDF.",
+      description:
+        "Embeds the document outline (bookmarks) into the PDF. Enables `generateTaggedPdf` automatically.",
     },
   ]}
   curl={`
