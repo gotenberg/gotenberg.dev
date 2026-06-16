@@ -7,16 +7,17 @@
 
 /* --- FONTS AND VARIABLES --- */
 :root {
-  /* Ink-blue: a deep mineral blue that sits with the warm paper and rubric
-     red. One blue across the homepage and the docs. The light/lighter shades
-     are tuned to read on the dark ink-plate band. */
-  --ifm-color-primary: #2a6f93;
-  --ifm-color-primary-dark: #246180;
-  --ifm-color-primary-darker: #20566f;
-  --ifm-color-primary-darkest: #1a4659;
-  --ifm-color-primary-light: #4f95b8;
-  --ifm-color-primary-lighter: #5ea0c1;
-  --ifm-color-primary-lightest: #88bcd6;
+  /* Ink-blue: a mineral cyan-blue, the daylight sibling of the terminal's
+     command color (same hue, darkened for legibility on the warm paper). One
+     blue across the homepage and the docs; the light/lighter shades are tuned
+     to read on the dark ink-plate band. */
+  --ifm-color-primary: #0e7ba3;
+  --ifm-color-primary-dark: #0c6a8d;
+  --ifm-color-primary-darker: #0b5c7a;
+  --ifm-color-primary-darkest: #094b63;
+  --ifm-color-primary-light: #1eb5eb;
+  --ifm-color-primary-lighter: #3abeee;
+  --ifm-color-primary-lightest: #72d0f3;
 
   /* Paper and ink: warm neutrals so the serif reads typeset, never cream. */
   --ifm-background-color: #fdfcfa;
@@ -44,7 +45,7 @@
   --ifm-button-border-radius: 2px;
   --ifm-code-border-radius: 3px;
 
-  /* The ink-blue clears WCAG AA on paper (~7:1), so body-size links use it
+  /* The ink-blue clears WCAG AA on paper (~4.7:1), so body-size links use it
      directly. */
   --accent-text: var(--ifm-color-primary);
 
@@ -113,7 +114,7 @@
 
 /* --- DETAILS --- */
 ::selection {
-  background: rgba(42, 111, 147, 0.18);
+  background: rgba(14, 123, 163, 0.18);
   color: inherit;
 }
 
@@ -318,7 +319,7 @@ h4:hover > .hash-link,
   text-decoration: underline;
   text-decoration-thickness: 1.5px;
   text-underline-offset: 3px;
-  text-decoration-color: rgba(42, 111, 147, 0.3);
+  text-decoration-color: rgba(14, 123, 163, 0.3);
   transition: text-decoration-color 0.2s ease, color 0.2s ease;
   font-weight: 500;
 }
@@ -444,8 +445,8 @@ h4:hover > .hash-link,
 }
 
 .alert--info {
-  background-color: rgba(42, 111, 147, 0.06);
-  border-color: rgba(42, 111, 147, 0.2);
+  background-color: rgba(14, 123, 163, 0.06);
+  border-color: rgba(14, 123, 163, 0.2);
   border-left-color: var(--ifm-color-primary);
 }
 
@@ -492,7 +493,7 @@ h4:hover > .hash-link,
 
 .markdown .alert--info a {
   color: var(--ifm-color-primary-darkest);
-  text-decoration-color: rgba(42, 111, 147, 0.4);
+  text-decoration-color: rgba(14, 123, 163, 0.4);
 }
 
 .markdown .alert--success a {
@@ -668,7 +669,7 @@ a[class*="sidebarLogo"] b {
 
 .menu__link--active {
   color: var(--accent-text);
-  background-color: rgba(42, 111, 147, 0.08);
+  background-color: rgba(14, 123, 163, 0.08);
   font-weight: 600;
   border-left: 3px solid var(--ifm-color-primary);
   border-radius: 0 6px 6px 0;
