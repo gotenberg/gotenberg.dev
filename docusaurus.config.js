@@ -101,6 +101,10 @@ module.exports = {
     navbar: {
       title: "Gotenberg",
       hideOnScroll: true,
+      logo: {
+        alt: "Gotenberg Logo",
+        src: "img/logo.png",
+      },
       items: [
         {
           type: "doc",

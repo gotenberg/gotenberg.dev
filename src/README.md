@@ -6,7 +6,7 @@ Guidelines for modifying site design, React components, styles, or layout.
 
 - Docusaurus 3.10.1 (React 18)
 - CSS Modules (`.module.css`) for components, global CSS (`src/css/custom.css`) for theme overrides
-- Fonts: Newsreader Variable (headings, prose), system sans (UI chrome), JetBrains Mono Variable (code), UnifrakturMaguntia (blackletter, brand versal only); self-hosted via Fontsource
+- Fonts: Newsreader Variable (headings, prose), system sans (UI chrome), JetBrains Mono Variable (code); self-hosted via Fontsource
 - Icons: inline SVGs in React components (no icon library)
 - Images: `@docusaurus/plugin-ideal-image` for optimization
 
@@ -39,7 +39,7 @@ HTTP method badges: tinted background with dark text (WCAG AA), e.g. POST `rgba(
 - Headings (h1-h3), the brand wordmark, TOC, and footer links: Newsreader Variable, weight 600, `font-optical-sizing: auto`, letter-spacing -0.005em
 - Prose and UI (body text, buttons, badges, param lists, sidebar links): system sans
 - Navbar links: uppercase small-caps system sans (letter-spaced), distinct from the serif brand wordmark
-- Brand mark: the wordmark's initial "G" as a blackletter versal (UnifrakturMaguntia) reversed out of an ink block (`src/theme/Logo`); the caricature is homepage-hero only
+- Brand mark: the Gutenberg caricature (`static/img/logo.png`) as the navbar and footer logo, with the "Gotenberg" wordmark in the serif; the larger `logo_hero.png` portrait is the homepage hero
 - H2: short 2px ink rule above (chapter mark), no underline
 - Lede: the paragraph after h1 renders larger (1.2rem) in heading ink
 - Stats and tables: lining tabular numerals
