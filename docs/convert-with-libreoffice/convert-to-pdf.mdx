@@ -331,6 +331,8 @@ curl \\
 
 Set `exportFormFields` to `false` to prevent LibreOffice from creating interactive PDF widgets, effectively flattening them during conversion. Faster than post-processing.
 
+This also fixes clipping when form fields reference fonts that aren't embedded: LibreOffice sizes the widget boxes with a fallback font, so they come out too small. Flattening removes the widgets and the mismatch.
+
 <ApiEndpoint
   formFields={[
     {
