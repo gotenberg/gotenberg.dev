@@ -95,6 +95,7 @@ Embed content in the document instead of linking it. There is no opt-out: the bl
 ### Server Errors (500)
 
 - **Resource Limits:** Office document conversion is resource-heavy. Try increasing Gotenberg’s memory and CPU allocations ([Issue #465](https://github.com/gotenberg/gotenberg/issues/465)).
+- **Retrying:** A `500` from `/forms/libreoffice/convert` means no form field explains the failure, so the request is valid and worth retrying. A `400` names the field to correct and fails the same way on every attempt. See [Deciding Whether to Retry](/docs/convert-with-libreoffice/convert-to-pdf#deciding-whether-to-retry).
 
 ### UUID Printed in CSV Page Headers
 

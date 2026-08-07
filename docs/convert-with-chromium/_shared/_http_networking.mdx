@@ -47,6 +47,8 @@ To restrict a header to specific URLs, append `;scope=` with a regex. The scope 
 - `https://data.internal.api/v1` → header sent
 - `https://google.com/fonts` → header not sent
 
+A request carries at most 64 headers, and a `scope` pattern at most 1024 characters. Gotenberg matches every scoped pattern against every browser request, so it also caps the total time a conversion spends matching. Past that cap the remaining scoped headers are not sent. Keep the patterns simple: nested quantifiers such as `(a+)+` backtrack badly and exhaust the cap on their own.
+
 <ApiEndpoint
   formFields={[
     {

@@ -70,7 +70,19 @@ Body: {output-file}
     {
       status: 400,
       message: "Bad Request",
-      description: "The request had one or more invalid form fields.",
+      description:
+        "The request had one or more invalid form fields, or LibreOffice rejected the document itself. Retrying sends the same request and fails the same way.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+      `,
+    },
+    {
+      status: 500,
+      message: "Internal Server Error",
+      description:
+        "LibreOffice failed for a reason no form field explains. The request is valid and may be retried.",
       body: `
 Content-Type: text/plain; charset=UTF-8
 Gotenberg-Trace: {trace}
@@ -90,6 +102,16 @@ Body: {error}
     },
   ]}
 />
+
+### Deciding Whether to Retry
+
+LibreOffice reports a failure without naming its cause, so Gotenberg blames the request only when one of its inputs is implicated.
+
+A `400` means a form field or the document explains the failure: a malformed `nativePageRanges`, a missing or wrong `password`, a document supplied with a `password` it does not need, or a document LibreOffice cannot read or convert. The error names the field to correct.
+
+A `500` means nothing in the request explains it, so the conversion failed on the server. Large documents under memory pressure land here. Retry these, and increase the container's memory and CPU if they persist.
+
+Cap the attempts either way. Some documents fail on every attempt, and Gotenberg cannot always tell those apart from a transient failure.
 
 ## Rendering Behavior
 
