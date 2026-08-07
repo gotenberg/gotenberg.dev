@@ -28,7 +28,7 @@ Operators exposing Gotenberg to untrusted callers opt into stricter checks via t
 
 Hardening for specific primitives. No setting turns them off.
 
-**DNS-rebind pinning proxy.** Chromium and LibreOffice route every outbound HTTP/HTTPS request through an in-process proxy. The proxy resolves DNS once and pins the dial to the validated IP. Setting `CHROMIUM_PROXY_SERVER` or `CHROMIUM_HOST_RESOLVER_RULES` skips it.
+**DNS-rebind pinning proxy.** Chromium and LibreOffice route every outbound HTTP/HTTPS request through an in-process proxy. The proxy resolves DNS once and pins the dial to the validated IP. Setting `CHROMIUM_PROXY_SERVER` or `CHROMIUM_HOST_RESOLVER_RULES` skips it, as does a hop carried by the [environment proxy](#environment-proxy), which owns DNS for the hops it carries.
 
 **`file://` rejected on URL routes.** `/forms/chromium/convert/url` and `/forms/chromium/screenshot/url` return `400 Bad Request` for any `file://` URL. Use the `html` or `markdown` variants to render local HTML.
 
@@ -62,6 +62,31 @@ Rejected URLs return `403 Forbidden`. LibreOffice fetches are the exception: the
 1. **Deny-list always wins.** A deny-list match rejects the URL regardless of allow-list or IP-class variables.
 2. **Allow-list bypasses the IP check.** A match skips `*_DENY_PRIVATE_IPS` and `*_DENY_PUBLIC_IPS`.
 3. **IP-class variables apply last.** Both flags on rejects every URL except allow-list matches.
+
+## Environment Proxy
+
+Gotenberg ignores the proxy environment variables by default. Each module opts in with its own variable, all `false` by default.
+
+| Environment variable                         | Effect                                                           |
+| :------------------------------------------- | :--------------------------------------------------------------- |
+| `CHROMIUM_ENABLE_ENVIRONMENT_PROXY`          | Routes Chromium navigations and sub-resources through the proxy. |
+| `LIBREOFFICE_ENABLE_ENVIRONMENT_PROXY`       | Routes LibreOffice outbound fetches through the proxy.           |
+| `API_DOWNLOAD_FROM_ENABLE_ENVIRONMENT_PROXY` | Routes `downloadFrom` fetches through the proxy.                 |
+| `WEBHOOK_ENABLE_ENVIRONMENT_PROXY`           | Routes webhook callbacks through the proxy.                      |
+
+Gotenberg reads `HTTP_PROXY`, `HTTPS_PROXY` and `NO_PROXY`, plus their lowercase spellings, and authenticates with the credentials embedded in the proxy URL. Chromium and LibreOffice cannot authenticate to a proxy themselves, so Gotenberg performs the `CONNECT` handshake for them. Give those two an `http` or `https` proxy URL.
+
+Enabling a variable relaxes no filter. The allow-list, the deny-list and the IP-class checks run against the destination URL before the request reaches the proxy, on every redirect hop. Only DNS pinning changes: a hop the proxy carries is dialed against the proxy, which owns DNS from there, while a hop the proxy declines, such as a `NO_PROXY` host, stays pinned to the IPs resolved during validation.
+
+`CHROMIUM_ENABLE_ENVIRONMENT_PROXY` needs `CHROMIUM_PROXY_SERVER` and `CHROMIUM_HOST_RESOLVER_RULES` unset. Both skip the pinning proxy that performs the upstream handshake.
+
+Gotenberg refuses to start when a module has its variable on and a proxy variable that is not a usable proxy URL. The error names the variable and never prints its value.
+
+:::warning
+
+Gotenberg _8.34.0_ and earlier inherited `HTTP_PROXY` and `HTTPS_PROXY` implicitly, so allow-listed webhook callbacks, `downloadFrom` fetches and LibreOffice fetches egressed through the proxy with no variable set. They now egress directly. Set the module variable to restore the proxy.
+
+:::
 
 ## Recipes
 
