@@ -26,14 +26,14 @@ Since _8.34.0_, traces carry richer detail:
 
 Configure tracing with standard OTEL environment variables:
 
-| Environment variable                 | Description                                                              | Default     |
-| ------------------------------------ | ------------------------------------------------------------------------ | ----------- |
-| `OTEL_TRACES_EXPORTER`               | Trace exporter. Options: `none`, `otlp`, `jaeger`, `zipkin`.             | `none`      |
-| `OTEL_EXPORTER_OTLP_ENDPOINT`        | OTLP endpoint for all signals (traces, metrics, logs).                   | None        |
-| `OTEL_EXPORTER_OTLP_TRACES_ENDPOINT` | OTLP endpoint specifically for traces. Overrides the generic endpoint.   | None        |
-| `OTEL_EXPORTER_OTLP_PROTOCOL`        | OTLP transport protocol. Options: `grpc`, `http/protobuf`.               | `grpc`      |
-| `OTEL_EXPORTER_OTLP_HEADERS`         | Headers to send with OTLP requests (e.g., `Authorization=Bearer token`). | None        |
-| `OTEL_SERVICE_NAME`                  | Logical service name attached to all telemetry.                          | `gotenberg` |
+| Environment variable                 | Description                                                              | Default         |
+| ------------------------------------ | ------------------------------------------------------------------------ | --------------- |
+| `OTEL_TRACES_EXPORTER`               | Trace exporter. Options: `none`, `otlp`, `console`.                      | `none`          |
+| `OTEL_EXPORTER_OTLP_ENDPOINT`        | OTLP endpoint for all signals (traces, metrics, logs).                   | None            |
+| `OTEL_EXPORTER_OTLP_TRACES_ENDPOINT` | OTLP endpoint specifically for traces. Overrides the generic endpoint.   | None            |
+| `OTEL_EXPORTER_OTLP_PROTOCOL`        | OTLP transport protocol. Options: `grpc`, `http/protobuf`.               | `http/protobuf` |
+| `OTEL_EXPORTER_OTLP_HEADERS`         | Headers to send with OTLP requests (e.g., `Authorization=Bearer token`). | None            |
+| `OTEL_SERVICE_NAME`                  | Logical service name attached to all telemetry.                          | `gotenberg`     |
 
 ```yaml title="compose.yaml"
 services:
@@ -42,6 +42,8 @@ services:
     environment:
       OTEL_SERVICE_NAME: "gotenberg"
       OTEL_TRACES_EXPORTER: "otlp"
+      # Port 4317 is gRPC. The default protocol is http/protobuf.
+      OTEL_EXPORTER_OTLP_PROTOCOL: "grpc"
       OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector:4317"
 
   otel-collector:
@@ -70,7 +72,7 @@ Configure metrics export with standard OTEL environment variables:
 
 | Environment variable                  | Description                                                             | Default       |
 | ------------------------------------- | ----------------------------------------------------------------------- | ------------- |
-| `OTEL_METRICS_EXPORTER`               | Metrics exporter. Options: `none`, `otlp`, `prometheus`.                | `none`        |
+| `OTEL_METRICS_EXPORTER`               | Metrics exporter. Options: `none`, `otlp`, `prometheus`, `console`.     | `none`        |
 | `OTEL_EXPORTER_OTLP_ENDPOINT`         | OTLP endpoint for all signals (traces, metrics, logs).                  | None          |
 | `OTEL_EXPORTER_OTLP_METRICS_ENDPOINT` | OTLP endpoint specifically for metrics. Overrides the generic endpoint. | None          |
 | `OTEL_METRICS_EXEMPLAR_FILTER`        | Exemplar filter. Options: `trace_based`, `always_on`, `always_off`.     | `trace_based` |
@@ -89,6 +91,7 @@ services:
     image: gotenberg/gotenberg:8
     environment:
       OTEL_METRICS_EXPORTER: "otlp"
+      OTEL_EXPORTER_OTLP_PROTOCOL: "grpc"
       OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector:4317"
 
   otel-collector:
@@ -158,7 +161,7 @@ Configure log export with standard OTEL environment variables:
 
 | Environment variable               | Description                                                          | Default |
 | ---------------------------------- | -------------------------------------------------------------------- | ------- |
-| `OTEL_LOGS_EXPORTER`               | Logs exporter. Options: `none`, `otlp`.                              | `none`  |
+| `OTEL_LOGS_EXPORTER`               | Logs exporter. Options: `none`, `otlp`, `console`.                   | `none`  |
 | `OTEL_EXPORTER_OTLP_ENDPOINT`      | OTLP endpoint for all signals (traces, metrics, logs).               | None    |
 | `OTEL_EXPORTER_OTLP_LOGS_ENDPOINT` | OTLP endpoint specifically for logs. Overrides the generic endpoint. | None    |
 
@@ -210,6 +213,7 @@ services:
       OTEL_TRACES_EXPORTER: "otlp"
       OTEL_METRICS_EXPORTER: "otlp"
       OTEL_LOGS_EXPORTER: "otlp"
+      OTEL_EXPORTER_OTLP_PROTOCOL: "grpc"
       OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector:4317"
 
   otel-collector:
