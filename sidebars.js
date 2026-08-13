@@ -113,6 +113,11 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "manipulate-pdfs/optimize-pdfs",
+          className: "sidebar-method-post",
+        },
+        {
+          type: "doc",
           id: "manipulate-pdfs/watermark-pdfs",
           className: "sidebar-method-post",
         },

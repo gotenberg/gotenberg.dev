@@ -26,6 +26,13 @@ import WaitFor from "./_wait_for.mdx";
         "Define whether to clip the screenshot according to the device dimensions.",
     },
     {
+      name: "selector",
+      type: "string",
+      defaultValue: "None",
+      description:
+        "Clip the screenshot to the bounding box of the first element matching this CSS selector.",
+    },
+    {
       name: "deviceScaleFactor",
       type: "number",
       defaultValue: "1",

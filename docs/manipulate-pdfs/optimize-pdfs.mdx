@@ -1,0 +1,103 @@
+---
+id: optimize-pdfs
+title: Optimize PDFs
+---
+
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import ConfigurationInfoPDFEngines from "../_shared/_configuration_info_pdfengines.mdx";
+
+Reduces the file size of one or more PDF files by re-encoding their images to JPEG. Text, vectors, fonts, and structure are left untouched.
+
+<ConfigurationInfoPDFEngines />
+
+Only lossless images above a size threshold are re-encoded. Already-compressed, transparent, and CMYK images are skipped, so the optimization never enlarges a file or breaks transparency.
+
+## Basics
+
+<ApiEndpoint
+  method="POST"
+  path="/forms/pdfengines/optimize"
+  headers={[
+    {
+      name: "Gotenberg-Output-Filename",
+      type: "string",
+      required: false,
+      description:
+        "The filename of the resulting file - Gotenberg automatically appends the file extension. Defaults to a random UUID filename.",
+    },
+    {
+      name: "Gotenberg-Trace",
+      type: "string",
+      required: false,
+      description:
+        "A custom request ID to identify the request in the logs; overrides the default UUID.",
+    },
+  ]}
+  formFiles={[
+    {
+      name: "files",
+      type: "file[]",
+      required: true,
+      description: "PDF files to optimize.",
+    },
+  ]}
+  formFields={[
+    {
+      name: "imageQuality",
+      type: "int",
+      required: false,
+      description:
+        "The JPEG quality applied to each re-encoded image, between 1 and 100. Defaults to 80.",
+    },
+  ]}
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/pdfengines/optimize \\
+--form files=@/path/to/my.pdf \\
+--form imageQuality=80 \\
+-o my.pdf`}
+  responses={[
+    {
+      status: 200,
+      message: "OK",
+      description:
+        "The optimized PDF file. Multiple input files produce a ZIP archive.",
+      body: `
+Content-Disposition: attachment; filename={output-filename.ext}
+Content-Type: {content-type}
+Content-Length: {content-length}
+Gotenberg-Trace: {trace}
+Body: {output-file}
+      `,
+    },
+    {
+      status: 400,
+      message: "Bad Request",
+      description: "The request had one or more invalid form fields.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+      `,
+    },
+    {
+      status: 503,
+      message: "Service Unavailable",
+      description:
+        "The request did not complete within the configured maximum duration.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+      `,
+    },
+  ]}
+/>
+
+## Post-processing
+
+Image optimization is also available on the Chromium and LibreOffice conversion routes and on [Merge](/docs/manipulate-pdfs/merge-pdfs) and [Split](/docs/manipulate-pdfs/split-pdfs), using the `optimizeImages` and `imageQuality` form fields. Set `optimizeImages` to `true` to optimize the resulting PDF in the same request.
+
+## What's Next?
+
+Combine files with [Merge](/docs/manipulate-pdfs/merge-pdfs), or convert to an archival format with [PDF/A & PDF/UA](/docs/manipulate-pdfs/pdfa-pdfua).
