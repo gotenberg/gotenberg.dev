@@ -32,6 +32,8 @@ import PDFAPDFUAPDFEngines from "../../_shared/_pdfa_pdfua_pdfengines.mdx";
 
 Embeds a logical structure tree (headings, paragraphs) during conversion. Essential for screen readers.
 
+Prefer it over the `pdfua` post-processing pass below when accessibility matters more than strict compliance.
+
 <ApiEndpoint
   curl={`
 curl \\

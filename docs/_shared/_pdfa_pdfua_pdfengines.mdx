@@ -6,6 +6,8 @@ PDF/A and encryption are mutually exclusive: requesting both returns `400 Bad Re
 
 When PDF/A runs alongside other post-processing, LibreOffice overwrites `CreateDate`, `ModDate`, and `Keywords`. Other metadata fields are preserved.
 
+LibreOffice rasterizes table cells that carry a background color, which costs accessibility ([Tables Rasterized to Images](/docs/troubleshooting#tables-rasterized-to-images-with-pdfa-or-pdfua)).
+
 {props.showFormFields && props.showCurlExample && (
 
 <ApiEndpoint

@@ -121,6 +121,12 @@ For older versions, increase `LIBREOFFICE_START_TIMEOUT` (default 20s) to comfor
 
 - Starting with version 7.6, LibreOffice no longer supports _PDF/A-1a_. It previously generated _PDF/A-1b_ files anyway, though some validators misidentified them ([LibreOffice commit](https://git.libreoffice.org/core/+/c4b12d06698402984b3ffdbd2c139f261fa35ca1%5E%21)).
 
+### Tables Rasterized to Images with PDF/A or PDF/UA
+
+LibreOffice rasterizes table cells that carry a background color when it re-processes a document for PDF/A or PDF/UA. The resulting images have no alt text, so the output is less accessible than the source ([Issue #1292](https://github.com/gotenberg/gotenberg/issues/1292)).
+
+Removing the background color keeps the table as text. On Chromium routes, `generateTaggedPdf` embeds a structure tree during generation without the LibreOffice pass ([Native Accessibility](/docs/convert-with-chromium/convert-html-to-pdf#native-accessibility-chromium)). For strict PDF/A compliance, convert with an external tool such as Ghostscript.
+
 ### Timeouts (503)
 
 - **Overload:** Check if your instance is overloaded; consider increasing instances or resource allocation.
