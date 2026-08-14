@@ -124,6 +124,21 @@ Body: {error}
   ]}
 />
 
+## Multiple Stamps
+
+Repeat the stamp form fields to apply several stamps in one request. Gotenberg reads `stampSource`, `stampExpression`, `stampPages`, and `stampOptions` as parallel lists and applies each stamp in order. A single occurrence of each field is the single-stamp case above.
+
+Each `image` or `pdf` stamp consumes the uploaded `stamp` files in order; `text` stamps take none.
+
+```bash
+curl \
+--request POST http://localhost:3000/forms/pdfengines/stamp \
+--form files=@/path/to/file.pdf \
+--form stampSource=text --form stampExpression=CONFIDENTIAL \
+--form stampSource=image --form stamp=@/path/to/logo.png \
+-o my.pdf
+```
+
 ## What's Next?
 
 Fix page orientation with [Rotate](/docs/manipulate-pdfs/rotate-pdfs), or combine files with [Merge](/docs/manipulate-pdfs/merge-pdfs).
