@@ -175,57 +175,6 @@ LibreOffice relies on installed fonts to calculate page breaks and layout. Missi
 
 Install all required fonts in your Docker image (via a custom `Dockerfile`). See [Fonts configuration](/docs/configuration#fonts).
 
-### Image Compression
-
-- **Lossless (PNG):** Best for line art, diagrams, or images with flat colors. Enable with `losslessImageCompression`.
-- **Lossy (JPEG):** The default. Best for photographs or complex gradients. Significantly smaller file size.
-
-<ApiEndpoint
-  formFields={[
-    {
-      name: "losslessImageCompression",
-      type: "boolean",
-      defaultValue: "false",
-      description:
-        "Uses lossless (PNG) compression instead of lossy (JPEG) for images.",
-    },
-    {
-      name: "quality",
-      type: "integer",
-      defaultValue: "90",
-      description:
-        "JPEG export quality. Higher values produce better quality but larger files. Between 1 and 100.",
-    },
-    {
-      name: "reduceImageResolution",
-      type: "boolean",
-      defaultValue: "false",
-      description: (
-        <span>
-          Reduces each image to the resolution specified by{" "}
-          <code>maxImageResolution</code>.
-        </span>
-      ),
-    },
-    {
-      name: "maxImageResolution",
-      type: "integer",
-      defaultValue: "300",
-      description:
-        "Target resolution in DPI when reduceImageResolution is true. Possible values: 75, 150, 300, 600, 1200.",
-    },
-  ]}
-  curl={`
-curl \\
---request POST http://localhost:3000/forms/libreoffice/convert \\
---form files=@/path/to/document.docx \\
---form losslessImageCompression=false \\
---form quality=50 \\
---form reduceImageResolution=true \\
---form maxImageResolution=75 \\
--o my.pdf`}
-/>
-
 ### Notes & Slides
 
 <ApiEndpoint
@@ -685,7 +634,60 @@ curl \\
   curlOutput={`-o my.pdf`}
 />
 
-## Optimize Images (PDF Engines)
+## Image Compression
+
+### Compress Images (LibreOffice)
+
+- **Lossless (PNG):** Best for line art, diagrams, or images with flat colors. Enable with `losslessImageCompression`.
+- **Lossy (JPEG):** The default. Best for photographs or complex gradients. Significantly smaller file size.
+
+<ApiEndpoint
+  formFields={[
+    {
+      name: "losslessImageCompression",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Uses lossless (PNG) compression instead of lossy (JPEG) for images.",
+    },
+    {
+      name: "quality",
+      type: "integer",
+      defaultValue: "90",
+      description:
+        "JPEG export quality. Higher values produce better quality but larger files. Between 1 and 100.",
+    },
+    {
+      name: "reduceImageResolution",
+      type: "boolean",
+      defaultValue: "false",
+      description: (
+        <span>
+          Reduces each image to the resolution specified by{" "}
+          <code>maxImageResolution</code>.
+        </span>
+      ),
+    },
+    {
+      name: "maxImageResolution",
+      type: "integer",
+      defaultValue: "300",
+      description:
+        "Target resolution in DPI when reduceImageResolution is true. Possible values: 75, 150, 300, 600, 1200.",
+    },
+  ]}
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/libreoffice/convert \\
+--form files=@/path/to/document.docx \\
+--form losslessImageCompression=false \\
+--form quality=50 \\
+--form reduceImageResolution=true \\
+--form maxImageResolution=75 \\
+-o my.pdf`}
+/>
+
+### Post-Processing (PDF Engines) {#post-processing-pdf-engines-images}
 
 <OptimizeImagesPDFEngines
   showCurlExample={true}
