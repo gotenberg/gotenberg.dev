@@ -58,6 +58,17 @@ fetchData().then(() => {
 });
 ```
 
+The expression may be asynchronous: a returned Promise is awaited and its resolved value is used. This lets you run setup inline before signaling readiness.
+
+```js
+// A Promise-returning expression is awaited.
+(async () => {
+  document.querySelector("#accept").click();
+  await new Promise((r) => setTimeout(r, 2000));
+  return true;
+})();
+```
+
 <ApiEndpoint
   formFields={[
     {
@@ -65,7 +76,7 @@ fetchData().then(() => {
       type: "string",
       defaultValue: "None",
       description:
-        "JavaScript expression evaluated in the page; rendering starts when it returns true.",
+        "JavaScript expression evaluated in the page; rendering starts when it returns true. An async expression that returns a Promise is awaited.",
     },
   ]}
   curl={`
