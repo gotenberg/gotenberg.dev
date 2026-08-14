@@ -44,7 +44,7 @@ Only lossless images above a size threshold are re-encoded. Already-compressed, 
   formFields={[
     {
       name: "imageQuality",
-      type: "int",
+      type: "integer",
       required: false,
       description:
         "The JPEG quality applied to each re-encoded image, between 1 and 100. Defaults to 80.",
@@ -93,10 +93,6 @@ Body: {error}
     },
   ]}
 />
-
-## Post-processing
-
-Image optimization is also available on the Chromium and LibreOffice conversion routes and on [Merge](/docs/manipulate-pdfs/merge-pdfs) and [Split](/docs/manipulate-pdfs/split-pdfs), using the `optimizeImages` and `imageQuality` form fields. Set `optimizeImages` to `true` to optimize the resulting PDF in the same request.
 
 ## What's Next?
 
