@@ -126,6 +126,13 @@ Body: {error}
       description:
         "Extracts existing bookmarks from input files and offsets their page numbers based on their position in the merged document.",
     },
+    {
+      name: "titleBookmarks",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Adds a bookmark per merged document, labeled by its Title metadata (falling back to the filename) and pointing to its first page, with the document's own bookmarks nested underneath.",
+    },
   ]}
 />
 
@@ -139,6 +146,18 @@ curl \\
 --form files=@/path/to/2_pdf.pdf \\
 --form files=@/path/to/3_pdf.pdf \\
 --form autoIndexBookmarks=true \\
+-o my.pdf`}
+/>
+
+Use `titleBookmarks` to build a table of contents from the merged documents. Gotenberg adds one bookmark per input, labeled by its `Title` metadata (or its filename when the title is absent), pointing to that document's first page, with the document's own bookmarks nested beneath it.
+
+<ApiEndpoint
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/pdfengines/merge \\
+--form files=@/path/to/1_pdf.pdf \\
+--form files=@/path/to/2_pdf.pdf \\
+--form titleBookmarks=true \\
 -o my.pdf`}
 />
 
