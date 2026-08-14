@@ -5,6 +5,8 @@ Adds a watermark _behind_ the content of each page during post-processing. Sourc
 
 `image` and `pdf` sources require an uploaded `watermark` file. `watermarkExpression` cannot reference an arbitrary filesystem path; the route returns `400 Bad Request`.
 
+Repeat these fields to apply several watermarks in one request. They are applied in order, and each `image` or `pdf` watermark consumes the uploaded `watermark` files in order.
+
 <SyntaxWatermarkPDFEngines />
 
 {props.showCurlExample && (
