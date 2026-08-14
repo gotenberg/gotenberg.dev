@@ -706,6 +706,12 @@ Use the `pdfa` and `pdfua` form fields to convert the PDF into a standardized fo
 
 LibreOffice rasterizes table cells that carry a background color, which costs accessibility ([Tables Rasterized to Images](/docs/troubleshooting#tables-rasterized-to-images-with-pdfa-or-pdfua)).
 
+:::warning
+
+`pdfua` cannot be combined with `PDF/A-1b`. LibreOffice disables the pairing, so `pdfua=true` has no effect when `pdfa=PDF/A-1b`. Use `PDF/A-2b` or `PDF/A-3b` for a PDF/UA-compliant result.
+
+:::
+
 <ApiEndpoint
   formFields={[
     {
