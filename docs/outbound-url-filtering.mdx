@@ -63,6 +63,32 @@ Rejected URLs return `403 Forbidden`. LibreOffice fetches are the exception: the
 2. **Allow-list bypasses the IP check.** A match skips `*_DENY_PRIVATE_IPS` and `*_DENY_PUBLIC_IPS`.
 3. **IP-class variables apply last.** Both flags on rejects every URL except allow-list matches.
 
+:::danger
+
+An allow-list entry turns off both IP-class checks for every URL it matches, and the pattern alone decides which URLs those are. A pattern that stops at the hostname, such as `^https://trusted\.example\.com`, also matches `https://trusted.example.com.attacker.example/`. Read [Writing a Safe Allow-List](#writing-a-safe-allow-list) before setting one.
+
+:::
+
+## Writing a Safe Allow-List
+
+The pattern is the only thing between a request and an internal host, so write it to match the hosts you trust and nothing else.
+
+1. **Start with `^`.** Without it the pattern matches anywhere in the URL, so `http://attacker.example/?u=trusted.example.com` passes.
+2. **Escape every dot.** An unescaped `.` matches any character, so `internal.example.com` also matches `internalxexamplexcom`.
+3. **Terminate the host** with `/`, `:`, `$`, or a group such as `(:|/|$)`. A pattern that ends at the hostname also matches any suffix an attacker appends.
+4. **Never put `.` or `[^/]` in the host.** Both match `@`, `?` and `#`, so an attacker can move the trusted name into the userinfo or the fragment. A positive class such as `[a-z0-9.-]` cannot leave the authority.
+
+| Pattern                                          | Verdict                                                              |
+| :----------------------------------------------- | :------------------------------------------------------------------- |
+| `trusted\.example\.com`                          | Unanchored. Matches anywhere in the URL.                             |
+| `^https://trusted\.example\.com`                 | Host not terminated. Matches `trusted.example.com.attacker.example`. |
+| `^https://.+\.example\.com/`                     | `.` matches `@` and `#`. Matches `attacker.example/#x.example.com/`. |
+| `.+`                                             | Matches every URL.                                                   |
+| `^https://trusted\.example\.com(:[0-9]+)?(/\|$)` | Safe.                                                                |
+| `^https://[a-z0-9-]+\.example\.com/`             | Safe. The class cannot leave the authority.                          |
+
+Gotenberg audits every allow-list at startup and logs a warning naming the variable and the entry when a pattern shows one of these shapes. The warning never blocks startup.
+
 ## Environment Proxy
 
 Gotenberg ignores the proxy environment variables by default. Each module opts in with its own variable, all `false` by default.
@@ -109,11 +135,11 @@ Whitelist known internal hosts:
 
 ```yaml
 environment:
-  CHROMIUM_ALLOW_LIST: "^https?://[^/]+\\.internal\\.example\\.com"
-  WEBHOOK_ALLOW_LIST: "^https?://hooks\\.internal\\.example\\.com"
+  CHROMIUM_ALLOW_LIST: "^https?://[a-z0-9-]+\\.internal\\.example\\.com(:[0-9]+)?(/|$)"
+  WEBHOOK_ALLOW_LIST: "^https?://hooks\\.internal\\.example\\.com(:[0-9]+)?(/|$)"
 ```
 
-The allow-list match bypasses the IP check for those URLs only.
+Both patterns terminate the host, so they match the internal hosts and nothing that merely starts with them. See [Writing a Safe Allow-List](#writing-a-safe-allow-list).
 
 ### Air-Gapped Network
 
@@ -141,10 +167,10 @@ services:
     environment:
       CHROMIUM_DENY_PRIVATE_IPS: "true"
       CHROMIUM_DENY_PUBLIC_IPS: "true"
-      CHROMIUM_ALLOW_LIST: "^https://(api|cdn|images)\\.internal\\.example\\.com"
+      CHROMIUM_ALLOW_LIST: "^https://(api|cdn|images)\\.internal\\.example\\.com(:[0-9]+)?(/|$)"
 ```
 
-Equivalent of an egress firewall expressed at the Gotenberg layer.
+Equivalent of an egress firewall expressed at the Gotenberg layer. The allow-list is the only gate here, so the pattern has to terminate the host. Without the trailing group it would also admit `https://api.internal.example.com.attacker.example/`.
 
 ### Trusted Network (Default)
 
@@ -178,6 +204,8 @@ If you prefer textual matching, paste the previous regex back into the deny-list
 ```
 ^https?://(10\.|172\.(1[6-9]|2[0-9]|3[01])\.|192\.168\.|169\.254\.|0\.0\.0\.0|127\.|localhost|\[::1\]|\[fd)
 ```
+
+Treat it as best-effort. It matches the address as written, so it misses the forms that resolve to the same host: `http://[::ffff:127.0.0.1]/`, `http://2130706433/`, and any hostname that resolves to a private IP. `*_DENY_PRIVATE_IPS` catches all of them because it checks the resolved address.
 
 8.31.0 also blocked Chromium sub-resources resolving to private IPs by default. 8.32.0 restores the 8.30.x permissive behavior. Set `CHROMIUM_DENY_PRIVATE_IPS=true` for the strict 8.31.0-style posture.
 
