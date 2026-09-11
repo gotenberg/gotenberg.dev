@@ -4,6 +4,8 @@ Inject XMP metadata (Author, Title, Copyright, Keywords, etc.) into the PDF as a
 
 Not all tags are writable. Gotenberg uses ExifTool under the hood. See the [XMP Tag Name documentation](https://exiftool.org/TagNames/XMP.html#pdf) for valid keys. Writing metadata usually breaks **PDF/A** compliance.
 
+A key that is also an ExifTool option name, such as `csv`, `json`, `o`, or `config`, returns `400 Bad Request`. Prefix it with a group, such as `XMP:csv`, to write it as a tag.
+
 {(props.showFormFields || props.showCurlExample) && (
 
 <ApiEndpoint
