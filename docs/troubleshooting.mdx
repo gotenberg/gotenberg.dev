@@ -63,6 +63,14 @@ Before _8.33.0_, a single slow health probe under heavy load flipped `/health` t
 
 Since _8.33.0_, Gotenberg tolerates one transient probe failure and briefly caches successful probe results, so probe spam no longer piles onto a busy engine ([Issue #1561](https://github.com/gotenberg/gotenberg/issues/1561)). The same applies to LibreOffice probes. A genuinely dead process still surfaces on the next probe.
 
+Before _8.37.0_, a probe landing during a planned restart (`CHROMIUM_RESTART_AFTER`, `LIBREOFFICE_RESTART_AFTER`) returned `503`, even though the node kept serving requests. Planned restarts now report healthy ([Issue #1648](https://github.com/gotenberg/gotenberg/issues/1648)).
+
+### Chromium Crashed (503)
+
+Since _8.37.0_, a renderer crash fails the request immediately with `503 Service Unavailable` and the body `Chromium crashed while processing the request. Retry, or reduce the workload if the problem persists.` Before, the request hung until `API_TIMEOUT` ([Issue #1640](https://github.com/gotenberg/gotenberg/issues/1640)).
+
+The request is safe to retry. A page that crashes Chromium on every attempt usually exhausts the container's memory: raise the memory limit or lighten the page.
+
 ### Print Error (-32000)
 
 - This error often occurs when converting massive documents. Increasing container memory might help, but note that it is a known [Chromium bug](https://issues.chromium.org/issues/40842550) ([Issue #788](https://github.com/gotenberg/gotenberg/issues/788)).

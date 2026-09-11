@@ -7,6 +7,8 @@ import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
 
 Reports whether the API and its modules (Chromium, LibreOffice) are healthy. Use it for Kubernetes liveness probes or monitoring agents.
 
+A module going through a planned restart, after `CHROMIUM_RESTART_AFTER` or `LIBREOFFICE_RESTART_AFTER` conversions, still reports healthy: requests arriving meanwhile wait for the new process instead of failing. An unplanned restart, after a crash or a failed probe, reports unhealthy.
+
 ## Basics
 
 <ApiEndpoint
