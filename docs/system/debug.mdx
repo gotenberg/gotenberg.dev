@@ -9,6 +9,8 @@ Returns the runtime configuration, active modules, and dependency versions (Chro
 
 Only available when `API_ENABLE_DEBUG_ROUTE` is set to `true`. See the [API module configuration](/docs/configuration#api).
 
+The route exposes the configuration of every module to anyone who can reach it. Since _8.37.0_, Gotenberg logs a warning at startup when the route is enabled without basic or OIDC authentication. Enable one, or keep the route behind a gateway that authenticates for Gotenberg.
+
 ## Basics
 
 <ApiEndpoint
