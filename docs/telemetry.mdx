@@ -5,6 +5,8 @@ title: Telemetry
 
 Gotenberg integrates [OpenTelemetry](https://opentelemetry.io/) for distributed tracing, metrics export, and structured log shipping. All three signals are configured via standard OTEL environment variables.
 
+Each signal stays off until its exporter variable, `OTEL_TRACES_EXPORTER`, `OTEL_METRICS_EXPORTER`, or `OTEL_LOGS_EXPORTER`, is set. Before _8.37.0_, an unset variable fell back to the OTLP exporter, which then failed against `localhost:4318` and logged export errors when no collector listened there.
+
 ## Traces
 
 Every HTTP request creates a server span. External tool calls (Chromium, LibreOffice, QPDF, pdfcpu, PDFtk, ExifTool) and outbound HTTP calls (webhooks, download-from) create child spans with client semantics. Trace context propagates to outbound requests via [W3C Trace Context](https://www.w3.org/TR/trace-context/) headers.
