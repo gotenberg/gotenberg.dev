@@ -17,6 +17,8 @@ By default, requests are synchronous: you send a file and wait for the PDF. For 
 
 Webhook callbacks carry a W3C [`traceparent`](https://www.w3.org/TR/trace-context/) header. Since _8.34.0_, asynchronous processing continues the caller's trace: send a `traceparent` header with the request and every callback (success, error, events) carries the same trace id. This is distinct from `Gotenberg-Trace`, a plain correlation id unrelated to OpenTelemetry. See [Telemetry](/docs/telemetry).
 
+Gotenberg retries a callback after a connection error, a `429`, or a `5xx` other than `501`, up to `WEBHOOK_MAX_RETRY` times, waiting between `WEBHOOK_RETRY_MIN_WAIT` and `WEBHOOK_RETRY_MAX_WAIT`. Other `4xx` responses are not retried. Since _8.37.0_, a `Retry-After` header never stretches a wait past `WEBHOOK_RETRY_MAX_WAIT`, and each callback, retries included, gives up after `WEBHOOK_CLIENT_TIMEOUT × (WEBHOOK_MAX_RETRY + 1) + WEBHOOK_RETRY_MAX_WAIT × WEBHOOK_MAX_RETRY`, at least one second. With the defaults, that is 270 seconds.
+
 See the [Webhook module configuration](/docs/configuration#webhook) for retries, timeouts, and allowed URLs. Tools like [PipeDream](https://pipedream.com/) or [Webhook.site](https://webhook.site) are great for testing.
 
 <ApiEndpoint
@@ -188,6 +190,10 @@ The `downloadFrom` form field accepts a **JSON-formatted array**. Each item in t
 | `extraHttpHeaders` | A JSON object containing extra HTTP headers to send when fetching this specific URL.                                                                                                                                                                                                                    | `None`                                                           |
 | `embedded`         | Attaches the downloaded file inside the output PDF (legacy, prefer `field`). See [Attachments](/docs/manipulate-pdfs/attachments).                                                                                                                                                                      | `false`                                                          |
 | `field`            | Routes the downloaded file to a feature: `"embedded"` attaches it (see [Attachments](/docs/manipulate-pdfs/attachments)), `"watermark"` and `"stamp"` supply the [watermark](/docs/manipulate-pdfs/watermark-pdfs) or [stamp](/docs/manipulate-pdfs/stamp-pdfs) file. Takes precedence over `embedded`. | `""` (regular file)                                              |
+
+**Limits**
+
+Since _8.37.0_, Gotenberg fetches at most `API_DOWNLOAD_FROM_MAX_CONCURRENCY` entries at once per request (default `10`), and returns `400 Bad Request` when the array holds more than `API_DOWNLOAD_FROM_MAX_ENTRIES` entries (default `0`, no limit). Every download, retries included, shares the request deadline set by `API_TIMEOUT`, and a `Retry-After` header never stretches a wait past it. See the [API module configuration](/docs/configuration#api).
 
 :::warning Known Issue: Empty Media Types
 
