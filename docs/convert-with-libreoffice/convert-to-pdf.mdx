@@ -704,6 +704,8 @@ Use the `pdfa` and `pdfua` form fields to convert the PDF into a standardized fo
 - **PDF/A:** Specialized for the digital preservation of electronic documents (Archival).
 - **PDF/UA:** Specialized for Universal Accessibility, ensuring documents are accessible to assistive technologies.
 
+Since _8.38.0_, `generateTaggedPdf` tags the PDF for assistive technologies without declaring PDF/UA conformance. `pdfua=true` implies it.
+
 LibreOffice rasterizes table cells that carry a background color, which costs accessibility ([Tables Rasterized to Images](/docs/troubleshooting#tables-rasterized-to-images-with-pdfa-or-pdfua)).
 
 :::warning
@@ -714,6 +716,13 @@ LibreOffice rasterizes table cells that carry a background color, which costs ac
 
 <ApiEndpoint
   formFields={[
+    {
+      name: "generateTaggedPdf",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Embeds logical structure tags for accessibility, without declaring PDF/UA conformance. Implied by `pdfua`.",
+    },
     {
       name: "pdfa",
       type: "enum",
