@@ -57,6 +57,8 @@ LibreOffice also exposes `LIBREOFFICE_ALLOW_LIST` and `LIBREOFFICE_DENY_LIST`, m
 
 Rejected URLs return `403 Forbidden`. LibreOffice fetches are the exception: the proxy rejects them inside the conversion, which succeeds without the resource. Since _8.37.0_, a `downloadFrom` redirect to a rejected URL returns the same bare `403` as the first hop, with no detail about the rule that matched.
 
+Chromium WebSockets go through the same checks. Since _8.38.0_, a WebSocket to a loopback or link-local address, such as `ws://127.0.0.1` or `ws://169.254.169.254`, traverses the pinning proxy whenever `CHROMIUM_ALLOW_LIST`, a non-default `CHROMIUM_DENY_LIST`, or an IP-class variable is set. Before, only the IP-class variables routed it there, and Chromium opened it directly, past the lists.
+
 ## Precedence
 
 1. **Deny-list always wins.** A deny-list match rejects the URL regardless of allow-list or IP-class variables.
