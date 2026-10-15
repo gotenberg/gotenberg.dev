@@ -171,7 +171,7 @@ By default, Chromium does not wait for network activity to settle before convert
 
 Both default to `true` (no wait). If both are set to `false`, both events must fire before conversion proceeds.
 
-A broken image or stylesheet won't fail the conversion on its own. The PDF is generated with missing assets. Set `failOnResourceLoadingFailed` to `true` to fail on any resource network error.
+A broken image or stylesheet won't fail the conversion on its own. The PDF is generated with missing assets. Set `failOnResourceLoadingFailed` to `true` to fail on any resource network error. Since _8.38.0_, it also catches resources the pinning proxy cannot reach, reported as `net::ERR_CONNECTION_RESET` or `net::ERR_TUNNEL_CONNECTION_FAILED`.
 
 <ApiEndpoint
   formFields={[
