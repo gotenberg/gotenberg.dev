@@ -194,7 +194,7 @@ A broken image or stylesheet won't fail the conversion on its own. The PDF is ge
       type: "boolean",
       defaultValue: "false",
       description:
-        "Returns a 400 Bad Request if assets (images/css/etc.) fail to load due to network errors.",
+        "Returns a 409 Conflict if assets (images/css/etc.) fail to load due to network errors.",
     },
   ]}
   curl={`
