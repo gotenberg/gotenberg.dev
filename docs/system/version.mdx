@@ -9,6 +9,8 @@ Returns the version of the running Gotenberg instance. Useful for verifying depl
 
 Custom variants may not print strict semver. For instance, the live demo prints `{semver}-live-demo-snapshot`.
 
+Since _8.39.0_, the `Gotenberg-Version` header carries the same value on every authenticated route, error responses included, and on webhook deliveries. It's absent from `401` responses and `/health`, so authentication keeps the version hidden from anonymous clients.
+
 ## Basics
 
 <ApiEndpoint
