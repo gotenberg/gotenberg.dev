@@ -59,6 +59,8 @@ Rejected URLs return `403 Forbidden`. LibreOffice fetches are the exception: the
 
 Chromium WebSockets go through the same checks. Since _8.38.0_, a WebSocket to a loopback or link-local address, such as `ws://127.0.0.1` or `ws://169.254.169.254`, traverses the pinning proxy whenever `CHROMIUM_ALLOW_LIST`, a non-default `CHROMIUM_DENY_LIST`, or an IP-class variable is set. Before, only the IP-class variables routed it there, and Chromium opened it directly, past the lists.
 
+Since _8.39.0_, WebSocket handshakes also honor deny rules that anchor on a path or on the `ws://` and `wss://` schemes, such as `^https?://internal\.example/` or `^wss://`. The pinning proxy refuses the tunnel when a rule matches the scheme's root URL. When only the full handshake URL matches, as with a path rule, the conversion fails with a generic `403 Forbidden`.
+
 ## Precedence
 
 1. **Deny-list always wins.** A deny-list match rejects the URL regardless of allow-list or IP-class variables.
