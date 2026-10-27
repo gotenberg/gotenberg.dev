@@ -30,7 +30,7 @@ Hardening for specific primitives. No setting turns them off.
 
 **DNS-rebind pinning proxy.** Chromium and LibreOffice route every outbound HTTP/HTTPS request through an in-process proxy. The proxy resolves DNS once and pins the dial to the validated IP. Setting `CHROMIUM_PROXY_SERVER` or `CHROMIUM_HOST_RESOLVER_RULES` skips it, as does a hop carried by the [environment proxy](#environment-proxy), which owns DNS for the hops it carries.
 
-**`file://` rejected on URL routes.** `/forms/chromium/convert/url` and `/forms/chromium/screenshot/url` return `400 Bad Request` for any `file://` URL. Use the `html` or `markdown` variants to render local HTML.
+**Only `http://` and `https://` on URL routes.** `/forms/chromium/convert/url` and `/forms/chromium/screenshot/url` return `400 Bad Request` for any other scheme. Since _8.39.0_, that includes Chromium's internal schemes, such as `chrome://` and `devtools://`, which load privileged pages. Use the `html` or `markdown` variants to render local HTML.
 
 **`file://` sub-resources scoped per request.** Routes that render local HTML load assets relative to the request's own working directory. Sibling requests' files are unreachable.
 

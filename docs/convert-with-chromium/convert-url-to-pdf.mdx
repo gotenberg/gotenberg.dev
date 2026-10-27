@@ -48,7 +48,7 @@ Converts a target URL to PDF using Headless Chromium. Supports JavaScript execut
       type: "string",
       required: true,
       description:
-        "URL of the page to convert into PDF. file:// URLs return 400; render local HTML via /forms/chromium/convert/html or /forms/chromium/convert/markdown.",
+        "URL of the page to convert into PDF. Must be an http:// or https:// URL; other schemes, such as file://, return 400. Render local HTML via /forms/chromium/convert/html or /forms/chromium/convert/markdown.",
     },
   ]}
   curl={`
