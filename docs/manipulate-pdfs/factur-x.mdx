@@ -6,7 +6,7 @@ title: Factur-X
 import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
 import ConfigurationInfoPDFEngines from "../_shared/_configuration_info_pdfengines.mdx";
 
-Turns existing PDFs into [Factur-X / ZUGFeRD](https://fnfe-mpe.org/factur-x/) e-invoices: embeds the CII invoice XML under the canonical `factur-x.xml` name with the `Alternative` relationship, injects the Factur-X XMP metadata, and converts the PDF to PDF/A-3, the only PDF/A family that allows embedded files.
+Turns existing PDFs into [Factur-X / ZUGFeRD](https://fnfe-mpe.org/factur-x/) e-invoices: embeds the CII invoice XML as `factur-x.xml` (`xrechnung.xml` for the `XRECHNUNG` profile) with the `Alternative` relationship, injects the Factur-X XMP metadata, and converts the PDF to PDF/A-3, the only PDF/A family that allows embedded files.
 
 When every input already carries PDF/A-3 identification, the files are left untouched; otherwise the whole request converts to PDF/A-3b, or to the PDF/A-3 variant requested with `pdfa`. Requires a PDF engine that supports the feature (QPDF by default).
 
@@ -47,7 +47,7 @@ The [Chromium](/docs/convert-with-chromium/convert-html-to-pdf#factur-x-pdf-engi
       type: "file",
       required: true,
       description:
-        "The Factur-X CII invoice XML. Embedded as `factur-x.xml` regardless of the uploaded filename.",
+        "The Factur-X CII invoice XML. Embedded as `factur-x.xml` (`xrechnung.xml` for `XRECHNUNG`), regardless of the uploaded filename.",
     },
   ]}
   formFields={[
