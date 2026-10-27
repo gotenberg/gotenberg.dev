@@ -11,19 +11,27 @@ import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
       description:
         "Returns a 409 Conflict response if there are exceptions in the Chromium console.",
     },
+    {
+      name: "failOnConsoleMessageTypes",
+      type: "json",
+      defaultValue: "[]",
+      description:
+        "Returns a 409 Conflict response if the page logs console messages of the given types, listed as `[type] message` in the body. Options: `log`, `debug`, `info`, `warning`, `error`, `assert`. `console.warn` logs the `warning` type.",
+    },
   ]}
   curl={`
 curl \\
 --request ${props.method} http://localhost:3000${props.path} \\
 ${props.curlFormData}
 --form failOnConsoleExceptions=true \\
+--form 'failOnConsoleMessageTypes=["warning","error"]' \\
 ${props.curlOutput}
 `}
   responses={[
   {
     status: 409,
     message: "Conflict",
-    description: "Exceptions in the Chromium console.",
+    description: "Exceptions, or console messages of the requested types, in the Chromium console.",
     body: `
 Content-Type: text/plain; charset=UTF-8
 Gotenberg-Trace: {trace}
