@@ -145,6 +145,16 @@ Preconfigured for AWS Lambda:
 
 The `buffered` invoke mode supports responses up to 6MB. For larger outputs, use the webhook feature to upload results to S3.
 
+### SnapStart
+
+Since _8.39.0_, the images support [Lambda SnapStart](https://docs.aws.amazon.com/lambda/latest/dg/snapstart.html). It reduces cold start latency, and costs less than Provisioned Concurrency.
+
+- Keep `--chromium-auto-start=true` and `--libreoffice-auto-start=true`. Both processes start during init and become part of the snapshot.
+- Enable SnapStart with `ApplyOn: PublishedVersions`, and invoke a published version or an alias. SnapStart doesn't apply to `$LATEST`.
+- Init runs when you publish a version, with a limit of 130 seconds. The adapter ignores `AWS_LWA_ASYNC_INIT` under SnapStart. Set `AWS_LWA_READINESS_CHECK_TIMEOUT_SECONDS` to bound the wait.
+
+SnapStart limits `/tmp` to 512MB, which caps the size of conversions. It doesn't work with Provisioned Concurrency or EFS. See [#1704](https://github.com/gotenberg/gotenberg/issues/1704) for test results.
+
 There is an [ongoing discussion](https://github.com/gotenberg/gotenberg/issues/540) about improving this variant. Feedback welcome.
 
 ## What's Next?
