@@ -14,7 +14,7 @@
 
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <meta name="theme-color" content="#0e7ba3"><link rel="stylesheet" href="/assets/css/styles.127b31d7.css">
-<script src="/assets/js/runtime~main.dcd23717.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.b34223cc.js" defer="defer"></script>
 <script src="/assets/js/main.aa2dc6f0.js" defer="defer"></script>
 </head>
 <body>
@@ -41,7 +41,7 @@
 <h2 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="always-on-protections">Always-On Protections<a href="#always-on-protections" class="hash-link" aria-label="Direct link to Always-On Protections" title="Direct link to Always-On Protections" translate="no">​</a></h2>
 <p>Hardening for specific primitives. No setting turns them off.</p>
 <p><strong>DNS-rebind pinning proxy.</strong> Chromium and LibreOffice route every outbound HTTP/HTTPS request through an in-process proxy. The proxy resolves DNS once and pins the dial to the validated IP. Setting <code>CHROMIUM_PROXY_SERVER</code> or <code>CHROMIUM_HOST_RESOLVER_RULES</code> skips it, as does a hop carried by the <a href="#environment-proxy" class="">environment proxy</a>, which owns DNS for the hops it carries.</p>
-<p><strong><code>file://</code> rejected on URL routes.</strong> <code>/forms/chromium/convert/url</code> and <code>/forms/chromium/screenshot/url</code> return <code>400 Bad Request</code> for any <code>file://</code> URL. Use the <code>html</code> or <code>markdown</code> variants to render local HTML.</p>
+<p><strong>Only <code>http://</code> and <code>https://</code> on URL routes.</strong> <code>/forms/chromium/convert/url</code> and <code>/forms/chromium/screenshot/url</code> return <code>400 Bad Request</code> for any other scheme. Since <em>8.39.0</em>, that includes Chromium&#x27;s internal schemes, such as <code>chrome://</code> and <code>devtools://</code>, which load privileged pages. Use the <code>html</code> or <code>markdown</code> variants to render local HTML.</p>
 <p><strong><code>file://</code> sub-resources scoped per request.</strong> Routes that render local HTML load assets relative to the request&#x27;s own working directory. Sibling requests&#x27; files are unreachable.</p>
 <p><strong>Linked content dropped in LibreOffice documents.</strong> Since <em>8.34.0</em>, LibreOffice refuses to load content linked from an untrusted location. Uploaded documents always load from a per-request temporary directory, which is never trusted, so linked <code>file://</code> paths and external URLs are dropped before any fetch happens. An allow-list match cannot re-enable them. Embedded content stored inside the document is unaffected.</p>
 <h2 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="per-module-variables">Per-Module Variables<a href="#per-module-variables" class="hash-link" aria-label="Direct link to Per-Module Variables" title="Direct link to Per-Module Variables" translate="no">​</a></h2>
@@ -51,6 +51,7 @@
 <p>LibreOffice also exposes <code>LIBREOFFICE_ALLOW_LIST</code> and <code>LIBREOFFICE_DENY_LIST</code>, mirroring Chromium and webhook.</p>
 <p>Rejected URLs return <code>403 Forbidden</code>. LibreOffice fetches are the exception: the proxy rejects them inside the conversion, which succeeds without the resource. Since <em>8.37.0</em>, a <code>downloadFrom</code> redirect to a rejected URL returns the same bare <code>403</code> as the first hop, with no detail about the rule that matched.</p>
 <p>Chromium WebSockets go through the same checks. Since <em>8.38.0</em>, a WebSocket to a loopback or link-local address, such as <code>ws://127.0.0.1</code> or <code>ws://169.254.169.254</code>, traverses the pinning proxy whenever <code>CHROMIUM_ALLOW_LIST</code>, a non-default <code>CHROMIUM_DENY_LIST</code>, or an IP-class variable is set. Before, only the IP-class variables routed it there, and Chromium opened it directly, past the lists.</p>
+<p>Since <em>8.39.0</em>, WebSocket handshakes also honor deny rules that anchor on a path or on the <code>ws://</code> and <code>wss://</code> schemes, such as <code>^https?://internal\.example/</code> or <code>^wss://</code>. The pinning proxy refuses the tunnel when a rule matches the scheme&#x27;s root URL. When only the full handshake URL matches, as with a path rule, the conversion fails with a generic <code>403 Forbidden</code>.</p>
 <h2 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="precedence">Precedence<a href="#precedence" class="hash-link" aria-label="Direct link to Precedence" title="Direct link to Precedence" translate="no">​</a></h2>
 <ol>
 <li class=""><strong>Deny-list always wins.</strong> A deny-list match rejects the URL regardless of allow-list or IP-class variables.</li>
