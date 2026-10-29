@@ -9,7 +9,8 @@
   align-items: flex-end;
 }
 
-.carbonLoaded {
+/* Compound selector: the minifier may merge this rule ahead of .carbonWrapper. */
+.carbonWrapper.carbonLoaded {
   display: flex;
 }
 
