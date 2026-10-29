@@ -106,13 +106,48 @@
   color: var(--ifm-color-primary);
 }
 
-@media (max-width: 420px) {
-  .trigger {
-    min-width: 44px;
-    padding: 0 0.5rem;
+/* Keep a single icon-only theme control beside search in the mobile navbar. */
+@media (max-width: 996px) {
+  /* Docusaurus normally hides the navbar toggle at this breakpoint. */
+  :global(.navbar__items--right) > .container {
+    display: inline-flex;
+    margin-right: 0.5rem;
   }
 
-  .triggerLabel {
+  /* Search is absolutely positioned by Docusaurus on mobile. Restore flex
+     layout so the two controls remain adjacent at every viewport width. */
+  :global(.navbar__items--right) > :global([class*="navbarSearchContainer"]) {
+    position: static;
+  }
+
+  /* DocSearch switches to an icon below 768px by default; use the same
+     icon-only layout at Docusaurus's wider mobile navbar breakpoint. */
+  :global(.navbar__items--right) :global(.DocSearch-Button) {
+    box-sizing: border-box;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border-radius: 4px;
+  }
+
+  :global(.navbar__items--right) :global(.DocSearch-Button-Placeholder),
+  :global(.navbar__items--right) :global(.DocSearch-Button-Keys) {
+    display: none;
+  }
+
+  /* The mobile sidebar should not show a second theme control. */
+  :global(.navbar-sidebar__brand) > .container {
+    display: none;
+  }
+
+  .trigger {
+    width: 36px;
+    padding: 0;
+  }
+
+  .triggerLabel,
+  .chevron {
     display: none;
   }
 }
