@@ -184,7 +184,7 @@
 
 .paramDefault code {
   font-size: 0.75rem;
-  background-color: rgba(241, 245, 249, 0.8);
+  background-color: var(--ifm-color-emphasis-100);
   color: var(--ifm-color-primary-dark);
 }
 

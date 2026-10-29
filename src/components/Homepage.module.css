@@ -318,7 +318,7 @@
   font-size: clamp(2.25rem, 4vw, 2.9rem);
   font-weight: 600;
   letter-spacing: -0.005em;
-  color: var(--ifm-background-color);
+  color: var(--on-ink-plate);
   margin-bottom: 0.75rem;
 }
 
@@ -399,13 +399,13 @@
 .finalCta .btnSecondary {
   background: transparent;
   border-color: rgba(253, 252, 250, 0.25);
-  color: var(--ifm-background-color);
+  color: var(--on-ink-plate);
 }
 
 .finalCta .btnSecondary:hover {
   background: rgba(253, 252, 250, 0.08);
   border-color: rgba(253, 252, 250, 0.5);
-  color: var(--ifm-background-color);
+  color: var(--on-ink-plate);
 }
 
 /* The GitHub mark ships as a dark octocat that disappears on ink.
