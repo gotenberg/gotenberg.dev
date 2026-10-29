@@ -62,7 +62,8 @@
   border: none;
 }
 
-.btnSecondary {
+/* Outrank Infima's `.button.button--secondary` dark text colour. */
+.btnSecondary:global(.button.button--secondary) {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -71,7 +72,7 @@
   color: var(--ifm-heading-color);
 }
 
-.btnSecondary:hover {
+.btnSecondary:global(.button.button--secondary):hover {
   background: var(--paper-shade);
   color: var(--ifm-heading-color);
 }
@@ -396,13 +397,13 @@
 
 /* Secondary button needs an outline-on-dark variant here; the base
    .btnSecondary assumes a paper background. */
-.finalCta .btnSecondary {
+.finalCta .btnSecondary:global(.button.button--secondary) {
   background: transparent;
   border-color: rgba(253, 252, 250, 0.25);
   color: var(--on-ink-plate);
 }
 
-.finalCta .btnSecondary:hover {
+.finalCta .btnSecondary:global(.button.button--secondary):hover {
   background: rgba(253, 252, 250, 0.08);
   border-color: rgba(253, 252, 250, 0.5);
   color: var(--on-ink-plate);
@@ -411,6 +412,11 @@
 /* The GitHub mark ships as a dark octocat that disappears on ink.
    Flatten it to a white silhouette for the dark band only. */
 .finalCta .githubIcon {
+  filter: brightness(0) invert(1);
+}
+
+/* The GitHub SVG has a dark fill, so make it legible on the dark hero. */
+:global(html[data-theme="dark"]) .hero .githubIcon {
   filter: brightness(0) invert(1);
 }
 
