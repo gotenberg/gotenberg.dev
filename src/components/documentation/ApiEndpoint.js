@@ -16,7 +16,7 @@ function renderValues(text) {
       </span>
     ) : (
       seg
-    )
+    ),
   );
 }
 

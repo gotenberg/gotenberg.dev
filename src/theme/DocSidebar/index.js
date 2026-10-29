@@ -30,7 +30,7 @@ export default function DocSidebar(props) {
       {
         type: "text/javascript",
         id: "_carbonads_js",
-      }
+      },
     );
     const sidebar = ref.current?.firstElementChild;
     if (!sidebar) {

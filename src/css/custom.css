@@ -29,10 +29,10 @@
   --link-underline-color: rgba(14, 123, 163, 0.3);
 
   --font-serif: "Newsreader Variable", Georgia, "Times New Roman", serif;
-  --ifm-font-family-base: system-ui, -apple-system, "Segoe UI", Roboto,
-    sans-serif;
-  --ifm-font-family-monospace: "JetBrains Mono Variable", "JetBrains Mono",
-    "Fira Code", monospace;
+  --ifm-font-family-base:
+    system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --ifm-font-family-monospace:
+    "JetBrains Mono Variable", "JetBrains Mono", "Fira Code", monospace;
   --ifm-font-size-base: 17px;
   --ifm-line-height-base: 1.65;
 
@@ -165,7 +165,9 @@ kbd,
 samp,
 pre code {
   font-variant-ligatures: none;
-  font-feature-settings: "liga" 0, "calt" 0;
+  font-feature-settings:
+    "liga" 0,
+    "calt" 0;
 }
 
 .markdown h2,
@@ -362,7 +364,9 @@ h4:hover > .hash-link,
   text-decoration-thickness: 1.5px;
   text-underline-offset: 3px;
   text-decoration-color: var(--link-underline-color);
-  transition: text-decoration-color 0.2s ease, color 0.2s ease;
+  transition:
+    text-decoration-color 0.2s ease,
+    color 0.2s ease;
   font-weight: 500;
 }
 
@@ -705,7 +709,9 @@ a[class*="sidebarLogo"] b {
   padding: 8px 12px;
   margin-bottom: 4px;
   border-radius: 6px;
-  transition: color 0.2s, background-color 0.2s;
+  transition:
+    color 0.2s,
+    background-color 0.2s;
 }
 
 .menu__link:hover {

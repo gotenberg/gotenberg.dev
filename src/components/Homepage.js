@@ -30,7 +30,7 @@ const SimpleTerminal = ({ content }) => {
                 key={i}
                 className={clsx(
                   styles.codeLine,
-                  isCommandStart && styles.promptLine
+                  isCommandStart && styles.promptLine,
                 )}
               >
                 {highlightLine(line)}
@@ -68,7 +68,7 @@ const highlightLine = (line) => {
     tokens.push(
       <span key={match.index} className={style}>
         {full}
-      </span>
+      </span>,
     );
   }
   return tokens;
@@ -146,7 +146,7 @@ curl \\
               <Link
                 className={clsx(
                   "button button--primary button--lg",
-                  styles.btnPrimary
+                  styles.btnPrimary,
                 )}
                 to="/docs/getting-started/introduction"
               >
@@ -156,7 +156,7 @@ curl \\
               <Link
                 className={clsx(
                   "button button--secondary button--lg",
-                  styles.btnSecondary
+                  styles.btnSecondary,
                 )}
                 to="https://github.com/gotenberg/gotenberg"
               >
@@ -463,7 +463,7 @@ curl \\
             <Link
               className={clsx(
                 "button button--primary button--lg",
-                styles.btnPrimary
+                styles.btnPrimary,
               )}
               to="/docs/getting-started/introduction"
             >
@@ -473,7 +473,7 @@ curl \\
             <Link
               className={clsx(
                 "button button--secondary button--lg",
-                styles.btnSecondary
+                styles.btnSecondary,
               )}
               to="https://github.com/gotenberg/gotenberg"
             >
