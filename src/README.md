@@ -52,7 +52,7 @@ HTTP method badges: tinted background with dark text (WCAG AA), e.g. POST `rgba(
 - Max content width: 840px (`.theme-doc-markdown`)
 - Container width: 1366px
 - Navbar height: 4rem
-- Light mode only (dark mode switch disabled)
+- Theme selector in the navbar: System (default), Light, or Dark. System follows the OS setting
 
 ## Components
 

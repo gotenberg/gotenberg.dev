@@ -1,0 +1,32 @@
+.container {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Docusaurus renders the color mode control after navbar items. Place it before
+   the explicitly configured search item without changing the search layout. */
+:global(.navbar__items--right) > .container {
+  order: -1;
+}
+
+.select {
+  font-family: var(--ifm-font-family-base);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ifm-color-content-secondary);
+  background: var(--ifm-navbar-background-color);
+  border: 1px solid var(--ifm-border-color);
+  border-radius: 4px;
+  padding: 0.4rem 0.5rem;
+  cursor: pointer;
+}
+
+.select:hover {
+  color: var(--ifm-heading-color);
+  border-color: var(--ifm-color-primary);
+}
+
+.select:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+}

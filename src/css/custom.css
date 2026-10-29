@@ -23,6 +23,10 @@
   --ifm-border-color: #e6e2da;
   --paper-shade: #f6f5f1;
   --ink-plate: #1c1917;
+  --on-ink-plate: #fdfcfa;
+  --announcement-bg: var(--ifm-color-primary);
+  --table-row-border: rgba(0, 0, 0, 0.04);
+  --link-underline-color: rgba(14, 123, 163, 0.3);
 
   --font-serif: "Newsreader Variable", Georgia, "Times New Roman", serif;
   --ifm-font-family-base: system-ui, -apple-system, "Segoe UI", Roboto,
@@ -61,6 +65,46 @@
   --code-string: #fbbf24;
   --code-url: #6ee7b7;
   --code-punct: #94a3b8;
+
+  /* HTTP method labels are reused by sidebar badges and endpoint examples. */
+  --method-get-text: #0060a1;
+  --method-post-text: #047857;
+  --method-put-text: #92400e;
+  --method-delete-text: #b91c1c;
+  --method-patch-text: #0f766e;
+  --method-head-text: #6d28d9;
+  --method-default-text: #475569;
+}
+
+html[data-theme="dark"] {
+  --ifm-color-primary: #82cdee;
+  --ifm-color-primary-dark: #63bbdf;
+  --ifm-color-primary-darker: #4caccf;
+  --ifm-color-primary-darkest: #3e96ba;
+  --ifm-color-primary-light: #a5dffa;
+  --ifm-color-primary-lighter: #c1ebff;
+  --ifm-color-primary-lightest: #daf4ff;
+
+  --ifm-background-color: #171b1e;
+  --ifm-background-surface-color: #202529;
+  --ifm-border-color: #3b4349;
+  --paper-shade: #252b30;
+  --ifm-color-content: #dfdcd5;
+  --ifm-color-content-secondary: #b9b5ae;
+  --ifm-heading-color: #f5f2e9;
+  --ifm-navbar-background-color: #1b2024;
+  --rubric: #f58c7c;
+  --announcement-bg: #125e7b;
+  --table-row-border: rgba(255, 255, 255, 0.08);
+  --link-underline-color: rgba(130, 205, 238, 0.45);
+
+  --method-get-text: #7dd3fc;
+  --method-post-text: #6ee7b7;
+  --method-put-text: #fcd34d;
+  --method-delete-text: #fca5a5;
+  --method-patch-text: #5eead4;
+  --method-head-text: #c4b5fd;
+  --method-default-text: #cbd5e1;
 }
 
 /* --- ACCESSIBILITY --- */
@@ -317,7 +361,7 @@ h4:hover > .hash-link,
   text-decoration: underline;
   text-decoration-thickness: 1.5px;
   text-underline-offset: 3px;
-  text-decoration-color: rgba(14, 123, 163, 0.3);
+  text-decoration-color: var(--link-underline-color);
   transition: text-decoration-color 0.2s ease, color 0.2s ease;
   font-weight: 500;
 }
@@ -373,7 +417,7 @@ h4:hover > .hash-link,
 .markdown table td {
   padding: 10px 16px;
   border: none;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  border-bottom: 1px solid var(--table-row-border);
   color: var(--ifm-color-content);
   line-height: 1.6;
   font-variant-numeric: tabular-nums;
@@ -509,9 +553,44 @@ h4:hover > .hash-link,
   text-decoration-color: rgba(239, 68, 68, 0.5);
 }
 
+/* Alert links and headings need lighter foregrounds on dark surfaces. */
+[data-theme="dark"] .alert--info .alert__heading,
+[data-theme="dark"] .markdown .alert--info a {
+  color: var(--ifm-color-primary-light);
+}
+
+[data-theme="dark"] .alert--success .alert__heading,
+[data-theme="dark"] .markdown .alert--success a {
+  color: #6ee7b7;
+}
+
+[data-theme="dark"] .alert--warning .alert__heading,
+[data-theme="dark"] .markdown .alert--warning a {
+  color: #fcd34d;
+}
+
+[data-theme="dark"] .alert--danger .alert__heading,
+[data-theme="dark"] .markdown .alert--danger a {
+  color: #fca5a5;
+}
+
+[data-theme="dark"] .alert table {
+  background-color: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+[data-theme="dark"] .alert table th {
+  background-color: rgba(255, 255, 255, 0.06);
+  border-bottom-color: var(--ifm-border-color);
+}
+
+[data-theme="dark"] .alert table td {
+  border-bottom-color: var(--table-row-border);
+}
+
 /* --- ANNOUNCEMENT BAR --- */
 div[class*="announcementBar_"] {
-  background: var(--ifm-color-primary);
+  background: var(--announcement-bg);
   color: white;
   font-weight: 600;
   border: none;
@@ -700,31 +779,31 @@ a[class*="sidebarLogo"] b {
 .sidebar-method-post .menu__link::before {
   content: "POST";
   background-color: rgba(73, 204, 144, 0.16);
-  color: #047857;
+  color: var(--method-post-text);
 }
 
 .sidebar-method-get .menu__link::before {
   content: "GET";
   background-color: rgba(97, 175, 254, 0.18);
-  color: #0060a1;
+  color: var(--method-get-text);
 }
 
 .sidebar-method-put .menu__link::before {
   content: "PUT";
   background-color: rgba(252, 161, 48, 0.18);
-  color: #92400e;
+  color: var(--method-put-text);
 }
 
 .sidebar-method-delete .menu__link::before {
   content: "DEL";
   background-color: rgba(249, 62, 62, 0.12);
-  color: #b91c1c;
+  color: var(--method-delete-text);
 }
 
 .sidebar-method-head .menu__link::before {
   content: "HEAD";
   background-color: rgba(144, 97, 249, 0.14);
-  color: #6d28d9;
+  color: var(--method-head-text);
 }
 
 /* --- DOC FOOTER --- */
@@ -788,7 +867,7 @@ a[class*="sidebarLogo"] b {
 
 /* --- FOOTER --- */
 .footer--dark {
-  --ifm-footer-background-color: var(--ifm-heading-color);
+  --ifm-footer-background-color: var(--ink-plate);
   --ifm-footer-padding-vertical: 5.5rem;
   /* On the dark footer the link hover must lighten, not resolve to the dark
      ink-blue primary (which would vanish). Use the light end of the ramp. */
