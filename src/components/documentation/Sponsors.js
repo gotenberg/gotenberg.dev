@@ -10,7 +10,7 @@ import styles from "./Sponsors.module.css";
 // homepage grayscale overlay.
 export default function Sponsors() {
   return (
-    <aside className={styles.band} aria-label="Sponsors">
+    <aside className={clsx("sponsor-band", styles.band)} aria-label="Sponsors">
       <div className={clsx("container", styles.inner)}>
         <div className={styles.logos}>
           <a

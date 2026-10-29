@@ -592,6 +592,22 @@ h4:hover > .hash-link,
   border-bottom-color: var(--table-row-border);
 }
 
+/* --- SPONSOR BANDS --- */
+/* Sponsor logos are drawn for light paper. In dark mode, the bands invert them
+   to faint light ink and screen-blend away their white areas. Hover restores
+   the original colors. */
+html[data-theme="dark"] .sponsor-band img {
+  filter: grayscale(100%) invert(100%);
+  mix-blend-mode: screen;
+  opacity: 0.4;
+}
+
+html[data-theme="dark"] .sponsor-band a:hover img {
+  filter: none;
+  mix-blend-mode: normal;
+  opacity: 1;
+}
+
 /* --- ANNOUNCEMENT BAR --- */
 div[class*="announcementBar_"] {
   background: var(--announcement-bg);

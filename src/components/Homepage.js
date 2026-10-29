@@ -190,7 +190,7 @@ curl \\
       </section>
 
       {/* --- COMMUNITY & SPONSORS SECTION --- */}
-      <section className={styles.communitySection}>
+      <section className={clsx("sponsor-band", styles.communitySection)}>
         <div className="container">
           <div className={styles.sponsorsStrip}>
             <div className={styles.sponsorRow}>
