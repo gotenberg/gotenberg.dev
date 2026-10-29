@@ -1,5 +1,5 @@
-import OriginalDocSidebar from "@theme-original/DocSidebar";
 import { useWindowSize } from "@docusaurus/theme-common";
+import OriginalDocSidebar from "@theme-original/DocSidebar";
 import React from "react";
 import { useLocation } from "react-router";
 import styles from "./styles.module.css";
@@ -7,7 +7,9 @@ import styles from "./styles.module.css";
 function buildScript(src, attrs = {}) {
   const script = document.createElement("script");
   script.async = true;
-  Object.keys(attrs).forEach((attr) => script.setAttribute(attr, attrs[attr]));
+  for (const [attr, value] of Object.entries(attrs)) {
+    script.setAttribute(attr, value);
+  }
   script.src = src;
 
   return script;
@@ -18,6 +20,7 @@ export default function DocSidebar(props) {
   const windowSize = useWindowSize();
   const { pathname } = useLocation();
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Load a new ad when the documentation route changes.
   React.useEffect(() => {
     if (windowSize !== "desktop") {
       return;
@@ -29,35 +32,45 @@ export default function DocSidebar(props) {
         id: "_carbonads_js",
       }
     );
-    const sidebarWrapper = ref.current;
-    sidebarWrapper.classList.remove(styles.roomForCarbon);
+    const sidebar = ref.current?.firstElementChild;
+    if (!sidebar) {
+      return;
+    }
 
     const carbonWrapper = document.createElement("div");
     carbonWrapper.classList.add(styles.carbonWrapper);
 
-    carbonWrapper.appendChild(script);
-    sidebarWrapper.firstChild.insertBefore(carbonWrapper, null);
+    // Keep the sidebar fully scrollable until Carbon actually renders an ad.
+    // Otherwise blocked ad requests leave an empty 130px gap below the menu.
+    const observer = new MutationObserver(() => {
+      if (carbonWrapper.querySelector("#carbonads")) {
+        carbonWrapper.classList.add(styles.carbonLoaded);
+        observer.disconnect();
+      }
+    });
+    observer.observe(carbonWrapper, { childList: true, subtree: true });
 
-    // If Carbon doesn't serve an ad, reclaim the space.
+    carbonWrapper.appendChild(script);
+    sidebar.appendChild(carbonWrapper);
+
+    // Remove the unused wrapper if Carbon does not serve an ad.
     const checkTimer = setTimeout(() => {
       if (!carbonWrapper.querySelector("#carbonads")) {
-        sidebarWrapper.classList.add(styles.roomForCarbon);
-        carbonWrapper.parentElement.removeChild(carbonWrapper);
+        observer.disconnect();
+        carbonWrapper.remove();
       }
     }, 3000);
 
     return () => {
       clearTimeout(checkTimer);
-      sidebarWrapper.classList.add(styles.roomForCarbon);
-      if (carbonWrapper.parentElement) {
-        carbonWrapper.parentElement.removeChild(carbonWrapper);
-      }
+      observer.disconnect();
+      carbonWrapper.remove();
     };
   }, [pathname, windowSize]);
 
-  // use span to avoid creating containing block so that OriginalDocSidebar keeps being sticky positioned to the existing block ancestor
+  // A span avoids creating a containing block for the sticky desktop sidebar.
   return (
-    <span ref={ref} className={styles.roomForCarbon}>
+    <span ref={ref}>
       <OriginalDocSidebar {...props} />
     </span>
   );
