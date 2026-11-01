@@ -898,6 +898,11 @@ html[data-theme="dark"] .footer--dark {
   border-top-color: #1b2024;
 }
 
+/* On the ink plate the indigo ring falls under 3:1; the light end clears it. */
+.footer--dark :focus-visible {
+  outline-color: var(--ifm-color-primary-light);
+}
+
 .footer__links {
   width: 75%;
   float: right;
