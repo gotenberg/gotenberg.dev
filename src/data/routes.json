@@ -1,0 +1,856 @@
+{
+  "source": "The route registrations and form parsing in Gotenberg's pkg/modules (chromium/routes.go, libreoffice/routes.go, pdf/routes.go, api/api.go); defaults from DefaultOptions. npm run check:api compares the routes, fields and extensions with a Gotenberg checkout.",
+  "routes": [
+    {
+      "group": "chromium",
+      "method": "POST",
+      "path": "/forms/chromium/convert/url",
+      "summary": "Prints a web page to PDF.",
+      "to": "/docs/reference/chromium#convert-a-url"
+    },
+    {
+      "group": "chromium",
+      "method": "POST",
+      "path": "/forms/chromium/convert/html",
+      "summary": "Prints an HTML file, with the assets beside it, to PDF.",
+      "to": "/docs/reference/chromium#convert-html"
+    },
+    {
+      "group": "chromium",
+      "method": "POST",
+      "path": "/forms/chromium/convert/markdown",
+      "summary": "Prints Markdown files, laid out by an HTML template, to PDF.",
+      "to": "/docs/reference/chromium#convert-markdown"
+    },
+    {
+      "group": "chromium",
+      "method": "POST",
+      "path": "/forms/chromium/screenshot/url",
+      "summary": "Captures a web page as an image.",
+      "to": "/docs/reference/chromium#screenshot-a-url"
+    },
+    {
+      "group": "chromium",
+      "method": "POST",
+      "path": "/forms/chromium/screenshot/html",
+      "summary": "Captures an HTML file as an image.",
+      "to": "/docs/reference/chromium#screenshot-html"
+    },
+    {
+      "group": "chromium",
+      "method": "POST",
+      "path": "/forms/chromium/screenshot/markdown",
+      "summary": "Captures Markdown files, laid out by an HTML template, as an image.",
+      "to": "/docs/reference/chromium#screenshot-markdown"
+    },
+    {
+      "group": "libreoffice",
+      "method": "POST",
+      "path": "/forms/libreoffice/convert",
+      "summary": "Converts office documents, such as Word, Excel and PowerPoint files, to PDF.",
+      "to": "/docs/reference/libreoffice"
+    },
+    {
+      "group": "pdf",
+      "method": "POST",
+      "path": "/forms/pdf/pipe",
+      "summary": "Runs a list of stages on PDFs.",
+      "to": "/docs/reference/pdf#run-stages"
+    },
+    {
+      "group": "pdf",
+      "method": "POST",
+      "path": "/forms/pdf/{op}",
+      "summary": "Runs one stage, its options as form fields: `/forms/pdf/merge`, `/forms/pdf/rotate`, and so on.",
+      "to": "/docs/reference/pdf#run-one-stage"
+    },
+    {
+      "group": "pdf",
+      "method": "POST",
+      "path": "/forms/pdf/info",
+      "summary": "Reads the page count, the PDF version, and whether a PDF is encrypted, tagged, linearized or holds form fields.",
+      "to": "/docs/reference/pdf#info"
+    },
+    {
+      "group": "pdf",
+      "method": "POST",
+      "path": "/forms/pdf/metadata",
+      "summary": "Reads the metadata: title, author, dates.",
+      "to": "/docs/reference/pdf#metadata"
+    },
+    {
+      "group": "pdf",
+      "method": "POST",
+      "path": "/forms/pdf/bookmarks",
+      "summary": "Reads the bookmarks.",
+      "to": "/docs/reference/pdf#bookmarks"
+    },
+    {
+      "group": "pdf",
+      "method": "POST",
+      "path": "/forms/pdf/attachments",
+      "summary": "Lists the embedded files.",
+      "to": "/docs/reference/pdf#attachments"
+    },
+    {
+      "group": "pdf",
+      "method": "POST",
+      "path": "/forms/pdf/validate",
+      "summary": "Checks PDFs against PDF/A, PDF/UA or Factur-X, and lists the violations.",
+      "to": "/docs/reference/pdf#validate"
+    },
+    {
+      "group": "system",
+      "method": "GET",
+      "path": "/",
+      "summary": "Answers a short note: Gotenberg has no UI.",
+      "to": "/docs/reference/system#root"
+    },
+    {
+      "group": "system",
+      "method": "GET, HEAD",
+      "path": "/health",
+      "summary": "Reports whether Gotenberg and its engines are up.",
+      "to": "/docs/reference/system#health"
+    },
+    {
+      "group": "system",
+      "method": "GET",
+      "path": "/version",
+      "summary": "Answers the version of Gotenberg.",
+      "to": "/docs/reference/system#version"
+    },
+    {
+      "group": "system",
+      "method": "GET",
+      "path": "/debug",
+      "summary": "Answers the modules, engine versions and flags, once `--api-enable-debug-route` is on.",
+      "to": "/docs/reference/system#debug"
+    }
+  ],
+  "fields": {
+    "chromium": [
+      {
+        "name": "waitDelay",
+        "type": "duration",
+        "description": "Waits this long once the page loads, before printing: `2s`, `500ms`."
+      },
+      {
+        "name": "waitForSelector",
+        "type": "string",
+        "description": "Waits until an element matching this CSS selector is visible, such as `#chart.ready`."
+      },
+      {
+        "name": "waitForExpression",
+        "type": "string",
+        "description": "Waits until this JavaScript expression returns true, such as `window.ready === true`."
+      },
+      {
+        "name": "waitForWindowStatus",
+        "type": "string",
+        "description": "Waits until `window.status` equals this value."
+      },
+      {
+        "name": "skipNetworkIdleEvent",
+        "type": "boolean",
+        "default": "true",
+        "description": "Prints without waiting for the network to go idle. `false` waits, for pages that fetch content after they load."
+      },
+      {
+        "name": "skipNetworkAlmostIdleEvent",
+        "type": "boolean",
+        "default": "true",
+        "description": "Prints without waiting for the network to go almost idle. `false` waits."
+      },
+      {
+        "name": "failOnHttpStatusCodes",
+        "type": "list",
+        "default": "[499,599]",
+        "description": "Answers 409 when the page itself answers one of these statuses. `499` stands for 400 to 499, `599` for 500 to 599, and so on for each hundred."
+      },
+      {
+        "name": "failOnResourceHttpStatusCodes",
+        "type": "list",
+        "description": "Answers 409 when a resource the page loads, such as an image or a script, answers one of these statuses. Ranges work as for `failOnHttpStatusCodes`."
+      },
+      {
+        "name": "ignoreResourceHttpStatusDomains",
+        "type": "list",
+        "description": "Domains, subdomains included, that `failOnResourceHttpStatusCodes` leaves out: `[\"sentry-cdn.com\"]`."
+      },
+      {
+        "name": "failOnResourceLoadingFailed",
+        "type": "boolean",
+        "default": "false",
+        "description": "Answers 409 when a resource fails to load."
+      },
+      {
+        "name": "failOnConsoleExceptions",
+        "type": "boolean",
+        "default": "false",
+        "description": "Answers 409 when the page throws a JavaScript exception."
+      },
+      {
+        "name": "failOnConsoleMessageTypes",
+        "type": "list",
+        "description": "Answers 409 when the page writes one of these console types: `log`, `debug`, `info`, `warning`, `error` or `assert`."
+      },
+      {
+        "name": "cookies",
+        "type": "list",
+        "description": "Cookies to set before loading: items with a `name`, a `value` and a `domain`, and optionally a `path`, `secure`, `httpOnly` and `sameSite` (`Strict`, `Lax` or `None`)."
+      },
+      {
+        "name": "extraHttpHeaders",
+        "type": "object",
+        "description": "Headers Chromium sends with the requests the page makes: `{\"X-Token\": \"abc\"}`. End a value with `;scope=<regex>` to send it only to the URLs the regex matches. At most 64 headers."
+      },
+      {
+        "name": "userAgent",
+        "type": "string",
+        "description": "Replaces Chromium's `User-Agent` header."
+      },
+      {
+        "name": "emulatedMediaType",
+        "type": "string",
+        "description": "The CSS media type the page sees: `screen` or `print`."
+      },
+      {
+        "name": "emulatedMediaFeatures",
+        "type": "list",
+        "description": "CSS media features the page sees: `[{\"name\": \"prefers-color-scheme\", \"value\": \"dark\"}]`."
+      },
+      {
+        "name": "omitBackground",
+        "type": "boolean",
+        "default": "false",
+        "description": "Drops the default white background, for a transparent PDF or image. A PDF needs `printBackground` too."
+      }
+    ],
+    "chromium-pdf": [
+      {
+        "name": "paperSize",
+        "type": "string",
+        "default": "Letter",
+        "description": "`A3`, `A4`, `A5`, `B4`, `B5`, `Letter`, `Legal` or `Tabloid`, in any case. Sets the width and the height."
+      },
+      {
+        "name": "paperWidth",
+        "type": "length",
+        "default": "8.5in",
+        "description": "Overrides the width `paperSize` sets. A length is a number in inches, or a number with a unit: `210mm`, `21cm`, `595pt`, `794px`, `50pc`."
+      },
+      {
+        "name": "paperHeight",
+        "type": "length",
+        "default": "11in",
+        "description": "Overrides the height `paperSize` sets."
+      },
+      {
+        "name": "marginTop",
+        "type": "length",
+        "default": "0.39in",
+        "description": "The top margin. The header prints in it."
+      },
+      {
+        "name": "marginBottom",
+        "type": "length",
+        "default": "0.39in",
+        "description": "The bottom margin. The footer prints in it."
+      },
+      {
+        "name": "marginLeft",
+        "type": "length",
+        "default": "0.39in",
+        "description": "The left margin."
+      },
+      {
+        "name": "marginRight",
+        "type": "length",
+        "default": "0.39in",
+        "description": "The right margin."
+      },
+      {
+        "name": "landscape",
+        "type": "boolean",
+        "default": "false",
+        "description": "Turns the paper sideways."
+      },
+      {
+        "name": "preferCssPageSize",
+        "type": "boolean",
+        "default": "false",
+        "description": "Uses the size the page's CSS `@page` rule sets, over the paper size."
+      },
+      {
+        "name": "scale",
+        "type": "number",
+        "default": "1",
+        "description": "Scales the rendering, from `0.1` to `2`."
+      },
+      {
+        "name": "printBackground",
+        "type": "boolean",
+        "default": "false",
+        "description": "Prints background colors and images."
+      },
+      {
+        "name": "singlePage",
+        "type": "boolean",
+        "default": "false",
+        "description": "Prints the whole page on one page, as tall as the content."
+      },
+      {
+        "name": "nativePages",
+        "type": "string",
+        "description": "Pages to print, in Chromium's syntax: `1-5, 8, 11-13`. A page past the end answers 400. The `select` stage picks pages after printing, and takes `odd`, `even` and `last` too."
+      },
+      {
+        "name": "header.html",
+        "type": "file",
+        "description": "Upload it under `files`: Chromium prints it at the top of each page. Elements with the class `date`, `title`, `url`, `pageNumber` or `totalPages` receive that value. It shares one document with the footer, so give each its own class names."
+      },
+      {
+        "name": "footer.html",
+        "type": "file",
+        "description": "The same, at the bottom of each page."
+      },
+      {
+        "name": "nativeBookmarks",
+        "type": "boolean",
+        "default": "false",
+        "description": "Builds bookmarks from the headings. Implies `nativeTaggedPdf`."
+      },
+      {
+        "name": "nativeTaggedPdf",
+        "type": "boolean",
+        "default": "false",
+        "description": "Writes a tagged PDF, whose structure screen readers follow."
+      }
+    ],
+    "chromium-screenshot": [
+      {
+        "name": "format",
+        "type": "string",
+        "default": "png",
+        "description": "`png`, `jpeg` or `webp`."
+      },
+      {
+        "name": "quality",
+        "type": "integer",
+        "default": "100",
+        "description": "The JPEG quality, from 1 to 100. Other formats ignore it."
+      },
+      {
+        "name": "width",
+        "type": "integer",
+        "default": "800",
+        "description": "The viewport width, in CSS pixels."
+      },
+      {
+        "name": "height",
+        "type": "integer",
+        "default": "600",
+        "description": "The viewport height, in CSS pixels."
+      },
+      {
+        "name": "clip",
+        "type": "boolean",
+        "default": "false",
+        "description": "Captures the viewport only. Without it, the image is as tall as the page."
+      },
+      {
+        "name": "selector",
+        "type": "string",
+        "description": "Captures the first element matching this CSS selector, over `clip`. No visible match answers 400."
+      },
+      {
+        "name": "deviceScaleFactor",
+        "type": "number",
+        "default": "1",
+        "description": "Image pixels per CSS pixel: `2` doubles the resolution."
+      },
+      {
+        "name": "optimizeForSpeed",
+        "type": "boolean",
+        "default": "false",
+        "description": "Encodes faster, for a larger file."
+      }
+    ],
+    "libreoffice": [
+      {
+        "section": "page",
+        "name": "password",
+        "type": "string",
+        "description": "Opens a password-protected document."
+      },
+      {
+        "section": "page",
+        "name": "paperSize",
+        "type": "string",
+        "description": "`A3`, `A4`, `A5`, `B4`, `B5`, `Letter`, `Legal` or `Tabloid`, in any case, for every page. Without it, each document keeps its own page size."
+      },
+      {
+        "section": "page",
+        "name": "paperWidth",
+        "type": "length",
+        "description": "Overrides the width `paperSize` sets. Without `paperSize`, set `paperHeight` too. A length is a number in inches, or a number with a unit: `210mm`, `21cm`, `595pt`, `794px`, `50pc`."
+      },
+      {
+        "section": "page",
+        "name": "paperHeight",
+        "type": "length",
+        "description": "Overrides the height `paperSize` sets. Without `paperSize`, set `paperWidth` too."
+      },
+      {
+        "section": "page",
+        "name": "landscape",
+        "type": "boolean",
+        "default": "false",
+        "description": "Turns the pages sideways."
+      },
+      {
+        "section": "page",
+        "name": "nativePages",
+        "type": "string",
+        "description": "Pages to export, in LibreOffice's syntax: `1-4`, `2`, `1,3,5-7`. The `select` stage picks pages after the conversion, and takes `odd`, `even` and `last` too."
+      },
+      {
+        "section": "page",
+        "name": "singlePage",
+        "type": "boolean",
+        "default": "false",
+        "description": "Puts each sheet of a spreadsheet on one page, hidden sheets included, regardless of its paper size and print ranges."
+      },
+      {
+        "section": "page",
+        "name": "skipEmptyPages",
+        "type": "boolean",
+        "default": "false",
+        "description": "Drops the blank pages a text document inserts on its own."
+      },
+      {
+        "section": "content",
+        "name": "updateIndexes",
+        "type": "boolean",
+        "default": "true",
+        "description": "Updates the tables of contents and the other indexes before the export."
+      },
+      {
+        "section": "content",
+        "name": "exportFormFields",
+        "type": "boolean",
+        "default": "true",
+        "description": "Exports form fields as fields a reader can fill. `false` prints their values only."
+      },
+      {
+        "section": "content",
+        "name": "allowDuplicateFieldNames",
+        "type": "boolean",
+        "default": "false",
+        "description": "Lets several form fields share a name."
+      },
+      {
+        "section": "content",
+        "name": "nativeBookmarks",
+        "type": "boolean",
+        "default": "true",
+        "description": "Exports the document's bookmarks, built from its headings."
+      },
+      {
+        "section": "content",
+        "name": "exportBookmarksToPdfDestination",
+        "type": "boolean",
+        "default": "false",
+        "description": "Also exports the bookmarks as named destinations, which links can target."
+      },
+      {
+        "section": "content",
+        "name": "exportPlaceholders",
+        "type": "boolean",
+        "default": "false",
+        "description": "Shows the placeholder fields' markings. The exported placeholders do nothing."
+      },
+      {
+        "section": "content",
+        "name": "exportNotes",
+        "type": "boolean",
+        "default": "false",
+        "description": "Exports comments as PDF annotations."
+      },
+      {
+        "section": "content",
+        "name": "exportNotesInMargin",
+        "type": "boolean",
+        "default": "false",
+        "description": "Prints comments in the page margin."
+      },
+      {
+        "section": "content",
+        "name": "exportNotesPages",
+        "type": "boolean",
+        "default": "false",
+        "description": "Adds a presentation's notes pages."
+      },
+      {
+        "section": "content",
+        "name": "exportOnlyNotesPages",
+        "type": "boolean",
+        "default": "false",
+        "description": "Exports the notes pages only, with `exportNotesPages`."
+      },
+      {
+        "section": "content",
+        "name": "exportHiddenSlides",
+        "type": "boolean",
+        "default": "false",
+        "description": "Includes the slides hidden from the slide show."
+      },
+      {
+        "section": "content",
+        "name": "useTransitionEffects",
+        "type": "boolean",
+        "default": "true",
+        "description": "Exports a presentation's slide transitions."
+      },
+      {
+        "section": "content",
+        "name": "convertOooTargetToPdfTarget",
+        "type": "boolean",
+        "default": "false",
+        "description": "Points links to `.odt`, `.ods`, `.odp` and `.odg` files at `.pdf` files of the same name."
+      },
+      {
+        "section": "content",
+        "name": "exportLinksRelativeFsys",
+        "type": "boolean",
+        "default": "false",
+        "description": "Exports `file://` links relative to the document."
+      },
+      {
+        "section": "content",
+        "name": "addOriginalDocumentAsStream",
+        "type": "boolean",
+        "default": "false",
+        "description": "Embeds the original document in the PDF, for archiving."
+      },
+      {
+        "section": "images",
+        "name": "nativeQuality",
+        "type": "integer",
+        "default": "90",
+        "description": "The JPEG quality of the images, from 1 to 100."
+      },
+      {
+        "section": "images",
+        "name": "nativeLosslessImageCompression",
+        "type": "boolean",
+        "default": "false",
+        "description": "Compresses images losslessly, instead of as JPEG."
+      },
+      {
+        "section": "images",
+        "name": "nativeReduceImageResolution",
+        "type": "boolean",
+        "default": "false",
+        "description": "Downsamples images to `nativeMaxImageResolution`."
+      },
+      {
+        "section": "images",
+        "name": "nativeMaxImageResolution",
+        "type": "integer",
+        "default": "300",
+        "description": "The resolution `nativeReduceImageResolution` downsamples to, in DPI: `75`, `150`, `300`, `600` or `1200`."
+      },
+      {
+        "section": "watermark",
+        "name": "nativeWatermarkText",
+        "type": "string",
+        "description": "Draws this text on every page."
+      },
+      {
+        "section": "watermark",
+        "name": "nativeWatermarkColor",
+        "type": "string",
+        "default": "#7ffe7f",
+        "description": "The text color, as `#rrggbb`."
+      },
+      {
+        "section": "watermark",
+        "name": "nativeWatermarkFontSize",
+        "type": "integer",
+        "description": "The font size, in points. Without it, the text spans the page."
+      },
+      {
+        "section": "watermark",
+        "name": "nativeWatermarkRotation",
+        "type": "number",
+        "description": "The angle, in degrees, counter-clockwise. Without it, the text runs up a portrait page and across a landscape one."
+      },
+      {
+        "section": "watermark",
+        "name": "nativeWatermarkFont",
+        "type": "string",
+        "default": "Helvetica",
+        "description": "The font name."
+      },
+      {
+        "section": "watermark",
+        "name": "nativeTiledWatermarkText",
+        "type": "string",
+        "description": "Repeats this text across every page, in a grid."
+      },
+      {
+        "section": "conformance",
+        "name": "nativePdfa",
+        "type": "string",
+        "description": "Exports PDF/A: `PDF/A-1b`, `PDF/A-2b`, `PDF/A-3b` or `PDF/A-4`. The `remediate` stage reaches the other PDF/A levels."
+      },
+      {
+        "section": "conformance",
+        "name": "nativePdfua",
+        "type": "string",
+        "description": "Exports PDF/UA: `PDF/UA-1`."
+      },
+      {
+        "section": "conformance",
+        "name": "nativeTaggedPdf",
+        "type": "boolean",
+        "default": "false",
+        "description": "Writes a tagged PDF, whose structure screen readers follow, without declaring PDF/UA."
+      },
+      {
+        "section": "viewer",
+        "name": "initialView",
+        "type": "string",
+        "default": "default",
+        "description": "The side panel a viewer opens: `default`, `outline` or `thumbnails`."
+      },
+      {
+        "section": "viewer",
+        "name": "initialPage",
+        "type": "integer",
+        "default": "1",
+        "description": "The page a viewer opens at."
+      },
+      {
+        "section": "viewer",
+        "name": "magnification",
+        "type": "string",
+        "default": "default",
+        "description": "How a viewer fits the page: `default`, `fitWindow`, `fitWidth`, `fitVisible` or `zoom`."
+      },
+      {
+        "section": "viewer",
+        "name": "zoom",
+        "type": "integer",
+        "default": "100",
+        "description": "The zoom, in percent, with `magnification` set to `zoom`."
+      },
+      {
+        "section": "viewer",
+        "name": "pageLayout",
+        "type": "string",
+        "default": "default",
+        "description": "How a viewer lays the pages out: `default`, `singlePage`, `oneColumn`, `twoColumnLeft` or `twoColumnRight`."
+      },
+      {
+        "section": "viewer",
+        "name": "firstPageOnLeft",
+        "type": "boolean",
+        "default": "false",
+        "description": "Shows the first page on the left, in a two-column layout."
+      },
+      {
+        "section": "viewer",
+        "name": "openBookmarkLevels",
+        "type": "integer",
+        "default": "-1",
+        "description": "How many bookmark levels a viewer expands, from 1 to 10. `-1` expands them all."
+      },
+      {
+        "section": "viewer",
+        "name": "resizeWindowToInitialPage",
+        "type": "boolean",
+        "default": "false",
+        "description": "Sizes the viewer's window to the first page shown."
+      },
+      {
+        "section": "viewer",
+        "name": "centerWindow",
+        "type": "boolean",
+        "default": "false",
+        "description": "Centers the viewer's window on the screen."
+      },
+      {
+        "section": "viewer",
+        "name": "openInFullScreenMode",
+        "type": "boolean",
+        "default": "false",
+        "description": "Opens the viewer full screen."
+      },
+      {
+        "section": "viewer",
+        "name": "displayPDFDocumentTitle",
+        "type": "boolean",
+        "default": "true",
+        "description": "Shows the document title, not the file name, in the viewer's title bar."
+      },
+      {
+        "section": "viewer",
+        "name": "hideViewerMenubar",
+        "type": "boolean",
+        "default": "false",
+        "description": "Hides the viewer's menu bar."
+      },
+      {
+        "section": "viewer",
+        "name": "hideViewerToolbar",
+        "type": "boolean",
+        "default": "false",
+        "description": "Hides the viewer's toolbar."
+      },
+      {
+        "section": "viewer",
+        "name": "hideViewerWindowControls",
+        "type": "boolean",
+        "default": "false",
+        "description": "Hides the viewer's window controls."
+      }
+    ]
+  },
+  "libreofficeExtensions": [
+    "123",
+    "602",
+    "abw",
+    "bib",
+    "bmp",
+    "cdr",
+    "cgm",
+    "cmx",
+    "csv",
+    "cwk",
+    "dbf",
+    "dif",
+    "doc",
+    "docm",
+    "docx",
+    "dot",
+    "dotm",
+    "dotx",
+    "dxf",
+    "emf",
+    "eps",
+    "epub",
+    "fodg",
+    "fodp",
+    "fods",
+    "fodt",
+    "fopd",
+    "gif",
+    "htm",
+    "html",
+    "hwp",
+    "jpeg",
+    "jpg",
+    "key",
+    "ltx",
+    "lwp",
+    "mcw",
+    "met",
+    "mml",
+    "mw",
+    "numbers",
+    "odd",
+    "odg",
+    "odm",
+    "odp",
+    "ods",
+    "odt",
+    "otg",
+    "oth",
+    "otp",
+    "ots",
+    "ott",
+    "pages",
+    "pbm",
+    "pcd",
+    "pct",
+    "pcx",
+    "pdb",
+    "pdf",
+    "pgm",
+    "png",
+    "pot",
+    "potm",
+    "potx",
+    "ppm",
+    "pps",
+    "ppsm",
+    "ppsx",
+    "ppt",
+    "pptm",
+    "pptx",
+    "psd",
+    "psw",
+    "pub",
+    "pwp",
+    "pxl",
+    "ras",
+    "rtf",
+    "sda",
+    "sdc",
+    "sdd",
+    "sdp",
+    "sdw",
+    "sgl",
+    "slk",
+    "smf",
+    "stc",
+    "std",
+    "sti",
+    "stw",
+    "svg",
+    "svm",
+    "swf",
+    "sxc",
+    "sxd",
+    "sxg",
+    "sxi",
+    "sxm",
+    "sxw",
+    "tga",
+    "tif",
+    "tiff",
+    "txt",
+    "uof",
+    "uop",
+    "uos",
+    "uot",
+    "vdx",
+    "vor",
+    "vsd",
+    "vsdm",
+    "vsdx",
+    "wb2",
+    "wk1",
+    "wks",
+    "wmf",
+    "wpd",
+    "wpg",
+    "wps",
+    "xbm",
+    "xhtml",
+    "xls",
+    "xlsb",
+    "xlsm",
+    "xlsx",
+    "xlt",
+    "xltm",
+    "xltx",
+    "xlw",
+    "xml",
+    "xpm",
+    "zabw"
+  ]
+}

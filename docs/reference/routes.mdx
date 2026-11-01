@@ -1,0 +1,37 @@
+---
+id: routes
+title: Routes
+---
+
+import RouteTable from "@site/src/components/documentation/RouteTable";
+
+Gotenberg serves every route below on port 3000, under [`--api-root-path`](/docs/configuration#api-root-path): `/` by default.
+
+## Chromium
+
+<RouteTable group="chromium" />
+
+## LibreOffice
+
+<RouteTable group="libreoffice" />
+
+## PDF
+
+<RouteTable group="pdf" />
+
+## System
+
+<RouteTable group="system" />
+
+## Fields every route takes
+
+The `POST` routes take `multipart/form-data`. Besides their own fields, they all take:
+
+| Field          | Takes                                                                                        |
+| :------------- | :------------------------------------------------------------------------------------------- |
+| `files`        | The files to process, one upload each.                                                       |
+| `archives`     | ZIP files, which Gotenberg unpacks as if you had uploaded their entries under `files`.       |
+| `downloadFrom` | URLs Gotenberg downloads first, as if you had uploaded the files.                            |
+| `stages`       | The [stages](/docs/reference/stages) to run, on the conversion routes and `/forms/pdf/pipe`. |
+
+[How requests work](/docs/getting-started/requests) shows each one. The [headers](/docs/reference/headers) work on every route too.

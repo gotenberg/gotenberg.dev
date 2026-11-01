@@ -20,7 +20,12 @@ module.exports = {
       label: "Reference",
       collapsible: false,
       items: [
+        "reference/routes",
+        "reference/chromium",
+        "reference/libreoffice",
+        "reference/pdf",
         "reference/stages",
+        "reference/system",
         "reference/headers",
         "reference/configuration",
         "reference/errors",

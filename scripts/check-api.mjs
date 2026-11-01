@@ -3,6 +3,9 @@
 //
 // - src/data/stages.json against the stage structs of a Gotenberg checkout
 //   (GOTENBERG_SOURCE, default ../gotenberg): every op, every option name.
+// - src/data/routes.json against the same checkout: every route path, every
+//   form field the Chromium and LibreOffice routes read, every extension
+//   LibreOffice converts.
 // - src/data/flags.json against the --help of a Gotenberg image
 //   (GOTENBERG_IMAGE, default gotenberg/gotenberg:9).
 //
@@ -69,6 +72,75 @@ for (const stage of stages) {
     );
 }
 
+// Routes: the paths the modules register. A stage route counts once, as
+// {op}; the favicon isn't documented.
+const modules = (p) =>
+  readFileSync(path.join(source, "pkg/modules", p), "utf8");
+const sourceRoutes = new Set();
+for (const file of [
+  "chromium/routes.go",
+  "libreoffice/routes.go",
+  "pdf/routes.go",
+]) {
+  const go = modules(file);
+  for (const m of go.matchAll(/Path:\s+"([^"]+)"(?:\s*\+\s*(\w+))?/g)) {
+    if (!m[2]) sourceRoutes.add(m[1]);
+    else if (m[2] === "op") sourceRoutes.add(m[1] + "{op}");
+  }
+  for (const m of go.matchAll(/readRoute\(processor, "([a-z]+)"/g)) {
+    sourceRoutes.add("/forms/pdf/" + m[1]);
+  }
+}
+const api = modules("api/api.go");
+if (/a\.srv\.GET\(\s*a\.rootPath,/.test(api)) sourceRoutes.add("/");
+for (const m of api.matchAll(
+  /a\.srv\.(?:GET|HEAD)\(\s*fmt\.Sprintf\("%s%s", a\.rootPath, "([a-z.]+)"\)/g,
+)) {
+  if (m[1] !== "favicon.ico") sourceRoutes.add("/" + m[1]);
+}
+const routes = json("src/data/routes.json");
+compare("routes", sourceRoutes, new Set(routes.routes.map((r) => r.path)));
+
+// Fields: the names each form-parsing function binds.
+const bound = (go, fn) => {
+  const body = go.match(new RegExp(`\\nfunc ${fn}\\([^]*?\\n\\}\\n`))?.[0];
+  if (!body) {
+    problems.push(`fields: no func ${fn} in Gotenberg`);
+    return new Set();
+  }
+  return new Set(
+    [
+      ...body.matchAll(
+        /(?:\.|\n\s*)(?:Mandatory)?(?:Bool|String|Strings|Custom|Int|Float64|Duration|Inches|Content|PaperSize|Path|Paths)\("([A-Za-z.]+)"/g,
+      ),
+      ...body.matchAll(/api\.JSON\(form, "([A-Za-z]+)"/g),
+    ].map((m) => m[1]),
+  );
+};
+const chromium = modules("chromium/routes.go");
+const libreoffice = modules("libreoffice/routes.go");
+for (const [group, want] of [
+  ["chromium", bound(chromium, "FormDataChromiumOptions")],
+  ["chromium-pdf", bound(chromium, "FormDataChromiumPdfOptions")],
+  ["chromium-screenshot", bound(chromium, "FormDataChromiumScreenshotOptions")],
+  ["libreoffice", bound(libreoffice, "convertRoute")],
+]) {
+  const got = new Set((routes.fields[group] ?? []).map((f) => f.name));
+  compare(`fields ${group}`, want, got);
+}
+
+// Extensions: what LibreOffice accepts.
+const extensions = modules("libreoffice/api/api.go").match(
+  /func \(a \*Api\) Extensions\(\) \[\]string \{([^]*?)\n\}/,
+)?.[1];
+compare(
+  "libreoffice extensions",
+  new Set(
+    [...(extensions ?? "").matchAll(/"\.([a-z0-9]+)"/g)].map((m) => m[1]),
+  ),
+  new Set(routes.libreofficeExtensions),
+);
+
 // Flags: generated, so any difference means src/data/flags.json is stale.
 const help = flagsFromHelp(image);
 const data = json("src/data/flags.json").flags;
@@ -91,6 +163,7 @@ if (problems.length) {
   console.log(problems.join("\n"));
   process.exit(1);
 }
+const fields = Object.values(routes.fields).flat().length;
 console.log(
-  `${stages.length} stages and ${data.length} flags match Gotenberg.`,
+  `${stages.length} stages, ${routes.routes.length} routes, ${fields} fields, ${routes.libreofficeExtensions.length} extensions and ${data.length} flags match Gotenberg.`,
 );

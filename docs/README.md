@@ -46,6 +46,9 @@ Content-Type: application/pdf`}
 - `files`: file names under `files`, or `{ field, name }` for another field, such as `archives`.
 - `fields`: form fields. An array prints one item per line; an object prints as JSON.
 - `stages`: the `stages` field.
+- `method`: `GET` or `HEAD` for the system routes, `POST` by default.
+- `dir`: a subfolder of `examples/` to run from, when a route needs a file name another example already uses, such as the Markdown route's `index.html`.
+- `response`: the response, as text, or as an object for JSON, which the component indents: MDX strips the indentation of a multi-line string.
 - `status`: the status the example answers with, 200 by default.
 - `run={false}`: for an example the check can't run, such as one that downloads from a URL you don't control.
 
@@ -63,8 +66,9 @@ The reference pages render data, so a fact lives in one place:
 
 - `src/data/flags.json`: every flag, generated from Gotenberg's own `--help` by `npm run sync:flags` (`GOTENBERG_IMAGE` picks the image). Don't edit it by hand: fix a description in Gotenberg, then sync. `<ConfigReference module="…">` renders a module's flags on the configuration page.
 - `src/data/stages.json`: every stage, its options and an example, written by hand. `<Stage op="…">` renders one on the stages page.
+- `src/data/routes.json`: every route, the form fields of the Chromium and LibreOffice routes with their defaults, and the extensions LibreOffice converts, written by hand. `<RouteTable group="…">` renders a group of routes, `<Fields group="…" section="…">` a list of fields, each an anchor, and `<Extensions>` the extensions.
 
-`npm run check:api` compares both with Gotenberg: stage and option names with the stage structs of a checkout (`GOTENBERG_SOURCE`, `../gotenberg` by default), flags with the image's `--help`. Run it, and `npm run check:examples`, before a release.
+`npm run check:api` compares them with Gotenberg: stage and option names with the stage structs of a checkout (`GOTENBERG_SOURCE`, `../gotenberg` by default), route paths, field names and extensions with the route code of that checkout, flags with the image's `--help`. Run it, and `npm run check:examples`, before a release.
 
 ## ApiEndpoint component
 

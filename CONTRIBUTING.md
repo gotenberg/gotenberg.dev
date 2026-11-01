@@ -41,7 +41,7 @@ src/
   pages/                       Custom pages (index.js)
   theme/                       Docusaurus theme overrides (DocSidebar)
 scripts/                       Checks the docs against Gotenberg, syncs the flags
-src/data/                      Reference data: flags.json (generated), stages.json
+src/data/                      Reference data: flags.json (generated), stages.json, routes.json
 sidebars.js                    9.x navigation (8.x: versioned_sidebars/)
 docusaurus.config.js           Site configuration
 ```

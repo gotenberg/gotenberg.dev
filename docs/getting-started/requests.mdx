@@ -88,17 +88,16 @@ The routes that read a PDF answer JSON, one entry per file:
 <Request
   route="/forms/pdf/info"
   files={["report.pdf"]}
-  response={`{
-  "report.pdf": {
-    "pages": 3,
-    "version": "1.7",
-    "encrypted": false,
-    "tagged": false,
-    "linearized": false,
-    "formFields": false
-  }
-}`}
-  responseLanguage="json"
+  response={{
+    "report.pdf": {
+      pages: 3,
+      version: "1.7",
+      encrypted: false,
+      tagged: false,
+      linearized: false,
+      formFields: false,
+    },
+  }}
 />
 
 ## Follow a request

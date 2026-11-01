@@ -7,15 +7,17 @@ const flat = (value) => JSON.stringify(value, null, 1).replace(/\n\s*/g, " ");
 
 // A curl request as highlighted lines, plus its plain text for the
 // clipboard. Each arg is [flag, name, value, kind]: kind "file" uploads,
-// "url" highlights, "list" prints a JSON array one item per line.
-export function curl(route, args, out) {
+// "url" highlights, "list" prints a JSON array one item per line. A HEAD
+// request uses --head, since curl --request HEAD waits for a body.
+export function curl(route, args, out, method = "POST") {
   const lines = [
     { cls: "ln pr", parts: [part("curl", "t-c")] },
     {
       cls: "ln in",
       parts: [
-        part("--request", "t-f"),
-        part(" POST "),
+        ...(method === "HEAD"
+          ? [part("--head", "t-f"), part(" ")]
+          : [part("--request", "t-f"), part(` ${method} `)]),
         part("http://localhost:3000" + route, "t-u"),
       ],
     },

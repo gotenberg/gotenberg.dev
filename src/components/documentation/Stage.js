@@ -1,14 +1,7 @@
 import React from "react";
 import data from "@site/src/data/stages.json";
+import Options, { inline, NoOptions } from "./Options";
 import Request from "./Request";
-import styles from "./Stage.module.css";
-
-// Turns `backtick` spans of the data's text into code.
-function inline(text) {
-  return text
-    .split("`")
-    .map((part, i) => (i % 2 === 1 ? <code key={i}>{part}</code> : part));
-}
 
 // One stage of src/data/stages.json: what it does, its options, and an
 // example on /forms/pdf/pipe that npm run check:examples runs.
@@ -22,33 +15,9 @@ export default function Stage({ op }) {
     <>
       <p>{inline(stage.summary)}</p>
       {stage.options.length > 0 ? (
-        <div className={styles.options}>
-          {stage.options.map((option) => (
-            <div key={option.name} className={styles.option}>
-              <div className={styles.head}>
-                <code className={styles.name}>{option.name}</code>
-                <span className={styles.type}>
-                  {option.type === "pages" ? (
-                    <a href="#page-selections">pages</a>
-                  ) : (
-                    option.type
-                  )}
-                </span>
-                {option.required && (
-                  <span className={styles.required}>required</span>
-                )}
-              </div>
-              <p className={styles.description}>{inline(option.description)}</p>
-              {option.default !== undefined && (
-                <p className={styles.default}>
-                  Default: <code>{option.default}</code>
-                </p>
-              )}
-            </div>
-          ))}
-        </div>
+        <Options options={stage.options} />
       ) : (
-        <p className={styles.none}>No options.</p>
+        <NoOptions />
       )}
       <Request
         route="/forms/pdf/pipe"

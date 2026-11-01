@@ -147,7 +147,7 @@ module.exports = {
             },
             {
               label: "Explore All Routes",
-              to: "/docs",
+              to: "/docs/reference/routes",
             },
             {
               label: "Configuration",

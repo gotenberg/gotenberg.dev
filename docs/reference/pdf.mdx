@@ -1,0 +1,146 @@
+---
+id: pdf
+title: PDF
+---
+
+import RouteTable from "@site/src/components/documentation/RouteTable";
+
+The PDF routes work on the PDFs you upload, with litho, Gotenberg's PDF engine. They run [stages](/docs/reference/stages), or read the PDFs and answer JSON.
+
+<RouteTable group="pdf" />
+
+## Run stages
+
+`/forms/pdf/pipe` runs the stages of the `stages` field on the uploaded PDFs, in order:
+
+<Request
+  route="/forms/pdf/pipe"
+  files={["report.pdf", "annex.pdf"]}
+  stages={[{ op: "merge" }, { op: "optimize" }]}
+  output="documents.pdf"
+/>
+
+The stages take the PDFs in the alphanumeric order of their names. A PDF a stage reads by name, such as the source of `insert`, isn't processed itself.
+
+## Run one stage
+
+Each stage also has its own route, `/forms/pdf/<op>`. It takes the stage's options as form fields, and a list or an object as JSON:
+
+<Request
+  route="/forms/pdf/set-metadata"
+  files={["report.pdf"]}
+  fields={{ title: "Annual report", author: "Finance" }}
+  output="report.pdf"
+/>
+
+[Stages](/docs/reference/stages) lists every stage and its options.
+
+## Read PDFs
+
+The read routes answer JSON: one entry per uploaded PDF, under its name. They take a `password` field to open encrypted PDFs, and a wrong or missing one answers 400:
+
+<Request
+  route="/forms/pdf/info"
+  files={["encrypted.pdf"]}
+  fields={{ password: "secret" }}
+  response={{
+    "encrypted.pdf": {
+      pages: 3,
+      version: "1.7",
+      encrypted: true,
+      tagged: false,
+      linearized: false,
+      formFields: false,
+    },
+  }}
+/>
+
+### info
+
+The page count, the PDF version, and whether the PDF is encrypted, tagged for accessibility, linearized for fast web view, or holds form fields:
+
+<Request
+  route="/forms/pdf/info"
+  files={["report.pdf"]}
+  response={{
+    "report.pdf": {
+      pages: 3,
+      version: "1.7",
+      encrypted: false,
+      tagged: false,
+      linearized: false,
+      formFields: false,
+    },
+  }}
+/>
+
+### metadata
+
+The entries of the PDF's document information: `Title`, `Author`, `Subject`, `Keywords`, `Creator`, `Producer`, `CreationDate` and `ModDate`, when set:
+
+<Request
+  route="/forms/pdf/metadata"
+  files={["report.pdf"]}
+  response={{ "report.pdf": { Author: "Finance", Title: "Quarterly report" } }}
+/>
+
+### bookmarks
+
+The bookmarks, as the `set-bookmarks` stage takes them:
+
+<Request
+  route="/forms/pdf/bookmarks"
+  files={["report.pdf"]}
+  response={{
+    "report.pdf": [
+      {
+        title: "Summary",
+        pageNumber: 1,
+        children: [{ title: "Figures", pageNumber: 2 }],
+      },
+      { title: "Appendix", pageNumber: 3 },
+    ],
+  }}
+/>
+
+### attachments
+
+The embedded files: name, media type, and their relationship to the document:
+
+<Request
+  route="/forms/pdf/attachments"
+  files={["invoice.pdf"]}
+  response={{
+    "invoice.pdf": [
+      { name: "factur-x.xml", mimeType: "text/xml", relationship: "Data" },
+    ],
+  }}
+/>
+
+### validate
+
+Checks the PDFs against the `profile` field: `PDF/A-1a`, `PDF/A-1b`, `PDF/A-2a`, `PDF/A-2b`, `PDF/A-2u`, `PDF/A-3a`, `PDF/A-3b`, `PDF/A-3u`, `PDF/A-4`, `PDF/A-4e`, `PDF/A-4f`, `PDF/UA-1`, `PDF/UA-2` or `Factur-X`.
+
+<Request
+  route="/forms/pdf/validate"
+  files={["invoice.pdf"]}
+  fields={{ profile: "Factur-X" }}
+  response={{
+    "invoice.pdf": { profile: "Factur-X", compliant: true, violations: [] },
+  }}
+/>
+
+Each violation names the rule a PDF breaks, and where:
+
+```json
+{
+  "specification": "ISO_19005_2",
+  "clause": "6.1.7.1",
+  "testNumber": 2,
+  "description": "The stream keyword shall be followed either by a CARRIAGE RETURN (0Dh) and LINE FEED (0Ah) character sequence or by a single LINE FEED (0Ah) character. The endstream keyword shall be preceded by an EOL marker",
+  "context": "object 6: endstream keyword not immediately preceded by an EOL marker",
+  "severity": "fatal"
+}
+```
+
+A `fatal` violation makes the PDF non-compliant. A `warning` or an `info` doesn't, such as the warnings Factur-X raises for the softer rules of its Schematron.

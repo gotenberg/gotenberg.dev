@@ -5,11 +5,16 @@ import styles from "./Request.module.css";
 
 // A request as copyable cURL, built from its parts, then its response when
 // given. Files are names, or { field, name } for a field other than "files".
-// Fields that hold an array print one item per line. The cURL text also lands
+// Fields that hold an array print one item per line. A JSON response goes as
+// an object: MDX strips the indentation a multi-line string shares with the
+// JSX around it, so the component indents it instead. The cURL text also lands
 // in data-curl: scripts/check-examples.mjs runs it against a Gotenberg
-// container and expects data-status, unless run is false.
+// container, from the examples/ subfolder dir when given, and expects
+// data-status, unless run is false.
 export default function Request({
   route,
+  method = "POST",
+  dir,
   files = [],
   fields = {},
   stages,
@@ -35,20 +40,27 @@ export default function Request({
   Object.entries(headers).forEach(([name, value]) =>
     args.push(["header", name, value]),
   );
-  const { text } = curl(route, args, output);
+  const { text } = curl(route, args, output, method);
 
   return (
     <div
       className={styles.request}
       data-curl={text}
+      data-dir={dir}
       data-status={status}
       data-run={run ? undefined : "false"}
     >
       <CodeBlock language="bash">{text}</CodeBlock>
-      {response && (
-        <CodeBlock language={responseLanguage} title="Response">
-          {response.trim()}
+      {typeof response === "object" ? (
+        <CodeBlock language="json" title="Response">
+          {JSON.stringify(response, null, 2)}
         </CodeBlock>
+      ) : (
+        response && (
+          <CodeBlock language={responseLanguage} title="Response">
+            {response.trim()}
+          </CodeBlock>
+        )
       )}
     </div>
   );

@@ -1,0 +1,143 @@
+---
+id: chromium
+title: Chromium
+---
+
+import RouteTable from "@site/src/components/documentation/RouteTable";
+import Fields from "@site/src/components/documentation/Fields";
+
+Chromium prints web pages to PDF and captures them as images. It loads a URL, an HTML file, or Markdown files laid out by an HTML file.
+
+<RouteTable group="chromium" />
+
+Every route takes the [page fields](#page-fields). The conversion routes add the [PDF fields](#pdf-fields) and [`stages`](/docs/reference/stages), which run on the printed PDF. The screenshot routes add the [screenshot fields](#screenshot-fields).
+
+## Convert a URL
+
+Send the address in `url`. It starts with `http://` or `https://`:
+
+<Request
+  route="/forms/chromium/convert/url"
+  fields={{ url: "https://example.com" }}
+  output="example.pdf"
+/>
+
+Chromium loads the page from Gotenberg's network. [`--chromium-deny-private-ips`](/docs/configuration#chromium-deny-private-ips), [`--chromium-allow-list`](/docs/configuration#chromium-allow-list) and [`--chromium-deny-list`](/docs/configuration#chromium-deny-list) decide which addresses it may reach.
+
+## Convert HTML
+
+Upload the page as `index.html`, with the files it uses: stylesheets, images, fonts, scripts.
+
+<Request
+  route="/forms/chromium/convert/html"
+  files={["index.html", "style.css"]}
+  output="invoice.pdf"
+/>
+
+Gotenberg drops the folders of the files you upload, so the page refers to each by its name alone: `href="style.css"`, not `href="css/style.css"`.
+
+## Convert Markdown
+
+Upload an `index.html` that places each Markdown file with `{{ toHTML "<name>" }}`:
+
+```html title="index.html"
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Release notes</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    {{ toHTML "notes.md" }}
+  </body>
+</html>
+```
+
+Then send it with the Markdown files and the page's assets:
+
+<Request
+  route="/forms/chromium/convert/markdown"
+  dir="markdown"
+  files={["index.html", "notes.md", "style.css"]}
+  output="notes.pdf"
+/>
+
+Gotenberg turns each Markdown file into HTML, then Chromium prints the page as on the HTML route.
+
+## Screenshot a URL
+
+<Request
+  route="/forms/chromium/screenshot/url"
+  fields={{ url: "https://example.com" }}
+  output="example.png"
+/>
+
+## Screenshot HTML
+
+<Request
+  route="/forms/chromium/screenshot/html"
+  files={["index.html", "style.css"]}
+  fields={{ format: "jpeg", quality: 80 }}
+  output="invoice.jpeg"
+/>
+
+## Screenshot Markdown
+
+<Request
+  route="/forms/chromium/screenshot/markdown"
+  dir="markdown"
+  files={["index.html", "notes.md", "style.css"]}
+  fields={{ format: "webp" }}
+  output="notes.webp"
+/>
+
+## Add a header and a footer
+
+Upload `header.html` and `footer.html` beside the page. Chromium prints them in the top and bottom margins of each page, and fills in the elements with the class `pageNumber`, `totalPages`, `date`, `title` or `url`:
+
+```html title="footer.html"
+<!doctype html>
+<html>
+  <head>
+    <style>
+      .footer {
+        margin: 0 2cm 0 auto;
+        font-family: sans-serif;
+        font-size: 9px;
+      }
+    </style>
+  </head>
+  <body>
+    <p class="footer">
+      Page <span class="pageNumber"></span> of <span class="totalPages"></span>
+    </p>
+  </body>
+</html>
+```
+
+<Request
+  route="/forms/chromium/convert/html"
+  files={["index.html", "style.css", "header.html", "footer.html"]}
+  output="invoice.pdf"
+/>
+
+Chromium renders both in one document, apart from the page. Style them in a `<style>` tag, and give each its own class names: a rule in the footer also reaches the header.
+
+## Page fields
+
+Every Chromium route takes these. They decide when the page is ready, what Chromium sends, and what fails the request.
+
+<Fields group="chromium" />
+
+## PDF fields
+
+The conversion routes take these.
+
+<Fields group="chromium-pdf" />
+
+## Screenshot fields
+
+The screenshot routes take these.
+
+<Fields group="chromium-screenshot" />

@@ -54,8 +54,9 @@ for (const file of htmlFiles(buildDir)) {
     const command = unescape(m[1]);
     const status = tag.match(/\bdata-status="(\d+)"/)?.[1] ?? "200";
     const run = !/\bdata-run="false"/.test(tag);
+    const sub = tag.match(/\bdata-dir="([^"]*)"/)?.[1] ?? "";
     const page = "/" + path.relative(buildDir, file).replace(/\.html$/, "");
-    const example = examples.get(command) ?? { status, run, pages: [] };
+    const example = examples.get(command) ?? { status, run, sub, pages: [] };
     example.pages.push(page);
     examples.set(command, example);
   }
@@ -63,7 +64,7 @@ for (const file of htmlFiles(buildDir)) {
 
 let failed = 0;
 let skipped = 0;
-for (const [command, { status, run, pages }] of examples) {
+for (const [command, { status, run, sub, pages }] of examples) {
   const where = [...new Set(pages)].join(", ");
   if (!run) {
     skipped++;
@@ -76,7 +77,10 @@ for (const [command, { status, run, pages }] of examples) {
   const script = `${command.replaceAll("http://localhost:3000", gotenberg)} --silent --show-error --write-out '%{http_code}' --output /dev/null`;
   let got;
   try {
-    got = execFileSync("sh", ["-c", script], { cwd: dir, encoding: "utf8" })
+    got = execFileSync("sh", ["-c", script], {
+      cwd: path.join(dir, sub),
+      encoding: "utf8",
+    })
       .trim()
       .slice(-3);
   } catch (error) {

@@ -1,4 +1,4 @@
-/* A stage's options: one panel, one row per option, as the configuration
+/* Options or form fields: one panel, one row each, as the configuration
    reference lists flags. */
 .options {
   margin-bottom: 1.25rem;
@@ -23,12 +23,25 @@
   margin-bottom: 2px;
 }
 
-:global(.markdown) code.name {
+:global(.markdown) code.name,
+:global(.markdown) a.name {
   padding: 0;
   background: none;
   color: var(--ifm-color-primary);
+  font-family: var(--ifm-font-family-monospace);
   font-size: 0.9rem;
   font-weight: 700;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+/* Anchored rows clear the sticky navbar when a link jumps to them. */
+.option[id] {
+  scroll-margin-top: calc(var(--ifm-navbar-height) + 1rem);
+}
+
+.option:target {
+  background: color-mix(in srgb, var(--ifm-color-primary) 7%, transparent);
 }
 
 .type {
