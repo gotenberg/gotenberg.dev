@@ -81,6 +81,7 @@ Full-width light-gray sponsors bandeau shown below the content on every doc page
 ## CSS conventions
 
 - Use CSS custom properties (`--ifm-*`) for Docusaurus theme values.
+- Name a custom property that holds a font family with "font" in it (`--font-serif`, `--font-display`). The production CSS minifier drops any `@font-face` whose family only appears in properties without "font" in their name, and `npm start` doesn't minify, so check fonts on `npm run build`.
 - Use CSS Modules for component-scoped styles.
 - Use `src/css/custom.css` only for global overrides (admonitions, sidebar, footer, typography).
 - Transitions: `0.2s ease`, color and text-decoration only. No lifts, glows, or keyframe animations. The homepage is the exception: hover lifts and the keyframe animations listed above, never glows.

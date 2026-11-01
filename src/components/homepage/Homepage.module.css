@@ -416,7 +416,9 @@
 /* The page frame: hero, sections and tiles. */
 
 .cb {
-  --display: "Bricolage Grotesque Variable", var(--sans);
+  /* The name must contain "font": the production CSS minifier keeps a
+     @font-face only when its family appears in a property named so. */
+  --font-display: "Bricolage Grotesque Variable", var(--sans);
   --panel: #ffffff;
   --panel-2: #f3f1ec;
   --radius: 14px;
@@ -491,7 +493,7 @@
 
 .cb-title {
   color: var(--ink);
-  font-family: var(--display);
+  font-family: var(--font-display);
   font-size: clamp(56px, 7vw, 100px);
   font-weight: 800;
   line-height: 0.92;
@@ -556,7 +558,7 @@
   max-width: 820px;
   margin-bottom: 44px;
   color: var(--ink);
-  font-family: var(--display);
+  font-family: var(--font-display);
   font-size: 54px;
   font-weight: 800;
   line-height: 1;
@@ -590,7 +592,7 @@
 
 .cb-tile h3 {
   color: var(--ink);
-  font-family: var(--display);
+  font-family: var(--font-display);
   font-size: 28px;
   font-weight: 700;
   line-height: 1.05;
@@ -620,7 +622,7 @@
 
 .cb-end h2 {
   margin-bottom: 26px;
-  font-family: var(--display);
+  font-family: var(--font-display);
   font-size: 54px;
   font-weight: 800;
   line-height: 1;
@@ -1121,7 +1123,7 @@
   --print: #4338ca;
   --bad: var(--rubric);
   --bad-soft: var(--rubric-soft);
-  --cond: var(--display);
+  --cond: var(--font-display);
   --node: var(--panel);
   --line: var(--blue);
   --hot: var(--rubric);
@@ -1647,13 +1649,13 @@
 
 .xb-dims__n {
   color: var(--ink);
-  font: 800 40px/1 var(--display);
+  font: 800 40px/1 var(--font-display);
   letter-spacing: -0.03em;
 }
 
 .xb-dims__u {
   color: var(--muted);
-  font: 700 18px/1 var(--display);
+  font: 700 18px/1 var(--font-display);
 }
 
 .g9 .xb-dims__note {
@@ -1869,7 +1871,7 @@
 
 .g9 .xb-head__lede {
   color: var(--ink);
-  font: 500 24px/1.38 var(--display);
+  font: 500 24px/1.38 var(--font-display);
   letter-spacing: -0.012em;
 }
 
@@ -1932,7 +1934,7 @@
 
 .xb-ctl__h {
   color: var(--ink);
-  font: 700 22px/1.1 var(--display);
+  font: 700 22px/1.1 var(--font-display);
   letter-spacing: -0.015em;
 }
 
@@ -2114,7 +2116,7 @@
 .xb-el__sym {
   align-self: center;
   color: var(--f);
-  font: 800 46px/1 var(--display);
+  font: 800 46px/1 var(--font-display);
   letter-spacing: -0.04em;
 }
 
@@ -2291,7 +2293,7 @@
 
 .xb-mode__n {
   color: var(--ink);
-  font: 800 30px/1 var(--display);
+  font: 800 30px/1 var(--font-display);
   letter-spacing: -0.025em;
 }
 
@@ -2347,7 +2349,7 @@
 
 .xb-recipe__t {
   color: var(--ink);
-  font: 700 18px/1.2 var(--display);
+  font: 700 18px/1.2 var(--font-display);
 }
 
 .xb-recipe__d,
@@ -2404,7 +2406,7 @@
   border: 2px dashed color-mix(in srgb, var(--blue) 35%, var(--rule));
   border-radius: 14px;
   color: var(--blue);
-  font: 700 16px/1.3 var(--display);
+  font: 700 16px/1.3 var(--font-display);
   text-decoration: none;
   transition:
     border-color 0.15s ease,
@@ -2532,7 +2534,7 @@
 .xb .cd-node b {
   margin-bottom: 2px;
   color: var(--ink);
-  font: 700 16px/1.2 var(--display);
+  font: 700 16px/1.2 var(--font-display);
   letter-spacing: 0;
   text-transform: none;
 }
@@ -2563,7 +2565,7 @@
   padding-bottom: 12px;
   border-bottom: 1px solid var(--rule);
   color: var(--ink);
-  font: 800 20px var(--display);
+  font: 800 20px var(--font-display);
   letter-spacing: -0.01em;
   text-transform: none;
 }
