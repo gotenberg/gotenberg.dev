@@ -1,15 +1,7 @@
 import React, { useState } from "react";
 import cx from "./cx";
 import { curl, response } from "./requests";
-import {
-  CodeBar,
-  CodeLines,
-  CodePanel,
-  Section,
-  SectionHead,
-  Segmented,
-  Switch,
-} from "./ui";
+import { CodePanel, Section, SectionHead, Segmented, Switch } from "./ui";
 
 const ICONS = {
   app: (
@@ -68,10 +60,10 @@ function Node({ icon, title, lines, className, column, row }) {
   );
 }
 
-function Wire({ n, title, sub, back, className, column, row, delay }) {
+function Wire({ n, title, sub, back, dim, column, row }) {
   return (
     <div
-      className={cx("cd-wire", back && "cd-wire--back", className)}
+      className={cx("cd-wire", back && "cd-wire--back", dim && "xb-dim")}
       style={{ gridColumn: column, gridRow: row }}
     >
       <small>
@@ -79,8 +71,30 @@ function Wire({ n, title, sub, back, className, column, row, delay }) {
         <b>{title}</b>
         <span>{sub}</span>
       </small>
-      <i className={cx("cd-packet")} style={{ animationDelay: delay }} />
+      <i
+        className={cx("cd-packet")}
+        style={{ animationDelay: `${(n - 1) * 0.9}s` }}
+      />
     </div>
+  );
+}
+
+// The steps as a list, for panels too narrow for the diagram.
+function Steps({ steps }) {
+  return (
+    <ol className={cx("cd-steps")}>
+      {steps.map(({ n, title, sub, from, to, dim }) => (
+        <li key={n} className={cx("cd-step", dim && "xb-dim")}>
+          <em className={cx("xb-step")}>{n}</em>
+          <b>
+            {from} → {to}
+          </b>
+          <span>
+            {title} · {sub}
+          </span>
+        </li>
+      ))}
+    </ol>
   );
 }
 
@@ -131,7 +145,66 @@ export default function Deliver() {
     "# Then, on https://api.example.com/events:",
     '{"event": "webhook.success", "correlationId": "…", "timestamp": "…"}',
   ]);
-  const inClass = upload && "xb-dim";
+  const out = s3 ? "S3 · out.pdf" : "Your API";
+  // The order of one request: wires in the diagram, rows in the list.
+  const steps = [
+    {
+      n: 1,
+      title: "POST /forms/…",
+      sub: "Gotenberg-Webhook-*",
+      from: "Your app",
+      to: "Gotenberg",
+      column: 2,
+      row: 1,
+    },
+    {
+      n: 2,
+      title: "GET",
+      sub: "downloadFrom",
+      from: "S3 · in.docx",
+      to: "Gotenberg",
+      dim: upload,
+      column: 2,
+      row: 3,
+    },
+    {
+      n: 3,
+      title: "204 No Content",
+      sub: upload ? "once received" : "once downloaded",
+      from: "Gotenberg",
+      to: "Your app",
+      back: true,
+      column: 2,
+      row: 2,
+    },
+    {
+      n: 4,
+      title: method,
+      sub: "Gotenberg-Webhook-Url",
+      from: "Gotenberg",
+      to: out,
+      column: 4,
+      row: 1,
+    },
+    {
+      n: 5,
+      title: "event",
+      sub: "Gotenberg-Webhook-Events-Url",
+      from: "Gotenberg",
+      to: "Events URL",
+      column: 4,
+      row: 2,
+    },
+    {
+      n: 6,
+      title: "OTLP",
+      sub: "OpenTelemetry",
+      from: "Gotenberg",
+      to: "Your collector",
+      column: 4,
+      row: 3,
+    },
+  ];
   const aria =
     "Your app posts to Gotenberg. Gotenberg " +
     (upload ? "receives the file" : "downloads the input from S3") +
@@ -157,7 +230,9 @@ export default function Deliver() {
       <div className={cx("xb-stack")}>
         <div className={cx("xb-bar")}>
           <div className={cx("xb-bar__g")}>
-            <span className={cx("xb-label")}>Gotenberg-Webhook-Method</span>
+            <span className={cx("xb-label")}>
+              <span className={cx("xb-field")}>Gotenberg-Webhook-Method</span>
+            </span>
             <Segmented
               label="Gotenberg-Webhook-Method"
               options={["PUT", "POST", "PATCH"].map((m) => [m, m])}
@@ -198,39 +273,16 @@ export default function Deliver() {
               column={1}
               row="1 / span 2"
             />
-            <Wire
-              n={1}
-              title="POST /forms/…"
-              sub="Gotenberg-Webhook-*"
-              column={2}
-              row={1}
-              delay="0s"
-            />
-            <Wire
-              n={3}
-              title="204 No Content"
-              sub={upload ? "once received" : "once downloaded"}
-              back
-              column={2}
-              row={2}
-              delay="1.8s"
-            />
+            {steps.map((step) => (
+              <Wire key={step.n} {...step} />
+            ))}
             <Node
               icon="bucket"
               title="S3 · in.docx"
               lines={["presigned GET"]}
-              className={inClass}
+              className={upload && "xb-dim"}
               column={1}
               row={3}
-            />
-            <Wire
-              n={2}
-              title="GET"
-              sub="downloadFrom"
-              className={inClass}
-              column={2}
-              row={3}
-              delay="0.9s"
             />
             <div className={cx("cd-node cd-node--core")}>
               <div className={cx("cd-core__title")}>
@@ -253,28 +305,12 @@ export default function Deliver() {
                 remediate · pure Go
               </div>
             </div>
-            <Wire
-              n={4}
-              title={method}
-              sub="Gotenberg-Webhook-Url"
-              column={4}
-              row={1}
-              delay="2.7s"
-            />
             <Node
               icon={s3 ? "bucket" : "server"}
-              title={s3 ? "S3 · out.pdf" : "Your API"}
+              title={out}
               lines={[s3 ? "presigned PUT" : method + " /documents"]}
               column={5}
               row={1}
-            />
-            <Wire
-              n={5}
-              title="event"
-              sub="Gotenberg-Webhook-Events-Url"
-              column={4}
-              row={2}
-              delay="3.6s"
             />
             <Node
               icon="bell"
@@ -282,14 +318,6 @@ export default function Deliver() {
               lines={["webhook.success", "webhook.error"]}
               column={5}
               row={2}
-            />
-            <Wire
-              n={6}
-              title="OTLP"
-              sub="OpenTelemetry"
-              column={4}
-              row={3}
-              delay="4.5s"
             />
             <Node
               icon="pulse"
@@ -299,6 +327,7 @@ export default function Deliver() {
               row={3}
             />
           </div>
+          <Steps steps={steps} />
           <div className={cx("cd-legend")}>
             <span>
               <b>1–6</b> the order of one request
@@ -308,16 +337,11 @@ export default function Deliver() {
           </div>
         </div>
 
-        <div className={cx("xb-pair")}>
-          <CodePanel
-            title="LibreOffice · /forms/libreoffice/convert"
-            request={request}
-          />
-          <div className={cx("xb-code")}>
-            <CodeBar title="Response" />
-            <CodeLines lines={res} />
-          </div>
-        </div>
+        <CodePanel
+          title="LibreOffice · /forms/libreoffice/convert"
+          request={request}
+          res={res}
+        />
       </div>
     </Section>
   );

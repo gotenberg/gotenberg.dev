@@ -13,8 +13,9 @@ export default function Architectures() {
         accent="you run."
         lede="Nine images on five architectures."
       >
-        No Java, no Python, no QPDF, pdfcpu, pdftk or ExifTool inside: litho, a
-        pure-Go PDF processor, does that work now.
+        The full image carries Chromium and LibreOffice; the -chromium and
+        -libreoffice images carry one of them. AWS Lambda and Cloud Run get
+        their own images.
       </SectionHead>
       <div className={cx("cb-bento")}>
         <article

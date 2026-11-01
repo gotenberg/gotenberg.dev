@@ -2,29 +2,29 @@ import React, { useEffect, useState } from "react";
 import cx from "./cx";
 import { PROFILES } from "./data";
 import { curl, json, response } from "./requests";
-import { CodePanel, Section, SectionHead, Segmented, Switch } from "./ui";
+import {
+  CodePanel,
+  Radio,
+  RadioGroup,
+  Section,
+  SectionHead,
+  Segmented,
+  Switch,
+} from "./ui";
 
 // Where the violations sit on the page, in %.
 const MARKS = [
   [18, 12],
   [74, 14],
-  [30, 22],
-  [86, 27],
   [12, 33],
   [52, 35],
   [70, 41],
-  [24, 46],
   [90, 50],
   [40, 54],
-  [60, 58],
   [16, 63],
   [80, 66],
-  [34, 71],
   [56, 76],
-  [88, 80],
   [20, 84],
-  [66, 88],
-  [44, 92],
 ];
 
 const LINES = [
@@ -58,20 +58,59 @@ const OPTIONS = [
 ];
 
 // The validate then remediate run, replayed in a loop. It holds while the
-// pointer is over it, and stays on validate when motion is reduced.
-function Instrument({ step, onHold }) {
+// pointer or the focus is in it. Picking a step or pausing stops the loop;
+// with reduced motion it never starts.
+function Instrument({ step, onStep, playing, onPlay, onHold }) {
   return (
     <div
-      className={cx("cc-inst")}
+      className={cx("cc-inst", !playing && "cc-still")}
       onMouseEnter={() => onHold(true)}
       onMouseLeave={() => onHold(false)}
+      onFocus={() => onHold(true)}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) onHold(false);
+      }}
     >
       <div className={cx("cc-inst__bar")}>
         <span className={cx("cc-method")}>POST</span>
         <span className={cx("xb-req")}>
           <b className={cx("xb-req__path")}>/forms/pdf/{step}</b>
           <i className={cx("xb-req__k")}> · files=@</i>report.pdf
-          <i className={cx("xb-req__k")}> · profile=</i>PDF/A-2b
+          <i className={cx("xb-req__k")}> · profile=</i>PDF/A-4
+        </span>
+        <span className={cx("cc-ctl")}>
+          <span className={cx("xb-label")}>Example run</span>
+          <Segmented
+            label="Example run"
+            options={[
+              ["validate", "validate"],
+              ["remediate", "remediate"],
+            ]}
+            value={step}
+            onChange={onStep}
+          />
+          <button
+            type="button"
+            className={cx("cc-play")}
+            aria-label={
+              playing ? "Pause the example run" : "Play the example run"
+            }
+            onClick={() => onPlay(!playing)}
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              {playing ? (
+                <path d="M6 4h4v16H6zM14 4h4v16h-4z" />
+              ) : (
+                <path d="M7 4.5v15l12.5-7.5z" />
+              )}
+            </svg>
+          </button>
         </span>
       </div>
       <div className={cx("cc-inst__body")}>
@@ -106,25 +145,24 @@ function Instrument({ step, onHold }) {
               className={cx("cc-callout")}
               style={{ left: "58%", top: "4%" }}
             >
-              6.6.2.1 · Metadata
+              6.7.2.1 · Metadata
             </span>
             <span
               className={cx("cc-callout")}
               style={{ left: "62%", top: "36%" }}
             >
-              6.1.7.1 · ×9
+              6.2.4.3 · ×9
             </span>
             <span
               className={cx("cc-callout")}
               style={{ left: "-14%", top: "70%" }}
             >
-              6.2.4.3 · ×9
+              6.1.2 · Header
             </span>
             <span className={cx("cc-beam")} aria-hidden="true" />
             <span className={cx("cc-seal")} aria-hidden="true">
               <span>
-                <b>PDF/A</b>2b
-                <br />
+                <b>PDF/A-4</b>
                 compliant
               </span>
             </span>
@@ -134,22 +172,22 @@ function Instrument({ step, onHold }) {
           {step === "validate" ? (
             <>
               <div className={cx("cc-gauge")}>
-                <b>19</b>
+                <b>11</b>
                 <span>
-                  <strong>fatal violations</strong>PDF/A-2b · ISO 19005-2
+                  <strong>fatal violations</strong>PDF/A-4 · ISO 19005-4
                 </span>
               </div>
               <ol className={cx("cc-rows")}>
                 <li>
-                  <code>6.1.7.1</code>
+                  <code>6.1.2</code>
                   <span>
-                    The endstream keyword shall be preceded by an EOL marker.
+                    The file header shall begin at byte zero and shall consist
+                    of "%PDF-2.n" followed by a single EOL marker.
                     <small>
-                      test 2 · object 6: endstream keyword not immediately
-                      preceded by an EOL marker
+                      test 1 · header "%PDF-1.7" does not match required pattern
                     </small>
                   </span>
-                  <em>×9</em>
+                  <em>×1</em>
                 </li>
                 <li>
                   <code>6.2.4.3</code>
@@ -164,10 +202,10 @@ function Instrument({ step, onHold }) {
                   <em>×9</em>
                 </li>
                 <li>
-                  <code>6.6.2.1</code>
+                  <code>6.7.2.1</code>
                   <span>
-                    The Catalog dictionary of a conforming file shall contain
-                    the Metadata key.
+                    The document catalog dictionary of a conforming file shall
+                    contain the Metadata key.
                     <small>
                       test 1 · catalog missing or invalid /Metadata stream
                     </small>
@@ -186,7 +224,7 @@ function Instrument({ step, onHold }) {
               <div className={cx("cc-gauge")}>
                 <b>0</b>
                 <span>
-                  <strong>violations left</strong>PDF/A-2b · compliant
+                  <strong>violations left</strong>PDF/A-4 · compliant
                 </span>
               </div>
               <div className={cx("cc-headers")}>
@@ -201,8 +239,9 @@ function Instrument({ step, onHold }) {
                 </div>
               </div>
               <p className={cx("cc-foot")}>
-                Validated again: <code>"compliant": true</code>. A real litho
-                run on a three-page PDF from Gotenberg's integration tests.
+                Validated again: <code>"compliant": true</code>, and the file is
+                now PDF 2.0. A real litho run on a three-page PDF from
+                Gotenberg's integration tests.
               </p>
             </>
           )}
@@ -234,8 +273,8 @@ function Builder({ profile, mode, setMode, options, toggle }) {
     remediate ? "conforming.pdf" : null,
   );
 
-  // PDF/A-2b shows the real run; other profiles show the shape of the answer.
-  const real = profile === "PDF/A-2b";
+  // PDF/A-4 shows the real run; other profiles show the shape of the answer.
+  const real = profile === "PDF/A-4";
   let rows;
   if (!remediate && real) {
     rows = [
@@ -246,13 +285,13 @@ function Builder({ profile, mode, setMode, options, toggle }) {
           profile,
           compliant: false,
           violations: [
-            { clause: "6.1.7.1", testNumber: 2, severity: "fatal" },
+            { clause: "6.1.2", testNumber: 1, severity: "fatal" },
             { clause: "6.2.4.3", testNumber: 2, severity: "fatal" },
-            { clause: "6.6.2.1", testNumber: 1, severity: "fatal" },
+            { clause: "6.7.2.1", testNumber: 1, severity: "fatal" },
           ],
         },
       }),
-      "# The real run: 19 violations, 9 + 9 + 1, all in ISO_19005_2. Specification, description and context left out here.",
+      "# The real run: 11 violations, 1 + 9 + 1, all in ISO_19005_4. Specification, description and context left out here.",
     ];
   } else if (!remediate) {
     rows = [
@@ -333,8 +372,9 @@ function Builder({ profile, mode, setMode, options, toggle }) {
 
 export default function Conformance() {
   const [step, setStep] = useState("validate");
+  const [playing, setPlaying] = useState(true);
   const [hold, setHold] = useState(false);
-  const [profile, setProfile] = useState("PDF/A-2b");
+  const [profile, setProfile] = useState("PDF/A-4");
   const [mode, setMode] = useState("validate");
   const [options, setOptions] = useState({
     language: false,
@@ -343,15 +383,19 @@ export default function Conformance() {
   });
 
   useEffect(() => {
-    if (hold || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      return undefined;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setPlaying(false);
     }
+  }, []);
+
+  useEffect(() => {
+    if (!playing || hold) return undefined;
     const timer = setInterval(
       () => setStep((s) => (s === "validate" ? "remediate" : "validate")),
       4800,
     );
     return () => clearInterval(timer);
-  }, [hold]);
+  }, [playing, hold]);
 
   return (
     <Section id="conform">
@@ -362,22 +406,38 @@ export default function Conformance() {
         accent="Prove it."
         lede="Validates any PDF against PDF/A, PDF/UA and Factur-X, clause by clause, and remediates what fails."
       >
-        PDF/A and PDF/UA rules carry veraPDF's clause numbers. Factur-X reports
-        add Schematron warnings that do not fail conformance on their own.
+        litho, a pure-Go PDF processor, takes over from QPDF, pdfcpu, pdftk and
+        ExifTool, the tools behind Gotenberg 8's PDF engines. PDF/A and PDF/UA
+        rules carry veraPDF's clause numbers.
       </SectionHead>
       <div className={cx("xb-stack", step === "remediate" && "cc-fixed")}>
-        <Instrument step={step} onHold={setHold} />
+        <Instrument
+          step={step}
+          onStep={(s) => {
+            setStep(s);
+            setPlaying(false);
+          }}
+          playing={playing}
+          onPlay={setPlaying}
+          onHold={setHold}
+        />
         <div className={cx("xb-label")} style={{ margin: "30px 0 -4px" }}>
-          profile · pick one of 14
+          <span>
+            <span className={cx("xb-field")}>profile</span> · pick one of 14
+          </span>
         </div>
-        <div className={cx("xb-els")} role="group" aria-label="profile">
+        <RadioGroup
+          label="profile"
+          value={profile}
+          onChange={setProfile}
+          className="xb-els"
+        >
           {PROFILES.map(([name, family, short, iso, fam], i) => (
-            <button
+            <Radio
               key={name}
-              type="button"
-              className={cx("xb-el", fam, name === profile && "is-on")}
-              aria-pressed={name === profile}
-              onClick={() => setProfile(name)}
+              value={name}
+              label={`${name} ${iso}`}
+              className={["xb-el", fam]}
             >
               <span className={cx("xb-el__top")}>
                 <span className={cx("xb-el__fam")}>{family}</span>
@@ -387,9 +447,9 @@ export default function Conformance() {
               </span>
               <span className={cx("xb-el__sym")}>{short}</span>
               <span className={cx("xb-el__iso")}>{iso}</span>
-            </button>
+            </Radio>
           ))}
-        </div>
+        </RadioGroup>
         <Builder
           profile={profile}
           mode={mode}

@@ -36,7 +36,9 @@
   --mono: var(--ifm-font-family-monospace);
   position: relative;
   min-height: 100%;
-  overflow-x: hidden;
+  /* Clip, not hidden: hidden would make this a scroll container and break
+     the sticky columns below. */
+  overflow-x: clip;
   background: var(--paper);
   color: var(--text);
   font-family: var(--sans);
@@ -100,10 +102,16 @@
   text-decoration-color: var(--blue);
 }
 
+/* Inline code as in the docs: a light tint, no border, on the baseline. */
 .g9 code {
+  padding: 2px 6px;
+  border: 0;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--muted) 12%, transparent);
   font-family: var(--mono);
   font-size: 0.86em;
   font-variant-ligatures: none;
+  vertical-align: baseline;
 }
 
 .g9 :focus-visible {
@@ -136,7 +144,7 @@
 
 .g9-code .pr::before {
   content: "$ ";
-  color: #64748b;
+  color: var(--code-punct);
 }
 
 .t-c {
@@ -606,7 +614,7 @@
 }
 
 .cb-end {
-  padding: 0 0 120px;
+  padding: 80px 0 120px;
 }
 
 .cb-end__box {
@@ -913,7 +921,8 @@
 .cc-foot {
   margin-top: 18px;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 14.5px;
+  line-height: 1.55;
 }
 
 @media (max-width: 1100px) {
@@ -1129,7 +1138,7 @@
   --hot: var(--rubric);
   --pink: #be185d;
   --green: #047857;
-  --amber: #b45309;
+  --amber: #a14a0a;
   --star: #d4a017;
   --lift:
     0 1px 2px rgba(28, 25, 23, 0.08), 0 10px 24px -14px rgba(28, 25, 23, 0.4);
@@ -1163,7 +1172,7 @@
 }
 
 .cb.xb .g-stamps {
-  --g: #0e7ba3;
+  --g: #0b6a8d;
 }
 
 :global([data-theme="dark"]) .cb.xb .g-stamps {
@@ -1176,10 +1185,10 @@
   --code-plain: #1f1c19;
   --code-command: #4338ca;
   --code-flag: #0e7490;
-  --code-string: #b45309;
+  --code-string: #a14a0a;
   --code-url: #047857;
-  --code-punct: #8a8378;
-  --code-comment: #8a8378;
+  --code-punct: #6e675e;
+  --code-comment: #6e675e;
 }
 
 :global([data-theme="dark"]) .xb {
@@ -1228,6 +1237,33 @@
 
 .xb-code .g9-code {
   font-size: 13px;
+}
+
+/* A shade at an edge says the code scrolls that way. The covers move with
+   the code and hide each shade once its edge is reached. */
+.xb-code,
+.xb-press .cb-col--out {
+  --code-bg: var(--panel);
+}
+
+:global([data-theme="dark"]) .xb .xb-code,
+:global([data-theme="dark"]) .xb .xb-press .cb-col--out {
+  --code-bg: var(--plate);
+}
+
+.xb-code .g9-code,
+.xb-press .cb-col--out .g9-code {
+  --edge: color-mix(in srgb, var(--muted) 55%, transparent);
+  background:
+    linear-gradient(90deg, var(--code-bg) 40%, transparent) left / 32px 100%
+      no-repeat local,
+    linear-gradient(270deg, var(--code-bg) 40%, transparent) right / 32px 100%
+      no-repeat local,
+    radial-gradient(farthest-side at 0 50%, var(--edge), transparent) left /
+      14px 100% no-repeat scroll,
+    radial-gradient(farthest-side at 100% 50%, var(--edge), transparent) right /
+      14px 100% no-repeat scroll,
+    var(--code-bg);
 }
 
 .xb-sep {
@@ -1352,7 +1388,8 @@
   margin-top: 16px;
 }
 
-/* --- Buttons: a lift and a neutral shadow --- */
+/* --- Buttons: a lift, and a shadow in the button's own colour. Dark mode
+   keeps black shadows: a light one would glow. --- */
 
 .xb-btns {
   display: flex;
@@ -1388,16 +1425,16 @@
 .g9 .xb-btn--primary {
   background: var(--blue);
   box-shadow:
-    0 1px 2px rgba(28, 25, 23, 0.2),
-    0 6px 14px -8px rgba(28, 25, 23, 0.5);
+    0 1px 2px color-mix(in srgb, var(--blue) 22%, transparent),
+    0 6px 14px -8px color-mix(in srgb, var(--blue) 55%, transparent);
   color: #ffffff;
 }
 
 .g9 .xb-btn--primary:hover {
   background: color-mix(in srgb, var(--blue) 86%, #000);
   box-shadow:
-    0 2px 4px rgba(28, 25, 23, 0.18),
-    0 14px 24px -12px rgba(28, 25, 23, 0.55);
+    0 2px 4px color-mix(in srgb, var(--blue) 20%, transparent),
+    0 14px 24px -12px color-mix(in srgb, var(--blue) 60%, transparent);
 }
 
 :global([data-theme="dark"]) .g9 .xb-btn--primary {
@@ -1430,7 +1467,7 @@
 }
 
 .g9 .xb-btn--ghost {
-  padding: 0 9px 0 18px;
+  padding: 0 18px;
   border-color: var(--rule);
   background: var(--panel);
   box-shadow: 0 1px 2px rgba(28, 25, 23, 0.06);
@@ -1447,6 +1484,7 @@
   align-items: center;
   gap: 6px;
   height: 36px;
+  margin-right: -9px;
   padding: 0 11px;
   border-radius: 10px;
   background: var(--panel-2);
@@ -1561,6 +1599,14 @@
   font: 700 11.5px/1 var(--sans);
   letter-spacing: 0.14em;
   text-transform: uppercase;
+}
+
+/* An API name in a caption keeps its case: the field is paperSize, not
+   PAPERSIZE. */
+.g9 .xb-field {
+  font: 600 12.5px/1 var(--mono);
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .xb-sizes {
@@ -2018,6 +2064,53 @@
   border-radius: var(--radius);
 }
 
+/* The example run's own controls: its step, and pause or play. */
+.cc-ctl {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.cc-ctl .xb-label {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.cc-ctl .xb-seg {
+  padding: 3px;
+  border-radius: 10px;
+}
+
+.cc-ctl .xb-seg button {
+  height: 30px;
+  padding: 0 10px;
+  font-size: 12px;
+}
+
+.cc-play {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid var(--rule);
+  border-radius: 9px;
+  background: var(--panel);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.cc-play:hover {
+  border-color: color-mix(in srgb, var(--ink) 30%, var(--rule));
+}
+
+/* A still run has no scan line. */
+.cc-still .cc-beam {
+  display: none;
+}
+
 .xb-req {
   color: var(--ink);
   font: 13px var(--mono);
@@ -2220,6 +2313,19 @@
   border: 5.5px solid var(--blue);
 }
 
+.xb-lv:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.xb-lv:disabled:hover {
+  background: transparent;
+}
+
+.xb-levels + .xb-note {
+  margin-top: 14px;
+}
+
 .xb-lv__name {
   color: var(--ink);
   font: 700 13.5px var(--mono);
@@ -2315,8 +2421,19 @@
   grid-template-columns: 380px minmax(0, 1fr);
 }
 
+/* Beside a taller column, the shorter one stays in view. */
+@media (min-width: 1101px) {
+  .xb-build > *,
+  .xb-write > *,
+  .xb-read > * {
+    position: sticky;
+    top: calc(var(--ifm-navbar-height) + 16px);
+  }
+}
+
 .xb-recipes,
-.xb-routes {
+.xb-routes,
+.xb-picks {
   display: grid;
   gap: 8px;
 }
@@ -2389,10 +2506,12 @@
   color: var(--panel);
 }
 
-.xb-chain .xb-chip + .xb-chip::before {
+/* The chevron trails its chip, so a wrapped chain never starts a line with
+   one. */
+.xb-chain .xb-chip:not(:last-child)::after {
   content: "›";
   position: absolute;
-  left: -13px;
+  right: -13px;
   color: var(--muted);
   font: 700 14px var(--sans);
 }
@@ -2479,23 +2598,8 @@
   transform: translateX(16px);
 }
 
-.xb-pair {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 16px;
-  align-items: stretch;
-}
-
-.xb-pair .xb-code {
-  display: flex;
-  flex-direction: column;
-}
-
-.xb-pair .g9-code {
-  flex: 1;
-}
-
 .xb-flow {
+  container-type: inline-size;
   overflow: hidden;
   border: 1px solid var(--rule);
   border-radius: var(--radius);
@@ -2596,7 +2700,7 @@
 }
 
 .xb .cd-mod--lo {
-  --m: #0e7ba3;
+  --m: #0b6a8d;
 }
 
 :global([data-theme="dark"]) .xb .cd-mod--lo {
@@ -2624,6 +2728,15 @@
   animation-direction: reverse;
 }
 
+/* A wire the request skips stands still: no march, no packet. */
+.xb .cd-wire.xb-dim::before {
+  animation: none;
+}
+
+.xb .cd-wire.xb-dim .cd-packet {
+  display: none;
+}
+
 @keyframes xb-march {
   to {
     background-position: 12px 0;
@@ -2639,7 +2752,8 @@
 }
 
 .xb .cd-wire small {
-  top: -6px;
+  top: auto;
+  bottom: 24px;
   font: 600 11.5px/1.4 var(--mono);
 }
 
@@ -2696,20 +2810,60 @@
   grid-template-columns: 200px minmax(0, 1fr) 270px minmax(0, 1fr) 220px;
 }
 
-/* Narrower, the diagram keeps its shape and scrolls sideways. */
 @media (max-width: 1100px) {
-  .xb-flow {
-    overflow-x: auto;
-  }
-
   .xb .cd-diagram {
-    min-width: 940px;
     grid-template-columns: 170px minmax(0, 1fr) 240px minmax(0, 1fr) 190px;
     padding: 44px 24px 36px;
   }
+}
+
+/* The steps of the diagram, listed. Shown only when the panel is narrower
+   than the diagram needs. */
+.cd-steps {
+  display: none;
+  margin: 0;
+  padding: 6px 22px;
+  list-style: none;
+}
+
+.cd-step {
+  display: grid;
+  grid-template-columns: 19px minmax(0, 1fr);
+  gap: 4px 12px;
+  padding: 14px 0;
+  font: 12px/1.45 var(--mono);
+}
+
+.cd-step + .cd-step {
+  border-top: 1px solid var(--rule);
+}
+
+.cd-step .xb-step {
+  grid-row: span 2;
+  margin: 0;
+}
+
+.cd-step b {
+  color: var(--ink);
+  font: 700 15px/1.25 var(--font-display);
+}
+
+.cd-step span {
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+@container (max-width: 939px) {
+  .xb .cd-diagram {
+    display: none;
+  }
+
+  .cd-steps {
+    display: block;
+  }
 
   .xb .cd-legend {
-    min-width: 940px;
+    padding: 14px 22px;
   }
 }
 
@@ -2763,13 +2917,14 @@
   background: var(--rule);
 }
 
-/* --- Sponsors: logo cards, light in both themes --- */
+/* --- Sponsors: a band of logo cards under the hero, light in both
+   themes --- */
 
 .xb-sponsors {
-  padding: 110px 0 72px;
+  padding: 64px 0 0;
 }
 
-.xb-sp-label {
+.g9 .xb-sp-label {
   margin: 0 0 12px;
   color: var(--muted);
   font: 700 12px var(--sans);
@@ -2790,9 +2945,9 @@
 .g9 .xb-sp-card {
   display: grid;
   place-items: center;
-  height: 136px;
+  height: 104px;
   overflow: hidden;
-  padding: 24px;
+  padding: 18px;
   border: 1px solid var(--rule);
   border-radius: var(--radius);
   background: #ffffff;
@@ -2811,29 +2966,27 @@
   width: auto;
   max-width: 100%;
   height: auto;
-  max-height: 74px;
+  max-height: 56px;
 }
 
-/* The pdfme banner sits on its own green, so the card shows it whole at
-   any width. */
-.g9 .xb-sp-card--fill {
-  padding: 0;
-  background: #5ebfa2;
+/* The pdfme logo is a banner on its own green: shown whole and rounded,
+   inside a white card like the other logos. */
+.g9 .xb-sp-card--banner {
+  padding: 10px;
 }
 
-.xb-sp-card--fill img {
-  width: 100%;
-  height: 100%;
-  max-height: none;
-  object-fit: contain;
+/* The card's height less its padding. */
+.xb-sp-card--banner img {
+  max-height: 84px;
+  border-radius: 8px;
 }
 
 .g9 .xb-sp-card--small {
-  height: 100px;
+  height: 76px;
 }
 
 .xb-sp-card--small img {
-  max-height: 30px;
+  max-height: 26px;
 }
 
 .g9 .xb-sp-cta {
@@ -2841,7 +2994,7 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  height: 100px;
+  height: 76px;
   border: 1.5px dashed var(--rule);
   border-radius: var(--radius);
   color: var(--ink);
@@ -2861,10 +3014,10 @@
   color: var(--rubric);
 }
 
-/* --- Closing: the command, then the stats over two columns --- */
+/* --- Closing: the command, then the stats in one column --- */
 
 .xb-endbox {
-  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: 0;
   align-items: stretch;
   padding: 0;
@@ -2883,11 +3036,12 @@
   color: var(--blue);
 }
 
-.xb-endbox__cmd {
+/* The run command, in the hero and the closing. A narrow screen wraps it
+   rather than hiding its end; wrapped lines hang under the prompt. */
+.xb-run {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 26px;
   padding-right: 10px;
   border: 1px solid var(--rule);
   border-radius: 12px;
@@ -2895,22 +3049,35 @@
   color: var(--code-plain);
 }
 
-:global([data-theme="dark"]) .xb .xb-endbox__cmd {
+:global([data-theme="dark"]) .xb .xb-run {
   background: var(--plate);
 }
 
-.xb-endbox__cmd .g9-code {
+.xb-run .g9-code {
   flex: 1;
   padding: 14px 18px;
   font-size: 14px;
 }
 
+.xb-run .ln {
+  padding-left: 2ch;
+  text-indent: -2ch;
+}
+
+.cb-hero .xb-run {
+  margin-top: 28px;
+}
+
+.xb-endbox__main .xb-run {
+  margin-bottom: 26px;
+}
+
 .xb-endbox__stats {
   display: grid;
   align-content: center;
-  gap: 40px;
-  min-width: 230px;
-  padding: 52px 44px;
+  gap: 32px;
+  min-width: 260px;
+  padding: 44px;
   border-left: 1px solid var(--rule);
 }
 
@@ -2937,11 +3104,31 @@
   text-transform: uppercase;
 }
 
+.g9 .xb-stat:hover .xb-stat__l {
+  color: var(--blue);
+}
+
+/* Inline, so a wrapped label keeps the arrow after its last word. */
+.xb-stat__icon {
+  margin-left: 5px;
+  vertical-align: -1px;
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.g9 .xb-stat:hover .xb-stat__icon {
+  transform: translate(2px, -2px);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .xb .xb-t,
   .xb .ca-stamp,
   .xb-el.is-on {
     animation: none;
+  }
+
+  /* Without its sweep, the scan line would sit still over the page. */
+  .cc-beam {
+    display: none;
   }
 }
 
@@ -2969,10 +3156,6 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .xb-pair {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
   .xb-bar__g {
     padding: 0 20px 0 0;
   }
@@ -2982,30 +3165,30 @@
   }
 
   .xb-endbox {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  }
-
-  .xb-endbox__main {
-    grid-column: 1 / -1;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .xb-endbox__stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     border-top: 1px solid var(--rule);
-  }
-
-  .xb-endbox__stats:nth-child(2) {
     border-left: 0;
   }
 }
 
 @media (max-width: 640px) {
-  .xb-sp-grid,
-  .xb-endbox {
-    grid-template-columns: minmax(0, 1fr);
+  .xb-els {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
   }
 
-  .xb-els {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .xb-el {
+    min-height: 96px;
+    padding: 10px;
+    border-radius: 12px;
+  }
+
+  .xb-el__sym {
+    font-size: 34px;
   }
 
   .xb-canvas {
@@ -3026,7 +3209,17 @@
   }
 
   .xb-endbox__stats {
-    border-left: 0;
+    gap: 16px;
+    padding: 28px 22px;
+  }
+
+  .xb-stat__n {
+    font-size: 28px;
+  }
+
+  .xb-stat__l {
+    font-size: 11px;
+    letter-spacing: 0.06em;
   }
 
   .xb-lv {

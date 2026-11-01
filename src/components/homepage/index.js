@@ -11,15 +11,15 @@ import Closing from "./Closing";
 
 export default function Homepage() {
   return (
-    <div className={cx("g9 cb xb")}>
+    <main className={cx("g9 cb xb")}>
       <Hero />
+      <Sponsors />
       <Conformance />
       <Invoicing />
       <Deliver />
       <Operate />
       <Architectures />
-      <Sponsors />
       <Closing />
-    </div>
+    </main>
   );
 }

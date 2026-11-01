@@ -1,4 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Link from "@docusaurus/Link";
 import cx from "./cx";
 
@@ -30,22 +36,87 @@ export function SectionHead({ n, kicker, title, accent, lede, children }) {
   );
 }
 
+const RadioContext = createContext(null);
+
+const KEYS = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
+
+// Options where exactly one is on, as a radio group: Tab stops on the
+// checked option, the arrow keys move the choice. A disabled group checks
+// nothing.
+export function RadioGroup({
+  label,
+  value,
+  onChange,
+  disabled,
+  className,
+  children,
+}) {
+  const onKeyDown = (event) => {
+    const radios = [
+      ...event.currentTarget.querySelectorAll('[role="radio"]:not(:disabled)'),
+    ];
+    const i = radios.indexOf(document.activeElement);
+    if (i < 0) return;
+    let to;
+    if (event.key === "Home") to = 0;
+    else if (event.key === "End") to = radios.length - 1;
+    else if (KEYS[event.key]) {
+      to = (i + KEYS[event.key] + radios.length) % radios.length;
+    } else return;
+    event.preventDefault();
+    radios[to].focus();
+    radios[to].click();
+  };
+
+  return (
+    <div
+      className={cx(className) || undefined}
+      role="radiogroup"
+      aria-label={label}
+      aria-disabled={disabled || undefined}
+      onKeyDown={onKeyDown}
+    >
+      <RadioContext.Provider value={{ value, onChange, disabled }}>
+        {children}
+      </RadioContext.Provider>
+    </div>
+  );
+}
+
+export function Radio({ value, label, className, children }) {
+  const group = useContext(RadioContext);
+  const on = !group.disabled && value === group.value;
+  return (
+    <button
+      type="button"
+      role="radio"
+      aria-checked={on}
+      aria-label={label}
+      tabIndex={on ? 0 : -1}
+      disabled={group.disabled}
+      className={cx(className, on && "is-on") || undefined}
+      onClick={() => group.onChange(value)}
+    >
+      {children}
+    </button>
+  );
+}
+
 // A row of buttons where exactly one is on. Options are [value, label].
 export function Segmented({ label, options, value, onChange, className }) {
   return (
-    <div className={cx("xb-seg", className)} role="group" aria-label={label}>
+    <RadioGroup
+      label={label}
+      value={value}
+      onChange={onChange}
+      className={["xb-seg", className]}
+    >
       {options.map(([v, text]) => (
-        <button
-          key={v}
-          type="button"
-          className={cx(v === value && "is-on") || undefined}
-          aria-pressed={v === value}
-          onClick={() => onChange(v)}
-        >
+        <Radio key={String(v)} value={v}>
           {text}
-        </button>
+        </Radio>
       ))}
-    </div>
+    </RadioGroup>
   );
 }
 
@@ -86,6 +157,20 @@ export function StartButton() {
         </svg>
       </span>
     </Link>
+  );
+}
+
+export function GitHubIcon() {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 16 16"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+    </svg>
   );
 }
 
@@ -156,6 +241,24 @@ export function CopyButton({ text }) {
         Copied
       </span>
     </button>
+  );
+}
+
+const RUN = 'docker run --rm -p "3000:3000" gotenberg/gotenberg:9';
+
+// The command that starts Gotenberg, with its copy button.
+export function RunCommand() {
+  return (
+    <div className={cx("xb-run")}>
+      <div className={cx("g9-code")}>
+        <div className={cx("ln pr wrap")}>
+          <span className={cx("t-c")}>docker run</span>{" "}
+          <span className={cx("t-f")}>--rm -p</span>{" "}
+          <span className={cx("t-s")}>"3000:3000"</span> gotenberg/gotenberg:9
+        </div>
+      </div>
+      <CopyButton text={RUN} />
+    </div>
   );
 }
 

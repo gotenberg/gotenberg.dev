@@ -58,12 +58,16 @@ HTTP method badges: tinted background with dark text (WCAG AA), e.g. POST `rgba(
 
 ### Homepage (`src/components/homepage/`)
 
-One file per section (`Hero`, `Conformance`, `Invoicing`, `Deliver`, `Operate`, `Architectures`, `Sponsors`, `Closing`), composed in `index.js`. Product look: rounded panels, Bricolage display type, light code panels in light mode and dark ones in dark mode.
+One file per section (`Hero`, `Sponsors`, `Conformance`, `Invoicing`, `Deliver`, `Operate`, `Architectures`, `Closing`), composed in `index.js` inside the page's `<main>`. Product look: rounded panels, Bricolage display type, light code panels in light mode and dark ones in dark mode.
 
+- Sponsors sit right under the hero, as on the 8.x homepage: they matter to the project, so keep them high on the page.
+- The conformance example run and the builder's PDF/A-4 answer come from a real litho run on `test/integration/testdata/pages_3.pdf` in the Gotenberg repository (11 violations, then 0 after remediation). Rerun it when litho changes.
 - Every control rewrites the curl request next to it. `requests.js` builds the requests and responses; `data.js` holds the facts they use (paper sizes, profiles, Factur-X levels, recipes, read routes, images). Both must match the Gotenberg API.
-- `ui.js` holds the shared pieces: section head, segmented control, switch, copy button, code panels.
+- `ui.js` holds the shared pieces: section head, radio group, segmented control, switch, copy button, code panels, and the `docker run` command shown in the hero and the closing.
+- A set of options where exactly one is on is a `RadioGroup` of `Radio`s: one Tab stop per set, the arrow keys move the choice. Keep `aria-pressed` for on/off switches.
+- External links use `@docusaurus/Link`, which opens them in a new tab like the navbar and footer.
 - One CSS Module, `Homepage.module.css`, keeps the page's own class names; `cx.js` maps them to the module's names. Dark rules sit under `:global([data-theme="dark"])`.
-- Motion: the hero sheet sets in line by line, the conformance instrument loops validate then remediate (paused on hover), the delivery diagram's wires march. All of it stops under `prefers-reduced-motion`.
+- Motion: the hero sheet sets in line by line, the conformance example run loops validate then remediate, the delivery diagram's wires march. All of it stops under `prefers-reduced-motion`. The example run holds while the pointer or the focus is in it, and has its own step switch and pause button; under reduced motion it starts paused.
 
 ### ApiEndpoint (`src/components/documentation/ApiEndpoint.js`)
 
@@ -93,4 +97,6 @@ Full-width light-gray sponsors bandeau shown below the content on every doc page
 
 - Tables switch to horizontal scroll below 1280px.
 - Content padding adjusts at 996px and 1400px breakpoints.
-- The homepage uses its own CSS grids, with breakpoints at 1100px and 640px. Below 1100px the delivery diagram keeps its shape and scrolls sideways.
+- The homepage uses its own CSS grids, with breakpoints at 1100px and 640px. The delivery diagram turns into a numbered list of its steps when its panel is narrower than the diagram (a container query), and the run command wraps instead of scrolling.
+- Homepage code panels that scroll sideways show a shade at the edge that has more code.
+- Above 1100px, the control column and its code panel are both sticky, so the shorter one stays in view. This needs `overflow-x: clip` on `.g9`: `hidden` makes it a scroll container and breaks sticky.

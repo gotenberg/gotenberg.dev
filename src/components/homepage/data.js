@@ -111,12 +111,12 @@ export const RECIPES = [
   {
     key: "archive",
     title: "Archive",
-    desc: "Merge two PDFs, title the result, make it PDF/A-2b and shrink it.",
+    desc: "Merge two PDFs, title the result, make it PDF/A-4 and shrink it.",
     files: ["report.pdf", "annex.pdf"],
     stages: [
       { op: "merge" },
       { op: "set-metadata", title: "Q3 report" },
-      { op: "remediate", profile: "PDF/A-2b" },
+      { op: "remediate", profile: "PDF/A-4" },
       { op: "optimize" },
     ],
     out: "archive.pdf",
@@ -223,8 +223,8 @@ export const READ_ROUTES = [
   {
     name: "validate",
     desc: "A conformance report against one of the 14 profiles.",
-    form: [["profile", "PDF/A-2b"]],
-    answer: { profile: "PDF/A-2b", compliant: true, violations: [] },
+    form: [["profile", "PDF/A-4"]],
+    answer: { profile: "PDF/A-4", compliant: true, violations: [] },
   },
 ];
 

@@ -1,17 +1,13 @@
 import React from "react";
+import Link from "@docusaurus/Link";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 import cx from "./cx";
 
 function Card({ href, src, alt, className, style }) {
   return (
-    <a
-      className={cx("xb-sp-card", className)}
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-    >
+    <Link className={cx("xb-sp-card", className)} href={href}>
       <img src={useBaseUrl(src)} alt={alt} style={style} />
-    </a>
+    </Link>
   );
 }
 
@@ -19,7 +15,7 @@ export default function Sponsors() {
   return (
     <section className={cx("xb-sponsors")}>
       <div className={cx("g9-wrap")}>
-        <div className={cx("xb-sp-label")}>Sponsors</div>
+        <h2 className={cx("xb-sp-label")}>Sponsors</h2>
         <div className={cx("xb-sp-grid")}>
           <Card
             href="https://thecodingmachine.com"
@@ -30,7 +26,7 @@ export default function Sponsors() {
             href="https://pdfme.com"
             src="/img/pdfme-logo.png"
             alt="pdfme"
-            className="xb-sp-card--fill"
+            className="xb-sp-card--banner"
           />
           <Card
             href="https://pdfbolt.com"
@@ -44,7 +40,7 @@ export default function Sponsors() {
             style={{ maxHeight: 40 }}
           />
         </div>
-        <div className={cx("xb-sp-label")}>Powered by</div>
+        <h2 className={cx("xb-sp-label")}>Powered by</h2>
         <div className={cx("xb-sp-grid")}>
           <Card
             href="https://docs.docker.com/docker-hub/repos/manage/trusted-content/dsos-program/"
@@ -58,7 +54,7 @@ export default function Sponsors() {
             alt="JetBrains"
             className="xb-sp-card--small"
           />
-          <a
+          <Link
             className={cx("xb-sp-cta")}
             href="https://github.com/sponsors/gulien"
             style={{ gridColumn: "span 2" }}
@@ -74,7 +70,7 @@ export default function Sponsors() {
               <path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3.1 4.5 6.9 4.5c2.1 0 3.6 1.2 5.1 3 1.5-1.8 3-3 5.1-3 3.8 0 6 3.9 4.5 7.3C19.5 16.4 12 21 12 21z" />
             </svg>
             Become a sponsor
-          </a>
+          </Link>
         </div>
       </div>
     </section>

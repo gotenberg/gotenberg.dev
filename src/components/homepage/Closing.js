@@ -1,15 +1,30 @@
 import React from "react";
+import Link from "@docusaurus/Link";
 import cx from "./cx";
-import { CopyButton, StarIcon, StartButton } from "./ui";
-
-const RUN = 'docker run --rm -p "3000:3000" gotenberg/gotenberg:9';
+import { GitHubIcon, RunCommand, StartButton } from "./ui";
 
 function Stat({ href, n, label }) {
   return (
-    <a className={cx("xb-stat")} href={href}>
+    <Link className={cx("xb-stat")} href={href}>
       <span className={cx("xb-stat__n")}>{n}</span>
-      <span className={cx("xb-stat__l")}>{label}</span>
-    </a>
+      <span className={cx("xb-stat__l")}>
+        {label}
+        <svg
+          className={cx("xb-stat__icon")}
+          width="13"
+          height="13"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M7 17L17 7M8 7h9v9" />
+        </svg>
+      </span>
+    </Link>
   );
 }
 
@@ -22,28 +37,16 @@ export default function Closing() {
             <h2>
               Start with <span>one command.</span>
             </h2>
-            <div className={cx("xb-endbox__cmd")}>
-              <div className={cx("g9-code")}>
-                <div className={cx("ln pr")}>
-                  <span className={cx("t-c")}>docker run</span>{" "}
-                  <span className={cx("t-f")}>--rm -p</span>{" "}
-                  <span className={cx("t-s")}>"3000:3000"</span>{" "}
-                  gotenberg/gotenberg:9
-                </div>
-              </div>
-              <CopyButton text={RUN} />
-            </div>
+            <RunCommand />
             <div className={cx("xb-btns")}>
               <StartButton />
-              <a
+              <Link
                 className={cx("xb-btn xb-btn--ghost")}
                 href="https://github.com/gotenberg/gotenberg"
               >
+                <GitHubIcon />
                 Star on GitHub
-                <span className={cx("xb-btn__icon")}>
-                  <StarIcon size={17} />
-                </span>
-              </a>
+              </Link>
             </div>
           </div>
           <div className={cx("xb-endbox__stats")}>
@@ -57,9 +60,6 @@ export default function Closing() {
               n="13k+"
               label="GitHub stars"
             />
-          </div>
-          <div className={cx("xb-endbox__stats")}>
-            <Stat href="#architectures" n="5" label="CPU architectures" />
             <Stat
               href="https://github.com/gotenberg/gotenberg/blob/main/LICENSE"
               n="MIT"

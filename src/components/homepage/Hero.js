@@ -1,8 +1,19 @@
 import React, { useState } from "react";
+import Link from "@docusaurus/Link";
 import cx from "./cx";
 import { ENGINES, SIZES } from "./data";
 import { curl } from "./requests";
-import { CodeBar, CodeLines, Segmented, StarIcon, StartButton } from "./ui";
+import {
+  CodeBar,
+  CodeLines,
+  GitHubIcon,
+  Radio,
+  RadioGroup,
+  RunCommand,
+  Segmented,
+  StarIcon,
+  StartButton,
+} from "./ui";
 
 // px per mm on the canvas.
 const SCALE = 1.3;
@@ -17,30 +28,22 @@ function Facts() {
       </p>
       <ul className={cx("xb-facts")}>
         <li className={cx("xb-fact")}>Pure-Go PDF engine</li>
-        <li className={cx("xb-fact")}>26 stages</li>
+        <li className={cx("xb-fact")}>26 PDF stages</li>
         <li className={cx("xb-fact")}>PDF/A · PDF/UA · Factur-X</li>
       </ul>
       <div className={cx("xb-btns")}>
         <StartButton />
-        <a
+        <Link
           className={cx("xb-btn xb-btn--ghost")}
           href="https://github.com/gotenberg/gotenberg"
         >
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 16 16"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
-          </svg>
+          <GitHubIcon />
           GitHub
           <span className={cx("xb-btn__count")}>
             <StarIcon size={15} />
             13k+
           </span>
-        </a>
+        </Link>
       </div>
     </>
   );
@@ -118,10 +121,11 @@ export default function Hero() {
               API for PDF
             </span>
             <h1 className={cx("cb-title")}>
-              The press,
+              The PDF press,
               <br />
               <span>rebuilt.</span>
             </h1>
+            <RunCommand />
           </div>
           <div>
             <Facts />
@@ -131,35 +135,37 @@ export default function Hero() {
         <div className={cx("cb-comp xb-press")}>
           <div className={cx("cb-col")}>
             <div className={cx("xb-label")}>Source</div>
-            <div className={cx("xb-engs")} role="group" aria-label="Source">
+            <RadioGroup
+              label="Source"
+              value={engineKey}
+              onChange={setEngineKey}
+              className="xb-engs"
+            >
               {ENGINES.map((e) => (
-                <button
-                  key={e.key}
-                  type="button"
-                  className={cx("xb-eng", e.key === engineKey && "is-on")}
-                  aria-pressed={e.key === engineKey}
-                  onClick={() => setEngineKey(e.key)}
-                >
+                <Radio key={e.key} value={e.key} className="xb-eng">
                   <span className={cx("xb-eng__k")}>{e.engine}</span>
                   <span className={cx("xb-eng__v")}>{e.label}</span>
-                </button>
+                </Radio>
               ))}
+            </RadioGroup>
+            <div className={cx("xb-label")}>
+              <span className={cx("xb-field")}>paperSize</span>
             </div>
-            <div className={cx("xb-label")}>paperSize</div>
-            <div className={cx("xb-sizes")} role="group" aria-label="paperSize">
+            <RadioGroup
+              label="paperSize"
+              value={paper}
+              onChange={setPaper}
+              className="xb-sizes"
+            >
               {SIZES.map(([name]) => (
-                <button
-                  key={name}
-                  type="button"
-                  className={cx("xb-size", name === paper && "is-on")}
-                  aria-pressed={name === paper}
-                  onClick={() => setPaper(name)}
-                >
+                <Radio key={name} value={name} className="xb-size">
                   {name}
-                </button>
+                </Radio>
               ))}
+            </RadioGroup>
+            <div className={cx("xb-label")}>
+              <span className={cx("xb-field")}>landscape</span>
             </div>
-            <div className={cx("xb-label")}>landscape</div>
             <Segmented
               label="landscape"
               className="xb-orient"
