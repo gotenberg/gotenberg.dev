@@ -8,7 +8,9 @@ const flat = (value) => JSON.stringify(value, null, 1).replace(/\n\s*/g, " ");
 // A curl request as highlighted lines, plus its plain text for the
 // clipboard. Each arg is [flag, name, value, kind]: kind "file" uploads,
 // "url" highlights, "list" prints a JSON array one item per line. A HEAD
-// request uses --head, since curl --request HEAD waits for a body.
+// request uses --head, since curl --request HEAD waits for a body. A value
+// holding ";" goes with --form-string: --form reads ";" as the start of an
+// attribute such as type=, and cuts the value there.
 export function curl(route, args, out, method = "POST") {
   const lines = [
     { cls: "ln pr", parts: [part("curl", "t-c")] },
@@ -29,10 +31,14 @@ export function curl(route, args, out, method = "POST") {
         parts: [part("--header", "t-f"), part(` '${name}: ${value}'`, "t-s")],
       });
     } else if (kind === "list") {
+      const literal = JSON.stringify(value).includes(";");
       lines.push({
         cls: "ln in",
         open: true,
-        parts: [part("--form", "t-f"), part(` '${name}=[`, "t-s")],
+        parts: [
+          part(literal ? "--form-string" : "--form", "t-f"),
+          part(` '${name}=[`, "t-s"),
+        ],
       });
       value.forEach((item, i) =>
         lines.push({
@@ -47,10 +53,13 @@ export function curl(route, args, out, method = "POST") {
         cls: "ln in",
         parts: [part("--form", "t-f"), part(` ${name}=@${value}`)],
       });
-    } else if (/[\s"'{[]/.test(value)) {
+    } else if (/[\s"'{[;]/.test(value)) {
       lines.push({
         cls: "ln in wrap",
-        parts: [part("--form", "t-f"), part(` '${name}=${value}'`, "t-s")],
+        parts: [
+          part(value.includes(";") ? "--form-string" : "--form", "t-f"),
+          part(` '${name}=${value}'`, "t-s"),
+        ],
       });
     } else {
       lines.push({
