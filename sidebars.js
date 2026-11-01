@@ -32,6 +32,19 @@ module.exports = {
     },
     {
       type: "category",
+      label: "Process PDFs",
+      collapsible: false,
+      items: [
+        "process/merge-split",
+        "process/pages",
+        "process/stamps",
+        "process/redact",
+        "process/forms",
+        "process/attachments",
+      ],
+    },
+    {
+      type: "category",
       label: "Reference",
       collapsible: false,
       items: [

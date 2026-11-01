@@ -1,0 +1,78 @@
+---
+id: stamps
+title: Stamp and watermark PDFs
+---
+
+Draw text, an image or a page of another PDF over the pages: a watermark, a logo, a letterhead.
+
+## Place a stamp
+
+A stamp's `x` and `y` count in points from the bottom-left corner of the page, 72 points to the inch. A Letter page measures 612 by 792 points, an A4 page 595 by 842. Without `pages`, a stamp goes on every page.
+
+## Stamp text
+
+<Request
+  route="/forms/pdf/stamp-text"
+  files={["report.pdf"]}
+  fields={{
+    text: "CONFIDENTIAL",
+    x: 120,
+    y: 250,
+    fontSize: 36,
+    color: "#b42318",
+    opacity: 0.4,
+    rotation: 30,
+  }}
+  output="report.pdf"
+/>
+
+`rotation` turns the text counter-clockwise around `x` and `y`. `font` takes one of the 14 standard PDF fonts, `Helvetica` by default.
+
+## Stamp an image
+
+<Request
+  route="/forms/pdf/stamp-image"
+  files={["report.pdf", "logo.png"]}
+  fields={{ image: "logo.png", x: 374, y: 24, width: 48, pages: "1" }}
+  output="report.pdf"
+/>
+
+Set `width` or `height` and Gotenberg keeps the image's proportions. The image is a PNG or a JPEG.
+
+## Stamp a letterhead
+
+`stamp-pdf` draws a page of another PDF over each page:
+
+<Request
+  route="/forms/pdf/stamp-pdf"
+  files={["report.pdf", "letterhead.pdf"]}
+  fields={{ source: "letterhead.pdf" }}
+  output="report.pdf"
+/>
+
+Draw the letterhead on a transparent page, so the content under it shows: Chromium makes one from HTML with `printBackground` and `omitBackground`. `scale` resizes the page, and `sourcePage` picks another page of the source.
+
+## Stamp while converting
+
+Stamps are stages, so a conversion takes them too:
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["report.docx"]}
+  stages={[
+    {
+      op: "stamp-text",
+      text: "DRAFT",
+      x: 200,
+      y: 400,
+      fontSize: 48,
+      opacity: 0.3,
+      rotation: 45,
+    },
+  ]}
+  output="report.pdf"
+/>
+
+## Next
+
+[Redact content](/docs/process/redact) to remove what a stamp would only cover. The [stamp stages](/docs/reference/stages#stamp-text) list every option.

@@ -1,0 +1,81 @@
+---
+id: pages
+title: Organize pages
+---
+
+Keep, reorder, remove, insert and rotate the pages of a PDF.
+
+## Keep pages
+
+<Request
+  route="/forms/pdf/select"
+  files={["report.pdf"]}
+  fields={{ pages: "1-2" }}
+  output="report.pdf"
+/>
+
+`pages` takes a [page selection](/docs/reference/stages#page-selections): a page, a range, a list of both, or `odd`, `even` or `last`.
+
+## Reorder pages
+
+`select` keeps the pages in the order you list them:
+
+<Request
+  route="/forms/pdf/select"
+  files={["report.pdf"]}
+  fields={{ pages: "3,1,2" }}
+  output="report.pdf"
+/>
+
+## Remove pages
+
+<Request
+  route="/forms/pdf/delete"
+  files={["report.pdf"]}
+  fields={{ pages: "last" }}
+  output="report.pdf"
+/>
+
+## Insert pages
+
+Insert the pages of another PDF after a given page:
+
+<Request
+  route="/forms/pdf/insert"
+  files={["report.pdf", "annex.pdf"]}
+  fields={{ source: "annex.pdf", at: 1 }}
+  output="report.pdf"
+/>
+
+`at: 0` inserts before the first page, and `sourcePages` picks the pages of `annex.pdf` to insert. The stage reads `annex.pdf`, so Gotenberg doesn't process it as a PDF of its own.
+
+## Rotate pages
+
+<Request
+  route="/forms/pdf/rotate"
+  files={["report.pdf"]}
+  fields={{ angle: 90, pages: "1" }}
+  output="report.pdf"
+/>
+
+Viewers turn the page by the angle, clockwise. `-90` turns it the other way.
+
+## Chain them
+
+A pipe runs several of these in one request:
+
+<Request
+  route="/forms/pdf/pipe"
+  files={["report.pdf"]}
+  stages={[
+    { op: "select", pages: "1-2" },
+    { op: "rotate", angle: 90, pages: "2" },
+  ]}
+  output="report.pdf"
+/>
+
+The page numbers of each stage count from the PDF the previous one produced.
+
+## Next
+
+[Merge and split PDFs](/docs/process/merge-split), or [stamp the pages](/docs/process/stamps).

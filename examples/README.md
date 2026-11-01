@@ -11,6 +11,8 @@ The files the docs' `<Request>` examples upload. `npm run check:examples` copies
 - `report.docx`, `report.pdf`: a three-page document, from Gotenberg's integration tests. Gotenberg gave `report.pdf` a title, an author and three bookmarks.
 - `annex.docx`, `annex.pdf`: a one-page document, from the same tests.
 - `logo.png`: the Gotenberg logo, for image stamps.
+- `black.png`: one black pixel, stretched over redacted regions.
+- `letterhead.pdf`: a band with a company name on a transparent page the size of `report.pdf`'s, made by Gotenberg from HTML.
 - `form.pdf`: a PDF form with one field, `name`.
 - `invoice.xml`: a Factur-X invoice at the MINIMUM level. `invoice.pdf` is `report.pdf` with it embedded, made by Gotenberg.
 - `protected.docx`: `report.docx` encrypted with the password `secret`, by msoffcrypto-tool.

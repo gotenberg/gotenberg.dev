@@ -1,0 +1,58 @@
+---
+id: forms
+title: Fill and flatten forms
+---
+
+Fill the fields of a PDF form, then lock the values into the page.
+
+## Check for a form
+
+<Request
+  route="/forms/pdf/info"
+  files={["form.pdf"]}
+  response={{
+    "form.pdf": {
+      pages: 1,
+      version: "1.7",
+      encrypted: false,
+      tagged: false,
+      linearized: false,
+      formFields: true,
+    },
+  }}
+/>
+
+## Fill the fields
+
+<Request
+  route="/forms/pdf/set-form"
+  files={["form.pdf"]}
+  fields={{ fields: { name: "Ada Lovelace" } }}
+  output="form.pdf"
+/>
+
+`fields` keys each value by the field's fully qualified name: `name`, or `address.city` for a field `city` inside a field `address`. The fields stay editable.
+
+## Flatten the form
+
+Fill the fields, then flatten them:
+
+<Request
+  route="/forms/pdf/pipe"
+  files={["form.pdf"]}
+  stages={[
+    { op: "set-form", fields: { name: "Ada Lovelace" } },
+    { op: "flatten-form" },
+  ]}
+  output="form.pdf"
+/>
+
+The values become part of the page. No reader can change them, and `/forms/pdf/info` answers `"formFields": false`.
+
+## Forms from LibreOffice
+
+LibreOffice exports a document's form fields as fields a reader can fill, unless [`exportFormFields`](/docs/reference/libreoffice#exportFormFields) is `false`. Add the `set-form` stage to the conversion to fill them in the same request.
+
+## Next
+
+[Attach files](/docs/process/attachments), or go through every stage in the [Stages reference](/docs/reference/stages).

@@ -1,0 +1,54 @@
+---
+id: redact
+title: Redact content
+---
+
+Remove text and images from a PDF for good, not just hide them.
+
+## Redact a region
+
+<Request
+  route="/forms/pdf/redact"
+  files={["report.pdf"]}
+  fields={{
+    regions: [{ page: 1, x: 160, y: 435, width: 60, height: 25 }],
+  }}
+  output="report.pdf"
+/>
+
+Gotenberg removes the content under each region from the file itself: the "Page 1" label is gone from the page and from any text a reader or a script extracts. Nothing is drawn in its place.
+
+## Measure the region
+
+A region's `x`, `y`, `width` and `height` count in points from the bottom-left corner of the page, 72 points to the inch. The pages of this report measure 446 by 631 points, and its label sits about 440 points up from the bottom.
+
+## Mark the redaction
+
+Stamp a black box over the region to show where content was. A one-pixel black PNG stretches to the size you give it:
+
+<Request
+  route="/forms/pdf/pipe"
+  files={["report.pdf", "black.png"]}
+  stages={[
+    {
+      op: "redact",
+      regions: [{ page: 1, x: 160, y: 435, width: 60, height: 25 }],
+    },
+    {
+      op: "stamp-image",
+      image: "black.png",
+      pages: "1",
+      x: 160,
+      y: 435,
+      width: 60,
+      height: 25,
+    },
+  ]}
+  output="report.pdf"
+/>
+
+Redact first: a stamp only covers what's under it.
+
+## Next
+
+[Stamp and watermark PDFs](/docs/process/stamps), or [organize the pages](/docs/process/pages) to drop whole pages.
