@@ -319,7 +319,7 @@ module.exports = {
           ["/docs/manipulate-pdfs/watermark-pdfs", "/docs/process/stamps"],
           ["/docs/manipulate-pdfs/write-bookmarks", "/docs/process/metadata"],
           ["/docs/manipulate-pdfs/write-metadata", "/docs/process/metadata"],
-          ["/docs/outbound-url-filtering", "/docs/security/secure"],
+          ["/docs/outbound-url-filtering", "/docs/operate/outbound"],
           ["/docs/system/debug", "/docs/reference/system"],
           ["/docs/system/get-health-check", "/docs/reference/system"],
           ["/docs/system/head-health-check", "/docs/reference/system"],

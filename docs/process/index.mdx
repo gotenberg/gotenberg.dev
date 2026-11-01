@@ -1,0 +1,53 @@
+---
+id: index
+title: Process PDFs
+---
+
+Merge, split, stamp, redact, fill, sign and convert PDFs: a PDF you upload, or one Gotenberg just made.
+
+Each operation is a stage, and works three ways:
+
+- On a PDF you upload, with the operation's own route: `/forms/pdf/merge`, `/forms/pdf/stamp-text`, and so on. Its options are form fields.
+- On a PDF you upload, as part of a list, with `/forms/pdf/pipe` and its `stages` field.
+- On a PDF Gotenberg makes, with the `stages` field of a Chromium or LibreOffice conversion.
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["report.docx"]}
+  stages={[{ op: "stamp-text", text: "DRAFT", x: 200, y: 290 }]}
+  output="report.pdf"
+/>
+
+[How requests work](/docs/getting-started/requests#add-stages) explains the `stages` field, and [Stages](/docs/reference/stages) lists every stage and its options.
+
+## Guides
+
+<CardGrid>
+  <Card title="Merge and split PDFs" to="/docs/process/merge-split">
+    One PDF from several, or several from one.
+  </Card>
+  <Card title="Organize pages" to="/docs/process/pages">
+    Keep, reorder, remove, insert and rotate pages.
+  </Card>
+  <Card title="Stamp and watermark PDFs" to="/docs/process/stamps">
+    Text, images and letterheads over the pages.
+  </Card>
+  <Card title="Redact content" to="/docs/process/redact">
+    Remove text and images for good.
+  </Card>
+  <Card title="Fill and flatten forms" to="/docs/process/forms">
+    Fill fields, then lock the values in.
+  </Card>
+  <Card title="Attach files to PDFs" to="/docs/process/attachments">
+    Embed source data and invoices' XML.
+  </Card>
+  <Card title="Edit metadata and bookmarks" to="/docs/process/metadata">
+    Title, author, dates and the outline.
+  </Card>
+  <Card title="Compress PDFs" to="/docs/process/compress">
+    Smaller files, flat transparency, one color space.
+  </Card>
+  <Card title="Render pages as images" to="/docs/process/render">
+    Thumbnails and previews of any page.
+  </Card>
+</CardGrid>

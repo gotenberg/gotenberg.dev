@@ -1,30 +1,78 @@
 ---
 id: about
-title: About Gotenberg
+title: How Gotenberg works
 ---
 
-Gotenberg is an HTTP API in a Docker container. You post files and form fields; it answers with a PDF, a ZIP of several files, or JSON.
+Gotenberg is an HTTP API in a Docker container. You post files and form fields; it answers with a PDF, an image, a ZIP of several files, or JSON.
 
 ## What runs inside
 
 - **Chromium** prints web pages: a URL, an HTML file with its assets, or Markdown. It also takes screenshots.
-- **LibreOffice** converts office documents: Word, Excel, PowerPoint, OpenDocument and many more. Gotenberg drives it through [lok](https://github.com/gotenberg/lok), a small program built on LibreOfficeKit.
-- **litho**, a PDF processor written in Go, does everything after the conversion: merge, split, stamp, sign, encrypt, remediate to PDF/A or PDF/UA, and validate.
+- **LibreOffice** converts office documents: Word, Excel, PowerPoint, OpenDocument and over a hundred more formats. Gotenberg drives it through [lok](https://github.com/gotenberg/lok), a small program built on LibreOfficeKit.
+- **litho**, Gotenberg's PDF engine, written in Go, does everything to PDFs: merge, split, stamp, sign, encrypt, make PDF/A or PDF/UA, and validate.
 
 Every image variant includes litho. The `-chromium` and `-libreoffice` variants leave out the other engine: see [Install](/docs/getting-started/installation#image-variants).
 
+## The routes
+
+- **Conversion routes** turn what you send into PDF: `/forms/chromium/convert/*` and `/forms/libreoffice/convert`. The screenshot routes, `/forms/chromium/screenshot/*`, make images instead.
+- **PDF routes** work on PDFs you upload: `/forms/pdf/pipe` runs a list of stages, and each stage has a route of its own, such as `/forms/pdf/merge`.
+- **Read routes** answer JSON about PDFs: `/forms/pdf/info`, `/forms/pdf/metadata`, `/forms/pdf/validate`, and so on.
+
+[Routes](/docs/reference/routes) lists them all, and [What works where](/docs/getting-started/what-works-where) shows which takes what.
+
+## Stages
+
+A stage is one operation on a PDF: merge, stamp, redact, sign, make PDF/A. A request lists them in its `stages` field, and Gotenberg runs them in order:
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["report.docx", "annex.docx"]}
+  stages={[{ op: "merge" }, { op: "remediate", profile: "PDF/A-2b" }]}
+  output="documents.pdf"
+/>
+
+The conversion routes and `/forms/pdf/pipe` take `stages`. A few rules keep a list sensible, such as signing last: see [Order rules](/docs/reference/stages#order-rules).
+
+## Native field or stage
+
+Some results have two ways in. A field whose name starts with `native` asks Chromium or LibreOffice to do it while they make the PDF. A stage does it afterwards, with litho, on any route:
+
+| Result     | Native field                                                      | Stage                                                                | Pick the stage when                        |
+| :--------- | :---------------------------------------------------------------- | :------------------------------------------------------------------- | :----------------------------------------- |
+| PDF/A      | `nativePdfa`: LibreOffice, four levels, unchecked                 | `remediate`: any route, eleven levels, reports what's left           | Usually: it checks its result              |
+| PDF/UA     | `nativePdfua`: LibreOffice, PDF/UA-1, unchecked                   | `remediate`: PDF/UA-1 or PDF/UA-2, tags the PDF if needed            | Always, to claim conformance               |
+| Tags       | `nativeTaggedPdf`: from your source's structure                   | `autotag`: inferred from the page layout                             | The PDF comes from elsewhere               |
+| Bookmarks  | `nativeBookmarks`: from the headings                              | `set-bookmarks`: the list you give                                   | You want your own titles, or after a merge |
+| Pages      | `nativePages`: the engine skips the others, which is faster       | `select`: also `odd`, `even`, `last`, and a new order                | You reorder, or pick after a merge         |
+| Watermark  | `nativeWatermarkText`: LibreOffice, any script, sized to the page | `stamp-text`: any route, at an exact position, Western European text | The PDF comes from Chromium or elsewhere   |
+| Image size | `nativeQuality`: LibreOffice, lowers the quality                  | `optimize`: keeps the quality, packs the file                        | You can't lose quality                     |
+
+## What comes back
+
+- One file answers as itself, and several as a ZIP.
+- A PDF from a URL or HTML takes a random name, an office document `report.docx.pdf`, a merge the name of its first file. The parts of a `split` count from 0, `report_0.pdf`, and rendered pages from 1, `report_1.png`.
+- `Gotenberg-Output-Filename` names the result instead.
+- With webhook headers, Gotenberg answers right away and uploads the result: see [Deliver with webhooks](/docs/webhook-download).
+
+## What Gotenberg checks
+
+- `remediate` reports the violations it couldn't fix in `Gotenberg-Remediation-Residual`, and still answers 200: check the header.
+- Nothing checks what the `native` fields produce. `/forms/pdf/validate` checks any PDF against PDF/A, PDF/UA or Factur-X.
+- `optimize` refuses a signed PDF, since rewriting it would drop the signature.
+
 ## How a request flows
 
-1. Gotenberg reads the multipart form: uploaded files, ZIP archives, and files to download from URLs.
-2. A conversion route hands the files to Chromium or LibreOffice. A `/forms/pdf` route skips this step.
-3. Gotenberg runs the stages you list, in order: merge, then stamp, then sign, for example.
-4. It answers with the result, or uploads it to your webhook and answers right away.
+1. Gotenberg reads the form: uploaded files, ZIP archives, and files to download from URLs.
+2. A conversion route hands the files to Chromium or LibreOffice. A PDF route skips this step.
+3. Gotenberg runs the stages, in order.
+4. It answers with the result, or uploads it to your webhook.
 
 Gotenberg keeps nothing between requests. It deletes a request's files once it answers, so you can run as many containers as you need behind a load balancer.
 
 ## Keep it private
 
-Gotenberg loads the URLs and runs the documents you send it. Treat it like a database: keep it behind your firewall, and don't expose it to the public internet.
+Gotenberg loads the URLs and opens the documents callers send it. Keep it behind your firewall: [Secure your deployment](/docs/operate/secure) covers the rest.
 
 ## Open source
 

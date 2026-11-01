@@ -1,0 +1,109 @@
+---
+id: outbound
+title: Restrict outbound requests
+---
+
+Control which addresses Gotenberg may reach when a request names a URL, so a caller can't use it to reach your internal network.
+
+## What Gotenberg fetches
+
+A request makes Gotenberg call other servers in five ways:
+
+| What                   | Calls                                                                                                                                                                         | Flags                   |
+| :--------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------- |
+| Chromium               | The URL to print, and everything the page loads: images, style sheets, fonts, scripts, iframes, the URLs its scripts call. HTML you upload counts too.                        | `--chromium-*`          |
+| `downloadFrom`         | The URLs the field lists.                                                                                                                                                     | `--api-download-from-*` |
+| Webhooks               | The URLs of the webhook headers.                                                                                                                                              | `--webhook-*`           |
+| `sign` and `timestamp` | The timestamp authority at `timestampUrl`.                                                                                                                                    | `--pdf-*`               |
+| LibreOffice            | The style sheets an HTML document links, and the URLs macros open, once `--libreoffice-enable-macros` lets them run. Images and other content a document links to never load. | `--libreoffice-*`       |
+
+## Why it matters
+
+By default, Gotenberg reaches every address its network reaches, your private network included. That's safe while only your code decides what Gotenberg loads.
+
+It isn't once a request carries what a user wrote: a URL to print, an HTML template, a document. A user can then point Gotenberg at an internal address, such as a cloud's metadata service at `http://169.254.169.254/latest/meta-data/`, and read the answer in the PDF. This attack is called server-side request forgery, SSRF.
+
+## Refuse private addresses
+
+Set the five variables when requests carry what users wrote:
+
+```yaml title="compose.yaml"
+services:
+  gotenberg:
+    image: gotenberg/gotenberg:9
+    environment:
+      CHROMIUM_DENY_PRIVATE_IPS: "true"
+      API_DOWNLOAD_FROM_DENY_PRIVATE_IPS: "true"
+      WEBHOOK_DENY_PRIVATE_IPS: "true"
+      PDF_DENY_PRIVATE_IPS: "true"
+      LIBREOFFICE_DENY_PRIVATE_IPS: "true"
+```
+
+Gotenberg resolves each host and refuses any address that isn't public: loopback, `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`, link-local `169.254.0.0/16`, carrier-grade NAT `100.64.0.0/10`, benchmarking `198.18.0.0/15`, IPv6 unique-local, and the IPv6 forms that embed one of them.
+
+`*_DENY_PUBLIC_IPS` does the reverse, for a network that must not reach the internet.
+
+## What happens to a refused URL
+
+- The URL to print, a `downloadFrom` file, a webhook or a timestamp authority answers `403 Forbidden`, with a generic message.
+- A resource a page loads, or a style sheet LibreOffice requests, is left out, and the PDF still comes back.
+
+Gotenberg logs each refusal at warn level, with the request's trace and the rule that refused it:
+
+```json
+{
+  "level": "warn",
+  "msg": "outbound request blocked by the Chromium filters",
+  "correlation_id": "req-42",
+  "url": "https://gotenberg.dev/img/logo.png",
+  "rule": "deny-list"
+}
+```
+
+## Match URLs with lists
+
+Each family also takes an allow list and a deny list of regular expressions, such as [`--chromium-allow-list`](/docs/configuration#chromium-allow-list) and [`--chromium-deny-list`](/docs/configuration#chromium-deny-list). They match the URL with its scheme and host lowercased and its credentials removed:
+
+- The deny list always wins.
+- The allow list is exclusive: once set, the family reaches only the URLs it matches.
+- A URL the allow list matches skips the private and public address checks.
+- A list you set replaces its default. Chromium's deny list defaults to `^file:(?!//\/tmp/).*`, which keeps pages from reading files outside Gotenberg's working directory: keep it in yours.
+- On the HTML and Markdown routes, Chromium's allow list must also match `^file:///tmp/`: the page you upload loads from there.
+
+So an allow list can't add one internal host on top of the internet: it admits that host, and nothing else.
+
+## Write a safe allow list
+
+An allow list decides alone which URLs skip the address checks, so write it to match your hosts and nothing else:
+
+1. Start with `^`. Without it, the pattern matches anywhere in the URL, such as `http://attacker.example/?u=trusted.example.com`.
+2. Escape every dot. An unescaped `.` matches any character.
+3. End the host with `/`, `:`, `$`, or a group such as `(:|/|$)`. A pattern that stops at the host also matches `trusted.example.com.attacker.example`.
+4. Never write `.` or `[^/]` inside the host: both match `@`, `?` and `#`, which can move your host name out of the host. A class such as `[a-z0-9-]` can't.
+
+| Pattern                                          | Verdict                                                 |
+| :----------------------------------------------- | :------------------------------------------------------ |
+| `trusted\.example\.com`                          | Matches anywhere in the URL.                            |
+| `^https://trusted\.example\.com`                 | Matches `https://trusted.example.com.attacker.example`. |
+| `^https://.+\.example\.com/`                     | Matches `https://attacker.example/#x.example.com/`.     |
+| `^https://trusted\.example\.com(:[0-9]+)?(/\|$)` | Safe.                                                   |
+| `^https://[a-z0-9-]+\.example\.com/`             | Safe.                                                   |
+
+Gotenberg checks every allow list at startup, and logs a warning for a pattern that has one of these shapes.
+
+## Go through a proxy
+
+`*_ENABLE_ENVIRONMENT_PROXY` sends a family's requests through the proxy of `HTTP_PROXY`, `HTTPS_PROXY` and `NO_PROXY`, credentials included. The lists and the address checks still apply to the destination first.
+
+## Always on
+
+These protections need no setting:
+
+- Gotenberg resolves a host once, checks the address, and connects to that address, so a host can't resolve to a public address for the check and a private one for the connection. `--chromium-proxy-server` and `--chromium-host-resolver-rules` turn this off for Chromium.
+- The URL routes take `http://` and `https://` URLs only.
+- A page loads local files from its own request's directory only.
+- LibreOffice never loads the images and other content a document links to.
+
+## Next
+
+[Limit resources](/docs/operate/limits), so one request can't exhaust the container.

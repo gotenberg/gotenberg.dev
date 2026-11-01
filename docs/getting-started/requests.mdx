@@ -51,6 +51,26 @@ List URLs in `downloadFrom` and Gotenberg downloads them before it starts, as if
 
 The server must answer with a `Content-Disposition` header that names the file. Operators can turn the feature off with [`--api-disable-download-from`](/docs/configuration#api-disable-download-from).
 
+## Add stages
+
+A stage is one operation on a PDF: merge, stamp, sign, make PDF/A, and so on. List them in the `stages` field, as a JSON array. Each item names its operation in `op`, with its options beside it:
+
+<Request
+  route="/forms/chromium/convert/html"
+  files={["index.html", "style.css"]}
+  stages={[
+    { op: "stamp-text", text: "DRAFT", x: 72, y: 72 },
+    { op: "optimize" },
+  ]}
+  output="invoice.pdf"
+/>
+
+- Gotenberg runs the stages in order, on the PDFs the request makes.
+- A stage that needs a file, such as an image to stamp, names it: upload the file with the others.
+- `stages` works on the Chromium conversion routes, the LibreOffice route and `/forms/pdf/pipe`. The screenshot routes, the single-stage routes such as `/forms/pdf/merge`, and the read routes answer 400 to it.
+
+[Process PDFs](/docs/process) shows what stages do, and [Stages](/docs/reference/stages) lists them all.
+
 ## Name the result
 
 Set the `Gotenberg-Output-Filename` header, without extension. Gotenberg adds the right one:

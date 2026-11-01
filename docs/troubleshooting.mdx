@@ -17,7 +17,7 @@ The message names the field and what it wants, such as `form field 'paperSize' i
 
 ### 403 Forbidden
 
-An outbound filter refused a URL the request names: the page Chromium loads, a `downloadFrom` file or a webhook. The message stays generic, and Gotenberg's logs say which rule refused it, as `rule`: `deny-list`, `allow-list`, `private-ip` or `public-ip`. See [Secure Gotenberg](/docs/security/secure#filter-outbound-requests).
+An outbound filter refused a URL the request names: the page Chromium loads, a `downloadFrom` file or a webhook. The message stays generic, and Gotenberg's logs say which rule refused it, as `rule`: `deny-list`, `allow-list`, `private-ip` or `public-ip`. See [Secure Gotenberg](/docs/operate/outbound).
 
 ### 409 Conflict
 
@@ -49,7 +49,7 @@ Chromium leaves backgrounds out by default, as a browser's print dialog does. Se
 
 - Link the files you upload by their names alone: `src="logo.png"`, not `src="img/logo.png"`. Gotenberg drops the folders.
 - `localhost` is the container itself, not your machine. On Docker Desktop, reach your machine at `host.docker.internal`.
-- The [outbound filters](/docs/security/secure#filter-outbound-requests) drop a resource they block from the page, without failing the request. Gotenberg logs each one, with the rule that refused it:
+- The [outbound filters](/docs/operate/outbound) drop a resource they block from the page, without failing the request. Gotenberg logs each one, with the rule that refused it:
 
 ```json
 {

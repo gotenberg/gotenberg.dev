@@ -3,15 +3,16 @@
 module.exports = {
   docs: [
     "index",
-    "about",
-    "getting-started/installation",
     {
       type: "category",
       label: "Get started",
       collapsed: true,
       items: [
+        "getting-started/installation",
         "getting-started/first-pdf",
+        "about",
         "getting-started/requests",
+        "getting-started/what-works-where",
         "getting-started/clients",
         "getting-started/upgrade",
       ],
@@ -20,6 +21,7 @@ module.exports = {
       type: "category",
       label: "Convert",
       collapsed: true,
+      link: { type: "doc", id: "convert/index" },
       items: [
         "convert/html",
         "convert/url",
@@ -35,6 +37,7 @@ module.exports = {
       type: "category",
       label: "Process PDFs",
       collapsed: true,
+      link: { type: "doc", id: "process/index" },
       items: [
         "process/merge-split",
         "process/pages",
@@ -49,7 +52,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Conformance",
+      label: "Standards",
       collapsed: true,
       items: [
         "conformance/pdfa",
@@ -59,15 +62,22 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Security",
+      label: "Protect PDFs",
       collapsed: true,
-      items: ["security/encrypt", "security/sign", "security/secure"],
+      items: ["security/encrypt", "security/sign"],
     },
     {
       type: "category",
       label: "Operate",
       collapsed: true,
-      items: ["operate/webhooks", "operate/production", "operate/telemetry"],
+      items: [
+        "operate/secure",
+        "operate/outbound",
+        "operate/limits",
+        "operate/webhooks",
+        "operate/production",
+        "operate/telemetry",
+      ],
     },
     {
       type: "category",

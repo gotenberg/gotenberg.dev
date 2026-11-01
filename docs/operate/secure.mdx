@@ -1,0 +1,87 @@
+---
+id: secure
+title: Secure your deployment
+---
+
+Decide what your deployment needs, from who may call Gotenberg to what Gotenberg may reach.
+
+## Know the risks
+
+Gotenberg does what its callers ask: it loads the URLs they name, runs the scripts of the pages it prints, opens their documents and uploads its results where they say. Out of the box, it asks for no credentials and reaches any address its network reaches. Pick the case that matches yours:
+
+1. Only your backend calls Gotenberg, with content your code controls: keep Gotenberg off the public network. That's enough.
+2. Other services share its network: [authenticate the requests](#authenticate-requests), and [serve HTTPS](#serve-https).
+3. Requests carry what your users wrote, such as a URL to print, an HTML template or a document: also [restrict outbound requests](/docs/operate/outbound) and [limit resources](/docs/operate/limits).
+
+## Authenticate requests
+
+Basic authentication takes a username and a password from the environment:
+
+```yaml title="compose.yaml"
+services:
+  gotenberg:
+    image: gotenberg/gotenberg:9
+    environment:
+      API_ENABLE_BASIC_AUTH: "true"
+      GOTENBERG_API_BASIC_AUTH_USERNAME: gotenberg
+      GOTENBERG_API_BASIC_AUTH_PASSWORD: change-me
+```
+
+`API_ENABLE_BASIC_AUTH` is the variable of the [`--api-enable-basic-auth`](/docs/configuration#api-enable-basic-auth) flag. The username and password have no flag: set them with these two variables, `GOTENBERG_` prefix included.
+
+```bash
+curl \
+  --user gotenberg:change-me \
+  --request POST http://localhost:3000/forms/chromium/convert/url \
+  --form url=https://example.com \
+  -o example.pdf
+```
+
+A request without valid credentials answers 401. `/health` stays open, so probes need none.
+
+OIDC bearer tokens work instead: set [`--api-enable-oidc-auth`](/docs/configuration#api-enable-oidc-auth), the issuer with [`--api-oidc-issuer`](/docs/configuration#api-oidc-issuer), and the audience the tokens carry with [`--api-oidc-audience`](/docs/configuration#api-oidc-audience). Gotenberg finds the signing keys from the issuer's configuration.
+
+## Serve HTTPS
+
+```yaml title="compose.yaml"
+services:
+  gotenberg:
+    image: gotenberg/gotenberg:9
+    environment:
+      API_TLS_CERT_FILE: /certs/cert.pem
+      API_TLS_KEY_FILE: /certs/key.pem
+    volumes:
+      - ./certs:/certs:ro
+```
+
+Gotenberg then serves HTTPS only, on the same port. Kubernetes probes need `scheme: HTTPS`.
+
+## Keep the debug route off
+
+`/debug` answers every flag's value. It's off by default: leave [`--api-enable-debug-route`](/docs/configuration#api-enable-debug-route) unset where callers you don't trust can reach Gotenberg.
+
+## Turn off what you don't use
+
+- `CHROMIUM_DISABLE_ROUTES`, `LIBREOFFICE_DISABLE_ROUTES` and `PDF_DISABLE_ROUTES` remove a module's routes.
+- `API_DISABLE_DOWNLOAD_FROM` turns off `downloadFrom`, and `WEBHOOK_DISABLE` turns off webhooks. A webhook sends a request, with headers the caller picks, to any URL the caller names.
+- `CHROMIUM_DISABLE_JAVASCRIPT` stops the scripts of the pages Chromium prints.
+
+## Know the settings that weaken isolation
+
+Each of these flags trades a protection for a feature. Turn one on only when every caller is trusted:
+
+| Flag                                                                                                   | What it gives up                                                            |
+| :----------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------- |
+| [`--chromium-proxy-server`](/docs/configuration#chromium-proxy-server)                                 | The protection against DNS rebinding: a host can resolve differently later. |
+| [`--chromium-host-resolver-rules`](/docs/configuration#chromium-host-resolver-rules)                   | The same.                                                                   |
+| [`--chromium-shared-browser-context`](/docs/configuration#chromium-shared-browser-context)             | The isolation of cookies, cache and storage between conversions.            |
+| [`--chromium-disable-web-security`](/docs/configuration#chromium-disable-web-security)                 | The same-origin policy in the pages Chromium prints.                        |
+| [`--chromium-allow-file-access-from-files`](/docs/configuration#chromium-allow-file-access-from-files) | The barrier between local files a page may read.                            |
+| [`--chromium-ignore-certificate-errors`](/docs/configuration#chromium-ignore-certificate-errors)       | The TLS checks of the URLs Chromium loads.                                  |
+| [`--libreoffice-enable-macros`](/docs/configuration#libreoffice-enable-macros)                         | The barrier against code in documents: macros run inside the container.     |
+
+The image already runs as an unprivileged user, `gotenberg`, UID 1001.
+
+## Next
+
+[Restrict outbound requests](/docs/operate/outbound), then [limit resources](/docs/operate/limits).

@@ -1,0 +1,59 @@
+---
+id: what-works-where
+title: What works where
+---
+
+Which route takes which feature. A field name in `code` is a form field of the route. A stage name, such as `stamp-text`, goes in the route's `stages` field, or, on a single-stage route, is the route itself: `/forms/pdf/stamp-text`.
+
+## Conversion routes
+
+| Feature                             | Chromium PDF                                          | Screenshots         | LibreOffice                                           |
+| :---------------------------------- | :---------------------------------------------------- | :------------------ | :---------------------------------------------------- |
+| Input                               | A URL, HTML or Markdown                               | The same            | Office documents, over a hundred formats              |
+| `files`, `archives`, `downloadFrom` | Yes                                                   | Yes                 | Yes                                                   |
+| `stages`                            | Yes, on the printed PDF                               | No                  | Yes, on the exported PDFs                             |
+| Webhooks                            | Yes                                                   | Yes                 | Yes                                                   |
+| `Gotenberg-Output-Filename`         | Yes                                                   | Yes                 | Yes                                                   |
+| Paper size, orientation             | `paperSize`, `landscape`, `paperWidth`, `paperHeight` | `width`, `height`   | `paperSize`, `landscape`, `paperWidth`, `paperHeight` |
+| Margins                             | `marginTop` and the others                            | No                  | The document's own                                    |
+| Headers, footers, page numbers      | `header.html`, `footer.html`                          | No                  | The document's own                                    |
+| Waits, cookies, `failOn` checks     | Yes                                                   | Yes                 | No                                                    |
+| Pick pages                          | `nativePages`, or `select`                            | No                  | `nativePages`, or `select`                            |
+| Watermark                           | The stamp stages                                      | No                  | `nativeWatermarkText`, or the stamp stages            |
+| Bookmarks                           | `nativeBookmarks`, off by default, or `set-bookmarks` | No                  | `nativeBookmarks`, on by default, or `set-bookmarks`  |
+| Metadata                            | The page's `<title>`, or `set-metadata`               | No                  | The document's properties, or `set-metadata`          |
+| PDF/A                               | `remediate`                                           | No                  | `nativePdfa`, or `remediate`                          |
+| Tagged PDF, PDF/UA                  | `nativeTaggedPdf`, `remediate`                        | No                  | `nativeTaggedPdf`, `nativePdfua`, `remediate`         |
+| Password-protected input            | No                                                    | No                  | `password`                                            |
+| Encrypt, sign, timestamp            | The stages, last                                      | No                  | The stages, last                                      |
+| Forms                               | No                                                    | No                  | `exportFormFields`, then `set-form`                   |
+| Images of the pages                 | `render`, after the PDF                               | The route itself    | `render`, after the PDF                               |
+| Smaller images, lower quality       | No                                                    | `quality`, for JPEG | `nativeQuality`, `nativeReduceImageResolution`        |
+
+## PDF routes
+
+| Feature                             | `/forms/pdf/pipe`                     | Single-stage routes                    | Read routes            |
+| :---------------------------------- | :------------------------------------ | :------------------------------------- | :--------------------- |
+| Input                               | PDFs                                  | PDFs                                   | PDFs                   |
+| `files`, `archives`, `downloadFrom` | Yes                                   | Yes                                    | Yes                    |
+| `stages`                            | Yes, required                         | No: the stage's options are fields     | No                     |
+| Webhooks                            | Yes                                   | Yes                                    | No                     |
+| `Gotenberg-Output-Filename`         | Yes                                   | Yes                                    | No                     |
+| Pick pages                          | `select`, `delete`, `insert`, `split` | `/forms/pdf/select` and the others     | No                     |
+| Watermark                           | The stamp stages                      | `/forms/pdf/stamp-text` and the others | No                     |
+| Bookmarks                           | `set-bookmarks`; `merge` keeps them   | `/forms/pdf/set-bookmarks`             | `/forms/pdf/bookmarks` |
+| Metadata                            | `set-metadata`                        | `/forms/pdf/set-metadata`              | `/forms/pdf/metadata`  |
+| PDF/A, PDF/UA                       | `remediate`; `autotag` for tags       | `/forms/pdf/remediate`                 | `/forms/pdf/validate`  |
+| Password-protected input            | A `decrypt` stage first               | `/forms/pdf/decrypt` only              | `password`             |
+| Encrypt, sign, timestamp            | The stages                            | `/forms/pdf/encrypt` and the others    | No                     |
+| Forms                               | `set-form`, `flatten-form`            | `/forms/pdf/set-form` and the other    | `/forms/pdf/info`      |
+| Images of the pages                 | `render`                              | `/forms/pdf/render`                    | No                     |
+| Smaller files                       | `optimize`, which keeps the quality   | `/forms/pdf/optimize`                  | No                     |
+
+## Two ways to the same result
+
+A field whose name starts with `native` asks the engine to do the work while it makes the PDF. A stage does it afterwards, the same way on every route. [How Gotenberg works](/docs/about#native-field-or-stage) says which to pick.
+
+## An uploaded PDF on a conversion
+
+A conversion's stages see only the PDFs the conversion makes. To bring in a PDF you upload, name it in a stage that reads a file, such as [`insert`](/docs/process/pages#insert-pages) or [`stamp-pdf`](/docs/process/stamps#stamp-a-letterhead). On the LibreOffice route, a PDF no stage names goes through LibreOffice like any document.

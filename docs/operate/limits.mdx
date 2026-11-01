@@ -1,0 +1,41 @@
+---
+id: limits
+title: Limit resources
+---
+
+Bound what one request may cost Gotenberg: its size, its time, its fan-out and its memory.
+
+## Size
+
+- [`--api-body-limit`](/docs/configuration#api-body-limit) caps the size of a request, such as `50MB`. There is no limit by default. A larger request answers 413.
+- [`--api-archive-max-entries`](/docs/configuration#api-archive-max-entries), 10,000 by default, and [`--api-archive-max-ratio`](/docs/configuration#api-archive-max-ratio), 100 by default, bound what a ZIP under `archives` may unpack to, against ZIP bombs.
+
+## Time
+
+- [`--api-timeout`](/docs/configuration#api-timeout) bounds each request, 30 seconds by default, queue included. A request past it answers 503.
+- [`--webhook-client-timeout`](/docs/configuration#webhook-client-timeout) bounds each call to a webhook, 30 seconds by default.
+
+## Queues
+
+[`--chromium-max-queue-size`](/docs/configuration#chromium-max-queue-size) and [`--libreoffice-max-queue-size`](/docs/configuration#libreoffice-max-queue-size) cap the requests waiting for an engine, unlimited by default. The next one answers 429, so a busy container sheds load instead of piling up timeouts.
+
+## Downloads
+
+- [`--api-download-from-max-entries`](/docs/configuration#api-download-from-max-entries) caps the URLs one `downloadFrom` lists, unlimited by default.
+- [`--api-download-from-max-concurrency`](/docs/configuration#api-download-from-max-concurrency) caps how many download at once, 10 by default.
+
+## PDF processing
+
+litho, Gotenberg's PDF engine, bounds what one PDF may make it decode:
+
+| Flag                                                                               | Default                                      |
+| :--------------------------------------------------------------------------------- | :------------------------------------------- |
+| [`--pdf-max-stream-bytes`](/docs/configuration#pdf-max-stream-bytes)               | 256 MiB per stream                           |
+| [`--pdf-max-image-pixels`](/docs/configuration#pdf-max-image-pixels)               | 100 million pixels                           |
+| [`--pdf-max-embedded-file-bytes`](/docs/configuration#pdf-max-embedded-file-bytes) | 50 MiB per embedded file read for validation |
+
+A stream or an image past its limit fails the stage with 400. An embedded file past its limit is left out of validation. [`--pdf-max-concurrency`](/docs/configuration#pdf-max-concurrency) sets how many of a request's documents litho processes at once, one by default.
+
+## Next
+
+[Run in production](/docs/operate/production) sizes the engines and their restarts.
