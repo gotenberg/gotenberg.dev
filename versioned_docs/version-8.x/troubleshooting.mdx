@@ -1,0 +1,154 @@
+---
+id: troubleshooting
+title: Troubleshooting
+---
+
+Issue not listed here? Check [GitHub issues](https://github.com/gotenberg/gotenberg/issues) and [discussions](https://github.com/gotenberg/gotenberg/discussions), or open a new one.
+
+## API
+
+### Bad Request (400)
+
+A `400 Bad Request` means the form data failed validation: a missing required form field, a malformed JSON value, an unsupported file extension, or an invalid field value. The body is plain text naming the offending field:
+
+```
+Invalid form data: a 'userPassword' or 'ownerPassword' is required
+```
+
+Match the `Gotenberg-Trace` response header against the logs for full context.
+
+## Chromium
+
+### Blank or Missing Content
+
+- **Dynamic Content:** If your page relies on JavaScript to render, Chromium might print before it finishes. Use `waitDelay` or `waitForExpression` to pause the conversion until the page is ready.
+- **Backgrounds:** By default, browsers remove backgrounds for printing. Enable the `printBackground` form field, or use the CSS property `-webkit-print-color-adjust: exact;`.
+- **Network Idle:** For versions after _8.11.0_, try setting the `skipNetworkIdleEvent` form field to _false_.
+- **Updates:** Consider upgrading to the latest Gotenberg version to benefit from debugging features like _Network Errors_ or _Invalid HTTP Status Codes_.
+
+### Blank Charts or Empty Google Maps
+
+Charting libraries (`@visx/responsive`, ApexCharts) and Google Maps rendered as empty rectangles between _8.29.0_ and _8.31.0_.
+
+The chromedp _0.15.0_ print pipeline suspended `requestAnimationFrame`, `ResizeObserver`, `IntersectionObserver`, and CSS `transitionend` / `animationend` between the load event and `Page.printToPDF`. Libraries measuring their container inside an `rAF` callback never received a frame.
+
+Fixed in _8.32.0_ by pinning `chromedp` back to _v0.14.2_. Upgrade to _8.32.0_ or later (issues [#1531](https://github.com/gotenberg/gotenberg/issues/1531), [#1534](https://github.com/gotenberg/gotenberg/issues/1534), [#1535](https://github.com/gotenberg/gotenberg/issues/1535)).
+
+### Sub-Resources Stopped Loading After 8.31.0
+
+_8.31.0_ blocked Chromium sub-resources resolving to private IPs by default. CSS, images, and iframes hosted on internal hostnames stopped loading.
+
+_8.32.0_ restores permissive defaults. Private-IP sub-resources load again without configuration.
+
+Set `CHROMIUM_DENY_PRIVATE_IPS=true` to keep the strict 8.31.0-style posture. See [Outbound URL Filtering](outbound-url-filtering).
+
+### Localhost / Missing Assets
+
+- **Container Networking:** The Gotenberg container has its own network. If you try to convert `http://localhost:3000`, it looks inside the container, not your host machine. Use your host's actual network IP, or Docker's DNS (e.g., `host.docker.internal`).
+- **Unresolved Assets:** Ensure all CSS, fonts, and images are either accessible from the internet, sent as additional files in your multipart request, or embedded as Base64.
+
+### Large PDFs
+
+- Webfonts can significantly increase PDF sizes. For custom fonts, refer to the [fonts configuration section](configuration#fonts) ([Issue #521](https://github.com/gotenberg/gotenberg/issues/521)).
+- A known bug in Chromium can sometimes cause duplicate images ([Issue #1077](https://github.com/gotenberg/gotenberg/issues/1077)).
+
+### Fails to Start
+
+- Increase the startup timeout (see [Chromium module configuration](configuration#chromium)).
+- On macOS, consider disabling the _Use Virtualization Framework_ in Docker Desktop ([Issue #792](https://github.com/gotenberg/gotenberg/issues/792)).
+
+### Liveness Probe Failures Under Load
+
+Before _8.33.0_, a single slow health probe under heavy load flipped `/health` to unhealthy, causing Kubernetes liveness probes to restart otherwise healthy pods.
+
+Since _8.33.0_, Gotenberg tolerates one transient probe failure and briefly caches successful probe results, so probe spam no longer piles onto a busy engine ([Issue #1561](https://github.com/gotenberg/gotenberg/issues/1561)). The same applies to LibreOffice probes. A genuinely dead process still surfaces on the next probe.
+
+Before _8.37.0_, a probe landing during a planned restart (`CHROMIUM_RESTART_AFTER`, `LIBREOFFICE_RESTART_AFTER`) returned `503`, even though the node kept serving requests. Planned restarts now report healthy ([Issue #1648](https://github.com/gotenberg/gotenberg/issues/1648)).
+
+### Chromium Crashed (503)
+
+Since _8.37.0_, a renderer crash fails the request immediately with `503 Service Unavailable` and the body `Chromium crashed while processing the request. Retry, or reduce the workload if the problem persists.` Before, the request hung until `API_TIMEOUT` ([Issue #1640](https://github.com/gotenberg/gotenberg/issues/1640)).
+
+The request is safe to retry. A page that crashes Chromium on every attempt usually exhausts the container's memory: raise the memory limit or lighten the page.
+
+### Print Error (-32000)
+
+- This error often occurs when converting massive documents. Increasing container memory might help, but note that it is a known [Chromium bug](https://issues.chromium.org/issues/40842550) ([Issue #788](https://github.com/gotenberg/gotenberg/issues/788)).
+- Unusually large headers or footers injected via the API can also trigger this error.
+
+### Clipped Screenshots
+
+- If your screenshots are repeating or clipped, set the `skipNetworkIdleEvent` form field to _false_ ([Issue #1065](https://github.com/gotenberg/gotenberg/issues/1065#issuecomment-2670882337)).
+
+### Timeouts (503)
+
+- **Overload:** Check if your Gotenberg instance is overwhelmed. Scale horizontally by adding more instances if needed.
+- **Accessibility:** Ensure the target page’s resources respond quickly.
+- **Configuration:** Increase the API timeout ([API module configuration](configuration#api)). Optionally, define a maximum queue size for faster request aborts ([Chromium module configuration](configuration#chromium)).
+
+## LibreOffice
+
+### Layout & Font Shifts
+
+- **Missing Fonts:** LibreOffice relies on installed system fonts to calculate page breaks and layout. If your document uses a font not present in the container, LibreOffice will substitute it, causing shifted layouts. Install the required fonts via a custom Dockerfile (see [Fonts configuration](configuration#fonts)).
+- **After upgrading to 8.30.0:** The font stack was simplified from 30+ packages to 8. Documents relying on Microsoft Core Fonts (Arial, Times New Roman, Calibri) now use metric-compatible replacements. If you notice layout differences after upgrading, install `ttf-mscorefonts-installer` or the specific script fonts your documents need (see [Fonts configuration](configuration#installing-additional-fonts)).
+- **Clipped Form Field Text:** When form fields reference fonts that aren't embedded, LibreOffice sizes the widget boxes with a fallback font, making them too small and clipping the text. Set `exportFormFields=false` to flatten the fields and remove the mismatch (see [Native Flattening](convert-with-libreoffice/convert-to-pdf#native-flattening-libreoffice)).
+
+### Linked Images Missing After 8.34.0
+
+_8.34.0_ blocks content linked from untrusted locations, and uploaded documents always count as untrusted. The conversion succeeds with `200 OK`; linked images and other linked content are absent.
+
+Embed content in the document instead of linking it. There is no opt-out: the block closes a local-file-read and SSRF vector. See [Outbound URL Filtering](outbound-url-filtering).
+
+### Server Errors (500)
+
+- **Resource Limits:** Office document conversion is resource-heavy. Try increasing Gotenberg’s memory and CPU allocations ([Issue #465](https://github.com/gotenberg/gotenberg/issues/465)).
+- **Retrying:** A `500` from `/forms/libreoffice/convert` means no form field explains the failure, so the request is valid and worth retrying. A `400` names the field to correct and fails the same way on every attempt. See [Deciding Whether to Retry](/docs/8.x/convert-with-libreoffice/convert-to-pdf#deciding-whether-to-retry).
+
+### UUID Printed in CSV Page Headers
+
+Before _8.34.0_, converting a `.csv` file printed a random UUID as a centered page header. LibreOffice names the Calc sheet after the input file, which Gotenberg stores under a UUID-based filename, and the default page style prints that sheet name as a header.
+
+Fixed in _8.34.0_: Gotenberg suppresses the auto-generated header for CSV inputs. Spreadsheets with their own page styles (`.xlsx`, `.ods`) are unaffected ([Issue #1568](https://github.com/gotenberg/gotenberg/issues/1568)).
+
+### Fails to Start
+
+- Increase the startup timeout ([LibreOffice module configuration](configuration#libreoffice)).
+- Debian users should ensure they are using a current version of the distribution ([Issue #794](https://github.com/gotenberg/gotenberg/issues/794)).
+- For Synology and Paperless-ngx users, consult [this configuration comment](https://github.com/gotenberg/gotenberg/issues/763#issuecomment-1890472047).
+
+### First Request Times Out, Subsequent Requests Fail Until Container Restart
+
+Before _8.32.0_, the supervisor cached a failed first launch and returned the same error to every subsequent request. This happened when `LIBREOFFICE_START_TIMEOUT` was shorter than soffice's cold start.
+
+Fixed in _8.32.0_. A failed launch leaves state clean and the next request retries from scratch ([Issue #1538](https://github.com/gotenberg/gotenberg/issues/1538)).
+
+For older versions, increase `LIBREOFFICE_START_TIMEOUT` (default 20s) to comfortably exceed soffice cold-start time.
+
+### PDF/A-1a Support
+
+- Starting with version 7.6, LibreOffice no longer supports _PDF/A-1a_. It previously generated _PDF/A-1b_ files anyway, though some validators misidentified them ([LibreOffice commit](https://git.libreoffice.org/core/+/c4b12d06698402984b3ffdbd2c139f261fa35ca1%5E%21)).
+
+### Tables Rasterized to Images with PDF/A or PDF/UA
+
+LibreOffice rasterizes table cells that carry a background color when it re-processes a document for PDF/A or PDF/UA. The resulting images have no alt text, so the output is less accessible than the source ([Issue #1292](https://github.com/gotenberg/gotenberg/issues/1292)).
+
+Removing the background color keeps the table as text. On Chromium routes, `generateTaggedPdf` embeds a structure tree during generation without the LibreOffice pass ([Native Accessibility](/docs/8.x/convert-with-chromium/convert-html-to-pdf#native-accessibility-chromium)). For strict PDF/A compliance, convert with an external tool such as Ghostscript.
+
+### Timeouts (503)
+
+- **Overload:** Check if your instance is overloaded; consider increasing instances or resource allocation.
+- **Configuration:** Increase the API timeout ([API module configuration](configuration#api)) and the LibreOffice startup timeout ([LibreOffice module configuration](configuration#libreoffice)).
+- **Queuing:** Optionally, set a maximum queue size for quicker request aborts ([LibreOffice module configuration](configuration#libreoffice)).
+
+## Webhooks
+
+### HTTPS Webhooks Fail in the Chromium Variant
+
+Before _8.34.0_, the `gotenberg/gotenberg:8-chromium` image variant shipped without `ca-certificates`, so webhook calls to HTTPS endpoints failed TLS certificate verification. Conversions themselves were unaffected: Chromium bundles its own certificates.
+
+Fixed in _8.34.0_; the full and LibreOffice variants were never affected. For older versions, install `ca-certificates` in a custom Dockerfile.
+
+## What's Next?
+
+Still stuck? Ask the community on [GitHub Discussions](https://github.com/gotenberg/gotenberg/discussions), or open an [issue](https://github.com/gotenberg/gotenberg/issues).

@@ -1,0 +1,112 @@
+---
+id: pdfa-pdfua
+title: PDF/A & PDF/UA
+---
+
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import ConfigurationInfoPDFEngines from "../_shared/_configuration_info_pdfengines.mdx";
+
+Converts one or more PDF files into PDF/A (archival) or PDF/UA (accessibility) format.
+
+LibreOffice rasterizes table cells that carry a background color, which costs accessibility ([Tables Rasterized to Images](/docs/8.x/troubleshooting#tables-rasterized-to-images-with-pdfa-or-pdfua)).
+
+<ConfigurationInfoPDFEngines />
+
+:::info LibreOffice Dependency
+
+PDF/A and PDF/UA conversion relies on **LibreOffice** to re-process documents, which costs more CPU and RAM than simple merges or splits.
+
+:::
+
+## Basics
+
+<ApiEndpoint
+  method="POST"
+  path="/forms/pdfengines/convert"
+  headers={[
+    {
+      name: "Gotenberg-Output-Filename",
+      type: "string",
+      required: false,
+      description:
+        "The filename of the resulting file - Gotenberg automatically appends the file extension. Defaults to a random UUID filename.",
+    },
+    {
+      name: "Gotenberg-Trace",
+      type: "string",
+      required: false,
+      description:
+        "A custom request ID to identify the request in the logs; overrides the default UUID.",
+    },
+  ]}
+  formFiles={[
+    {
+      name: "files",
+      type: "file[]",
+      required: true,
+      description: "PDF files to convert.",
+    },
+  ]}
+  formFields={[
+    {
+      name: "pdfa",
+      type: "enum",
+      required: false,
+      description:
+        "Converts to a specific PDF/A archival standard. Options: `PDF/A-1b`, `PDF/A-2b`, `PDF/A-3b`, `PDF/A-4`.",
+    },
+    {
+      name: "pdfua",
+      type: "boolean",
+      defaultValue: "false",
+      description: "Enables PDF/UA (Universal Accessibility) compliance.",
+    },
+  ]}
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/pdfengines/convert \\
+--form files=@/path/to/pdf.pdf \\
+--form pdfa=PDF/A-1b \\
+--form pdfua=true \\
+-o my.pdf`}
+  responses={[
+    {
+      status: 200,
+      message: "OK",
+      description:
+        "The converted PDF file. Multiple input files produce a ZIP archive.",
+      body: `
+Content-Disposition: attachment; filename={output-filename.ext}
+Content-Type: {content-type}
+Content-Length: {content-length}
+Gotenberg-Trace: {trace}
+Body: {output-file}
+      `,
+    },
+    {
+      status: 400,
+      message: "Bad Request",
+      description: "The request had one or more invalid form fields.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+      `,
+    },
+    {
+      status: 503,
+      message: "Service Unavailable",
+      description:
+        "The request did not complete within the configured maximum duration.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+      `,
+    },
+  ]}
+/>
+
+## What's Next?
+
+Secure documents with [Encrypt](/docs/8.x/manipulate-pdfs/encrypt-pdfs), or deliver results asynchronously with [webhooks](/docs/8.x/webhook-download).

@@ -120,6 +120,10 @@ module.exports = {
           label: "GitHub",
         },
         {
+          type: "docsVersionDropdown",
+          position: "right",
+        },
+        {
           type: "search",
           position: "right",
         },
@@ -224,8 +228,13 @@ module.exports = {
           lastVersion: "current",
           versions: {
             current: {
-              label: "8.x",
+              label: "9.x",
               path: "",
+            },
+            "8.x": {
+              label: "8.x",
+              path: "8.x",
+              banner: "unmaintained",
             },
           },
         },

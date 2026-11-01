@@ -1,0 +1,52 @@
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+
+Converts to PDF/A (archival) or PDF/UA (accessibility) during post-processing using LibreOffice. Slower than native conversion (requires a second pass).
+
+PDF/A and encryption are mutually exclusive: requesting both returns `400 Bad Request`. PDF/A-1b and PDF/A-2b don't support file attachments; use PDF/A-3b if you need both.
+
+When PDF/A runs alongside other post-processing, LibreOffice overwrites `CreateDate`, `ModDate`, and `Keywords`. Other metadata fields are preserved.
+
+LibreOffice rasterizes table cells that carry a background color, which costs accessibility ([Tables Rasterized to Images](/docs/8.x/troubleshooting#tables-rasterized-to-images-with-pdfa-or-pdfua)).
+
+{props.showFormFields && props.showCurlExample && (
+
+<ApiEndpoint
+  formFields={[
+    {
+      name: "pdfa",
+      type: "enum",
+      required: false,
+      description:
+        "Converts to a specific PDF/A archival standard. Options: `PDF/A-1b`, `PDF/A-2b`, `PDF/A-3b`, `PDF/A-4`.",
+    },
+    {
+      name: "pdfua",
+      type: "boolean",
+      defaultValue: "false",
+      description: "Enables PDF/UA (Universal Accessibility) compliance.",
+    },
+  ]}
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form pdfa=PDF/A-1b \\
+--form pdfua=true \\
+${props.curlOutput}
+`}
+/>
+)}
+
+{!props.showFormFields && props.showCurlExample && (
+
+<ApiEndpoint
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form pdfa=PDF/A-1b \\
+--form pdfua=true \\
+${props.curlOutput}
+`}
+/>
+)}

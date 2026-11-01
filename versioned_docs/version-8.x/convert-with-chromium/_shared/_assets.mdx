@@ -1,0 +1,90 @@
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import CodeBlock from "@theme/CodeBlock";
+
+## Assets
+
+Send images, fonts, and stylesheets alongside your HTML.
+
+<ApiEndpoint
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form files=@/path/to/img.png \\
+${props.curlOutput}
+`}
+/>
+
+All uploaded files are stored in a single flat directory. Reference assets by **filename only**: no absolute paths (`/img.png`) or subdirectories (`./assets/img.png`).
+
+**✅ Correct Reference**
+
+Since `index.html` and `logo.png` sit side-by-side in the container:
+
+{props.isMarkdown ? (
+
+<CodeBlock language="html" title="index.html">
+  {`<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>My PDF</title>
+  </head>
+  <body>
+    {{ toHTML "file.md" }}
+    <img src="logo.png" />
+  </body>
+</html>`}
+</CodeBlock>
+) : (<CodeBlock language="html" title="index.html">
+  {`<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>My PDF</title>
+  </head>
+  <body>
+    <h1>Hello world!</h1>
+    <img src="logo.png" />
+  </body>
+</html>`}
+</CodeBlock>
+)}
+
+**❌ Incorrect Reference**
+
+Gotenberg does not recreate your local folder structure (e.g., images/) inside the container.
+
+{props.isMarkdown ? (
+
+<CodeBlock language="html" title="index.html">
+  {`<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>My PDF</title>
+  </head>
+  <body>
+    {{ toHTML "file.md" }}
+    <img src="/images/logo.png" />
+  </body>
+</html>`}
+</CodeBlock>
+) : (<CodeBlock language="html" title="index.html">
+  {`<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>My PDF</title>
+  </head>
+  <body>
+    <h1>Hello world!</h1>
+    <img src="/images/logo.png" />
+  </body>
+</html>`}
+</CodeBlock>
+)}
+
+For remote URLs (CDNs, Google Fonts), make sure the container can resolve the domain. You cannot use `localhost` from inside the container. Use `host.docker.internal` or your host's network IP instead.
+
+For small assets, Base64 data URIs eliminate network dependencies entirely. Avoid the HTML `<base>` element: it breaks the link between your HTML and uploaded assets.

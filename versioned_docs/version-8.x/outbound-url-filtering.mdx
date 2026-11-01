@@ -1,0 +1,222 @@
+---
+id: outbound-url-filtering
+title: Outbound URL Filtering
+---
+
+Gotenberg makes outbound HTTP calls in four places:
+
+- Chromium navigations and sub-resources.
+- Webhook callbacks.
+- `downloadFrom` fetches.
+- LibreOffice fetches for document references (OOXML external images, RTF `INCLUDEPICTURE`, ODT linked images). Since _8.34.0_, content linked from uploaded documents is dropped at the source; the filters below cover any fetch LibreOffice still performs.
+
+Each surface routes through the same pipeline: allow/deny regex, IP-class checks, and a DNS-rebind pinning proxy.
+
+## Default Posture
+
+Defaults are permissive. Gotenberg runs inside a trusted network behind your own API gateway.
+
+Out of the box:
+
+- Webhook callbacks reach `http://hooks.compose.internal`.
+- Chromium loads `http://my-cdn.svc/banner.jpeg`.
+- `downloadFrom` fetches `http://shared-storage.internal/document.docx`.
+
+Operators exposing Gotenberg to untrusted callers opt into stricter checks via the variables below.
+
+## Always-On Protections
+
+Hardening for specific primitives. No setting turns them off.
+
+**DNS-rebind pinning proxy.** Chromium and LibreOffice route every outbound HTTP/HTTPS request through an in-process proxy. The proxy resolves DNS once and pins the dial to the validated IP. Setting `CHROMIUM_PROXY_SERVER` or `CHROMIUM_HOST_RESOLVER_RULES` skips it, as does a hop carried by the [environment proxy](#environment-proxy), which owns DNS for the hops it carries.
+
+**Only `http://` and `https://` on URL routes.** `/forms/chromium/convert/url` and `/forms/chromium/screenshot/url` return `400 Bad Request` for any other scheme. Since _8.39.0_, that includes Chromium's internal schemes, such as `chrome://` and `devtools://`, which load privileged pages. Use the `html` or `markdown` variants to render local HTML.
+
+**`file://` sub-resources scoped per request.** Routes that render local HTML load assets relative to the request's own working directory. Sibling requests' files are unreachable.
+
+**Linked content dropped in LibreOffice documents.** Since _8.34.0_, LibreOffice refuses to load content linked from an untrusted location. Uploaded documents always load from a per-request temporary directory, which is never trusted, so linked `file://` paths and external URLs are dropped before any fetch happens. An allow-list match cannot re-enable them. Embedded content stored inside the document is unaffected.
+
+## Per-Module Variables
+
+Each module exposes the same two boolean variables. All default to `false`. Each variable also exists as a CLI flag; see the [Chromium](/docs/8.x/configuration#chromium), [Webhook](/docs/8.x/configuration#webhook), [API](/docs/8.x/configuration#api), and [LibreOffice](/docs/8.x/configuration#libreoffice) configuration tables.
+
+| Environment variable                 | Effect                                                                       |
+| ------------------------------------ | ---------------------------------------------------------------------------- |
+| `CHROMIUM_DENY_PRIVATE_IPS`          | Rejects Chromium navigations and sub-resources resolving to a non-public IP. |
+| `CHROMIUM_DENY_PUBLIC_IPS`           | Rejects Chromium navigations and sub-resources resolving to a public IP.     |
+| `WEBHOOK_DENY_PRIVATE_IPS`           | Rejects webhook URLs (success, error, events) resolving to a non-public IP.  |
+| `WEBHOOK_DENY_PUBLIC_IPS`            | Rejects webhook URLs resolving to a public IP.                               |
+| `API_DOWNLOAD_FROM_DENY_PRIVATE_IPS` | Rejects `downloadFrom` URLs resolving to a non-public IP.                    |
+| `API_DOWNLOAD_FROM_DENY_PUBLIC_IPS`  | Rejects `downloadFrom` URLs resolving to a public IP.                        |
+| `LIBREOFFICE_DENY_PRIVATE_IPS`       | Rejects LibreOffice outbound fetches resolving to a non-public IP.           |
+| `LIBREOFFICE_DENY_PUBLIC_IPS`        | Rejects LibreOffice outbound fetches resolving to a public IP.               |
+
+Non-public means loopback, RFC1918, link-local, or IPv6 unique-local. Since _8.37.0_, it also covers carrier-grade NAT (`100.64.0.0/10`, where some clouds serve instance metadata) and benchmarking (`198.18.0.0/15`). The check also unwraps IPv6 forms that embed an IPv4 destination, IPv4-mapped (`::ffff:10.0.0.1`), IPv4-translated, 6to4 (`2002::/16`), and Teredo (`2001::/32`), and rejects them when the embedded IPv4 is non-public. Since _8.38.0_, it ignores IPv6 zone identifiers, so `http://[::%251]/` counts as loopback instead of public.
+
+LibreOffice also exposes `LIBREOFFICE_ALLOW_LIST` and `LIBREOFFICE_DENY_LIST`, mirroring Chromium and webhook.
+
+Rejected URLs return `403 Forbidden`. LibreOffice fetches are the exception: the proxy rejects them inside the conversion, which succeeds without the resource. Since _8.37.0_, a `downloadFrom` redirect to a rejected URL returns the same bare `403` as the first hop, with no detail about the rule that matched.
+
+Chromium WebSockets go through the same checks. Since _8.38.0_, a WebSocket to a loopback or link-local address, such as `ws://127.0.0.1` or `ws://169.254.169.254`, traverses the pinning proxy whenever `CHROMIUM_ALLOW_LIST`, a non-default `CHROMIUM_DENY_LIST`, or an IP-class variable is set. Before, only the IP-class variables routed it there, and Chromium opened it directly, past the lists.
+
+Since _8.39.0_, WebSocket handshakes also honor deny rules that anchor on a path or on the `ws://` and `wss://` schemes, such as `^https?://internal\.example/` or `^wss://`. The pinning proxy refuses the tunnel when a rule matches the scheme's root URL. When only the full handshake URL matches, as with a path rule, the conversion fails with a generic `403 Forbidden`.
+
+## Precedence
+
+1. **Deny-list always wins.** A deny-list match rejects the URL regardless of allow-list or IP-class variables.
+2. **Allow-list bypasses the IP check.** A match skips `*_DENY_PRIVATE_IPS` and `*_DENY_PUBLIC_IPS`.
+3. **IP-class variables apply last.** Both flags on rejects every URL except allow-list matches.
+
+Both lists match the URL with its scheme and host lowercased. Since _8.37.0_, they also match it without userinfo, so `http://trusted.example.com@10.0.0.1/` no longer satisfies an allow-list anchored on `trusted\.example\.com`, and `http://a@127.0.0.1/` no longer slips past a deny-list anchored on `127\.`. The request still carries the credentials.
+
+:::danger
+
+An allow-list entry turns off both IP-class checks for every URL it matches, and the pattern alone decides which URLs those are. A pattern that stops at the hostname, such as `^https://trusted\.example\.com`, also matches `https://trusted.example.com.attacker.example/`. Read [Writing a Safe Allow-List](#writing-a-safe-allow-list) before setting one.
+
+:::
+
+## Writing a Safe Allow-List
+
+The pattern is the only thing between a request and an internal host, so write it to match the hosts you trust and nothing else.
+
+1. **Start with `^`.** Without it the pattern matches anywhere in the URL, so `http://attacker.example/?u=trusted.example.com` passes.
+2. **Escape every dot.** An unescaped `.` matches any character, so `internal.example.com` also matches `internalxexamplexcom`.
+3. **Terminate the host** with `/`, `:`, `$`, or a group such as `(:|/|$)`. A pattern that ends at the hostname also matches any suffix an attacker appends.
+4. **Never put `.` or `[^/]` in the host.** Both match `@`, `?` and `#`, so an attacker can move the trusted name into the userinfo or the fragment. A positive class such as `[a-z0-9.-]` cannot leave the authority.
+
+| Pattern                                          | Verdict                                                              |
+| :----------------------------------------------- | :------------------------------------------------------------------- |
+| `trusted\.example\.com`                          | Unanchored. Matches anywhere in the URL.                             |
+| `^https://trusted\.example\.com`                 | Host not terminated. Matches `trusted.example.com.attacker.example`. |
+| `^https://.+\.example\.com/`                     | `.` matches `@` and `#`. Matches `attacker.example/#x.example.com/`. |
+| `.+`                                             | Matches every URL.                                                   |
+| `^https://trusted\.example\.com(:[0-9]+)?(/\|$)` | Safe.                                                                |
+| `^https://[a-z0-9-]+\.example\.com/`             | Safe. The class cannot leave the authority.                          |
+
+Since _8.37.0_, Gotenberg audits every allow-list at startup and logs a warning naming the variable and the entry when a pattern shows one of these shapes. The warning never blocks startup.
+
+## Environment Proxy
+
+Gotenberg ignores the proxy environment variables by default. Each module opts in with its own variable, all `false` by default.
+
+| Environment variable                         | Effect                                                           |
+| :------------------------------------------- | :--------------------------------------------------------------- |
+| `CHROMIUM_ENABLE_ENVIRONMENT_PROXY`          | Routes Chromium navigations and sub-resources through the proxy. |
+| `LIBREOFFICE_ENABLE_ENVIRONMENT_PROXY`       | Routes LibreOffice outbound fetches through the proxy.           |
+| `API_DOWNLOAD_FROM_ENABLE_ENVIRONMENT_PROXY` | Routes `downloadFrom` fetches through the proxy.                 |
+| `WEBHOOK_ENABLE_ENVIRONMENT_PROXY`           | Routes webhook callbacks through the proxy.                      |
+
+Gotenberg reads `HTTP_PROXY`, `HTTPS_PROXY` and `NO_PROXY`, plus their lowercase spellings, and authenticates with the credentials embedded in the proxy URL. Chromium and LibreOffice cannot authenticate to a proxy themselves, so Gotenberg performs the `CONNECT` handshake for them. Give those two an `http` or `https` proxy URL.
+
+Enabling a variable relaxes no filter. The allow-list, the deny-list and the IP-class checks run against the destination URL before the request reaches the proxy, on every redirect hop. Only DNS pinning changes: a hop the proxy carries is dialed against the proxy, which owns DNS from there, while a hop the proxy declines, such as a `NO_PROXY` host, stays pinned to the IPs resolved during validation.
+
+`CHROMIUM_ENABLE_ENVIRONMENT_PROXY` needs `CHROMIUM_PROXY_SERVER` and `CHROMIUM_HOST_RESOLVER_RULES` unset. Both skip the pinning proxy that performs the upstream handshake.
+
+Gotenberg refuses to start when a module has its variable on and a proxy variable that is not a usable proxy URL. The error names the variable and never prints its value.
+
+:::warning
+
+Gotenberg _8.34.0_ and earlier inherited `HTTP_PROXY` and `HTTPS_PROXY` implicitly, so allow-listed webhook callbacks, `downloadFrom` fetches and LibreOffice fetches egressed through the proxy with no variable set. They now egress directly. Set the module variable to restore the proxy.
+
+:::
+
+## Recipes
+
+### Internet-Facing API
+
+Block private destinations across the four modules.
+
+```yaml title="compose.yaml"
+services:
+  gotenberg:
+    image: gotenberg/gotenberg:8
+    environment:
+      CHROMIUM_DENY_PRIVATE_IPS: "true"
+      WEBHOOK_DENY_PRIVATE_IPS: "true"
+      API_DOWNLOAD_FROM_DENY_PRIVATE_IPS: "true"
+      LIBREOFFICE_DENY_PRIVATE_IPS: "true"
+```
+
+Whitelist known internal hosts:
+
+```yaml
+environment:
+  CHROMIUM_ALLOW_LIST: "^https?://[a-z0-9-]+\\.internal\\.example\\.com(:[0-9]+)?(/|$)"
+  WEBHOOK_ALLOW_LIST: "^https?://hooks\\.internal\\.example\\.com(:[0-9]+)?(/|$)"
+```
+
+Both patterns terminate the host, so they match the internal hosts and nothing that merely starts with them. See [Writing a Safe Allow-List](#writing-a-safe-allow-list).
+
+### Air-Gapped Network
+
+Block traffic that would leave the private network.
+
+```yaml title="compose.yaml"
+services:
+  gotenberg:
+    image: gotenberg/gotenberg:8
+    environment:
+      CHROMIUM_DENY_PUBLIC_IPS: "true"
+      WEBHOOK_DENY_PUBLIC_IPS: "true"
+      API_DOWNLOAD_FROM_DENY_PUBLIC_IPS: "true"
+      LIBREOFFICE_DENY_PUBLIC_IPS: "true"
+```
+
+### Strict Whitelist
+
+Combine both flags. Every destination must match the allow-list.
+
+```yaml title="compose.yaml"
+services:
+  gotenberg:
+    image: gotenberg/gotenberg:8
+    environment:
+      CHROMIUM_DENY_PRIVATE_IPS: "true"
+      CHROMIUM_DENY_PUBLIC_IPS: "true"
+      CHROMIUM_ALLOW_LIST: "^https://(api|cdn|images)\\.internal\\.example\\.com(:[0-9]+)?(/|$)"
+```
+
+Equivalent of an egress firewall expressed at the Gotenberg layer. The allow-list is the only gate here, so the pattern has to terminate the host. Without the trailing group it would also admit `https://api.internal.example.com.attacker.example/`.
+
+### Trusted Network (Default)
+
+Do nothing. The defaults work for Docker Compose and Kubernetes deployments.
+
+## Decision Matrix
+
+| URL shape                           | `*_DENY_PRIVATE_IPS=false` (default) | `*_DENY_PRIVATE_IPS=true` | `*_DENY_PUBLIC_IPS=true` | Both true       |
+| ----------------------------------- | ------------------------------------ | ------------------------- | ------------------------ | --------------- |
+| Public hostname                     | passes                               | passes                    | rejected                 | rejected        |
+| Private IP literal                  | passes                               | rejected                  | passes                   | rejected        |
+| Private hostname → private IP       | passes                               | rejected                  | passes                   | rejected        |
+| Cloud metadata IP (169.254.169.254) | passes                               | rejected                  | passes                   | rejected        |
+| URL matching `*_ALLOW_LIST`         | passes                               | passes (bypass)           | passes (bypass)          | passes (bypass) |
+| URL matching `*_DENY_LIST`          | rejected                             | rejected                  | rejected                 | rejected        |
+
+## Migration from 8.31.0
+
+8.32.0 removes the baked-in private-range regex from `WEBHOOK_DENY_LIST` and `API_DOWNLOAD_FROM_DENY_LIST`. Operators who relied on it set the matching IP-class variable.
+
+```yaml
+environment:
+  WEBHOOK_DENY_PRIVATE_IPS: "true"
+  API_DOWNLOAD_FROM_DENY_PRIVATE_IPS: "true"
+```
+
+The DNS-based check covers IP literals and hostnames that resolve to a private IP. It is strictly more than the previous textual regex.
+
+If you prefer textual matching, paste the previous regex back into the deny-list:
+
+```
+^https?://(10\.|172\.(1[6-9]|2[0-9]|3[01])\.|192\.168\.|169\.254\.|0\.0\.0\.0|127\.|localhost|\[::1\]|\[fd)
+```
+
+Treat it as best-effort. It matches the address as written, so it misses the forms that resolve to the same host: `http://[::ffff:127.0.0.1]/`, `http://2130706433/`, and any hostname that resolves to a private IP. `*_DENY_PRIVATE_IPS` catches all of them because it checks the resolved address.
+
+8.31.0 also blocked Chromium sub-resources resolving to private IPs by default. 8.32.0 restores the 8.30.x permissive behavior. Set `CHROMIUM_DENY_PRIVATE_IPS=true` for the strict 8.31.0-style posture.
+
+Operator-supplied deny-list patterns are honored as before. Only the baked-in defaults changed.
+
+## What's Next?
+
+Observe requests with [Telemetry](/docs/8.x/telemetry), or tune the instance in [Configuration](/docs/8.x/configuration).

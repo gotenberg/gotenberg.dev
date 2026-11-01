@@ -1,0 +1,66 @@
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import SyntaxValidationSplitPDFEngines from "../../_shared/_syntax_validation_split_pdfengines.mdx";
+
+## Split & Page Ranges
+
+### Native Printing (Chromium)
+
+Happens _during_ conversion. Faster, as unused pages are never rendered. Control page breaks with CSS: `break-inside: avoid`, `break-before: always`, `break-after: always`.
+
+<ApiEndpoint
+  formFields={[
+    {
+      name: "nativePageRanges",
+      type: "string",
+      defaultValue: "None",
+      description: "Define ranges to print (e.g., `1-5, 8, 11-13`).",
+    },
+  ]}
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form nativePageRanges=1-5 \\
+-o my.pdf
+`}
+/>
+
+### Post-Processing (PDF Engines) {#post-processing-pdf-engines-split-page-ranges}
+
+Splits pages _after_ the PDF has been generated using a PDF engine (like pdfcpu). Returns a ZIP archive, or a single PDF in 'pages' mode with `splitUnify=true`.
+
+<SyntaxValidationSplitPDFEngines />
+
+<ApiEndpoint
+  formFields={[
+    {
+      name: "splitMode",
+      type: "enum",
+      defaultValue: "None",
+      description:
+        "Activates the splitting engine. Options: `intervals` or `pages`.",
+    },
+    {
+      name: "splitSpan",
+      type: "string",
+      defaultValue: "None",
+      description:
+        "The rule for splitting. If mode is `intervals`, defines the chunk size (e.g. `2`). If mode is `pages`, defines the page ranges.",
+    },
+    {
+      name: "splitUnify",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Only for `pages` mode. If true, puts all extracted pages into a single PDF file. If false, creates a separate file for each range.",
+    },
+  ]}
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form splitMode=intervals \\
+--form splitSpan=1 \\
+-o my.zip
+`}
+/>

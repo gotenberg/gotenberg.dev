@@ -1,0 +1,184 @@
+---
+id: convert-url-to-pdf
+title: Convert URL to PDF
+---
+
+import ConfigurationInfo from "./_shared/_configuration_info.mdx";
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import RenderingBehaviorPDF from "./_shared/_rendering_behavior/_rendering_behavior_pdf.mdx";
+import HttpNetworking from "./_shared/_http_networking.mdx";
+import Console from "./_shared/_console.mdx";
+import HeaderFooter from "./_shared/_header_footer.mdx";
+import StructureMetadata from "./_shared/_structure_metadata.mdx";
+import SplitPageRanges from "./_shared/_split_page_ranges.mdx";
+import WatermarkStamp from "./_shared/_watermark_stamp.mdx";
+import Rotate from "./_shared/_rotate.mdx";
+import OptimizeImages from "./_shared/_optimize_images.mdx";
+import PdfaPdfua from "./_shared/_pdfa_pdfua.mdx";
+import Encryption from "./_shared/_encryption.mdx";
+
+Converts a target URL to PDF using Headless Chromium. Supports JavaScript execution, SPAs, and dynamic content rendering.
+
+<ConfigurationInfo />
+
+## Basics
+
+<ApiEndpoint
+  method="POST"
+  path="/forms/chromium/convert/url"
+  headers={[
+    {
+      name: "Gotenberg-Output-Filename",
+      type: "string",
+      required: false,
+      description:
+        "The filename of the resulting file - Gotenberg automatically appends the file extension. Defaults to a random UUID filename.",
+    },
+    {
+      name: "Gotenberg-Trace",
+      type: "string",
+      required: false,
+      description:
+        "A custom request ID to identify the request in the logs; overrides the default UUID.",
+    },
+  ]}
+  formFields={[
+    {
+      name: "url",
+      type: "string",
+      required: true,
+      description:
+        "URL of the page to convert into PDF. Must be an http:// or https:// URL; other schemes, such as file://, return 400. Render local HTML via /forms/chromium/convert/html or /forms/chromium/convert/markdown.",
+    },
+  ]}
+  curl={`
+curl \\
+--request POST http://localhost:3000/forms/chromium/convert/url \\
+--form url=https://my.url \\
+-o my.pdf`}
+  responses={[
+    {
+      status: 200,
+      message: "OK",
+      description: "The PDF file has been successfully created.",
+      body: `
+Content-Disposition: attachment; filename={output-filename.pdf}
+Content-Type: {content-type}
+Content-Length: {content-length}
+Gotenberg-Trace: {trace}
+Body: {output-file}
+      `,
+    },
+    {
+      status: 400,
+      message: "Bad Request",
+      description: "The request had one or more invalid form fields.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+      `,
+    },
+    {
+      status: "403",
+      message: "Forbidden",
+      description: "The URL is forbidden.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: Forbidden
+      `,
+    },
+    {
+      status: 503,
+      message: "Service Unavailable",
+      description:
+        "The request did not complete within the configured maximum duration.",
+      body: `
+Content-Type: text/plain; charset=UTF-8
+Gotenberg-Trace: {trace}
+Body: {error}
+      `,
+    },
+  ]}
+/>
+
+<RenderingBehaviorPDF
+  method="POST"
+  path="/forms/chromium/convert/url"
+  curlFormData={`--form url=https://my.url \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<HttpNetworking
+  method="POST"
+  path="/forms/chromium/convert/url"
+  curlFormData={`--form url=https://my.url \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<Console
+  method="POST"
+  path="/forms/chromium/convert/url"
+  curlFormData={`--form url=https://my.url \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<HeaderFooter
+  method="POST"
+  path="/forms/chromium/convert/url"
+  curlFormData={`--form url=https://my.url \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<StructureMetadata
+  method="POST"
+  path="/forms/chromium/convert/url"
+  curlFormData={`--form url=https://my.url \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<SplitPageRanges
+  method="POST"
+  path="/forms/chromium/convert/url"
+  curlFormData={`--form url=https://my.url \\`}
+/>
+
+<WatermarkStamp
+  method="POST"
+  path="/forms/chromium/convert/url"
+  curlFormData={`--form url=https://my.url \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<Rotate
+  method="POST"
+  path="/forms/chromium/convert/url"
+  curlFormData={`--form url=https://my.url \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<OptimizeImages
+  method="POST"
+  path="/forms/chromium/convert/url"
+  curlFormData={`--form url=https://my.url \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<PdfaPdfua
+  method="POST"
+  path="/forms/chromium/convert/url"
+  curlFormData={`--form url=https://my.url \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+<Encryption
+  method="POST"
+  path="/forms/chromium/convert/url"
+  curlFormData={`--form url=https://my.url \\`}
+  curlOutput={`-o my.pdf`}
+/>
+
+## What's Next?
+
+Convert raw markup with [HTML to PDF](/docs/8.x/convert-with-chromium/convert-html-to-pdf), or deliver results asynchronously with [webhooks](/docs/8.x/webhook-download).

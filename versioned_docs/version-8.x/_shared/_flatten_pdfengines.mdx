@@ -1,0 +1,33 @@
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+
+Merges all interactive form fields (text inputs, checkboxes, etc.) into the page content, making the PDF non-editable.
+
+{(props.showFormFields || props.showCurlExample) && (
+
+<ApiEndpoint
+  formFields={
+    props.showFormFields
+      ? [
+          {
+            name: "flatten",
+            type: "boolean",
+            defaultValue: "false",
+            description:
+              "Converts form fields into static content, preventing further editing.",
+          },
+        ]
+      : undefined
+  }
+  curl={
+    props.showCurlExample
+      ? `
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form flatten=true \\
+${props.curlOutput}
+`
+      : undefined
+  }
+/>
+)}

@@ -1,0 +1,71 @@
+import WatermarkPDFEngines from "../../_shared/_watermark_pdfengines.mdx";
+import StampPDFEngines from "../../_shared/_stamp_pdfengines.mdx";
+
+## Watermark & Stamp
+
+### Native Watermark (HTML/CSS)
+
+Add a watermark directly in your HTML with CSS pseudo-elements. Rendered _behind_ the page content during conversion, no post-processing needed.
+
+```css
+body {
+  position: relative;
+}
+
+body::before {
+  content: "CONFIDENTIAL";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  font-size: 160px;
+  font-weight: bold;
+  opacity: 0.08;
+  transform: rotate(-45deg);
+  pointer-events: none;
+}
+```
+
+### Native Stamp (HTML/CSS)
+
+A stamp works the same way but is rendered _on top of_ the page content using `::after` and a positive `z-index`.
+
+```css
+body::after {
+  content: "APPROVED";
+  position: fixed;
+  top: 40px;
+  right: 40px;
+  z-index: 9999;
+  padding: 10px 28px;
+  border: 4px solid rgba(0, 128, 0, 0.6);
+  border-radius: 8px;
+  font-size: 36px;
+  font-weight: bold;
+  color: rgba(0, 128, 0, 0.6);
+  transform: rotate(-12deg);
+  pointer-events: none;
+}
+```
+
+### Watermark (PDF Engines)
+
+<WatermarkPDFEngines
+  showCurlExample={true}
+  method={props.method}
+  path={props.path}
+  curlFormData={props.curlFormData}
+  curlOutput={props.curlOutput}
+/>
+
+### Stamp (PDF Engines)
+
+<StampPDFEngines
+  showCurlExample={true}
+  method={props.method}
+  path={props.path}
+  curlFormData={props.curlFormData}
+  curlOutput={props.curlOutput}
+/>

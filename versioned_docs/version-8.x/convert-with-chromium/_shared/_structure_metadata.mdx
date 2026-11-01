@@ -1,0 +1,80 @@
+import ApiEndpoint from "@site/src/components/documentation/ApiEndpoint";
+import MetadataPDFEngines from "../../_shared/_metadata_pdfengines.mdx";
+import AttachmentsPDFEngines from "../../_shared/_attachments_pdfengines.mdx";
+import FacturXPDFEngines from "../../_shared/_facturx_pdfengines.mdx";
+import FlattenPDFEngines from "../../_shared/_flatten_pdfengines.mdx";
+
+## Structure & Metadata
+
+### Document Outline (Chromium)
+
+Automatically creates a PDF bookmark pane (sidebar) based on your HTML headings (`<h1>` to `<h6>`). Your HTML must use proper heading tags to generate the hierarchy.
+
+:::info Implies tagged PDF
+
+Chromium builds the outline from the tagged PDF structure tree. Setting `generateDocumentOutline=true` therefore enables `generateTaggedPdf` automatically. An outline cannot be produced without it.
+
+:::
+
+<ApiEndpoint
+  formFields={[
+    {
+      name: "generateDocumentOutline",
+      type: "boolean",
+      defaultValue: "false",
+      description:
+        "Embeds the document outline (bookmarks) into the PDF. Enables `generateTaggedPdf` automatically.",
+    },
+  ]}
+  curl={`
+curl \\
+--request ${props.method} http://localhost:3000${props.path} \\
+${props.curlFormData}
+--form generateDocumentOutline=true \\
+${props.curlOutput}
+`}
+/>
+
+### Metadata (PDF Engines)
+
+<MetadataPDFEngines
+  showFormFields={true}
+  showCurlExample={true}
+  method={props.method}
+  path={props.path}
+  curlFormData={props.curlFormData}
+  curlOutput={props.curlOutput}
+/>
+
+### Attachments (PDF Engines)
+
+<AttachmentsPDFEngines
+  showFormFields={true}
+  showCurlExample={true}
+  method={props.method}
+  path={props.path}
+  curlFormData={props.curlFormData}
+  curlOutput={props.curlOutput}
+/>
+
+### Factur-X (PDF Engines)
+
+<FacturXPDFEngines
+  showFormFields={true}
+  showCurlExample={true}
+  method={props.method}
+  path={props.path}
+  curlFormData={props.curlFormData}
+  curlOutput={props.curlOutput}
+/>
+
+### Flatten (PDF Engines)
+
+<FlattenPDFEngines
+  showFormFields={true}
+  showCurlExample={true}
+  method={props.method}
+  path={props.path}
+  curlFormData={props.curlFormData}
+  curlOutput={props.curlOutput}
+/>
