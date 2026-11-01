@@ -1,0 +1,40 @@
+---
+id: thumbnails
+title: Thumbnails of any document
+---
+
+You have uploads of all kinds: PDFs, Word documents, web pages. You want a small preview image of each one's first page.
+
+## Request
+
+For a PDF, render its first page:
+
+<Request
+  route="/forms/pdf/render"
+  files={["report.pdf"]}
+  fields={{ pages: "1", dpi: 48 }}
+  output="report_1.png"
+/>
+
+## Result
+
+`report_1.png`, 298 by 421 pixels: the page at two-thirds of its size in points.
+
+## How it works
+
+- `render` draws the pages you pick, and the route answers the image alone: see [Render pages as images](/docs/process/render).
+- `dpi` sets the size: 72 gives a pixel per point, 48 two-thirds of that.
+
+## Variations
+
+- A Word document: convert it and render in the same request. The answer is a ZIP with the PDF and `report.docx_1.png`:
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["report.docx"]}
+  stages={[{ op: "render", pages: "1", dpi: 48 }]}
+  output="report.zip"
+/>
+
+- A web page: [take a screenshot](/docs/convert/screenshots) with `clip`, `width` and `height` for a fixed size.
+- JPEG, for smaller files: add `format: jpeg` and a `quality`.

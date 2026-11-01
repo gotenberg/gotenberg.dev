@@ -1,0 +1,42 @@
+---
+id: sign-contract
+title: Fill, lock and sign a contract
+---
+
+You have a contract as a PDF form, the signer's details, and your signing certificate. You want the filled contract, locked against edits, signed and timestamped.
+
+## Request
+
+<Request
+  route="/forms/pdf/pipe"
+  files={["form.pdf", "cert.pem", "key.pem"]}
+  stages={[
+    { op: "set-form", fields: { name: "Ada Lovelace" } },
+    { op: "flatten-form" },
+    {
+      op: "sign",
+      certificate: "cert.pem",
+      key: "key.pem",
+      reason: "Agreed",
+      pades: true,
+      timestampUrl: "http://timestamp.digicert.com",
+    },
+  ]}
+  output="contract.pdf"
+/>
+
+## Result
+
+A PDF whose `name` field reads "Ada Lovelace" as part of the page, with a valid PAdES signature and a timestamp. A viewer flags the signer as untrusted here, because `cert.pem` is a self-signed test certificate.
+
+## How it works
+
+- `set-form` fills the field, and `flatten-form` burns it into the page: see [Fill and flatten forms](/docs/process/forms).
+- `sign` comes last, so nothing changes the PDF after it: see [Sign and timestamp PDFs](/docs/security/sign).
+- `timestampUrl` has an authority vouch for the signing time.
+
+## Variations
+
+- A PKCS#12 certificate: upload the `.p12` as `certificate`, with its `certificatePassword`.
+- Don't know the field names: send a wrong one, and the 400 lists them.
+- Keep a copy for the archive: add `{ "op": "remediate", "profile": "PDF/A-2b" }` before `sign`.

@@ -5,7 +5,8 @@ The files the docs' `<Request>` examples upload. `npm run check:examples` copies
 - `index.html`, `style.css`: a small HTML page and its stylesheet.
 - `header.html`, `footer.html`: a header with the page title and a footer with page numbers, for Chromium.
 - `markdown/`: an `index.html` that lays out `notes.md`, with its stylesheet, for the Markdown routes. Examples run from it with `dir="markdown"`.
-- `wait/`: an `index.html` whose script draws a chart a second after it loads, for the waits.
+- `wait/`: an `index.html` whose script draws a chart a second after it loads, for the waits, with copies of `header.html` and `footer.html`.
+- `documents.zip`: `report.docx` and `annex.docx`, zipped, for the `archives` field.
 - `print/`: an `index.html` and `print.css` with an `@page` size, a page break and print-only rules.
 - `site.zip`: the same two files, zipped, for the `archives` field.
 - `report.docx`, `report.pdf`: a three-page document, from Gotenberg's integration tests. Gotenberg gave `report.pdf` a title, an author and three bookmarks.

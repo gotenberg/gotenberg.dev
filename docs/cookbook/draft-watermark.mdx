@@ -1,0 +1,43 @@
+---
+id: draft-watermark
+title: Mark Word documents as drafts
+---
+
+You have a Word document under review. You want its PDF to say DRAFT across every page, without editing the document.
+
+## Request
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["report.docx"]}
+  stages={[
+    {
+      op: "stamp-text",
+      text: "DRAFT",
+      x: 200,
+      y: 290,
+      fontSize: 96,
+      color: "#b42318",
+      opacity: 0.2,
+      rotation: 45,
+    },
+  ]}
+  output="report.pdf"
+/>
+
+## Result
+
+A Letter PDF with a faint red DRAFT across the middle of each page, over the content.
+
+## How it works
+
+- LibreOffice converts the document, then `stamp-text` draws on every page: see [Stamp and watermark PDFs](/docs/process/stamps).
+- `x` and `y` count in points from the bottom-left corner, and `rotation` turns the text around that point. On a Letter page, 612 by 792 points, these values center it.
+- `opacity` keeps the content readable under it.
+
+## Variations
+
+- Some pages only: add `pages`, such as `"1"`.
+- A logo instead of text: [`stamp-image`](/docs/process/stamps#stamp-an-image).
+- LibreOffice's own watermark: [`nativeWatermarkText`](/docs/reference/libreoffice#nativeWatermarkText) sizes the text to the page.
+- PDFs you already have: send them to `/forms/pdf/stamp-text` with the same options.

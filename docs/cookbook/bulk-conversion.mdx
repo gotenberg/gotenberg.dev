@@ -1,0 +1,32 @@
+---
+id: bulk-conversion
+title: Convert a folder of documents
+---
+
+You have a folder of Word documents. You want a PDF of each, in one request.
+
+## Request
+
+Zip the folder, and upload the ZIP under `archives`:
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={[{ field: "archives", name: "documents.zip" }]}
+  output="documents.zip"
+/>
+
+## Result
+
+A ZIP of `annex.docx.pdf` and `report.docx.pdf`.
+
+## How it works
+
+- Gotenberg unpacks `archives` as if you had uploaded each entry: see [How requests work](/docs/getting-started/requests#send-a-zip).
+- LibreOffice converts each document to a PDF named after it, and several PDFs come back in a ZIP: see [Convert office documents](/docs/convert/office).
+
+## Variations
+
+- One PDF: add `stages: [{"op": "merge"}]`.
+- Large folders: LibreOffice converts one document at a time, and the request must finish within [`--api-timeout`](/docs/configuration#api-timeout). Split the folder across requests, and containers: see [Run in production](/docs/operate/production).
+- No waiting: add the [webhook headers](/docs/webhook-download), and Gotenberg uploads the ZIP when it's done.
+- Files on a server: list them in [`downloadFrom`](/docs/getting-started/requests#download-files) instead of uploading.

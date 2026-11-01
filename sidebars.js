@@ -70,6 +70,21 @@ module.exports = {
     },
     {
       type: "category",
+      label: "Cookbook",
+      collapsed: true,
+      items: [
+        "cookbook/e-invoice",
+        "cookbook/archive-documents",
+        "cookbook/chart-report",
+        "cookbook/draft-watermark",
+        "cookbook/thumbnails",
+        "cookbook/sign-contract",
+        "cookbook/bulk-conversion",
+        "cookbook/redacted-copy",
+      ],
+    },
+    {
+      type: "category",
       label: "Reference",
       collapsed: true,
       items: [

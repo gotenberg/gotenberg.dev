@@ -1,0 +1,45 @@
+---
+id: e-invoice
+title: E-invoice from an HTML template
+---
+
+You have an invoice as HTML, and its data as Factur-X XML. You want one PDF that people read and accounting software parses, under the invoice's number.
+
+## Request
+
+<Request
+  route="/forms/chromium/convert/html"
+  files={["index.html", "style.css", "invoice.xml"]}
+  stages={[
+    {
+      op: "remediate",
+      profile: "Factur-X",
+      xml: "invoice.xml",
+      level: "MINIMUM",
+    },
+  ]}
+  headers={{ "Gotenberg-Output-Filename": "invoice-2026-0042" }}
+  output="invoice-2026-0042.pdf"
+  response={`HTTP/1.1 200 OK
+Content-Type: application/pdf
+Content-Disposition: attachment; filename="invoice-2026-0042.pdf"
+Gotenberg-Remediation-Residual: 0
+Gotenberg-Remediation-Rolled-Back: 0`}
+/>
+
+## Result
+
+`invoice-2026-0042.pdf`, a PDF/A-3 that carries `invoice.xml` as `factur-x.xml`. `Gotenberg-Remediation-Residual: 0` says it conforms.
+
+## How it works
+
+- Chromium prints the HTML as on [the HTML route](/docs/convert/html). `invoice.xml` isn't HTML, so Chromium leaves it alone, and the stage reads it.
+- The `remediate` stage embeds the XML and makes the PDF a Factur-X: see [Create Factur-X invoices](/docs/conformance/factur-x).
+- `Gotenberg-Output-Filename` names the result.
+
+## Variations
+
+- Check it: send the PDF to `/forms/pdf/validate` with `profile: Factur-X`.
+- From Word: send `invoice.docx` to `/forms/libreoffice/convert` with the same `stages`.
+- Sign it: add a [`sign` stage](/docs/security/sign) after `remediate`.
+- Send it straight to your system: add the [webhook headers](/docs/webhook-download).

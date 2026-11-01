@@ -1,0 +1,37 @@
+---
+id: chart-report
+title: Report with JavaScript charts
+---
+
+You have a report page whose charts draw with JavaScript, a second after it loads. You want an A4 PDF with the charts drawn, the report's title at the top of each page and page numbers at the bottom.
+
+## Request
+
+<Request
+  route="/forms/chromium/convert/html"
+  dir="wait"
+  files={["index.html", "header.html", "footer.html"]}
+  fields={{
+    waitForSelector: "#chart.ready",
+    paperSize: "A4",
+    marginTop: "1in",
+    marginBottom: "1in",
+  }}
+  output="report.pdf"
+/>
+
+## Result
+
+The PDF shows "Revenue: 42,000 EUR", not "Loading…", with "Sales report" above and "Page 1 of 1" below.
+
+## How it works
+
+- The page's script adds the class `ready` to `#chart` once it draws, and `waitForSelector` waits for it: see [Wait for the page](/docs/convert/wait).
+- `header.html` prints the page's `<title>`, and `footer.html` the page numbers: see [Add headers and footers](/docs/convert/headers-footers).
+- The one-inch margins make room for both.
+
+## Variations
+
+- The page sets a global when it's ready: `waitForExpression: "window.chartReady === true"`.
+- The charts fetch their data: add `skipNetworkIdleEvent: false`.
+- A live dashboard: send its `url` to `/forms/chromium/convert/url` with the same fields, and its session in [`cookies`](/docs/convert/url#log-in).
