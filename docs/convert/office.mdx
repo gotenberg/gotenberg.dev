@@ -84,7 +84,7 @@ Gotenberg-Remediation-Residual: 0
 Gotenberg-Remediation-Rolled-Back: 0`}
 />
 
-Both PDFs pass Gotenberg's own PDF/A-2b [validation](/docs/reference/pdf#validate).
+Both PDFs pass Gotenberg's own PDF/A-2b [validation](/docs/reference/pdf#validate). Nothing checks `nativePdfa`'s output, though, and a stage after it, such as `stamp-text`, can break its conformance. `remediate` comes after the other stages and reports what's left.
 
 ## Next
 

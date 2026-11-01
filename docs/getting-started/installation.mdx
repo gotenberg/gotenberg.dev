@@ -103,7 +103,7 @@ Give the service at least 1Gi of memory. Cloud Run caps HTTP/1 requests at 32MB;
 The `-aws-lambda` images run behind the [AWS Lambda Web Adapter](https://github.com/awslabs/aws-lambda-web-adapter), already configured:
 
 - The adapter forwards to port 3000 (`AWS_LWA_PORT`) and waits for `/health` before the first invocation.
-- It buffers each response (`AWS_LWA_INVOKE_MODE=buffered`), which caps responses at 6MB.
+- It buffers each response (`AWS_LWA_INVOKE_MODE=buffered`). Lambda caps requests and responses at 6MB: send large inputs with `downloadFrom`.
 - Gotenberg sends webhooks before answering, since Lambda may freeze the function once it answers.
 
 For results over 6MB, have Gotenberg upload them with a webhook, to S3 for example, instead of answering with them.

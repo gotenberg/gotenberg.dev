@@ -637,7 +637,7 @@
           "name": "recompressImages",
           "type": "boolean",
           "default": "true",
-          "description": "Recompresses images."
+          "description": "Recompresses images without losing quality."
         },
         {
           "name": "subsetFonts",

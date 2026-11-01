@@ -13,7 +13,7 @@ Make PDFs smaller, and fit them to printers: fewer bytes, no transparency, one c
   output="report.pdf"
 />
 
-Gotenberg rewrites the whole file. It packs objects into compressed streams, stores identical streams once, recompresses images, and keeps only the glyphs the document shows. This report goes from 23 to 20 KB. A page with large images shrinks more: a Chromium page with a few loses a third.
+Gotenberg rewrites the whole file. It packs objects into compressed streams, stores identical streams once, recompresses images without losing quality, and keeps only the glyphs the document shows. This report goes from 23 to 20 KB. A page with large images shrinks more: a Chromium page with a few loses a third.
 
 ## Optimize what you make
 
@@ -79,6 +79,10 @@ Some printers and archival formats don't take transparency. `flatten-transparenc
   fields={{ target: "gray" }}
   output="report.pdf"
 />
+
+## Lower the image quality
+
+`optimize` never lowers the quality of an image. To trade quality for size, set it where the PDF is made: LibreOffice's [`nativeQuality` and `nativeReduceImageResolution`](/docs/reference/libreoffice#images), or smaller images in the HTML you send Chromium.
 
 ## Next
 

@@ -3,7 +3,7 @@ id: headers
 title: Headers
 ---
 
-Every route reads the request headers below, and every answer carries the response headers.
+The routes read the request headers below, and their answers carry the response headers. The [read routes](/docs/reference/pdf#read-pdfs) answer JSON directly: they ignore `Gotenberg-Output-Filename`, and take no webhook.
 
 ## Request headers
 
@@ -20,15 +20,15 @@ Every route reads the request headers below, and every answer carries the respon
 
 ## Response headers
 
-| Header                              | Content                                                                                                                 |
-| :---------------------------------- | :---------------------------------------------------------------------------------------------------------------------- |
-| `Content-Type`                      | `application/pdf` for one PDF, `application/zip` for several files, `application/json` for the routes that read.        |
-| `Content-Disposition`               | `attachment` and the file name.                                                                                         |
-| `Gotenberg-Trace`                   | Your identifier, or the one Gotenberg made up.                                                                          |
-| `Gotenberg-Version`                 | The version of Gotenberg that answered.                                                                                 |
-| `Traceparent`                       | The trace the request's spans belong to.                                                                                |
-| `Gotenberg-Remediation-Residual`    | After a `remediate` stage: the violations left, summed over the documents. `0` means every document conforms.           |
-| `Gotenberg-Remediation-Rolled-Back` | After a `remediate` stage: the fixes Gotenberg undid because they changed how pages look. Allow them with `aggressive`. |
+| Header                              | Content                                                                                                                                                             |
+| :---------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `Content-Type`                      | `application/pdf` for one PDF, an image type for one screenshot or rendered page, `application/zip` for several files, `application/json` for the routes that read. |
+| `Content-Disposition`               | `attachment` and the file name.                                                                                                                                     |
+| `Gotenberg-Trace`                   | Your identifier, or the one Gotenberg made up.                                                                                                                      |
+| `Gotenberg-Version`                 | The version of Gotenberg that answered.                                                                                                                             |
+| `Traceparent`                       | The trace the request's spans belong to.                                                                                                                            |
+| `Gotenberg-Remediation-Residual`    | After a `remediate` stage: the violations left, summed over the documents. `0` means every document conforms.                                                       |
+| `Gotenberg-Remediation-Rolled-Back` | After a `remediate` stage: the fixes Gotenberg undid because they changed how pages look. Allow them with `aggressive`.                                             |
 
 ## Webhook requests
 

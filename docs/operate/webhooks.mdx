@@ -75,7 +75,7 @@ An upload that fails is tried four more times, waiting 1, 2, 4, then 8 seconds. 
 
 ## Wait for the delivery
 
-With [`--webhook-enable-sync-mode`](/docs/configuration#webhook-enable-sync-mode), Gotenberg answers the `204` only once the upload and the event are done. The AWS Lambda images turn it on, since Lambda may freeze a function that has answered.
+With [`--webhook-enable-sync-mode`](/docs/configuration#webhook-enable-sync-mode), Gotenberg answers the `204` only once the upload and the event are done. The AWS Lambda and Cloud Run images turn it on, since both may freeze or stop a container that has answered.
 
 ## Download the inputs
 

@@ -23,6 +23,8 @@ The `remediate` stage repairs the PDF until it meets the profile. Two headers re
 - `Gotenberg-Remediation-Residual` counts the violations left. `0` means the PDF conforms.
 - `Gotenberg-Remediation-Rolled-Back` counts the fixes Gotenberg undid because they changed how the pages look. `aggressive: true` keeps them, for better compliance.
 
+Gotenberg answers 200 even when violations remain: check `Gotenberg-Remediation-Residual`, and list what's left with [`/forms/pdf/validate`](#validate-a-pdf). With several PDFs, the headers sum their counts.
+
 ## Pick a level
 
 `profile` takes `PDF/A-1a`, `PDF/A-1b`, `PDF/A-2a`, `PDF/A-2b`, `PDF/A-2u`, `PDF/A-3a`, `PDF/A-3b`, `PDF/A-3u`, `PDF/A-4`, `PDF/A-4e` or `PDF/A-4f`.

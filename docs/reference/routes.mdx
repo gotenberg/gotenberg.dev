@@ -27,11 +27,12 @@ Gotenberg serves every route below on port 3000, under [`--api-root-path`](/docs
 
 The `POST` routes take `multipart/form-data`. Besides their own fields, they all take:
 
-| Field          | Takes                                                                                        |
-| :------------- | :------------------------------------------------------------------------------------------- |
-| `files`        | The files to process, one upload each.                                                       |
-| `archives`     | ZIP files, which Gotenberg unpacks as if you had uploaded their entries under `files`.       |
-| `downloadFrom` | URLs Gotenberg downloads first, as if you had uploaded the files.                            |
-| `stages`       | The [stages](/docs/reference/stages) to run, on the conversion routes and `/forms/pdf/pipe`. |
+| Field          | Takes                                                                                  |
+| :------------- | :------------------------------------------------------------------------------------- |
+| `files`        | The files to process, one upload each.                                                 |
+| `archives`     | ZIP files, which Gotenberg unpacks as if you had uploaded their entries under `files`. |
+| `downloadFrom` | URLs Gotenberg downloads first, as if you had uploaded the files.                      |
+
+The Chromium conversion routes, the LibreOffice route and `/forms/pdf/pipe` also take [`stages`](/docs/reference/stages), which run on the PDFs they make or receive. The screenshot routes, the single-stage routes and the read routes answer 400 to it.
 
 [How requests work](/docs/getting-started/requests) shows each one. The [headers](/docs/reference/headers) work on every route too.

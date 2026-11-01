@@ -31,7 +31,7 @@ services:
 ```
 
 - The variable wins when you set both.
-- A list takes repeated flags, or comma-separated values: `CHROMIUM_DENY_LIST=^ftp:.*,^file:.*`.
+- A list takes repeated flags, or comma-separated values: `WEBHOOK_ALLOW_LIST=^https://hooks\.example\.com/,^https://events\.example\.com/`. A list you set replaces its default.
 - A duration takes a unit: `30s`, `5m`. A size takes one too: `5MB`, `1GB`.
 
 ## Flags

@@ -5,6 +5,10 @@ import styles from "./ConfigReference.module.css";
 
 const known = new Set(data.flags.map((flag) => flag.name));
 
+// The zero value --help leaves unprinted, per type. Strings and lists have
+// none worth printing.
+const ZERO = { bool: "false", int: "0", duration: "0s" };
+
 const TYPES = {
   bool: "boolean",
   strings: "list",
@@ -72,11 +76,16 @@ export default function ConfigReference({ module }) {
             <span className={styles.type}>{TYPES[flag.type] ?? flag.type}</span>
           </div>
           <p className={styles.description}>{describe(flag.description)}</p>
-          {flag.default !== null && (
-            <p className={styles.default}>
-              Default: <code>{flag.default}</code>
-            </p>
-          )}
+          {/* --help prints no default for zero values, so a missing default
+              reads as the type's zero value, not as an omission. */}
+          <p className={styles.default}>
+            Default:{" "}
+            {(flag.default ?? ZERO[flag.type]) !== undefined ? (
+              <code>{flag.default ?? ZERO[flag.type]}</code>
+            ) : (
+              "none"
+            )}
+          </p>
         </div>
       ))}
     </div>

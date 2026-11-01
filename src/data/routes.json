@@ -217,8 +217,8 @@
       },
       {
         "name": "emulatedMediaFeatures",
-        "type": "list",
-        "description": "CSS media features the page sees: `[{\"name\": \"prefers-color-scheme\", \"value\": \"dark\"}]`."
+        "type": "object",
+        "description": "CSS media features the page sees: `{\"prefers-color-scheme\": \"dark\"}`."
       },
       {
         "name": "omitBackground",

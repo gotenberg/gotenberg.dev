@@ -11,7 +11,7 @@ A container runs one Chromium and one LibreOffice, both started on first use:
 
 - Chromium converts up to six pages at once: [`--chromium-max-concurrency`](/docs/configuration#chromium-max-concurrency).
 - LibreOffice converts one document at a time.
-- The PDF stages process one document at a time across requests: [`--pdf-max-concurrency`](/docs/configuration#pdf-max-concurrency) raises it, for more memory and CPU.
+- The PDF stages process a request's documents one after the other. [`--pdf-max-concurrency`](/docs/configuration#pdf-max-concurrency) lets a request with several documents process up to that many at once, for more memory and CPU. Requests themselves never wait for one another here.
 
 The other requests wait in a queue. To serve more at once, run more containers behind a load balancer: Gotenberg keeps no state between requests.
 
