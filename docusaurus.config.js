@@ -102,7 +102,7 @@ module.exports = {
       title: "Gotenberg",
       hideOnScroll: true,
       logo: {
-        alt: "Gotenberg Logo",
+        alt: "",
         src: "img/logo.png",
       },
       items: [
@@ -132,9 +132,9 @@ module.exports = {
     footer: {
       style: "dark",
       logo: {
-        alt: "Gotenberg Footer Logo",
+        alt: "Gotenberg",
         src: "img/logo.png",
-        href: "https://github.com/gotenberg",
+        href: "/",
       },
       links: [
         {
