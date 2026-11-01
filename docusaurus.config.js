@@ -78,7 +78,7 @@ module.exports = {
     },
     {
       tagName: "meta",
-      attributes: { name: "theme-color", content: "#0e7ba3" },
+      attributes: { name: "theme-color", content: "#4338ca" },
     },
   ],
   themeConfig: {
