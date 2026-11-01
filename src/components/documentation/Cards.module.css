@@ -1,0 +1,55 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+  gap: 12px;
+  margin-bottom: 2rem;
+}
+
+/* A homepage panel: rounded, white on the paper, lifting on hover. */
+.card {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  padding: 18px 20px;
+  border: 1px solid var(--ifm-border-color);
+  border-radius: var(--radius);
+  background: var(--panel);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+/* Inside a page, the cards are not prose links: no underline, no link color.
+   The .markdown prefix outranks the site's ".markdown a" rule. */
+:global(.markdown) a.card,
+:global(.markdown) a.card:hover {
+  color: inherit;
+  font-weight: inherit;
+  text-decoration: none;
+}
+
+.card:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--ifm-color-primary) 45%,
+    var(--ifm-border-color)
+  );
+  box-shadow: var(--lift);
+  text-decoration: none;
+  transform: translateY(-2px);
+}
+
+.title {
+  color: var(--ifm-heading-color);
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+.text {
+  color: var(--ifm-color-content-secondary);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}

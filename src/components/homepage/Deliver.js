@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import cx from "./cx";
-import { curl, response } from "./requests";
+import { curl, response } from "@site/src/lib/requests";
 import { CodePanel, Section, SectionHead, Segmented, Switch } from "./ui";
 
 const ICONS = {

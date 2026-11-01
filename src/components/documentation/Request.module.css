@@ -1,0 +1,8 @@
+/* A request and its response read as one example. */
+.request {
+  margin-bottom: var(--ifm-leading);
+}
+
+.request > :global(.theme-code-block) + :global(.theme-code-block) {
+  margin-top: -0.5rem;
+}

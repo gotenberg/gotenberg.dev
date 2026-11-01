@@ -14,12 +14,14 @@ npm run format   # Format all files with Prettier
 npm run build    # Verify the site builds without errors
 npm run serve    # Preview the production build locally
 npm run clear    # Clear the Docusaurus cache
+npm run check:examples  # Run the docs' examples against Gotenberg (docs/README.md)
 ```
 
 ## Project layout
 
 ```
-docs/                          9.x MDX docs, in progress (one placeholder page)
+docs/                          9.x MDX docs, being written (see docs/README.md)
+examples/                      Files the docs' examples upload (npm run check:examples)
 versioned_docs/version-8.x/    8.x MDX docs, frozen, served under /docs/8.x/
   _shared/                     Shared partials for PDF engine features
   convert-with-chromium/       Chromium endpoint docs + _shared/ partials
@@ -36,6 +38,7 @@ src/
   css/                         Global CSS (custom.css)
   pages/                       Custom pages (index.js)
   theme/                       Docusaurus theme overrides (DocSidebar)
+scripts/                       check-examples.mjs: runs the docs' examples against Gotenberg
 sidebars.js                    9.x navigation (8.x: versioned_sidebars/)
 docusaurus.config.js           Site configuration
 ```
@@ -64,7 +67,7 @@ When a feature applies to multiple endpoints, document it as a reusable `_shared
 
 ### Versioning
 
-Current docs (9.x) live in `docs/`; they are in progress and hold one placeholder page for now. The 8.x docs live in `versioned_docs/version-8.x/`. Don't modify `versioned_docs/` unless explicitly needed.
+Current docs (9.x) live in `docs/`; they are being written, section by section. The 8.x docs live in `versioned_docs/version-8.x/`. Don't modify `versioned_docs/` unless explicitly needed.
 
 ## Pull requests
 
@@ -76,7 +79,7 @@ Plan non-trivial changes before coding. Present what you're changing, why, and w
 - [ ] No broken links, no removed content without replacement, no changed URLs
 - [ ] Follows established page structure, component usage, and terminology
 - [ ] Shared partials used where appropriate, no duplicated content
-- [ ] cURL examples are valid and copy-pasteable
+- [ ] cURL examples are valid and copy-pasteable, and `npm run check:examples` passes
 - [ ] Components render correctly at desktop (1440px), laptop (1024px), and tablet (768px) widths
 - [ ] No console errors or React warnings in the browser
 - [ ] Formatted with Prettier: `npm run format`

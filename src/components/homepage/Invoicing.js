@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import cx from "./cx";
 import { LEVELS } from "./data";
-import { curl, response } from "./requests";
+import { curl, response } from "@site/src/lib/requests";
 import {
   CodePanel,
   Radio,

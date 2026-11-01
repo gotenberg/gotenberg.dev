@@ -1,5 +1,6 @@
-// Builds the requests and responses the code panels show. A line is
-// { cls, parts }, a part is { t: text, c: highlight class }.
+// Builds the requests and responses the homepage's code panels and the docs'
+// <Request> show. A line is { cls, parts }, a part is { t: text, c: highlight
+// class }.
 
 const part = (t, c = "") => ({ t, c });
 const flat = (value) => JSON.stringify(value, null, 1).replace(/\n\s*/g, " ");

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Link from "@docusaurus/Link";
 import cx from "./cx";
 import { READ_ROUTES, RECIPES, STAGE_GROUP } from "./data";
-import { curl, json, response } from "./requests";
+import { curl, json, response } from "@site/src/lib/requests";
 import { CodePanel, Radio, RadioGroup, Section, SectionHead } from "./ui";
 
 function Write({ recipeKey, setRecipeKey }) {

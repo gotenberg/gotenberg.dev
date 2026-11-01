@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Link from "@docusaurus/Link";
 import cx from "./cx";
 import { ENGINES, SIZES } from "./data";
-import { curl } from "./requests";
+import { curl } from "@site/src/lib/requests";
 import {
   CodeBar,
   CodeLines,

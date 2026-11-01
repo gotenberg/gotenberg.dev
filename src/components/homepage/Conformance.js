@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import cx from "./cx";
 import { PROFILES } from "./data";
-import { curl, json, response } from "./requests";
+import { curl, json, response } from "@site/src/lib/requests";
 import {
   CodePanel,
   Radio,

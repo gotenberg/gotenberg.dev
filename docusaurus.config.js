@@ -225,6 +225,15 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
+          // A README.md is a writing guide, not a page. The rest are
+          // Docusaurus' defaults.
+          exclude: [
+            "**/README.md",
+            "**/_*.{js,jsx,ts,tsx,md,mdx}",
+            "**/_*/**",
+            "**/*.test.{js,jsx,ts,tsx}",
+            "**/__tests__/**",
+          ],
           editUrl: "https://github.com/gotenberg/gotenberg.dev/edit/main/",
           lastVersion: "current",
           versions: {
