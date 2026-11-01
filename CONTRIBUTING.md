@@ -31,7 +31,7 @@ docs/                          MDX documentation content
   webhook-download.mdx         Webhook and download-from docs
   telemetry.mdx                Telemetry docs
 src/
-  components/                  React components (Homepage, ApiEndpoint, Sponsors)
+  components/                  React components (homepage/, documentation/)
   css/                         Global CSS (custom.css)
   pages/                       Custom pages (index.js)
   theme/                       Docusaurus theme overrides (DocSidebar)

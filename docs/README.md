@@ -122,4 +122,4 @@ When adding a new page, update `sidebars.js`:
 
 ## Versioning
 
-Current docs live in `docs/`. Versioned docs live in `versioned_docs/`. Don't modify versioned docs unless explicitly asked. Changes to `docs/` apply to the current (next) version only.
+Current docs (9.x) live in `docs/` and are served under `/docs/`. The 8.x docs live in `versioned_docs/version-8.x/` and are served under `/docs/8.x/`, so their absolute links start with `/docs/8.x/`. Don't modify versioned docs unless explicitly asked. Changes to `docs/` apply to 9.x only.
