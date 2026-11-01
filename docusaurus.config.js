@@ -91,12 +91,12 @@ module.exports = {
       contextualSearch: true,
     },
     announcementBar: {
-      id: "support_us",
-      content: `If you like Gotenberg, give it a star on <a target="_blank" rel="noopener noreferrer" href="https://github.com/gotenberg/gotenberg">GitHub</a>!️`,
+      id: "gotenberg_9",
+      content: `Gotenberg 9 is out: one PDF engine, 26 stages, real conformance. <a target="_blank" rel="noopener noreferrer" href="https://github.com/gotenberg/gotenberg/releases">Read the release notes</a>`,
     },
     // announcementBar: {
-    //   id: "gotenberg_8",
-    //   content: `🎉️ <strong><a target="_blank" rel="noopener noreferrer" href="https://github.com/gotenberg/gotenberg/releases/tag/v8.0.0">Gotenberg 8</a> is now out!</strong> 🥳️`,
+    //   id: "support_us",
+    //   content: `If you like Gotenberg, give it a star on <a target="_blank" rel="noopener noreferrer" href="https://github.com/gotenberg/gotenberg">GitHub</a>!️`,
     // },
     navbar: {
       title: "Gotenberg",
