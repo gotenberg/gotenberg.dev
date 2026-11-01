@@ -40,7 +40,8 @@ HTTP method badges: tinted background with dark text (WCAG AA), e.g. POST `rgba(
 
 - Headings (h1-h4), the brand wordmark, footer titles and prev/next titles: `--font-display` (Bricolage), weight 700 (h1 800), tight negative letter-spacing
 - Prose and UI (body text, sidebar, TOC, footer links, buttons, badges, param lists): system sans
-- Navbar links: uppercase small-caps system sans (letter-spaced)
+- Navbar links: system sans, sentence case, a rounded tint on hover. The version, theme and search controls share the homepage's control look: 36px tall, 10px corners, on a panel
+- Sidebar: system sans, an indigo tint on the current page, category headers as small uppercase labels, HTTP method badges in mono
 - Brand mark: the Gutenberg caricature (`static/img/logo.png`) as the navbar and footer logo, with the "Gotenberg" wordmark in the display type
 - Headings carry no rule or underline
 - Lede: the paragraph after h1 renders larger (1.2rem) in heading ink

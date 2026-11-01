@@ -661,20 +661,72 @@ a[class*="sidebarLogo"] b {
 
 .navbar__link {
   font-family: var(--ifm-font-family-base);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-size: 0.8rem;
+  font-size: 0.95rem;
   font-weight: 600;
   color: var(--ifm-color-content-secondary);
+  border-radius: 10px;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
 }
 
 .navbar__link:hover {
   color: var(--ifm-heading-color);
+  background-color: var(--panel-2);
 }
 
-/* A version keeps its case: 9.x, not 9.X. */
+/* Navbar controls (version, theme, search) share the homepage's control
+   look: 36px tall, rounded, on a panel, the border darkening on hover. */
+.navbar__link.navbar-version,
+.navbar .DocSearch-Button {
+  box-sizing: border-box;
+  height: 36px;
+  border: 1px solid var(--ifm-border-color);
+  border-radius: 10px;
+  background: var(--panel);
+  box-shadow: none;
+}
+
 .navbar__link.navbar-version {
-  text-transform: none;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 10px 0 12px;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.8rem;
+}
+
+.navbar__link.navbar-version:hover,
+.navbar .DocSearch-Button:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--ifm-heading-color) 30%,
+    var(--ifm-border-color)
+  );
+  background: var(--panel);
+  box-shadow: none;
+  color: var(--ifm-heading-color);
+}
+
+/* Navbar menus (the version dropdown) match the theme menu. */
+.navbar .dropdown__menu {
+  padding: 0.25rem;
+  border: 1px solid var(--ifm-border-color);
+  border-radius: 12px;
+  background: var(--panel);
+  box-shadow: var(--lift);
+}
+
+.navbar .dropdown__link {
+  border-radius: 8px;
+}
+
+.navbar .DocSearch-Button-Key {
+  border: 0;
+  border-radius: 5px;
+  background: var(--panel-2);
+  box-shadow: none;
+  color: var(--ifm-color-content-secondary);
+  font-family: var(--ifm-font-family-monospace);
 }
 
 .navbar__link--active,
@@ -683,30 +735,22 @@ a[class*="sidebarLogo"] b {
 }
 
 /* Mobile navbar drawer: the navbar links render as .menu__link in the drawer's
-   first panel, so they pick up the doc-sidebar serif style. Restore the desktop
-   navbar treatment (uppercase, letter-spaced sans). The second panel is the doc
-   sidebar and keeps its own style. */
+   first panel. Give them the desktop navbar weight. The second panel is the
+   doc sidebar and keeps its own style. */
 .navbar-sidebar__items .navbar-sidebar__item:first-child .menu__link {
-  font-family: var(--ifm-font-family-base);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-size: 0.8rem;
+  font-size: 0.95rem;
   font-weight: 600;
   color: var(--ifm-color-content-secondary);
 }
 
 .navbar-sidebar__items .navbar-sidebar__item:first-child .menu__link:hover {
   color: var(--ifm-heading-color);
-  background-color: transparent;
 }
 
 /* Active navbar link: blue text like desktop, without the doc-sidebar's "you
    are here" left bar. */
 .navbar-sidebar__items .navbar-sidebar__item:first-child .menu__link--active {
   color: var(--accent-text);
-  border-left: none;
-  border-radius: 6px;
-  padding-left: 12px;
   background-color: transparent;
 }
 
@@ -724,15 +768,41 @@ a[class*="sidebarLogo"] b {
   font-size: 0.85rem;
 }
 
+.table-of-contents__link--active {
+  font-weight: 600;
+}
+
+/* Breadcrumbs and the version badge: small, rounded, quiet. */
+.breadcrumbs__link {
+  font-size: 0.85rem;
+  border-radius: 999px;
+}
+
+.breadcrumbs__item--active .breadcrumbs__link {
+  background: color-mix(in srgb, var(--ifm-color-primary) 10%, transparent);
+  color: var(--accent-text);
+}
+
+.theme-doc-version-badge {
+  padding: 3px 10px;
+  border: 1px solid var(--ifm-border-color);
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--ifm-color-content-secondary);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
 /* --- MODERN SIDEBAR --- */
 .menu__link {
   font-size: 0.9rem;
   font-weight: 500;
   line-height: 1.5;
   color: var(--ifm-color-content-secondary);
-  padding: 8px 12px;
-  margin-bottom: 4px;
-  border-radius: 6px;
+  padding: 7px 12px;
+  margin-bottom: 2px;
+  border-radius: 9px;
   transition:
     color 0.2s,
     background-color 0.2s;
@@ -740,34 +810,34 @@ a[class*="sidebarLogo"] b {
 
 .menu__link:hover {
   color: var(--ifm-heading-color);
-  background-color: var(--paper-shade);
+  background-color: var(--panel-2);
   text-decoration: none;
 }
 
+/* The page you are on: an indigo tint, as the homepage marks a pick. */
 .menu__link--active {
   color: var(--accent-text);
-  background-color: rgba(67, 56, 202, 0.08);
+  background-color: color-mix(
+    in srgb,
+    var(--ifm-color-primary) 10%,
+    transparent
+  );
   font-weight: 600;
-  border-left: 3px solid var(--ifm-color-primary);
-  border-radius: 0 6px 6px 0;
-  padding-left: 9px;
 }
 
 /* Category headers can be "active" when a page inside them is open, but they
-   are not leaf pages: no "you are here" bar on them. */
+   are not leaf pages: no tint on them. */
 .menu__list-item-collapsible > .menu__link--active {
-  border-left: none;
-  border-radius: 6px;
-  padding-left: 12px;
   background-color: transparent;
 }
 
+/* Category headers: the homepage's small uppercase labels. */
 .menu__list-item-collapsible > .menu__link {
-  color: var(--ifm-color-content);
+  color: var(--ifm-color-content-secondary);
   font-weight: 700;
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.12em;
   white-space: nowrap;
   padding-top: 12px;
   padding-bottom: 12px;
@@ -785,17 +855,18 @@ a[class*="sidebarLogo"] b {
 .sidebar-method-delete .menu__link::before,
 .sidebar-method-head .menu__link::before {
   display: inline-block;
-  margin-right: 6px;
+  margin-right: 8px;
   /* All-caps text sits high in its line box, so symmetric padding leaves the
      pill bottom-heavy. More top padding than bottom optically centers the
      background on the letters; the small lift keeps the label on the link's
      baseline. */
-  padding: 4px 6px 0;
+  padding: 3px 6px 1px;
   min-width: 40px;
-  font-size: 0.65rem;
-  font-weight: 800;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.66rem;
+  font-weight: 700;
   text-align: center;
-  border-radius: 2px;
+  border-radius: 5px;
   vertical-align: middle;
   line-height: 1.5;
   transform: translateY(-1.5px);

@@ -23,17 +23,20 @@
   font-weight: 600;
   line-height: 1;
   color: var(--ifm-color-content-secondary);
-  background: var(--ifm-navbar-background-color);
+  background: var(--panel);
   border: 1px solid var(--ifm-border-color);
-  border-radius: 4px;
+  border-radius: 10px;
   cursor: pointer;
 }
 
 .trigger:hover,
 .trigger[aria-expanded="true"] {
   color: var(--ifm-heading-color);
-  background: var(--paper-shade);
-  border-color: var(--ifm-color-primary);
+  border-color: color-mix(
+    in srgb,
+    var(--ifm-heading-color) 30%,
+    var(--ifm-border-color)
+  );
 }
 
 .trigger:focus-visible,
@@ -60,10 +63,10 @@
   z-index: 1000;
   min-width: 10.5rem;
   padding: 0.25rem;
-  background: var(--ifm-navbar-background-color);
+  background: var(--panel);
   border: 1px solid var(--ifm-border-color);
-  border-radius: 6px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+  border-radius: 12px;
+  box-shadow: var(--lift);
 }
 
 .menu[hidden] {
@@ -85,14 +88,14 @@
   color: var(--ifm-color-content-secondary);
   background: transparent;
   border: 0;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
 }
 
 .option:hover,
 .option:focus-visible {
   color: var(--ifm-heading-color);
-  background: var(--paper-shade);
+  background: var(--panel-2);
 }
 
 .selected {
@@ -128,7 +131,7 @@
     width: 36px;
     height: 36px;
     padding: 0;
-    border-radius: 4px;
+    border-radius: 10px;
   }
 
   :global(.navbar__items--right) :global(.DocSearch-Button-Placeholder),
