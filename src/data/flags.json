@@ -367,7 +367,7 @@
       "env": "CHROMIUM_HOST_RESOLVER_RULES",
       "type": "string",
       "default": null,
-      "description": "Set custom mappings to the host resolver"
+      "description": "Set custom mappings to the host resolver. Setting it turns off the internal DNS-rebinding pinning proxy: Chromium resolves each host after Gotenberg checks it, so a DNS rebinding can slip past --chromium-deny-private-ips (CHROMIUM_DENY_PRIVATE_IPS) and --chromium-deny-public-ips (CHROMIUM_DENY_PUBLIC_IPS)"
     },
     {
       "name": "chromium-idle-shutdown-timeout",
@@ -407,7 +407,7 @@
       "env": "CHROMIUM_PROXY_SERVER",
       "type": "string",
       "default": null,
-      "description": "Set the outbound proxy server; this switch only affects HTTP and HTTPS requests"
+      "description": "Set the outbound proxy server; this switch only affects HTTP and HTTPS requests. Setting it turns off the internal DNS-rebinding pinning proxy: your proxy resolves each host after Gotenberg checks it, so a DNS rebinding can slip past --chromium-deny-private-ips (CHROMIUM_DENY_PRIVATE_IPS) and --chromium-deny-public-ips (CHROMIUM_DENY_PUBLIC_IPS)"
     },
     {
       "name": "chromium-restart-after",
@@ -655,7 +655,7 @@
       "env": "PDF_MAX_EMBEDDED_FILE_BYTES",
       "type": "string",
       "default": null,
-      "description": "Set the maximum size of an embedded file read for validation - it accepts values like 50MB, 1GB, etc; empty keeps litho's default"
+      "description": "Set the maximum size of an embedded file read for validation - it accepts values like 50MB, 1GB, etc; empty keeps litho's default, 50 MiB"
     },
     {
       "name": "pdf-max-image-pixels",
@@ -663,7 +663,7 @@
       "env": "PDF_MAX_IMAGE_PIXELS",
       "type": "int",
       "default": null,
-      "description": "Set the maximum number of pixels an image may hold - 0 keeps litho's default"
+      "description": "Set the maximum number of pixels an image may hold - 0 keeps litho's default, 100000000 (100 million)"
     },
     {
       "name": "pdf-max-stream-bytes",
@@ -671,7 +671,7 @@
       "env": "PDF_MAX_STREAM_BYTES",
       "type": "string",
       "default": null,
-      "description": "Set the maximum size a PDF stream may decode to - it accepts values like 256MB, 1GB, etc; empty keeps litho's default"
+      "description": "Set the maximum size a PDF stream may decode to - it accepts values like 256MB, 1GB, etc; empty keeps litho's default, 256 MiB"
     },
     {
       "name": "webhook-allow-list",

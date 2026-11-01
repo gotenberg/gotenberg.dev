@@ -26,7 +26,7 @@ A stamp's `x` and `y` count in points from the bottom-left corner of the page, 7
   output="report.pdf"
 />
 
-`rotation` turns the text counter-clockwise around `x` and `y`. `font` takes one of the 14 standard PDF fonts, `Helvetica` by default.
+`rotation` turns the text counter-clockwise around `x` and `y`. `font` takes one of the 14 standard PDF fonts, `Helvetica` by default, which draw Western European text only. For other scripts, stamp a page Chromium renders with `stamp-pdf`, or use LibreOffice's `nativeWatermarkText`.
 
 ## Stamp an image
 

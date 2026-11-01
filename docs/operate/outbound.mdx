@@ -68,7 +68,7 @@ Each family also takes an allow list and a deny list of regular expressions, suc
 - The allow list is exclusive: once set, the family reaches only the URLs it matches.
 - A URL the allow list matches skips the private and public address checks.
 - A list you set replaces its default. Chromium's deny list defaults to `^file:(?!//\/tmp/).*`, which keeps pages from reading files outside Gotenberg's working directory: keep it in yours.
-- On the HTML and Markdown routes, Chromium's allow list must also match `^file:///tmp/`: the page you upload loads from there.
+- On the HTML and Markdown routes, the page Gotenberg writes from your upload passes both lists. The files uploaded with it, such as its style sheets and images, load from `file:///tmp/`: an allow list must match them too, with `^file:///tmp/`, and a deny list matching `file:` blocks them.
 
 So an allow list can't add one internal host on top of the internet: it admits that host, and nothing else.
 

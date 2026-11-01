@@ -59,7 +59,7 @@ Some results have two ways in. A field whose name starts with `native` asks Chro
 
 - `remediate` reports the violations it couldn't fix in `Gotenberg-Remediation-Residual`, and still answers 200: check the header.
 - Nothing checks what the `native` fields produce. `/forms/pdf/validate` checks any PDF against PDF/A, PDF/UA or Factur-X.
-- `optimize` refuses a signed PDF, since rewriting it would drop the signature.
+- A stage that rewrites the file refuses a signed PDF, since rewriting it would drop the signature: see [which stages rewrite](/docs/reference/stages#what-each-stage-does-to-the-file).
 
 ## How a request flows
 

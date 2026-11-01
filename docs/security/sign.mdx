@@ -76,7 +76,7 @@ Operators decide which authorities Gotenberg may call with [`--pdf-allow-list`](
 
 ## Sign last
 
-A change after a signature breaks it, so only a `timestamp` or a `render` may follow the `sign` stage, and a list signs once. Optimize before you sign: `optimize` refuses a signed PDF, since its rewrite would drop the signature. An encrypted PDF signs in two requests: decrypt it, then sign the result.
+A change after a signature breaks it, so only a `timestamp` or a `render` may follow the `sign` stage, and a list signs once. Process before you sign: a stage that rewrites the file, such as `select`, `merge`, `remediate` or `optimize`, refuses a signed PDF, since its rewrite would drop the signature. Stamps, rotations, metadata, bookmarks, attachments and tags append to the file and keep it: see [what each stage does to the file](/docs/reference/stages#what-each-stage-does-to-the-file). An encrypted PDF signs in two requests: decrypt it, then sign the result.
 
 <Request
   route="/forms/pdf/pipe"

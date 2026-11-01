@@ -3,7 +3,7 @@ id: headers
 title: Headers
 ---
 
-The routes read the request headers below, and their answers carry the response headers. The [read routes](/docs/reference/pdf#read-pdfs) answer JSON directly: they ignore `Gotenberg-Output-Filename`, and take no webhook.
+The routes read the request headers below, and their answers carry the response headers. The [read routes](/docs/reference/pdf#read-pdfs) answer JSON directly: they ignore `Gotenberg-Output-Filename`, and answer 400 to the webhook headers.
 
 ## Request headers
 

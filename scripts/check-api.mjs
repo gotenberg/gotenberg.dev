@@ -73,7 +73,8 @@ for (const stage of stages) {
 }
 
 // Routes: the paths the modules register. A stage route counts once, as
-// {op}; the favicon isn't documented.
+// {op}; the favicon, and the removed /forms/pdfengines paths that answer 404
+// with their replacement, aren't documented.
 const modules = (p) =>
   readFileSync(path.join(source, "pkg/modules", p), "utf8");
 const sourceRoutes = new Set();
@@ -84,7 +85,7 @@ for (const file of [
 ]) {
   const go = modules(file);
   for (const m of go.matchAll(/Path:\s+"([^"]+)"(?:\s*\+\s*(\w+))?/g)) {
-    if (!m[2]) sourceRoutes.add(m[1]);
+    if (!m[2] && !m[1].startsWith("/forms/pdfengines")) sourceRoutes.add(m[1]);
     else if (m[2] === "op") sourceRoutes.add(m[1] + "{op}");
   }
   for (const m of go.matchAll(/readRoute\(processor, "([a-z]+)"/g)) {

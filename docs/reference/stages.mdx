@@ -44,6 +44,16 @@ Gotenberg checks the order of the stages before it runs any, and answers 400 wit
 - `encrypt` doesn't combine with `sign`, `timestamp`, or a PDF/A or Factur-X `remediate`.
 - `decrypt` doesn't combine with `sign` or `timestamp`: sign the decrypted PDF in a request of its own.
 
+## What each stage does to the file
+
+A stage either rewrites the PDF whole or appends an update to it. A rewrite drops signatures, so on a signed PDF those stages answer 400:
+
+| The file                      | Stages                                                                                                                                                            |
+| :---------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Rewritten, signatures refused | `select`, `delete`, `insert`, `merge`, `split`, `encrypt`, `decrypt`, `flatten-form`, `redact`, `remediate`, `convert-colors`, `flatten-transparency`, `optimize` |
+| Updated, signatures kept      | `rotate`, `stamp-text`, `stamp-image`, `stamp-pdf`, `set-form`, `set-metadata`, `set-bookmarks`, `attach`, `detach`, `autotag`, `sign`, `timestamp`               |
+| Unchanged                     | `render`, which makes images                                                                                                                                      |
+
 ## Page selections
 
 An option of type `pages` takes a page (`3`), a range (`2-5`), a list of both (`1,3,5-7`), or `odd`, `even` or `last` on their own. Pages count from 1, and a page past the end answers 400.
