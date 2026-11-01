@@ -770,11 +770,6 @@ a[class*="sidebarLogo"] b {
   color: var(--ifm-heading-color);
 }
 
-.menu__caret:before {
-  background: #a8a29e;
-  mask-size: 10px 10px;
-}
-
 /* --- SIDEBAR HTTP METHODS BADGES --- */
 .sidebar-method-post .menu__link::before,
 .sidebar-method-get .menu__link::before,
