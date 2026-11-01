@@ -19,7 +19,8 @@ npm run clear    # Clear the Docusaurus cache
 ## Project layout
 
 ```
-docs/                          MDX documentation content
+docs/                          9.x MDX docs, in progress (one placeholder page)
+versioned_docs/version-8.x/    8.x MDX docs, frozen, served under /docs/8.x/
   _shared/                     Shared partials for PDF engine features
   convert-with-chromium/       Chromium endpoint docs + _shared/ partials
   convert-with-libreoffice/    LibreOffice endpoint docs
@@ -35,11 +36,11 @@ src/
   css/                         Global CSS (custom.css)
   pages/                       Custom pages (index.js)
   theme/                       Docusaurus theme overrides (DocSidebar)
-sidebars.js                    Navigation structure
+sidebars.js                    9.x navigation (8.x: versioned_sidebars/)
 docusaurus.config.js           Site configuration
 ```
 
-Start with `sidebars.js` to understand the documentation structure. API doc pages follow a consistent pattern: intro paragraph, `<ConfigurationInfo />`, basics section with `<ApiEndpoint>`, then imported shared partials.
+Start with `versioned_sidebars/version-8.x-sidebars.json` to understand the 8.x documentation structure. API doc pages follow a consistent pattern: intro paragraph, `<ConfigurationInfo />`, basics section with `<ApiEndpoint>`, then imported shared partials.
 
 ## Writing rules
 
@@ -59,11 +60,11 @@ Integrate warnings and notes into prose. Reserve `:::info`, `:::warning`, `:::da
 
 ### Shared partials
 
-When a feature applies to multiple endpoints, document it as a reusable `_shared/` partial. Never duplicate content across pages. Shared partials in `docs/convert-with-chromium/_shared/` cover Chromium features. Shared partials in `docs/_shared/` cover PDF engine features.
+When a feature applies to multiple endpoints, document it as a reusable `_shared/` partial. Never duplicate content across pages. In the 8.x docs, shared partials in `versioned_docs/version-8.x/convert-with-chromium/_shared/` cover Chromium features, and those in `versioned_docs/version-8.x/_shared/` cover PDF engine features.
 
 ### Versioning
 
-Current docs live in `docs/`. Don't modify `versioned_docs/` unless explicitly needed.
+Current docs (9.x) live in `docs/`; they are in progress and hold one placeholder page for now. The 8.x docs live in `versioned_docs/version-8.x/`. Don't modify `versioned_docs/` unless explicitly needed.
 
 ## Pull requests
 

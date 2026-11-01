@@ -147,11 +147,11 @@ module.exports = {
             },
             {
               label: "Explore All Routes",
-              to: "/docs/getting-started/routes",
+              to: "/docs/getting-started/introduction",
             },
             {
               label: "Configuration",
-              to: "/docs/configuration",
+              to: "/docs/getting-started/introduction",
             },
           ],
         },

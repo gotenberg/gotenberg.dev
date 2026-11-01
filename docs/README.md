@@ -87,10 +87,7 @@ Rules:
 
 ## Shared partials
 
-Reusable documentation blocks live in `_shared/` directories:
-
-- `docs/convert-with-chromium/_shared/`: Chromium features (assets, console, encryption, header/footer, HTTP networking, rendering behavior, structure metadata, PDF/A, split/page ranges).
-- `docs/_shared/`: PDF engine features (attachments, encryption, flatten, metadata, PDF/A-UA, syntax validation).
+Reusable documentation blocks live in `_shared/` directories next to the pages that import them. The 8.x docs keep theirs in `versioned_docs/version-8.x/convert-with-chromium/_shared/` (Chromium features) and `versioned_docs/version-8.x/_shared/` (PDF engine features).
 
 When a feature applies to multiple endpoints, it must be a shared partial. Never duplicate content across pages.
 
@@ -122,4 +119,4 @@ When adding a new page, update `sidebars.js`:
 
 ## Versioning
 
-Current docs (9.x) live in `docs/` and are served under `/docs/`. The 8.x docs live in `versioned_docs/version-8.x/` and are served under `/docs/8.x/`, so their absolute links start with `/docs/8.x/`. Don't modify versioned docs unless explicitly asked. Changes to `docs/` apply to 9.x only.
+Current docs (9.x) live in `docs/` and are served under `/docs/`. They are in progress and hold one placeholder page for now. The 8.x docs live in `versioned_docs/version-8.x/` and are served under `/docs/8.x/`, so their absolute links start with `/docs/8.x/`. Don't modify versioned docs unless explicitly asked. Changes to `docs/` apply to 9.x only.
