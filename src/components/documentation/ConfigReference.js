@@ -13,17 +13,39 @@ const TYPES = {
   duration: "duration",
 };
 
-// Links the flags a description names to their entries.
-function linkFlags(text) {
-  return text.split(/(--[a-z0-9-]+)/g).map((part, i) =>
-    part.startsWith("--") && known.has(part.slice(2)) ? (
-      <a key={i} href={`#${part.slice(2)}`}>
-        {part}
-      </a>
-    ) : (
-      part
-    ),
-  );
+// The literal values a --help description holds, which its plain text can't
+// mark: a flag, a regex, a URL, an environment variable, a size, a quoted
+// claim name, a bare number.
+const VALUE =
+  /(--[a-z0-9-]+)|(\^\S+)|(https?:\/\/[^\s,]+)|\b([A-Z][A-Z0-9]*_[A-Z0-9_]+)\b|\b(\d+(?:KB|MB|GB))\b|'([^'\s]+)'|(?<![\w.-])(\d+)(?![\w.])/g;
+
+// Links the flags a description names to their entries, and sets its other
+// values apart, so a regex or a variable name reads as one token.
+function describe(text) {
+  const parts = [];
+  let last = 0;
+  for (const m of text.matchAll(VALUE)) {
+    if (m.index > last) parts.push(text.slice(last, m.index));
+    const [whole, flag] = m;
+    if (flag && known.has(flag.slice(2))) {
+      parts.push(
+        <a key={m.index} href={`#${flag.slice(2)}`}>
+          {flag}
+        </a>,
+      );
+    } else if (flag) {
+      parts.push(flag);
+    } else {
+      parts.push(
+        <code key={m.index} className={styles.value}>
+          {m.slice(2).find(Boolean)}
+        </code>,
+      );
+    }
+    last = m.index + whole.length;
+  }
+  parts.push(text.slice(last));
+  return parts;
 }
 
 // The flags of one module, as src/data/flags.json lists them: generated from
@@ -49,7 +71,7 @@ export default function ConfigReference({ module }) {
             <code className={styles.env}>{flag.env}</code>
             <span className={styles.type}>{TYPES[flag.type] ?? flag.type}</span>
           </div>
-          <p className={styles.description}>{linkFlags(flag.description)}</p>
+          <p className={styles.description}>{describe(flag.description)}</p>
           {flag.default !== null && (
             <p className={styles.default}>
               Default: <code>{flag.default}</code>

@@ -70,6 +70,22 @@
   overflow-wrap: anywhere;
 }
 
+/* A value inside a description: a light tint of the brand color, lighter than
+   inline code, so the sentence still reads first. */
+:global(.markdown) code.value {
+  padding: 0.05em 0.3em;
+  border-radius: 4px;
+  background-color: color-mix(
+    in srgb,
+    var(--ifm-color-primary) 8%,
+    transparent
+  );
+  color: var(--ifm-heading-color);
+  font-size: 0.85em;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
 :global(.markdown) p.default {
   margin: 6px 0 0;
   overflow-wrap: anywhere;
