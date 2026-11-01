@@ -50,15 +50,15 @@ Gotenberg then serves HTTPS only, on the same port.
 
 Five parts of Gotenberg fetch URLs a request names. Each takes an allow list and a deny list of regular expressions, and can refuse private or public addresses:
 
-| Fetches                                           | Flags                   |
-| :------------------------------------------------ | :---------------------- |
-| Chromium: the page and its resources              | `--chromium-*`          |
-| LibreOffice: linked images and content            | `--libreoffice-*`       |
-| `downloadFrom`                                    | `--api-download-from-*` |
-| Webhooks                                          | `--webhook-*`           |
-| Timestamp authorities, for `sign` and `timestamp` | `--pdf-*`               |
+| Fetches                                                                            | Flags                   |
+| :--------------------------------------------------------------------------------- | :---------------------- |
+| Chromium: the page and its resources                                               | `--chromium-*`          |
+| LibreOffice: the style sheets an HTML document links, and the URLs its macros open | `--libreoffice-*`       |
+| `downloadFrom`                                                                     | `--api-download-from-*` |
+| Webhooks                                                                           | `--webhook-*`           |
+| Timestamp authorities, for `sign` and `timestamp`                                  | `--pdf-*`               |
 
-For instance, `CHROMIUM_DENY_PRIVATE_IPS=true` keeps Chromium off your internal network, and [`--chromium-allow-list`](/docs/configuration#chromium-allow-list) lets one internal host through. A blocked URL answers 403, with a generic message; Gotenberg's logs say why.
+For instance, `CHROMIUM_DENY_PRIVATE_IPS=true` keeps Chromium off your internal network, and [`--chromium-allow-list`](/docs/configuration#chromium-allow-list) lets one internal host through. A blocked URL answers 403, with a generic message. Gotenberg logs each refusal at warn level, with the rule that refused it.
 
 ## Limit requests
 

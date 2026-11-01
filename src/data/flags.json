@@ -463,7 +463,7 @@
       "env": "LIBREOFFICE_ALLOW_LIST",
       "type": "strings",
       "default": null,
-      "description": "Set the allowed URLs for LibreOffice outbound fetches (embedded images, linked content) using regular expressions - supports multiple values. A match bypasses --libreoffice-deny-private-ips (LIBREOFFICE_DENY_PRIVATE_IPS) and --libreoffice-deny-public-ips (LIBREOFFICE_DENY_PUBLIC_IPS), so terminate the host or the pattern also matches suffix hosts, for example ^https?://internal\\.svc(:|/|$)"
+      "description": "Set the allowed URLs for the requests LibreOffice sends, using regular expressions - supports multiple values. LibreOffice requests only the style sheets an HTML document links, and the URLs a document's macros open once --libreoffice-enable-macros (LIBREOFFICE_ENABLE_MACROS) runs them; the images and other content an uploaded document links to never load. A match bypasses --libreoffice-deny-private-ips (LIBREOFFICE_DENY_PRIVATE_IPS) and --libreoffice-deny-public-ips (LIBREOFFICE_DENY_PUBLIC_IPS), so terminate the host or the pattern also matches suffix hosts, for example ^https?://internal\\.svc(:|/|$)"
     },
     {
       "name": "libreoffice-auto-start",
@@ -479,7 +479,7 @@
       "env": "LIBREOFFICE_DENY_LIST",
       "type": "strings",
       "default": null,
-      "description": "Set the denied URLs for LibreOffice outbound fetches using regular expressions - supports multiple values"
+      "description": "Set the denied URLs for the requests LibreOffice sends, using regular expressions - supports multiple values. LibreOffice requests only the style sheets an HTML document links, and the URLs a document's macros open once --libreoffice-enable-macros (LIBREOFFICE_ENABLE_MACROS) runs them; the images and other content an uploaded document links to never load"
     },
     {
       "name": "libreoffice-deny-private-ips",
@@ -487,7 +487,7 @@
       "env": "LIBREOFFICE_DENY_PRIVATE_IPS",
       "type": "bool",
       "default": null,
-      "description": "Reject LibreOffice outbound URLs whose host resolves to a non-public IP address (loopback, RFC1918, link-local, unique-local). Enable on deployments that accept untrusted documents to mitigate SSRF against internal services"
+      "description": "Reject the requests LibreOffice sends whose host resolves to a non-public IP address (loopback, RFC1918, link-local, unique-local). LibreOffice requests only the style sheets an HTML document links, and the URLs a document's macros open once --libreoffice-enable-macros (LIBREOFFICE_ENABLE_MACROS) runs them; the images and other content an uploaded document links to never load. Enable on deployments that accept untrusted documents to mitigate SSRF against internal services"
     },
     {
       "name": "libreoffice-deny-public-ips",
@@ -495,7 +495,7 @@
       "env": "LIBREOFFICE_DENY_PUBLIC_IPS",
       "type": "bool",
       "default": null,
-      "description": "Reject LibreOffice outbound URLs whose host resolves to a public IP address. Enable on air-gapped or data-governed deployments to prevent outbound traffic from leaving a private network"
+      "description": "Reject the requests LibreOffice sends whose host resolves to a public IP address. LibreOffice requests only the style sheets an HTML document links, and the URLs a document's macros open once --libreoffice-enable-macros (LIBREOFFICE_ENABLE_MACROS) runs them; the images and other content an uploaded document links to never load. Enable on air-gapped or data-governed deployments to prevent outbound traffic from leaving a private network"
     },
     {
       "name": "libreoffice-disable-routes",
