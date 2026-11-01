@@ -107,3 +107,13 @@ The `-aws-lambda` images run behind the [AWS Lambda Web Adapter](https://github.
 - Gotenberg sends webhooks before answering, since Lambda may freeze the function once it answers.
 
 For results over 6MB, have Gotenberg upload them with a webhook, to S3 for example, instead of answering with them.
+
+### SnapStart
+
+The `-aws-lambda` images support [Lambda SnapStart](https://docs.aws.amazon.com/lambda/latest/dg/snapstart.html), which cuts cold starts and costs less than Provisioned Concurrency:
+
+- Start Chromium and LibreOffice during init, so the snapshot holds them running: set `CHROMIUM_AUTO_START=true` and `LIBREOFFICE_AUTO_START=true`.
+- Enable SnapStart with `ApplyOn: PublishedVersions`, and invoke a published version or an alias. SnapStart doesn't apply to `$LATEST`.
+- Init runs when you publish a version, within 130 seconds. Under SnapStart, the adapter ignores `AWS_LWA_ASYNC_INIT`: bound the wait with `AWS_LWA_READINESS_CHECK_TIMEOUT_SECONDS`.
+
+SnapStart caps `/tmp` at 512MB, which caps the size of a conversion, and doesn't combine with Provisioned Concurrency or EFS. [#1704](https://github.com/gotenberg/gotenberg/issues/1704) has test results.
