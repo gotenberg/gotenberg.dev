@@ -996,6 +996,36 @@ a[class*="sidebarLogo"] b {
   color: var(--ifm-heading-color);
 }
 
+/* Category chevrons: a thin stroke in the label's color, as Ghostty's docs
+   draw them, instead of Infima's heavy filled icon. It points down when the
+   category is open and right when folded. */
+.menu__link--sublist-caret::after,
+.menu__caret::before {
+  width: 0.875rem;
+  min-width: 0.875rem;
+  height: 0.875rem;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+  opacity: 0.7;
+  transform: none;
+  transition: transform var(--ifm-transition-fast) ease;
+}
+
+.menu__list-item--collapsed .menu__link--sublist-caret::after,
+.menu__list-item--collapsed .menu__caret::before {
+  transform: rotate(-90deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu__link--sublist-caret::after,
+  .menu__caret::before {
+    transition: none;
+  }
+}
+
 /* --- SIDEBAR HTTP METHODS BADGES --- */
 .sidebar-method-post .menu__link::before,
 .sidebar-method-get .menu__link::before,
