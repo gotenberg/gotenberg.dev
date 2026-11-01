@@ -1,5 +1,19 @@
-// The 9.x docs are in progress: one page for now. The 8.x sidebar lives in
+// The 9.x docs, organised by what you want to do. The 8.x sidebar lives in
 // versioned_sidebars/version-8.x-sidebars.json.
 module.exports = {
-  docs: ["getting-started/introduction"],
+  docs: [
+    "index",
+    "about",
+    "getting-started/installation",
+    {
+      type: "category",
+      label: "Get started",
+      collapsible: false,
+      items: [
+        "getting-started/first-pdf",
+        "getting-started/requests",
+        "getting-started/upgrade",
+      ],
+    },
+  ],
 };

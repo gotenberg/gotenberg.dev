@@ -1,0 +1,49 @@
+---
+id: index
+title: Gotenberg Docs
+sidebar_label: Gotenberg Docs
+slug: /
+---
+
+Gotenberg is a Docker-based API for PDF. It converts web pages and office documents to PDF, then merges, stamps, signs, remediates and delivers them.
+
+## Run it
+
+Gotenberg ships as a Docker image. Start it with one command:
+
+```bash
+docker run --rm -p "3000:3000" gotenberg/gotenberg:9
+```
+
+Then send it a request. This one prints a web page to PDF:
+
+<Request
+  route="/forms/chromium/convert/url"
+  fields={{ url: "https://example.com" }}
+  output="example.pdf"
+/>
+
+Gotenberg needs no configuration to start. Flags tune it for production when you get there.
+
+## Where to go next
+
+<CardGrid>
+  <Card title="Your first PDF" to="/docs/getting-started/first-pdf">
+    Convert a URL, an HTML file and a Word document, then process the result.
+  </Card>
+  <Card title="How requests work" to="/docs/getting-started/requests">
+    Files, archives, output names, ZIP answers and errors.
+  </Card>
+  <Card title="Install" to="/docs/getting-started/installation">
+    Image variants, Compose, Kubernetes, Cloud Run and AWS Lambda.
+  </Card>
+  <Card title="Upgrade from 8.x" to="/docs/getting-started/upgrade">
+    What changed in Gotenberg 9, and what to change in your requests.
+  </Card>
+  <Card title="About Gotenberg" to="/docs/about">
+    What runs inside the container, and how a request flows through it.
+  </Card>
+  <Card title="Gotenberg 8.x" to="/docs/8.x/getting-started/introduction">
+    The documentation of the previous major version.
+  </Card>
+</CardGrid>

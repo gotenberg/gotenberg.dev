@@ -1,0 +1,109 @@
+---
+id: installation
+title: Install
+---
+
+Gotenberg runs anywhere Docker runs. Keep it behind your firewall: it loads the URLs and runs the documents you send it.
+
+## Docker
+
+```bash
+docker run --rm -p "3000:3000" gotenberg/gotenberg:9
+```
+
+The API listens on [http://localhost:3000](http://localhost:3000). Docker publishes the port on every network interface; bind it to localhost to keep it on your machine:
+
+```bash
+docker run --rm -p "127.0.0.1:3000:3000" gotenberg/gotenberg:9
+```
+
+The `9` tag follows the latest 9.x release. Pin an exact release in production, such as `gotenberg/gotenberg:9.0.0`, and upgrade on purpose.
+
+## Image variants
+
+Every variant processes PDFs with litho: merge, split, stamp, sign, encrypt, remediate, validate. They differ in the conversion engines they carry and in the platform they target.
+
+| Image                               | Converts                       | Architectures                      |
+| :---------------------------------- | :----------------------------- | :--------------------------------- |
+| `gotenberg/gotenberg:9`             | Web pages and office documents | amd64, arm64, arm/v7, 386, ppc64le |
+| `gotenberg/gotenberg:9-chromium`    | Web pages, screenshots         | amd64, arm64, arm/v7, 386, ppc64le |
+| `gotenberg/gotenberg:9-libreoffice` | Office documents               | amd64, arm64, arm/v7, 386, ppc64le |
+| `gotenberg/gotenberg:9-aws-lambda`  | Web pages and office documents | amd64, arm64                       |
+| `…:9-chromium-aws-lambda`           | Web pages, screenshots         | amd64, arm64                       |
+| `…:9-libreoffice-aws-lambda`        | Office documents               | amd64, arm64                       |
+| `gotenberg/gotenberg:9-cloudrun`    | Web pages and office documents | amd64                              |
+| `…:9-chromium-cloudrun`             | Web pages, screenshots         | amd64                              |
+| `…:9-libreoffice-cloudrun`          | Office documents               | amd64                              |
+
+A route whose engine an image lacks answers 404.
+
+## Docker Compose
+
+```yaml title="compose.yaml"
+services:
+  # Your other services.
+
+  gotenberg:
+    image: gotenberg/gotenberg:9
+```
+
+The other services of the same Compose project reach Gotenberg at `http://gotenberg:3000`. To reach it from your machine too, publish the port:
+
+```yaml title="compose.yaml"
+services:
+  gotenberg:
+    image: gotenberg/gotenberg:9
+    ports:
+      - "127.0.0.1:3000:3000"
+```
+
+## Kubernetes
+
+The image runs as the non-root user `gotenberg`, UID and GID 1001. Give the container at least 512Mi of memory and 0.2 CPU, and probe `/health`:
+
+```yaml title="deployment.yaml"
+containers:
+  - name: gotenberg
+    image: gotenberg/gotenberg:9
+    ports:
+      - containerPort: 3000
+    securityContext:
+      runAsUser: 1001
+      allowPrivilegeEscalation: false
+      privileged: false
+    readinessProbe:
+      httpGet:
+        path: /health
+        port: 3000
+    livenessProbe:
+      httpGet:
+        path: /health
+        port: 3000
+    resources:
+      requests:
+        memory: 512Mi
+        cpu: 200m
+```
+
+A community-maintained Helm chart lives at [MaikuMori/helm-charts](https://github.com/MaikuMori/helm-charts).
+
+## Cloud Run
+
+The `-cloudrun` images come configured for Cloud Run:
+
+- They listen on the port Cloud Run sets in `PORT`.
+- They start Chromium and LibreOffice with the container, so the first request doesn't wait.
+- They log with the fields Cloud Logging expects.
+- They send webhooks before answering, since Cloud Run may pause a container that has no request in flight.
+
+Give the service at least 1Gi of memory. Cloud Run caps HTTP/1 requests at 32MB; use HTTP/2 to send larger files.
+
+## AWS Lambda
+
+The `-aws-lambda` images run behind the [AWS Lambda Web Adapter](https://github.com/awslabs/aws-lambda-web-adapter), already configured:
+
+- The adapter forwards to port 3000 (`AWS_LWA_PORT`) and waits for `/health` before the first invocation.
+- It buffers each response (`AWS_LWA_INVOKE_MODE=buffered`), which caps responses at 6MB.
+- Gotenberg sends webhooks before answering, since Lambda may freeze the function once it answers.
+
+For results over 6MB, have Gotenberg upload them with a webhook, to S3 for example, instead of answering with them.

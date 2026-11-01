@@ -138,7 +138,7 @@ export function StartButton() {
   return (
     <Link
       className={cx("xb-btn xb-btn--primary")}
-      to="/docs/getting-started/introduction"
+      to="/docs/getting-started/first-pdf"
     >
       Getting started
       <span className={cx("xb-btn__icon")}>

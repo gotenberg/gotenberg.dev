@@ -1,0 +1,67 @@
+---
+id: first-pdf
+title: Your first PDF
+---
+
+Three requests, three PDFs: a web page, your own HTML, and a Word document. Start Gotenberg first:
+
+```bash
+docker run --rm -p "3000:3000" gotenberg/gotenberg:9
+```
+
+## Print a web page
+
+Send the URL. Chromium loads the page as a browser would, then prints it:
+
+<Request
+  route="/forms/chromium/convert/url"
+  fields={{ url: "https://example.com" }}
+  output="example.pdf"
+/>
+
+`-o example.pdf` saves the answer. Without it, cURL prints the PDF's bytes to your terminal.
+
+## Convert your own HTML
+
+Upload an `index.html` and the files it links to. Gotenberg serves them side by side, so a relative link such as `style.css` resolves:
+
+<Request
+  route="/forms/chromium/convert/html"
+  files={["index.html", "style.css"]}
+  output="invoice.pdf"
+/>
+
+The entry file must be named `index.html`. The other files keep their names.
+
+## Convert a Word document
+
+LibreOffice converts Word, Excel, PowerPoint, OpenDocument and many more formats:
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["report.docx"]}
+  output="report.pdf"
+/>
+
+Upload several documents to get one PDF each, in a ZIP.
+
+## Add a stage
+
+A conversion can go further in the same request. The `stages` field lists the steps to run on the PDF, in order. This one makes the report an archival PDF/A-4:
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["report.docx"]}
+  stages={[{ op: "remediate", profile: "PDF/A-4" }]}
+  output="report.pdf"
+  response={`HTTP/1.1 200 OK
+Content-Type: application/pdf
+Gotenberg-Remediation-Residual: 0
+Gotenberg-Remediation-Rolled-Back: 0`}
+/>
+
+`Gotenberg-Remediation-Residual: 0` means no violation is left: the PDF conforms to PDF/A-4.
+
+## Next
+
+[How requests work](/docs/getting-started/requests) covers the rest of a request: archives, files to download, output names, ZIP answers and errors.

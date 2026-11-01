@@ -1,0 +1,31 @@
+---
+id: about
+title: About Gotenberg
+---
+
+Gotenberg is an HTTP API in a Docker container. You post files and form fields; it answers with a PDF, a ZIP of several files, or JSON.
+
+## What runs inside
+
+- **Chromium** prints web pages: a URL, an HTML file with its assets, or Markdown. It also takes screenshots.
+- **LibreOffice** converts office documents: Word, Excel, PowerPoint, OpenDocument and many more. Gotenberg drives it through [lok](https://github.com/gotenberg/lok), a small program built on LibreOfficeKit.
+- **litho**, a PDF processor written in Go, does everything after the conversion: merge, split, stamp, sign, encrypt, remediate to PDF/A or PDF/UA, and validate.
+
+Every image variant includes litho. The `-chromium` and `-libreoffice` variants leave out the other engine: see [Install](/docs/getting-started/installation#image-variants).
+
+## How a request flows
+
+1. Gotenberg reads the multipart form: uploaded files, ZIP archives, and files to download from URLs.
+2. A conversion route hands the files to Chromium or LibreOffice. A `/forms/pdf` route skips this step.
+3. Gotenberg runs the stages you list, in order: merge, then stamp, then sign, for example.
+4. It answers with the result, or uploads it to your webhook and answers right away.
+
+Gotenberg keeps nothing between requests. It deletes a request's files once it answers, so you can run as many containers as you need behind a load balancer.
+
+## Keep it private
+
+Gotenberg loads the URLs and runs the documents you send it. Treat it like a database: keep it behind your firewall, and don't expose it to the public internet.
+
+## Open source
+
+Gotenberg is open source, under the MIT license, on [GitHub](https://github.com/gotenberg/gotenberg). Its sponsors, listed at the bottom of every docs page, fund its development.

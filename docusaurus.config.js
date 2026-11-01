@@ -109,7 +109,7 @@ module.exports = {
         {
           type: "doc",
           label: "Documentation",
-          docId: "getting-started/introduction",
+          docId: "index",
         },
         {
           href: "https://github.com/gotenberg/gotenberg/discussions",
@@ -143,15 +143,15 @@ module.exports = {
           items: [
             {
               label: "Getting Started",
-              to: "/docs/getting-started/introduction",
+              to: "/docs/getting-started/first-pdf",
             },
             {
               label: "Explore All Routes",
-              to: "/docs/getting-started/introduction",
+              to: "/docs",
             },
             {
               label: "Configuration",
-              to: "/docs/getting-started/introduction",
+              to: "/docs",
             },
           ],
         },

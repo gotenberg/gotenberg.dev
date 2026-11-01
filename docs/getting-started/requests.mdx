@@ -1,0 +1,133 @@
+---
+id: requests
+title: How requests work
+---
+
+Every route takes a `multipart/form-data` POST: files, form fields and headers. It answers with a file, a ZIP of several files, or JSON.
+
+## Send files
+
+Upload each file under `files`, once per file:
+
+<Request
+  route="/forms/chromium/convert/html"
+  files={["index.html", "style.css"]}
+  output="invoice.pdf"
+/>
+
+File names matter. The HTML route looks for `index.html`, and the PDFs a route produces are named after the files you sent.
+
+Gotenberg takes the files in the alphanumeric order of their names, not in the order you upload them: `2.pdf` comes before `10.pdf`. To merge in a given order, name the files after it.
+
+## Send a ZIP
+
+Upload a ZIP under `archives`. Gotenberg unpacks it, and each entry counts as a file uploaded under `files`:
+
+<Request
+  route="/forms/chromium/convert/html"
+  files={[{ field: "archives", name: "site.zip" }]}
+  output="invoice.pdf"
+/>
+
+You can mix `archives` and `files` in the same request. A ZIP uploaded under `files` stays a ZIP.
+
+## Download files
+
+List URLs in `downloadFrom` and Gotenberg downloads them before it starts, as if you had uploaded them. Each entry takes a `url` and, optionally, `extraHttpHeaders` to send along:
+
+<Request
+  route="/forms/libreoffice/convert"
+  fields={{
+    downloadFrom: [
+      {
+        url: "https://files.example.com/report.docx",
+        extraHttpHeaders: { Authorization: "Bearer …" },
+      },
+    ],
+  }}
+  output="report.pdf"
+  run={false}
+/>
+
+The server must answer with a `Content-Disposition` header that names the file. Operators can turn the feature off with `--api-disable-download-from`.
+
+## Name the result
+
+Set the `Gotenberg-Output-Filename` header, without extension. Gotenberg adds the right one:
+
+<Request
+  route="/forms/chromium/convert/html"
+  files={["index.html", "style.css"]}
+  headers={{ "Gotenberg-Output-Filename": "invoice" }}
+  output="invoice.pdf"
+  response={`HTTP/1.1 200 OK
+Content-Disposition: attachment; filename="invoice.pdf"
+Content-Type: application/pdf`}
+/>
+
+Without it, Gotenberg picks a name: `report.docx.pdf` for an uploaded `report.docx`, a random one for a web page.
+
+## Read the answer
+
+One result comes back as is: `Content-Type: application/pdf`, for example. Several results come back in a ZIP, each named after its source. Splitting a three-page report in two gives:
+
+<Request
+  route="/forms/pdf/pipe"
+  files={["report.pdf"]}
+  stages={[{ op: "split", ranges: ["1", "2-3"] }]}
+  output="report.zip"
+  response={`HTTP/1.1 200 OK
+Content-Type: application/zip
+
+report_0.pdf
+report_1.pdf`}
+/>
+
+The routes that read a PDF answer JSON, one entry per file:
+
+<Request
+  route="/forms/pdf/info"
+  files={["report.pdf"]}
+  response={`{
+  "report.pdf": {
+    "pages": 3,
+    "version": "1.7",
+    "encrypted": false,
+    "tagged": false,
+    "linearized": false,
+    "formFields": false
+  }
+}`}
+  responseLanguage="json"
+/>
+
+## Follow a request
+
+Every answer carries two headers:
+
+- `Gotenberg-Trace` identifies the request in Gotenberg's logs. Send your own value to correlate it with yours; otherwise Gotenberg makes one up.
+- `Gotenberg-Version` names the Gotenberg version that answered.
+
+## Errors
+
+An error answers with a status and a message that says what to fix:
+
+<Request
+  route="/forms/chromium/convert/url"
+  fields={{ url: "https://example.com", paperSize: "A9" }}
+  status={400}
+  response={`HTTP/1.1 400 Bad Request
+
+Invalid form data: form field 'paperSize' is invalid (got 'A9', want A3, A4, A5, B4, B5, Letter, Legal or Tabloid)`}
+/>
+
+| Status | Meaning                                                                         |
+| :----- | :------------------------------------------------------------------------------ |
+| 400    | A form field or header is missing or invalid. The message names it.             |
+| 403    | A URL to load or download is blocked by the outbound URL filtering.             |
+| 404    | The route doesn't exist, or its engine isn't in this image.                     |
+| 413    | The request is larger than `--api-body-limit` allows.                           |
+| 415    | The request isn't `multipart/form-data`.                                        |
+| 429    | The Chromium or LibreOffice queue is full. Retry shortly.                       |
+| 503    | The request took longer than `--api-timeout`, 30 seconds by default.            |
+| 500    | Something else failed. `Gotenberg-Trace` finds the details in Gotenberg's logs. |

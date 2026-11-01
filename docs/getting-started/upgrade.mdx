@@ -1,0 +1,195 @@
+---
+id: upgrade
+title: Upgrade from 8.x
+---
+
+Gotenberg 9 hands its PDF work to litho, one PDF engine, and turns post-processing into stages you list in order. Most upgrades rename fields and move options into `stages`.
+
+:::warning
+
+Gotenberg 9 ignores form fields it doesn't know. A Gotenberg 8 request still answers 200, without the steps its old fields asked for: `pdfa=PDF/A-2b` no longer makes a PDF/A, and `merge=true` no longer merges. Check each request against this page.
+
+:::
+
+## The image
+
+- `gotenberg/gotenberg:9` is the new image. The `latest` tag moves to 9 with the release: pin `:8` until you upgrade.
+- litho takes over from pdfcpu, QPDF, pdftk and ExifTool, the tools behind Gotenberg 8's PDF engines. They leave the image, along with Java, Python and unoconverter. A custom image that calls them must install them itself.
+- LibreOffice now runs through lok: `LOK_BIN_PATH` replaces `UNOCONVERTER_BIN_PATH`. `PDFCPU_BIN_PATH`, `QPDF_BIN_PATH`, `PDFTK_BIN_PATH` and `EXIFTOOL_BIN_PATH` are gone.
+- The variants, architectures, user (UID 1001), port and command don't change.
+
+## Routes
+
+The `/forms/pdfengines` routes become `/forms/pdf` routes. The old paths answer 404.
+
+| Gotenberg 8                             | Gotenberg 9                                                 |
+| :-------------------------------------- | :---------------------------------------------------------- |
+| `/forms/pdfengines/merge`               | `/forms/pdf/merge`                                          |
+| `/forms/pdfengines/split`               | `/forms/pdf/split`, or `/forms/pdf/select` for `splitUnify` |
+| `/forms/pdfengines/flatten`             | `/forms/pdf/flatten-form`                                   |
+| `/forms/pdfengines/optimize`            | `/forms/pdf/optimize`                                       |
+| `/forms/pdfengines/convert`             | `/forms/pdf/remediate`                                      |
+| `/forms/pdfengines/metadata/read`       | `/forms/pdf/metadata`                                       |
+| `/forms/pdfengines/metadata/write`      | `/forms/pdf/set-metadata`                                   |
+| `/forms/pdfengines/bookmarks/read`      | `/forms/pdf/bookmarks`                                      |
+| `/forms/pdfengines/bookmarks/write`     | `/forms/pdf/set-bookmarks`                                  |
+| `/forms/pdfengines/encrypt`             | `/forms/pdf/encrypt`                                        |
+| `/forms/pdfengines/embed`               | `/forms/pdf/attach`                                         |
+| `/forms/pdfengines/watermark`, `/stamp` | `/forms/pdf/stamp-text`, `/stamp-image`, `/stamp-pdf`       |
+| `/forms/pdfengines/rotate`              | `/forms/pdf/rotate`                                         |
+| `/forms/pdfengines/factur-x`            | `/forms/pdf/remediate` with `profile=Factur-X`              |
+| `/prometheus/metrics`                   | Removed: see [Metrics](#metrics)                            |
+
+The Chromium and LibreOffice routes, `/health`, `/version` and `/debug` keep their paths.
+
+## Post-processing becomes stages
+
+Gotenberg 8 took post-processing as flat fields and ran them in a fixed order:
+
+```bash title="Gotenberg 8"
+curl \
+  --request POST http://localhost:3000/forms/libreoffice/convert \
+  --form files=@annex.docx \
+  --form files=@report.docx \
+  --form merge=true \
+  --form pdfa=PDF/A-2b \
+  -o report.pdf
+```
+
+Gotenberg 9 takes them as `stages`, and runs them in the order you list them:
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["annex.docx", "report.docx"]}
+  stages={[{ op: "merge" }, { op: "remediate", profile: "PDF/A-2b" }]}
+  output="report.pdf"
+  response={`HTTP/1.1 200 OK
+Content-Type: application/pdf
+Gotenberg-Remediation-Residual: 0
+Gotenberg-Remediation-Rolled-Back: 0`}
+/>
+
+The Chromium routes, the LibreOffice route and `/forms/pdf/pipe` take `stages`. Each stage also has its own route, `/forms/pdf/<op>`, which takes the stage's options as form fields.
+
+| Gotenberg 8 fields                          | Gotenberg 9 stage                                                                |
+| :------------------------------------------ | :------------------------------------------------------------------------------- |
+| `merge` (LibreOffice)                       | `{"op": "merge"}`                                                                |
+| `splitMode=intervals`, `splitSpan`          | `{"op": "split", "every": 2}`                                                    |
+| `splitMode=pages`, `splitSpan`              | `{"op": "split", "ranges": ["1", "2-3"]}`: one PDF per range                     |
+| `splitMode=pages`, `splitUnify=true`        | `{"op": "select", "pages": "1-3"}`                                               |
+| `pdfa`, `pdfua`                             | `{"op": "remediate", "profile": "PDF/A-2b"}`                                     |
+| `metadata`                                  | `{"op": "set-metadata", "title": "…"}`: see [Metadata](#metadata-and-bookmarks)  |
+| `userPassword`, `ownerPassword`, `allow*`   | `{"op": "encrypt", "userPassword": "…", "permissions": {"print": false}}`        |
+| `embeds` files, `embedsMetadata`            | `{"op": "attach", "file": "data.xml"}`, one stage per file                       |
+| `watermark*`, `stamp*`                      | `stamp-text`, `stamp-image` or `stamp-pdf`, always over the page                 |
+| `rotateAngle`, `rotatePages`                | `{"op": "rotate", "angle": 90, "pages": "1"}`                                    |
+| `flatten`                                   | `{"op": "flatten-form"}`                                                         |
+| `optimizeImages`, `imageQuality`            | `{"op": "optimize"}`                                                             |
+| `facturxXml` file and the `facturx*` fields | `{"op": "remediate", "profile": "Factur-X", "xml": "invoice.xml", "level": "…"}` |
+
+A stage names the files it needs, such as an image to stamp or an XML to attach, by their uploaded names. Upload them under `files`: the `embeds`, `watermark`, `stamp` and `facturxXml` fields are gone.
+
+Gotenberg checks the order of the stages before it runs them, and answers 400 with the rule a list breaks:
+
+- `decrypt` comes first, and `render` last.
+- A list has at most one `remediate` and one `encrypt`.
+- After `remediate`, only `encrypt`, `optimize`, `sign`, `timestamp` and `render` may follow.
+- After `encrypt`, only `optimize` and `render` may follow.
+- After `sign` or `timestamp`, only `sign`, `timestamp` and `render` may follow.
+- `encrypt` doesn't combine with `sign`, `timestamp`, or a PDF/A or Factur-X `remediate`.
+
+Gotenberg 8 converted to PDF/A again after its other steps. Gotenberg 9 doesn't: LibreOffice's `nativePdfa` applies at export, and the stages after it may break conformance. End the list with a `remediate` stage instead.
+
+## Renamed fields
+
+A field that has a twin among the stages now starts with `native`. Some values change format too.
+
+| Route       | Gotenberg 8                  | Gotenberg 9                                                               |
+| :---------- | :--------------------------- | :------------------------------------------------------------------------ |
+| Chromium    | `waitWindowStatus`           | `waitForWindowStatus`, which now waits as documented                      |
+| Chromium    | `nativePageRanges`           | `nativePages`                                                             |
+| Chromium    | `generateDocumentOutline`    | `nativeBookmarks`                                                         |
+| Chromium    | `generateTaggedPdf`          | `nativeTaggedPdf`                                                         |
+| Screenshots | `quality`, 0 to 100          | `quality`, 1 to 100                                                       |
+| LibreOffice | `nativePageRanges`           | `nativePages`                                                             |
+| LibreOffice | `exportBookmarks`            | `nativeBookmarks`                                                         |
+| LibreOffice | `generateTaggedPdf`          | `nativeTaggedPdf`                                                         |
+| LibreOffice | `singlePageSheets`           | `singlePage`                                                              |
+| LibreOffice | `pdfa`                       | `nativePdfa`: `PDF/A-1b`, `PDF/A-2b`, `PDF/A-3b` or `PDF/A-4`             |
+| LibreOffice | `pdfua`, a boolean           | `nativePdfua`, the string `PDF/UA-1`                                      |
+| LibreOffice | `quality`                    | `nativeQuality`                                                           |
+| LibreOffice | `losslessImageCompression`   | `nativeLosslessImageCompression`                                          |
+| LibreOffice | `reduceImageResolution`      | `nativeReduceImageResolution`                                             |
+| LibreOffice | `maxImageResolution`         | `nativeMaxImageResolution`                                                |
+| LibreOffice | `nativeWatermarkColor`       | `#rrggbb`, no longer a decimal number                                     |
+| LibreOffice | `nativeWatermarkFontHeight`  | `nativeWatermarkFontSize`                                                 |
+| LibreOffice | `nativeWatermarkFontName`    | `nativeWatermarkFont`                                                     |
+| LibreOffice | `nativeWatermarkRotateAngle` | `nativeWatermarkRotation`, in degrees, counter-clockwise                  |
+| LibreOffice | `initialView`, a number      | `default`, `outline` or `thumbnails`                                      |
+| LibreOffice | `magnification`, a number    | `default`, `fitWindow`, `fitWidth`, `fitVisible` or `zoom`                |
+| LibreOffice | `pageLayout`, a number       | `default`, `singlePage`, `oneColumn`, `twoColumnLeft` or `twoColumnRight` |
+| LibreOffice | `nativePdfFormats`           | Removed: `nativePdfa` and `nativePdfua` always apply natively             |
+| Both        | none                         | `paperSize`: `A3`, `A4`, `A5`, `B4`, `B5`, `Letter`, `Legal` or `Tabloid` |
+| All         | `downloadFrom[].embedded`    | Removed: downloaded files are inputs                                      |
+
+Chromium no longer makes PDF/A on its own: add a `remediate` stage.
+
+## Metadata and bookmarks
+
+- `set-metadata` writes the eight standard fields: `title`, `author`, `subject`, `keywords`, `creator`, `producer`, `creationDate` and `modDate`. Gotenberg 8 wrote any ExifTool tag.
+- `/forms/pdf/metadata` answers with the same eight fields, not ExifTool's tags.
+- Write dates in the PDF format: `D:20260101120000Z`.
+- Bookmarks take `pageNumber` instead of `page`, and nest with `children`.
+
+## Factur-X
+
+- `remediate` with `profile=Factur-X` embeds the invoice: `xml` names the uploaded XML, `level` its conformance level.
+- Without `xml`, it repairs the invoice the PDF already carries.
+- `facturxVersion` is gone. The MINIMUM and BASIC WL levels now embed with the relationship `Data`, as Factur-X requires.
+
+## Output names
+
+- A merged PDF takes the name of its first file, in alphanumeric order. Gotenberg 8 named it at random.
+- LibreOffice names its PDFs after their documents, `report.docx.pdf`, even for a single document.
+- `Gotenberg-Output-Filename` still overrides both.
+
+## Webhooks
+
+- `Gotenberg-Webhook-Error-Url` and `Gotenberg-Webhook-Error-Method` are gone.
+- `Gotenberg-Webhook-Events-Url` is required with `Gotenberg-Webhook-Url`. Errors reach it as `webhook.error` events.
+
+## Flags
+
+| Gotenberg 8                                               | Gotenberg 9                                  |
+| :-------------------------------------------------------- | :------------------------------------------- |
+| `--pdfengines-*-engines`, `--pdfengines-engines`          | Removed: litho does all the PDF work         |
+| `--pdfengines-disable-routes`                             | `--pdf-disable-routes`                       |
+| `--pdfengines-max-concurrency`                            | `--pdf-max-concurrency`                      |
+| `--prometheus-*`                                          | Removed: see [Metrics](#metrics)             |
+| `--api-trace-header`                                      | `--api-correlation-id-header`                |
+| `--api-disable-health-check-logging`                      | `--api-disable-health-check-route-telemetry` |
+| `--log-format`                                            | `--log-std-format`                           |
+| `--log-enable-gcp-fields`                                 | `--log-std-enable-gcp-fields`                |
+| `--chromium-incognito`                                    | Removed                                      |
+| `--webhook-error-allow-list`, `--webhook-error-deny-list` | Removed, with the error URL                  |
+
+New flags: `--pdf-max-stream-bytes`, `--pdf-max-embedded-file-bytes` and `--pdf-max-image-pixels` bound what litho reads. `--pdf-allow-list`, `--pdf-deny-list` and their siblings filter the timestamp authorities litho calls. `--api-archive-max-entries` and `--api-archive-max-ratio` bound the ZIPs sent under `archives`. `--libreoffice-enable-macros` lets documents run macros, which stay off by default.
+
+The other flags keep their names and defaults.
+
+## Metrics
+
+The Prometheus module is gone. Gotenberg exports its metrics with OpenTelemetry, which can still serve them to Prometheus:
+
+```bash
+docker run --rm -p "3000:3000" -p "9464:9464" \
+  -e OTEL_METRICS_EXPORTER=prometheus \
+  -e OTEL_EXPORTER_PROMETHEUS_HOST=0.0.0.0 \
+  gotenberg/gotenberg:9
+```
+
+Prometheus then scrapes `http://localhost:9464/metrics`. The metric names lose their `gotenberg_` prefix: `gotenberg_chromium_requests_queue_size` becomes `chromium_requests_queue_size`.
+
+## Custom builds
+
+A Go program that builds its own Gotenberg imports `github.com/gotenberg/gotenberg/v9`. The `PdfEngine`, `PdfEngineProvider` and `MetricsProvider` interfaces are gone.
