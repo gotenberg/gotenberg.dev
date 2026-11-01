@@ -4,92 +4,80 @@ import Link from "@docusaurus/Link";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 import styles from "./Sponsors.module.css";
 
-// Full-width light-gray bandeau rendered below the doc content and above the
-// footer (see src/theme/DocRoot/Layout). A single centered logo bar: sponsor
-// logos, a hairline divider, the runtime logos, then the CTA. Logos use the
-// homepage grayscale overlay.
+// [link, logo, name, logo kind].
+const SPONSORS = [
+  [
+    "https://thecodingmachine.com",
+    "/img/thecodingmachine-logo.png",
+    "TheCodingMachine",
+  ],
+  ["https://pdfme.com", "/img/pdfme-logo.png", "pdfme", "banner"],
+  ["https://pdfbolt.com", "/img/pdfbolt-logo.svg", "PDFBolt"],
+  ["https://filetopdf.dev", "/img/filetopdf-logo.png", "FileToPDF", "wordmark"],
+];
+
+const POWERED_BY = [
+  [
+    "https://docs.docker.com/docker-hub/repos/manage/trusted-content/dsos-program/",
+    "/img/docker-logo-blue.svg",
+    "Docker",
+    "small",
+  ],
+  [
+    "https://jb.gg/OpenSourceSupport",
+    "/img/jetbrains-logo.svg",
+    "JetBrains",
+    "small",
+  ],
+];
+
+function Card({ href, src, alt, kind }) {
+  return (
+    <Link className={clsx(styles.card, kind && styles[kind])} href={href}>
+      <img className={styles.logo} src={useBaseUrl(src)} alt={alt} />
+    </Link>
+  );
+}
+
+// The sponsors band below every doc page and above the footer (see
+// src/theme/DocRoot/Layout). Logos in color on white cards, in both themes,
+// as on the homepage.
 export default function Sponsors() {
   return (
-    <aside className={clsx("sponsor-band", styles.band)} aria-label="Sponsors">
+    <aside className={styles.band} aria-label="Sponsors">
       <div className={clsx("container", styles.inner)}>
-        <div className={styles.logos}>
-          <a
-            className={styles.logoLink}
-            href="https://thecodingmachine.com"
-            target="_blank"
-          >
-            <img
-              className={clsx(styles.logo, styles.logoWide)}
-              src={useBaseUrl("/img/thecodingmachine-logo.png")}
-              alt="TheCodingMachine"
-            />
-          </a>
-          <a
-            className={styles.logoLink}
-            href="https://pdfme.com"
-            target="_blank"
-          >
-            <img
-              className={clsx(styles.logo, styles.logoWide)}
-              src={useBaseUrl("/img/pdfme-logo.png")}
-              alt="pdfme"
-            />
-          </a>
-          <a
-            className={styles.logoLink}
-            href="https://pdfbolt.com"
-            target="_blank"
-          >
-            <img
-              className={clsx(styles.logo, styles.logoWide)}
-              src={useBaseUrl("/img/pdfbolt-logo.svg")}
-              alt="PdfBolt"
-            />
-          </a>
-          <a
-            className={styles.logoLink}
-            href="https://filetopdf.dev"
-            target="_blank"
-          >
-            <img
-              className={clsx(styles.logo, styles.logoWordmark)}
-              src={useBaseUrl("/img/filetopdf-logo.png")}
-              alt="FileToPDF"
-            />
-          </a>
+        <div className={styles.group}>
+          <span className={styles.label}>Sponsors</span>
+          <div className={styles.cards}>
+            {SPONSORS.map(([href, src, alt, kind]) => (
+              <Card key={alt} href={href} src={src} alt={alt} kind={kind} />
+            ))}
+          </div>
         </div>
-
-        <span className={styles.divider} aria-hidden="true" />
-
-        <div className={styles.logos}>
-          <a
-            className={styles.logoLink}
-            href="https://docs.docker.com/docker-hub/repos/manage/trusted-content/dsos-program/"
-            target="_blank"
-          >
-            <img
-              className={clsx(styles.logo, styles.logoSmall)}
-              src={useBaseUrl("/img/docker-logo-blue.svg")}
-              alt="Docker"
-            />
-          </a>
-          <a
-            className={styles.logoLink}
-            href="https://jb.gg/OpenSourceSupport"
-            target="_blank"
-          >
-            <img
-              className={clsx(styles.logo, styles.logoSmall)}
-              src={useBaseUrl("/img/jetbrains-logo.svg")}
-              alt="JetBrains"
-            />
-          </a>
+        <div className={styles.group}>
+          <span className={styles.label}>Powered by</span>
+          <div className={styles.cards}>
+            {POWERED_BY.map(([href, src, alt, kind]) => (
+              <Card key={alt} href={href} src={src} alt={alt} kind={kind} />
+            ))}
+            <Link
+              className={styles.cta}
+              href="https://github.com/sponsors/gulien"
+            >
+              <svg
+                className={styles.heart}
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3.1 4.5 6.9 4.5c2.1 0 3.6 1.2 5.1 3 1.5-1.8 3-3 5.1-3 3.8 0 6 3.9 4.5 7.3C19.5 16.4 12 21 12 21z" />
+              </svg>
+              Become a sponsor
+            </Link>
+          </div>
         </div>
-
-        <Link className={styles.cta} to="https://github.com/sponsors/gulien">
-          <span className={styles.heart}>&#10084;</span>
-          <span>Become a sponsor</span>
-        </Link>
       </div>
     </aside>
   );

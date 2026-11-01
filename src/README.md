@@ -79,7 +79,7 @@ Core documentation component. Renders method badge + path header, collapsible pa
 
 ### Sponsors (`src/components/documentation/Sponsors.js`)
 
-Full-width light-gray sponsors bandeau shown below the content on every doc page. Mounted once in `src/theme/DocRoot/Layout` (not imported per page); a single centered row of grayscale logos with a hairline divider, mirroring the homepage strip.
+Full-width sponsors band shown below the content on every doc page. Mounted once in `src/theme/DocRoot/Layout` (not imported per page). Two labelled groups, Sponsors and Powered by, of white logo cards in color, as on the homepage; the cards stay white in dark mode.
 
 ## Theme overrides
 
@@ -92,7 +92,7 @@ Full-width light-gray sponsors bandeau shown below the content on every doc page
 - Name a custom property that holds a font family with "font" in it (`--font-serif`, `--font-display`). The production CSS minifier drops any `@font-face` whose family only appears in properties without "font" in their name, and `npm start` doesn't minify, so check fonts on `npm run build`.
 - Use CSS Modules for component-scoped styles.
 - Use `src/css/custom.css` only for global overrides (admonitions, sidebar, footer, typography).
-- Transitions: `0.2s ease`, color and text-decoration only. No lifts, glows, or keyframe animations. The homepage is the exception: hover lifts and the keyframe animations listed above, never glows.
+- Transitions: `0.2s ease`. Cards may lift on hover (`--lift` and a 2–3px rise); never glows. Keyframe animations only on the homepage, as listed above.
 - Use `clsx` for conditional class composition in React components.
 - Respect Docusaurus's Infima CSS framework. Override with specificity, not `!important`.
 - Use `@docusaurus/Link` for internal navigation. Use `useBaseUrl` for static asset paths.

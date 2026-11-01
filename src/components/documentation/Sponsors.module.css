@@ -1,109 +1,125 @@
 /*
- * Full-width light-gray sponsors bandeau for doc pages (mounted in
- * src/theme/DocRoot/Layout). A single centered logo bar with hairline
- * dividers (no text labels); logos use the homepage grayscale overlay
- * (muted, color on hover). Sits between the doc content and the footer.
+ * The sponsors band below every doc page (mounted in src/theme/DocRoot/Layout):
+ * two labelled groups of white logo cards, in color, as on the homepage. The
+ * cards stay white in dark mode, so every logo shows in its own colors.
  */
 
 .band {
-  background: var(--paper-shade);
+  padding: 2rem 0;
   border-top: 1px solid var(--ifm-border-color);
-  padding: 1.75rem 0;
+  background: var(--paper-shade);
 }
 
 .inner {
   display: flex;
-  align-items: center;
-  justify-content: center;
   flex-wrap: wrap;
-  gap: 1.25rem 1.5rem;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 1.25rem 2.5rem;
 }
 
-.logos {
+.group {
+  display: grid;
+  gap: 10px;
+}
+
+.label {
+  color: var(--ifm-color-content-secondary);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.cards {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1.5rem;
   flex-wrap: wrap;
+  gap: 10px;
 }
 
-.divider {
-  width: 1px;
-  height: 2.25rem;
-  background: var(--ifm-border-color);
+.card {
+  display: grid;
+  place-items: center;
+  height: 64px;
+  padding: 12px 18px;
+  border: 1px solid var(--ifm-border-color);
+  border-radius: 12px;
+  background: #ffffff;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.logoLink {
-  display: inline-flex;
-  align-items: center;
+.card:hover {
+  box-shadow: var(--lift);
+  transform: translateY(-2px);
 }
 
 .logo {
   display: block;
   width: auto;
-  filter: grayscale(100%);
-  opacity: 0.6;
-  transition:
-    filter 0.2s ease,
-    opacity 0.2s ease;
+  max-width: 140px;
+  height: 34px;
 }
 
-.logoLink:hover .logo {
-  filter: grayscale(0%);
-  opacity: 1;
+/* The pdfme logo is a banner on its own green: shown whole and rounded. */
+.banner {
+  padding: 8px;
 }
 
-.logoWide {
-  height: 40px;
+.banner .logo {
+  height: 46px;
+  max-width: none;
+  border-radius: 6px;
 }
 
-.logoWordmark {
-  height: 28px;
+.wordmark .logo {
+  height: 24px;
 }
 
-.logoSmall {
-  height: 26px;
+.small .logo {
+  height: 22px;
 }
 
 .cta {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  background: var(--ifm-background-color);
+  gap: 8px;
+  height: 64px;
+  padding: 0 20px;
+  border: 1.5px dashed var(--ifm-border-color);
+  border-radius: 12px;
   color: var(--ifm-heading-color);
-  border: 1px solid var(--ifm-border-color);
-  padding: 0.45rem 1.25rem;
-  border-radius: 2px;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 600;
   white-space: nowrap;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
 }
 
 .cta:hover {
+  border-color: var(--rubric);
+  background: color-mix(in srgb, var(--rubric) 8%, transparent);
   color: var(--ifm-heading-color);
   text-decoration: none;
-  border-color: rgba(180, 35, 24, 0.4);
 }
 
 .heart {
   color: var(--rubric);
-  font-size: 0.9rem;
 }
 
 @media (max-width: 996px) {
-  .band {
-    padding: 2rem 0;
-  }
-
   .inner {
     flex-direction: column;
-    justify-content: center;
-    text-align: center;
-    gap: 1.5rem;
+    align-items: center;
   }
 
-  /* Vertical dividers don't make sense in the stacked layout. */
-  .divider {
-    display: none;
+  .group {
+    justify-items: center;
+  }
+
+  .cards {
+    justify-content: center;
   }
 }

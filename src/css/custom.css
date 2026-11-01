@@ -724,20 +724,48 @@ html[data-theme="dark"] .theme-code-block button[class*="copyButton"] {
   border-bottom-color: var(--table-row-border);
 }
 
-/* --- SPONSOR BANDS --- */
-/* Sponsor logos are drawn for light paper. In dark mode, the bands invert them
-   to faint light ink and screen-blend away their white areas. Hover restores
-   the original colors. */
-html[data-theme="dark"] .sponsor-band img {
-  filter: grayscale(100%) invert(100%);
-  mix-blend-mode: screen;
-  opacity: 0.4;
+/* --- 404 --- */
+.hero__title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.035em;
 }
 
-html[data-theme="dark"] .sponsor-band a:hover img {
-  filter: none;
-  mix-blend-mode: normal;
-  opacity: 1;
+/* --- SEARCH --- */
+/* The DocSearch dialog on the site's panels. The values follow the theme
+   through the site's tokens; html:root outranks DocSearch's own :root and
+   dark rules, which load after this file. */
+html:root,
+html:root[data-theme="dark"] {
+  --docsearch-primary-color: var(--ifm-color-primary);
+  --docsearch-highlight-color: var(--ifm-color-primary);
+  --docsearch-hit-highlight-color: color-mix(
+    in srgb,
+    var(--ifm-color-primary) 10%,
+    transparent
+  );
+  --docsearch-modal-background: var(--ifm-background-color);
+  --docsearch-footer-background: var(--panel);
+  --docsearch-hit-background: var(--panel);
+  --docsearch-searchbox-background: var(--panel);
+  --docsearch-searchbox-focus-background: var(--panel);
+  --docsearch-hit-shadow: none;
+  --docsearch-footer-shadow: none;
+  --docsearch-modal-shadow: var(--lift);
+}
+
+.DocSearch-Modal {
+  border: 1px solid var(--ifm-border-color);
+  border-radius: var(--radius);
+}
+
+.DocSearch-Form {
+  border-radius: 12px;
+}
+
+.DocSearch-Hit a {
+  border: 1px solid var(--ifm-border-color);
+  border-radius: 10px;
 }
 
 /* --- ANNOUNCEMENT BAR --- */
