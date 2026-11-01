@@ -1,0 +1,85 @@
+---
+id: compress
+title: Compress PDFs
+---
+
+Make PDFs smaller, and fit them to printers: fewer bytes, no transparency, one color space.
+
+## Optimize a PDF
+
+<Request
+  route="/forms/pdf/optimize"
+  files={["report.pdf"]}
+  output="report.pdf"
+/>
+
+Gotenberg rewrites the whole file. It packs objects into compressed streams, stores identical streams once, recompresses images, and keeps only the glyphs the document shows. This report goes from 23 to 20 KB. A page with large images shrinks more: a Chromium page with a few loses a third.
+
+## Optimize what you make
+
+Put `optimize` after the stages that change the content, such as a merge:
+
+<Request
+  route="/forms/pdf/pipe"
+  files={["report.pdf", "annex.pdf"]}
+  stages={[{ op: "merge" }, { op: "optimize" }]}
+  output="documents.pdf"
+/>
+
+A conversion takes it too:
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["report.docx"]}
+  stages={[{ op: "optimize" }]}
+  output="report.pdf"
+/>
+
+## Turn a pass off
+
+Each pass runs unless you turn it off: `objectStreams`, `dedup`, `recompressImages` and `subsetFonts`. Recompressing large images takes time, for instance:
+
+<Request
+  route="/forms/pdf/optimize"
+  files={["report.pdf"]}
+  fields={{ recompressImages: false }}
+  output="report.pdf"
+/>
+
+## Signed and encrypted PDFs
+
+A rewrite removes signatures, so a signed PDF answers 400: optimize first, then sign. A rewrite also writes an encrypted PDF decrypted, so an encrypted PDF answers 400 unless the stages decrypt or encrypt it as well:
+
+<Request
+  route="/forms/pdf/pipe"
+  files={["encrypted.pdf"]}
+  stages={[{ op: "decrypt", password: "secret" }, { op: "optimize" }]}
+  output="report.pdf"
+/>
+
+A PDF/A-1 stays conformant: Gotenberg leaves out the object streams PDF/A-1 forbids.
+
+## Flatten transparency
+
+Some printers and archival formats don't take transparency. `flatten-transparency` replaces it with opaque content:
+
+<Request
+  route="/forms/pdf/flatten-transparency"
+  files={["report.pdf"]}
+  output="report.pdf"
+/>
+
+## Convert the colors
+
+`convert-colors` puts every color in one color space: `cmyk` for a print shop, `gray` for black and white printing, `rgb` for screens, or `output-intent` for the one the PDF declares:
+
+<Request
+  route="/forms/pdf/convert-colors"
+  files={["report.pdf"]}
+  fields={{ target: "gray" }}
+  output="report.pdf"
+/>
+
+## Next
+
+LibreOffice can shrink a document's images as it exports them: see [the image fields](/docs/reference/libreoffice#images). Every stage is in the [Stages reference](/docs/reference/stages).

@@ -42,6 +42,7 @@ module.exports = {
         "process/forms",
         "process/attachments",
         "process/metadata",
+        "process/compress",
         "process/render",
       ],
     },
