@@ -1,0 +1,765 @@
+{
+  "image": "gotenberg/gotenberg:snapshot",
+  "flags": [
+    {
+      "name": "api-archive-max-entries",
+      "module": "api",
+      "env": "API_ARCHIVE_MAX_ENTRIES",
+      "type": "int",
+      "default": "10000",
+      "description": "Set the maximum number of entries of a zip archive sent in the archives form field"
+    },
+    {
+      "name": "api-archive-max-ratio",
+      "module": "api",
+      "env": "API_ARCHIVE_MAX_RATIO",
+      "type": "int",
+      "default": "100",
+      "description": "Set how many times its own size a zip archive sent in the archives form field may unpack to - guards against zip bombs"
+    },
+    {
+      "name": "api-bind-ip",
+      "module": "api",
+      "env": "API_BIND_IP",
+      "type": "string",
+      "default": null,
+      "description": "Set the IP address the API should bind to for incoming connections"
+    },
+    {
+      "name": "api-body-limit",
+      "module": "api",
+      "env": "API_BODY_LIMIT",
+      "type": "string",
+      "default": null,
+      "description": "Set the body limit for multipart/form-data requests - it accepts values like 5MB, 1GB, etc"
+    },
+    {
+      "name": "api-correlation-id-header",
+      "module": "api",
+      "env": "API_CORRELATION_ID_HEADER",
+      "type": "string",
+      "default": "Gotenberg-Trace",
+      "description": "Set the header name to use for identifying requests"
+    },
+    {
+      "name": "api-disable-debug-route-telemetry",
+      "module": "api",
+      "env": "API_DISABLE_DEBUG_ROUTE_TELEMETRY",
+      "type": "bool",
+      "default": "true",
+      "description": "Disable telemetry for the debug route"
+    },
+    {
+      "name": "api-disable-download-from",
+      "module": "api",
+      "env": "API_DISABLE_DOWNLOAD_FROM",
+      "type": "bool",
+      "default": null,
+      "description": "Disable the download from feature"
+    },
+    {
+      "name": "api-disable-health-check-route-telemetry",
+      "module": "api",
+      "env": "API_DISABLE_HEALTH_CHECK_ROUTE_TELEMETRY",
+      "type": "bool",
+      "default": "true",
+      "description": "Disable telemetry for health check route"
+    },
+    {
+      "name": "api-disable-root-route-telemetry",
+      "module": "api",
+      "env": "API_DISABLE_ROOT_ROUTE_TELEMETRY",
+      "type": "bool",
+      "default": "true",
+      "description": "Disable telemetry for the root route"
+    },
+    {
+      "name": "api-disable-version-route-telemetry",
+      "module": "api",
+      "env": "API_DISABLE_VERSION_ROUTE_TELEMETRY",
+      "type": "bool",
+      "default": "true",
+      "description": "Disable telemetry for the version route"
+    },
+    {
+      "name": "api-download-from-allow-list",
+      "module": "api",
+      "env": "API_DOWNLOAD_FROM_ALLOW_LIST",
+      "type": "strings",
+      "default": null,
+      "description": "Set the allowed URLs for the download from feature using regular expressions - supports multiple values. A match bypasses --api-download-from-deny-private-ips (API_DOWNLOAD_FROM_DENY_PRIVATE_IPS) and --api-download-from-deny-public-ips (API_DOWNLOAD_FROM_DENY_PUBLIC_IPS), so terminate the host or the pattern also matches suffix hosts, for example ^https?://internal\\.svc(:|/|$)"
+    },
+    {
+      "name": "api-download-from-deny-list",
+      "module": "api",
+      "env": "API_DOWNLOAD_FROM_DENY_LIST",
+      "type": "strings",
+      "default": null,
+      "description": "Set the denied URLs for the download from feature using regular expressions - supports multiple values"
+    },
+    {
+      "name": "api-download-from-deny-private-ips",
+      "module": "api",
+      "env": "API_DOWNLOAD_FROM_DENY_PRIVATE_IPS",
+      "type": "bool",
+      "default": null,
+      "description": "Reject downloadFrom URLs whose host resolves to a non-public IP address (loopback, RFC1918, link-local, unique-local). Enable on deployments that accept untrusted downloadFrom sources to mitigate SSRF against internal services"
+    },
+    {
+      "name": "api-download-from-deny-public-ips",
+      "module": "api",
+      "env": "API_DOWNLOAD_FROM_DENY_PUBLIC_IPS",
+      "type": "bool",
+      "default": null,
+      "description": "Reject downloadFrom URLs whose host resolves to a public IP address. Enable on air-gapped or data-governed deployments to prevent downloads from reaching the public internet"
+    },
+    {
+      "name": "api-download-from-enable-environment-proxy",
+      "module": "api",
+      "env": "API_DOWNLOAD_FROM_ENABLE_ENVIRONMENT_PROXY",
+      "type": "bool",
+      "default": null,
+      "description": "Route downloadFrom fetches through the proxy defined by the standard HTTP_PROXY, HTTPS_PROXY, and NO_PROXY variables, including credentials"
+    },
+    {
+      "name": "api-download-from-max-concurrency",
+      "module": "api",
+      "env": "API_DOWNLOAD_FROM_MAX_CONCURRENCY",
+      "type": "int",
+      "default": "10",
+      "description": "Set the maximum number of downloadFrom entries fetched concurrently per request - bounds the outbound fan-out. Set to 0 to disable this feature"
+    },
+    {
+      "name": "api-download-from-max-entries",
+      "module": "api",
+      "env": "API_DOWNLOAD_FROM_MAX_ENTRIES",
+      "type": "int",
+      "default": null,
+      "description": "Set the maximum number of downloadFrom entries allowed per request. Set to 0 to disable this feature"
+    },
+    {
+      "name": "api-download-from-max-retry",
+      "module": "api",
+      "env": "API_DOWNLOAD_FROM_MAX_RETRY",
+      "type": "int",
+      "default": "4",
+      "description": "Set the maximum number of retries for the download from feature"
+    },
+    {
+      "name": "api-enable-basic-auth",
+      "module": "api",
+      "env": "API_ENABLE_BASIC_AUTH",
+      "type": "bool",
+      "default": null,
+      "description": "Enable basic authentication - will look for the GOTENBERG_API_BASIC_AUTH_USERNAME and GOTENBERG_API_BASIC_AUTH_PASSWORD environment variables"
+    },
+    {
+      "name": "api-enable-debug-route",
+      "module": "api",
+      "env": "API_ENABLE_DEBUG_ROUTE",
+      "type": "bool",
+      "default": null,
+      "description": "Enable the debug route"
+    },
+    {
+      "name": "api-enable-oidc-auth",
+      "module": "api",
+      "env": "API_ENABLE_OIDC_AUTH",
+      "type": "bool",
+      "default": null,
+      "description": "Enable OIDC bearer token authentication - mutually exclusive with basic authentication"
+    },
+    {
+      "name": "api-oidc-audience",
+      "module": "api",
+      "env": "API_OIDC_AUDIENCE",
+      "type": "string",
+      "default": null,
+      "description": "Set the expected OIDC audience - the token 'aud' claim must contain it"
+    },
+    {
+      "name": "api-oidc-issuer",
+      "module": "api",
+      "env": "API_OIDC_ISSUER",
+      "type": "string",
+      "default": null,
+      "description": "Set the OIDC issuer URL, e.g. https://tenant.example.com/ - the token 'iss' claim must match"
+    },
+    {
+      "name": "api-oidc-jwks-url",
+      "module": "api",
+      "env": "API_OIDC_JWKS_URL",
+      "type": "string",
+      "default": null,
+      "description": "Set the OIDC JWKS URL - discovered from the issuer's well-known configuration when empty"
+    },
+    {
+      "name": "api-port",
+      "module": "api",
+      "env": "API_PORT",
+      "type": "int",
+      "default": "3000",
+      "description": "Set the port on which the API should listen"
+    },
+    {
+      "name": "api-port-from-env",
+      "module": "api",
+      "env": "API_PORT_FROM_ENV",
+      "type": "string",
+      "default": null,
+      "description": "Set the environment variable with the port on which the API should listen - override the default port"
+    },
+    {
+      "name": "api-root-path",
+      "module": "api",
+      "env": "API_ROOT_PATH",
+      "type": "string",
+      "default": "/",
+      "description": "Set the root path of the API - for service discovery via URL paths"
+    },
+    {
+      "name": "api-start-timeout",
+      "module": "api",
+      "env": "API_START_TIMEOUT",
+      "type": "duration",
+      "default": "30s",
+      "description": "Set the time limit for the API to start"
+    },
+    {
+      "name": "api-timeout",
+      "module": "api",
+      "env": "API_TIMEOUT",
+      "type": "duration",
+      "default": "30s",
+      "description": "Set the time limit for requests"
+    },
+    {
+      "name": "api-tls-cert-file",
+      "module": "api",
+      "env": "API_TLS_CERT_FILE",
+      "type": "string",
+      "default": null,
+      "description": "Path to the TLS/SSL certificate file - for HTTPS support"
+    },
+    {
+      "name": "api-tls-key-file",
+      "module": "api",
+      "env": "API_TLS_KEY_FILE",
+      "type": "string",
+      "default": null,
+      "description": "Path to the TLS/SSL key file - for HTTPS support"
+    },
+    {
+      "name": "chromium-allow-file-access-from-files",
+      "module": "chromium",
+      "env": "CHROMIUM_ALLOW_FILE_ACCESS_FROM_FILES",
+      "type": "bool",
+      "default": null,
+      "description": "Allow file:// URIs to read other file:// URIs"
+    },
+    {
+      "name": "chromium-allow-insecure-localhost",
+      "module": "chromium",
+      "env": "CHROMIUM_ALLOW_INSECURE_LOCALHOST",
+      "type": "bool",
+      "default": null,
+      "description": "Ignore TLS/SSL errors on localhost"
+    },
+    {
+      "name": "chromium-allow-list",
+      "module": "chromium",
+      "env": "CHROMIUM_ALLOW_LIST",
+      "type": "strings",
+      "default": null,
+      "description": "Set the allowed URLs for Chromium using regular expressions - supports multiple values. A match bypasses --chromium-deny-private-ips (CHROMIUM_DENY_PRIVATE_IPS) and --chromium-deny-public-ips (CHROMIUM_DENY_PUBLIC_IPS), so terminate the host or the pattern also matches suffix hosts, for example ^https?://internal\\.svc(:|/|$)"
+    },
+    {
+      "name": "chromium-auto-start",
+      "module": "chromium",
+      "env": "CHROMIUM_AUTO_START",
+      "type": "bool",
+      "default": null,
+      "description": "Automatically launch Chromium upon initialization if set to true; otherwise, Chromium will start at the time of the first conversion"
+    },
+    {
+      "name": "chromium-clear-cache",
+      "module": "chromium",
+      "env": "CHROMIUM_CLEAR_CACHE",
+      "type": "bool",
+      "default": null,
+      "description": "Clear Chromium cache between each conversion - only applies with --chromium-shared-browser-context"
+    },
+    {
+      "name": "chromium-clear-cookies",
+      "module": "chromium",
+      "env": "CHROMIUM_CLEAR_COOKIES",
+      "type": "bool",
+      "default": null,
+      "description": "Clear Chromium cookies between each conversion - only applies with --chromium-shared-browser-context"
+    },
+    {
+      "name": "chromium-clear-storage",
+      "module": "chromium",
+      "env": "CHROMIUM_CLEAR_STORAGE",
+      "type": "bool",
+      "default": null,
+      "description": "Clear Chromium local storage between each conversion - only applies with --chromium-shared-browser-context"
+    },
+    {
+      "name": "chromium-deny-list",
+      "module": "chromium",
+      "env": "CHROMIUM_DENY_LIST",
+      "type": "strings",
+      "default": "[^file:(?!//\\/tmp/).*]",
+      "description": "Set the denied URLs for Chromium using regular expressions - supports multiple values"
+    },
+    {
+      "name": "chromium-deny-private-ips",
+      "module": "chromium",
+      "env": "CHROMIUM_DENY_PRIVATE_IPS",
+      "type": "bool",
+      "default": null,
+      "description": "Reject URLs whose host resolves to a non-public IP address (loopback, RFC1918, link-local, unique-local). Enable on deployments that accept untrusted form input to mitigate SSRF against internal services"
+    },
+    {
+      "name": "chromium-deny-public-ips",
+      "module": "chromium",
+      "env": "CHROMIUM_DENY_PUBLIC_IPS",
+      "type": "bool",
+      "default": null,
+      "description": "Reject URLs whose host resolves to a public IP address. Enable on air-gapped or data-governed deployments to prevent outbound traffic from leaving a private network"
+    },
+    {
+      "name": "chromium-disable-javascript",
+      "module": "chromium",
+      "env": "CHROMIUM_DISABLE_JAVASCRIPT",
+      "type": "bool",
+      "default": null,
+      "description": "Disable JavaScript"
+    },
+    {
+      "name": "chromium-disable-routes",
+      "module": "chromium",
+      "env": "CHROMIUM_DISABLE_ROUTES",
+      "type": "bool",
+      "default": null,
+      "description": "Disable the routes"
+    },
+    {
+      "name": "chromium-disable-web-security",
+      "module": "chromium",
+      "env": "CHROMIUM_DISABLE_WEB_SECURITY",
+      "type": "bool",
+      "default": null,
+      "description": "Don't enforce the same-origin policy"
+    },
+    {
+      "name": "chromium-enable-environment-proxy",
+      "module": "chromium",
+      "env": "CHROMIUM_ENABLE_ENVIRONMENT_PROXY",
+      "type": "bool",
+      "default": null,
+      "description": "Route Chromium's outbound requests through the proxy defined by the standard HTTP_PROXY, HTTPS_PROXY, and NO_PROXY variables, including credentials. Use this instead of --chromium-proxy-server for authenticated proxies, and leave --chromium-proxy-server and --chromium-host-resolver-rules unset"
+    },
+    {
+      "name": "chromium-host-resolver-rules",
+      "module": "chromium",
+      "env": "CHROMIUM_HOST_RESOLVER_RULES",
+      "type": "string",
+      "default": null,
+      "description": "Set custom mappings to the host resolver"
+    },
+    {
+      "name": "chromium-idle-shutdown-timeout",
+      "module": "chromium",
+      "env": "CHROMIUM_IDLE_SHUTDOWN_TIMEOUT",
+      "type": "duration",
+      "default": null,
+      "description": "Shutdown Chromium after being idle for the given duration. Set to 0 to disable this feature"
+    },
+    {
+      "name": "chromium-ignore-certificate-errors",
+      "module": "chromium",
+      "env": "CHROMIUM_IGNORE_CERTIFICATE_ERRORS",
+      "type": "bool",
+      "default": null,
+      "description": "Ignore the certificate errors"
+    },
+    {
+      "name": "chromium-max-concurrency",
+      "module": "chromium",
+      "env": "CHROMIUM_MAX_CONCURRENCY",
+      "type": "int",
+      "default": "6",
+      "description": "Maximum number of concurrent conversions. Chromium supports up to 6"
+    },
+    {
+      "name": "chromium-max-queue-size",
+      "module": "chromium",
+      "env": "CHROMIUM_MAX_QUEUE_SIZE",
+      "type": "int",
+      "default": null,
+      "description": "Maximum request queue size for Chromium. Set to 0 to disable this feature"
+    },
+    {
+      "name": "chromium-proxy-server",
+      "module": "chromium",
+      "env": "CHROMIUM_PROXY_SERVER",
+      "type": "string",
+      "default": null,
+      "description": "Set the outbound proxy server; this switch only affects HTTP and HTTPS requests"
+    },
+    {
+      "name": "chromium-restart-after",
+      "module": "chromium",
+      "env": "CHROMIUM_RESTART_AFTER",
+      "type": "int",
+      "default": "100",
+      "description": "Number of conversions after which Chromium will automatically restart. Set to 0 to disable this feature"
+    },
+    {
+      "name": "chromium-shared-browser-context",
+      "module": "chromium",
+      "env": "CHROMIUM_SHARED_BROWSER_CONTEXT",
+      "type": "bool",
+      "default": null,
+      "description": "Run every conversion in one shared browser context, so cookies, cache, and storage carry over between conversions. Only enable it when all callers trust each other: a conversion can then reuse cookies another one set"
+    },
+    {
+      "name": "chromium-start-timeout",
+      "module": "chromium",
+      "env": "CHROMIUM_START_TIMEOUT",
+      "type": "duration",
+      "default": "20s",
+      "description": "Maximum duration to wait for Chromium to start or restart"
+    },
+    {
+      "name": "gotenberg-build-debug-data",
+      "module": "gotenberg",
+      "env": "GOTENBERG_BUILD_DEBUG_DATA",
+      "type": "bool",
+      "default": "true",
+      "description": "Set if build data is needed"
+    },
+    {
+      "name": "gotenberg-graceful-shutdown-duration",
+      "module": "gotenberg",
+      "env": "GOTENBERG_GRACEFUL_SHUTDOWN_DURATION",
+      "type": "duration",
+      "default": "30s",
+      "description": "Set the graceful shutdown duration"
+    },
+    {
+      "name": "gotenberg-hide-banner",
+      "module": "gotenberg",
+      "env": "GOTENBERG_HIDE_BANNER",
+      "type": "bool",
+      "default": null,
+      "description": "Hide the ASCII art banner above the startup summary"
+    },
+    {
+      "name": "libreoffice-allow-list",
+      "module": "libreoffice",
+      "env": "LIBREOFFICE_ALLOW_LIST",
+      "type": "strings",
+      "default": null,
+      "description": "Set the allowed URLs for LibreOffice outbound fetches (embedded images, linked content) using regular expressions - supports multiple values. A match bypasses --libreoffice-deny-private-ips (LIBREOFFICE_DENY_PRIVATE_IPS) and --libreoffice-deny-public-ips (LIBREOFFICE_DENY_PUBLIC_IPS), so terminate the host or the pattern also matches suffix hosts, for example ^https?://internal\\.svc(:|/|$)"
+    },
+    {
+      "name": "libreoffice-auto-start",
+      "module": "libreoffice",
+      "env": "LIBREOFFICE_AUTO_START",
+      "type": "bool",
+      "default": null,
+      "description": "Automatically launch LibreOffice upon initialization if set to true; otherwise, LibreOffice will start at the time of the first conversion"
+    },
+    {
+      "name": "libreoffice-deny-list",
+      "module": "libreoffice",
+      "env": "LIBREOFFICE_DENY_LIST",
+      "type": "strings",
+      "default": null,
+      "description": "Set the denied URLs for LibreOffice outbound fetches using regular expressions - supports multiple values"
+    },
+    {
+      "name": "libreoffice-deny-private-ips",
+      "module": "libreoffice",
+      "env": "LIBREOFFICE_DENY_PRIVATE_IPS",
+      "type": "bool",
+      "default": null,
+      "description": "Reject LibreOffice outbound URLs whose host resolves to a non-public IP address (loopback, RFC1918, link-local, unique-local). Enable on deployments that accept untrusted documents to mitigate SSRF against internal services"
+    },
+    {
+      "name": "libreoffice-deny-public-ips",
+      "module": "libreoffice",
+      "env": "LIBREOFFICE_DENY_PUBLIC_IPS",
+      "type": "bool",
+      "default": null,
+      "description": "Reject LibreOffice outbound URLs whose host resolves to a public IP address. Enable on air-gapped or data-governed deployments to prevent outbound traffic from leaving a private network"
+    },
+    {
+      "name": "libreoffice-disable-routes",
+      "module": "libreoffice",
+      "env": "LIBREOFFICE_DISABLE_ROUTES",
+      "type": "bool",
+      "default": null,
+      "description": "Disable the routes"
+    },
+    {
+      "name": "libreoffice-enable-environment-proxy",
+      "module": "libreoffice",
+      "env": "LIBREOFFICE_ENABLE_ENVIRONMENT_PROXY",
+      "type": "bool",
+      "default": null,
+      "description": "Route LibreOffice outbound fetches through the proxy defined by the standard HTTP_PROXY, HTTPS_PROXY, and NO_PROXY variables, including credentials"
+    },
+    {
+      "name": "libreoffice-enable-macros",
+      "module": "libreoffice",
+      "env": "LIBREOFFICE_ENABLE_MACROS",
+      "type": "bool",
+      "default": null,
+      "description": "Run the macros of the converted documents, including the ones bound to document events such as load. Macros run code inside the container: enable it only for trusted documents"
+    },
+    {
+      "name": "libreoffice-idle-shutdown-timeout",
+      "module": "libreoffice",
+      "env": "LIBREOFFICE_IDLE_SHUTDOWN_TIMEOUT",
+      "type": "duration",
+      "default": null,
+      "description": "Shutdown LibreOffice after being idle for the given duration. Set to 0 to disable this feature"
+    },
+    {
+      "name": "libreoffice-max-queue-size",
+      "module": "libreoffice",
+      "env": "LIBREOFFICE_MAX_QUEUE_SIZE",
+      "type": "int",
+      "default": null,
+      "description": "Maximum request queue size for LibreOffice. Set to 0 to disable this feature"
+    },
+    {
+      "name": "libreoffice-restart-after",
+      "module": "libreoffice",
+      "env": "LIBREOFFICE_RESTART_AFTER",
+      "type": "int",
+      "default": "10",
+      "description": "Number of conversions after which LibreOffice will automatically restart. Set to 0 to disable this feature"
+    },
+    {
+      "name": "libreoffice-start-timeout",
+      "module": "libreoffice",
+      "env": "LIBREOFFICE_START_TIMEOUT",
+      "type": "duration",
+      "default": "20s",
+      "description": "Maximum duration to wait for LibreOffice to start or restart"
+    },
+    {
+      "name": "log-fields-prefix",
+      "module": "log",
+      "env": "LOG_FIELDS_PREFIX",
+      "type": "string",
+      "default": null,
+      "description": "Prepend a specified prefix to each log field key"
+    },
+    {
+      "name": "log-level",
+      "module": "log",
+      "env": "LOG_LEVEL",
+      "type": "string",
+      "default": "info",
+      "description": "Set the log level"
+    },
+    {
+      "name": "log-std-enable-gcp-fields",
+      "module": "log",
+      "env": "LOG_STD_ENABLE_GCP_FIELDS",
+      "type": "bool",
+      "default": null,
+      "description": "Use GCP-compatible field names in log output"
+    },
+    {
+      "name": "log-std-format",
+      "module": "log",
+      "env": "LOG_STD_FORMAT",
+      "type": "string",
+      "default": "auto",
+      "description": "Set the log format for standard output"
+    },
+    {
+      "name": "log-std-level-case",
+      "module": "log",
+      "env": "LOG_STD_LEVEL_CASE",
+      "type": "string",
+      "default": "lower",
+      "description": "Set the case of the level field in the standard output, either lower or upper"
+    },
+    {
+      "name": "pdf-allow-list",
+      "module": "pdf",
+      "env": "PDF_ALLOW_LIST",
+      "type": "strings",
+      "default": null,
+      "description": "Set the allowed timestamp authority URLs for the sign and timestamp stages using regular expressions - supports multiple values. A match bypasses --pdf-deny-private-ips (PDF_DENY_PRIVATE_IPS) and --pdf-deny-public-ips (PDF_DENY_PUBLIC_IPS), so terminate the host or the pattern also matches suffix hosts, for example ^https?://tsa\\.example\\.com(:|/|$)"
+    },
+    {
+      "name": "pdf-deny-list",
+      "module": "pdf",
+      "env": "PDF_DENY_LIST",
+      "type": "strings",
+      "default": null,
+      "description": "Set the denied timestamp authority URLs for the sign and timestamp stages using regular expressions - supports multiple values"
+    },
+    {
+      "name": "pdf-deny-private-ips",
+      "module": "pdf",
+      "env": "PDF_DENY_PRIVATE_IPS",
+      "type": "bool",
+      "default": null,
+      "description": "Reject timestamp authority URLs whose host resolves to a non-public IP address (loopback, RFC1918, link-local, unique-local). Enable on deployments that accept untrusted requests to mitigate SSRF against internal services"
+    },
+    {
+      "name": "pdf-deny-public-ips",
+      "module": "pdf",
+      "env": "PDF_DENY_PUBLIC_IPS",
+      "type": "bool",
+      "default": null,
+      "description": "Reject timestamp authority URLs whose host resolves to a public IP address. Enable on air-gapped or data-governed deployments"
+    },
+    {
+      "name": "pdf-disable-routes",
+      "module": "pdf",
+      "env": "PDF_DISABLE_ROUTES",
+      "type": "bool",
+      "default": null,
+      "description": "Disable the routes"
+    },
+    {
+      "name": "pdf-enable-environment-proxy",
+      "module": "pdf",
+      "env": "PDF_ENABLE_ENVIRONMENT_PROXY",
+      "type": "bool",
+      "default": null,
+      "description": "Route timestamp authority requests through the proxy defined by the standard HTTP_PROXY, HTTPS_PROXY, and NO_PROXY variables, including credentials"
+    },
+    {
+      "name": "pdf-max-concurrency",
+      "module": "pdf",
+      "env": "PDF_MAX_CONCURRENCY",
+      "type": "int",
+      "default": "1",
+      "description": "Set the maximum number of PDF documents a request processes concurrently, across all requests - raising it trades memory and CPU for speed on multi-document requests"
+    },
+    {
+      "name": "pdf-max-embedded-file-bytes",
+      "module": "pdf",
+      "env": "PDF_MAX_EMBEDDED_FILE_BYTES",
+      "type": "string",
+      "default": null,
+      "description": "Set the maximum size of an embedded file read for validation - it accepts values like 50MB, 1GB, etc; empty keeps litho's default"
+    },
+    {
+      "name": "pdf-max-image-pixels",
+      "module": "pdf",
+      "env": "PDF_MAX_IMAGE_PIXELS",
+      "type": "int",
+      "default": null,
+      "description": "Set the maximum number of pixels an image may hold - 0 keeps litho's default"
+    },
+    {
+      "name": "pdf-max-stream-bytes",
+      "module": "pdf",
+      "env": "PDF_MAX_STREAM_BYTES",
+      "type": "string",
+      "default": null,
+      "description": "Set the maximum size a PDF stream may decode to - it accepts values like 256MB, 1GB, etc; empty keeps litho's default"
+    },
+    {
+      "name": "webhook-allow-list",
+      "module": "webhook",
+      "env": "WEBHOOK_ALLOW_LIST",
+      "type": "strings",
+      "default": null,
+      "description": "Set the allowed URLs for the webhook feature using regular expressions - supports multiple values. A match bypasses --webhook-deny-private-ips (WEBHOOK_DENY_PRIVATE_IPS) and --webhook-deny-public-ips (WEBHOOK_DENY_PUBLIC_IPS), so terminate the host or the pattern also matches suffix hosts, for example ^https?://internal\\.svc(:|/|$)"
+    },
+    {
+      "name": "webhook-client-timeout",
+      "module": "webhook",
+      "env": "WEBHOOK_CLIENT_TIMEOUT",
+      "type": "duration",
+      "default": "30s",
+      "description": "Set the time limit for requests to the webhook"
+    },
+    {
+      "name": "webhook-deny-list",
+      "module": "webhook",
+      "env": "WEBHOOK_DENY_LIST",
+      "type": "strings",
+      "default": null,
+      "description": "Set the denied URLs for the webhook feature using regular expressions - supports multiple values"
+    },
+    {
+      "name": "webhook-deny-private-ips",
+      "module": "webhook",
+      "env": "WEBHOOK_DENY_PRIVATE_IPS",
+      "type": "bool",
+      "default": null,
+      "description": "Reject webhook URLs whose host resolves to a non-public IP address (loopback, RFC1918, link-local, unique-local). Enable on deployments that accept untrusted webhook destinations to mitigate SSRF against internal services"
+    },
+    {
+      "name": "webhook-deny-public-ips",
+      "module": "webhook",
+      "env": "WEBHOOK_DENY_PUBLIC_IPS",
+      "type": "bool",
+      "default": null,
+      "description": "Reject webhook URLs whose host resolves to a public IP address. Enable on air-gapped or data-governed deployments to prevent callbacks from leaving a private network"
+    },
+    {
+      "name": "webhook-disable",
+      "module": "webhook",
+      "env": "WEBHOOK_DISABLE",
+      "type": "bool",
+      "default": null,
+      "description": "Disable the webhook feature"
+    },
+    {
+      "name": "webhook-enable-environment-proxy",
+      "module": "webhook",
+      "env": "WEBHOOK_ENABLE_ENVIRONMENT_PROXY",
+      "type": "bool",
+      "default": null,
+      "description": "Route webhook callbacks through the proxy defined by the standard HTTP_PROXY, HTTPS_PROXY, and NO_PROXY variables, including credentials"
+    },
+    {
+      "name": "webhook-enable-sync-mode",
+      "module": "webhook",
+      "env": "WEBHOOK_ENABLE_SYNC_MODE",
+      "type": "bool",
+      "default": null,
+      "description": "Enable synchronous mode for the webhook feature"
+    },
+    {
+      "name": "webhook-max-retry",
+      "module": "webhook",
+      "env": "WEBHOOK_MAX_RETRY",
+      "type": "int",
+      "default": "4",
+      "description": "Set the maximum number of retries for the webhook feature"
+    },
+    {
+      "name": "webhook-retry-max-wait",
+      "module": "webhook",
+      "env": "WEBHOOK_RETRY_MAX_WAIT",
+      "type": "duration",
+      "default": "30s",
+      "description": "Set the maximum duration to wait before trying to call the webhook again"
+    },
+    {
+      "name": "webhook-retry-min-wait",
+      "module": "webhook",
+      "env": "WEBHOOK_RETRY_MIN_WAIT",
+      "type": "duration",
+      "default": "1s",
+      "description": "Set the minimum duration to wait before trying to call the webhook again"
+    }
+  ]
+}

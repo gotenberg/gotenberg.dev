@@ -1,0 +1,901 @@
+{
+  "source": "pkg/modules/pdf/stage_types.go and helpers.go in Gotenberg; defaults from litho. npm run check:api compares the names with a Gotenberg checkout.",
+  "stages": [
+    {
+      "op": "merge",
+      "summary": "Appends the PDFs into one, in the alphanumeric order of their names. The result takes the name of the first.",
+      "options": [],
+      "example": {
+        "files": ["annex.pdf", "report.pdf"],
+        "stages": [
+          {
+            "op": "merge"
+          }
+        ],
+        "output": "merged.pdf"
+      }
+    },
+    {
+      "op": "split",
+      "summary": "Cuts each PDF into several, which come back in a ZIP: `report_0.pdf`, `report_1.pdf`… The stages after it run on each part.",
+      "options": [
+        {
+          "name": "every",
+          "type": "integer",
+          "description": "Cuts every this many pages. Set `every` or `ranges`, not both."
+        },
+        {
+          "name": "ranges",
+          "type": "list",
+          "description": "One PDF per entry, each a page selection such as `1-3` or `4,6`."
+        }
+      ],
+      "example": {
+        "files": ["report.pdf"],
+        "stages": [
+          {
+            "op": "split",
+            "ranges": ["1", "2-3"]
+          }
+        ],
+        "output": "report.zip"
+      }
+    },
+    {
+      "op": "select",
+      "summary": "Keeps the pages you list, in the order you list them.",
+      "options": [
+        {
+          "name": "pages",
+          "type": "pages",
+          "required": true,
+          "description": "The pages to keep, such as `3,1` or `1-2`."
+        }
+      ],
+      "example": {
+        "files": ["report.pdf"],
+        "stages": [
+          {
+            "op": "select",
+            "pages": "3,1"
+          }
+        ]
+      }
+    },
+    {
+      "op": "delete",
+      "summary": "Removes the pages you list.",
+      "options": [
+        {
+          "name": "pages",
+          "type": "pages",
+          "required": true,
+          "description": "The pages to remove."
+        }
+      ],
+      "example": {
+        "files": ["report.pdf"],
+        "stages": [
+          {
+            "op": "delete",
+            "pages": "2"
+          }
+        ]
+      }
+    },
+    {
+      "op": "insert",
+      "summary": "Inserts the pages of another uploaded PDF.",
+      "options": [
+        {
+          "name": "source",
+          "type": "file",
+          "required": true,
+          "description": "The uploaded PDF whose pages to insert."
+        },
+        {
+          "name": "at",
+          "type": "integer",
+          "default": "0",
+          "description": "Inserts after this page. `0` inserts before the first page."
+        },
+        {
+          "name": "sourcePages",
+          "type": "pages",
+          "default": "all",
+          "description": "The pages of `source` to insert."
+        }
+      ],
+      "example": {
+        "files": ["report.pdf", "annex.pdf"],
+        "stages": [
+          {
+            "op": "insert",
+            "source": "annex.pdf",
+            "at": 1
+          }
+        ]
+      }
+    },
+    {
+      "op": "rotate",
+      "summary": "Sets the rotation of pages. Viewers turn them clockwise.",
+      "options": [
+        {
+          "name": "angle",
+          "type": "integer",
+          "required": true,
+          "description": "A multiple of 90, such as `90` or `-90`."
+        },
+        {
+          "name": "pages",
+          "type": "pages",
+          "default": "all",
+          "description": "The pages to rotate."
+        }
+      ],
+      "example": {
+        "files": ["report.pdf"],
+        "stages": [
+          {
+            "op": "rotate",
+            "angle": 90,
+            "pages": "1"
+          }
+        ]
+      }
+    },
+    {
+      "op": "stamp-text",
+      "summary": "Draws a line of text over pages.",
+      "options": [
+        {
+          "name": "text",
+          "type": "string",
+          "required": true,
+          "description": "The text to draw."
+        },
+        {
+          "name": "pages",
+          "type": "pages",
+          "default": "all",
+          "description": "The pages to stamp."
+        },
+        {
+          "name": "x",
+          "type": "number",
+          "default": "0",
+          "description": "The position, in points from the left edge."
+        },
+        {
+          "name": "y",
+          "type": "number",
+          "default": "0",
+          "description": "The position, in points from the bottom edge."
+        },
+        {
+          "name": "fontSize",
+          "type": "number",
+          "default": "12",
+          "description": "The size of the text, in points."
+        },
+        {
+          "name": "font",
+          "type": "string",
+          "default": "Helvetica",
+          "description": "One of the 14 standard PDF fonts: `Helvetica`, `Times-Roman`, `Courier`, their `-Bold`, `-Oblique` or `-Italic` variants, `Symbol` or `ZapfDingbats`."
+        },
+        {
+          "name": "color",
+          "type": "string",
+          "default": "#000000",
+          "description": "The color, as `#rrggbb`."
+        },
+        {
+          "name": "opacity",
+          "type": "number",
+          "description": "From 0 to 1. Unset, or `0`, draws the text opaque."
+        },
+        {
+          "name": "rotation",
+          "type": "number",
+          "default": "0",
+          "description": "Degrees, counter-clockwise, around `x` and `y`."
+        }
+      ],
+      "example": {
+        "files": ["report.pdf"],
+        "stages": [
+          {
+            "op": "stamp-text",
+            "text": "CONFIDENTIAL",
+            "x": 120,
+            "y": 250,
+            "fontSize": 36,
+            "color": "#b42318",
+            "opacity": 0.4,
+            "rotation": 30
+          }
+        ]
+      }
+    },
+    {
+      "op": "stamp-image",
+      "summary": "Draws an uploaded PNG or JPEG image over pages.",
+      "options": [
+        {
+          "name": "image",
+          "type": "file",
+          "required": true,
+          "description": "The uploaded `.png`, `.jpg` or `.jpeg` image."
+        },
+        {
+          "name": "pages",
+          "type": "pages",
+          "default": "all",
+          "description": "The pages to stamp."
+        },
+        {
+          "name": "x",
+          "type": "number",
+          "default": "0",
+          "description": "The left edge of the image, in points from the left of the page."
+        },
+        {
+          "name": "y",
+          "type": "number",
+          "default": "0",
+          "description": "The bottom edge of the image, in points from the bottom of the page."
+        },
+        {
+          "name": "width",
+          "type": "number",
+          "description": "In points. Set `width` or `height` to keep the proportions; set neither to draw each pixel as a point."
+        },
+        {
+          "name": "height",
+          "type": "number",
+          "description": "In points."
+        },
+        {
+          "name": "opacity",
+          "type": "number",
+          "description": "From 0 to 1. Unset, or `0`, draws the image opaque."
+        },
+        {
+          "name": "rotation",
+          "type": "number",
+          "default": "0",
+          "description": "Degrees, counter-clockwise, around `x` and `y`."
+        }
+      ],
+      "example": {
+        "files": ["report.pdf", "logo.png"],
+        "stages": [
+          {
+            "op": "stamp-image",
+            "image": "logo.png",
+            "x": 36,
+            "y": 36,
+            "width": 64
+          }
+        ]
+      }
+    },
+    {
+      "op": "stamp-pdf",
+      "summary": "Draws a page of another uploaded PDF over pages: a letterhead, a seal.",
+      "options": [
+        {
+          "name": "source",
+          "type": "file",
+          "required": true,
+          "description": "The uploaded PDF to draw."
+        },
+        {
+          "name": "sourcePage",
+          "type": "integer",
+          "default": "1",
+          "description": "The page of `source` to draw."
+        },
+        {
+          "name": "pages",
+          "type": "pages",
+          "default": "all",
+          "description": "The pages to stamp."
+        },
+        {
+          "name": "x",
+          "type": "number",
+          "default": "0",
+          "description": "The left edge, in points from the left of the page."
+        },
+        {
+          "name": "y",
+          "type": "number",
+          "default": "0",
+          "description": "The bottom edge, in points from the bottom of the page."
+        },
+        {
+          "name": "scale",
+          "type": "number",
+          "default": "1",
+          "description": "The scale factor."
+        },
+        {
+          "name": "opacity",
+          "type": "number",
+          "description": "From 0 to 1. Unset, or `0`, draws the page opaque."
+        },
+        {
+          "name": "rotation",
+          "type": "number",
+          "default": "0",
+          "description": "Degrees, counter-clockwise, around `x` and `y`."
+        }
+      ],
+      "example": {
+        "files": ["report.pdf", "annex.pdf"],
+        "stages": [
+          {
+            "op": "stamp-pdf",
+            "source": "annex.pdf",
+            "scale": 0.5,
+            "opacity": 0.3
+          }
+        ]
+      }
+    },
+    {
+      "op": "set-metadata",
+      "summary": "Writes the document information. A field you leave out keeps its value.",
+      "options": [
+        {
+          "name": "title",
+          "type": "string",
+          "description": "The title."
+        },
+        {
+          "name": "author",
+          "type": "string",
+          "description": "The author."
+        },
+        {
+          "name": "subject",
+          "type": "string",
+          "description": "The subject."
+        },
+        {
+          "name": "keywords",
+          "type": "string",
+          "description": "The keywords."
+        },
+        {
+          "name": "creator",
+          "type": "string",
+          "description": "The application that made the original document."
+        },
+        {
+          "name": "producer",
+          "type": "string",
+          "description": "The application that made the PDF."
+        },
+        {
+          "name": "creationDate",
+          "type": "string",
+          "description": "A PDF date, such as `D:20260101120000Z`."
+        },
+        {
+          "name": "modDate",
+          "type": "string",
+          "description": "A PDF date."
+        }
+      ],
+      "example": {
+        "files": ["report.pdf"],
+        "stages": [
+          {
+            "op": "set-metadata",
+            "title": "Q3 report",
+            "author": "Finance",
+            "creationDate": "D:20261001090000Z"
+          }
+        ]
+      }
+    },
+    {
+      "op": "set-bookmarks",
+      "summary": "Replaces the bookmarks, the outline viewers show beside the pages.",
+      "options": [
+        {
+          "name": "bookmarks",
+          "type": "list",
+          "required": true,
+          "description": "Items with a `title`, a `pageNumber`, and optional `children` items."
+        }
+      ],
+      "example": {
+        "files": ["report.pdf"],
+        "stages": [
+          {
+            "op": "set-bookmarks",
+            "bookmarks": [
+              {
+                "title": "Summary",
+                "pageNumber": 1,
+                "children": [
+                  {
+                    "title": "Figures",
+                    "pageNumber": 2
+                  }
+                ]
+              },
+              {
+                "title": "Appendix",
+                "pageNumber": 3
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "op": "set-form",
+      "summary": "Fills form fields.",
+      "options": [
+        {
+          "name": "fields",
+          "type": "object",
+          "required": true,
+          "description": "Values keyed by the fields' fully qualified names. `/forms/pdf/info` tells whether a PDF has a form."
+        }
+      ],
+      "example": {
+        "files": ["form.pdf"],
+        "stages": [
+          {
+            "op": "set-form",
+            "fields": {
+              "name": "Ada Lovelace"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "op": "flatten-form",
+      "summary": "Burns the form fields into the pages, which can then no longer be edited.",
+      "options": [],
+      "example": {
+        "files": ["form.pdf"],
+        "stages": [
+          {
+            "op": "set-form",
+            "fields": {
+              "name": "Ada Lovelace"
+            }
+          },
+          {
+            "op": "flatten-form"
+          }
+        ]
+      }
+    },
+    {
+      "op": "flatten-transparency",
+      "summary": "Replaces transparent content with opaque content, for printers and archival formats that don't support transparency.",
+      "options": [],
+      "example": {
+        "files": ["report.pdf"],
+        "stages": [
+          {
+            "op": "flatten-transparency"
+          }
+        ]
+      }
+    },
+    {
+      "op": "convert-colors",
+      "summary": "Converts every color to one color space.",
+      "options": [
+        {
+          "name": "target",
+          "type": "string",
+          "required": true,
+          "description": "`cmyk`, `rgb`, `gray`, or `output-intent` for the document's own output intent."
+        }
+      ],
+      "example": {
+        "files": ["report.pdf"],
+        "stages": [
+          {
+            "op": "convert-colors",
+            "target": "gray"
+          }
+        ]
+      }
+    },
+    {
+      "op": "redact",
+      "summary": "Removes the content under each region from the file itself, not just from view. Nothing is drawn in its place.",
+      "options": [
+        {
+          "name": "regions",
+          "type": "list",
+          "required": true,
+          "description": "Rectangles with a `page`, and `x`, `y`, `width` and `height` in points from the bottom-left corner."
+        }
+      ],
+      "example": {
+        "files": ["report.pdf"],
+        "stages": [
+          {
+            "op": "redact",
+            "regions": [
+              {
+                "page": 1,
+                "x": 100,
+                "y": 420,
+                "width": 250,
+                "height": 60
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "op": "autotag",
+      "summary": "Infers a structure tree for an untagged PDF, so screen readers can follow it. PDF/UA requires one.",
+      "options": [],
+      "example": {
+        "files": ["report.pdf"],
+        "stages": [
+          {
+            "op": "autotag"
+          }
+        ]
+      }
+    },
+    {
+      "op": "attach",
+      "summary": "Embeds an uploaded file in the PDF.",
+      "options": [
+        {
+          "name": "file",
+          "type": "file",
+          "required": true,
+          "description": "The uploaded file to embed."
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "default": "The file's name",
+          "description": "The name the PDF lists it under."
+        },
+        {
+          "name": "mimeType",
+          "type": "string",
+          "default": "From the name",
+          "description": "The file's MIME type."
+        },
+        {
+          "name": "relationship",
+          "type": "string",
+          "description": "`Source`, `Data`, `Alternative`, `Supplement` or `Unspecified`. Makes the file a PDF/A-3 associated file."
+        }
+      ],
+      "example": {
+        "files": ["report.pdf", "invoice.xml"],
+        "stages": [
+          {
+            "op": "attach",
+            "file": "invoice.xml",
+            "relationship": "Data"
+          }
+        ]
+      }
+    },
+    {
+      "op": "detach",
+      "summary": "Removes an embedded file.",
+      "options": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "The name the PDF lists the file under. `/forms/pdf/attachments` lists them."
+        }
+      ],
+      "example": {
+        "files": ["invoice.pdf"],
+        "stages": [
+          {
+            "op": "detach",
+            "name": "factur-x.xml"
+          }
+        ]
+      }
+    },
+    {
+      "op": "optimize",
+      "summary": "Shrinks the PDF. Every option is on unless you turn it off.",
+      "options": [
+        {
+          "name": "objectStreams",
+          "type": "boolean",
+          "default": "true",
+          "description": "Packs objects into compressed object streams."
+        },
+        {
+          "name": "dedup",
+          "type": "boolean",
+          "default": "true",
+          "description": "Stores identical streams once."
+        },
+        {
+          "name": "recompressImages",
+          "type": "boolean",
+          "default": "true",
+          "description": "Recompresses images."
+        },
+        {
+          "name": "subsetFonts",
+          "type": "boolean",
+          "default": "true",
+          "description": "Keeps only the glyphs the document shows."
+        }
+      ],
+      "example": {
+        "files": ["report.pdf"],
+        "stages": [
+          {
+            "op": "optimize"
+          }
+        ]
+      }
+    },
+    {
+      "op": "encrypt",
+      "summary": "Protects the PDF with passwords.",
+      "options": [
+        {
+          "name": "userPassword",
+          "type": "string",
+          "description": "The password to open the PDF. Set `userPassword`, `ownerPassword`, or both."
+        },
+        {
+          "name": "ownerPassword",
+          "type": "string",
+          "description": "The password to lift the permissions."
+        },
+        {
+          "name": "algorithm",
+          "type": "string",
+          "default": "aes256",
+          "description": "`aes256`, `aes128`, `rc4-128` or `rc4-40`."
+        },
+        {
+          "name": "permissions",
+          "type": "object",
+          "description": "What a reader without the owner password may do: `print`, `printHighQuality`, `modifyContent`, `extractText`, `modifyAnnotations`, `fillForms`, `assemble`. Each is `true` unless you set it to `false`."
+        }
+      ],
+      "example": {
+        "files": ["report.pdf"],
+        "stages": [
+          {
+            "op": "encrypt",
+            "userPassword": "secret",
+            "permissions": {
+              "print": false
+            }
+          }
+        ]
+      }
+    },
+    {
+      "op": "decrypt",
+      "summary": "Opens encrypted PDFs and removes their encryption.",
+      "options": [
+        {
+          "name": "password",
+          "type": "string",
+          "description": "The password that opens the PDFs."
+        }
+      ],
+      "example": {
+        "files": ["encrypted.pdf"],
+        "stages": [
+          {
+            "op": "decrypt",
+            "password": "secret"
+          }
+        ],
+        "output": "decrypted.pdf"
+      }
+    },
+    {
+      "op": "remediate",
+      "summary": "Repairs the PDF until it conforms to a profile. `Gotenberg-Remediation-Residual` counts the violations left: `0` means it conforms.",
+      "options": [
+        {
+          "name": "profile",
+          "type": "string",
+          "required": true,
+          "description": "`PDF/A-1a`, `PDF/A-1b`, `PDF/A-2a`, `PDF/A-2b`, `PDF/A-2u`, `PDF/A-3a`, `PDF/A-3b`, `PDF/A-3u`, `PDF/A-4`, `PDF/A-4e`, `PDF/A-4f`, `PDF/UA-1`, `PDF/UA-2` or `Factur-X`."
+        },
+        {
+          "name": "language",
+          "type": "string",
+          "default": "en",
+          "description": "The document's language, as a BCP 47 tag such as `de-DE`."
+        },
+        {
+          "name": "aggressive",
+          "type": "boolean",
+          "default": "false",
+          "description": "Allows fixes that may change how pages look, for better compliance."
+        },
+        {
+          "name": "figureAltText",
+          "type": "string",
+          "description": "The alternate text for figures that lack one."
+        },
+        {
+          "name": "xml",
+          "type": "file",
+          "description": "Factur-X only: the uploaded invoice XML to embed. Without it, Factur-X repairs the invoice the PDF already carries."
+        },
+        {
+          "name": "level",
+          "type": "string",
+          "description": "Factur-X with `xml`, required: `MINIMUM`, `BASIC WL`, `BASIC`, `EN 16931`, `EXTENDED` or `XRECHNUNG`."
+        },
+        {
+          "name": "documentType",
+          "type": "string",
+          "default": "INVOICE",
+          "description": "Factur-X with `xml`: the document type written in the metadata."
+        }
+      ],
+      "example": {
+        "files": ["report.pdf"],
+        "stages": [
+          {
+            "op": "remediate",
+            "profile": "PDF/A-4"
+          }
+        ],
+        "response": "HTTP/1.1 200 OK\nContent-Type: application/pdf\nGotenberg-Remediation-Residual: 0\nGotenberg-Remediation-Rolled-Back: 0"
+      }
+    },
+    {
+      "op": "sign",
+      "summary": "Signs the PDF with a certificate you upload.",
+      "options": [
+        {
+          "name": "certificate",
+          "type": "file",
+          "required": true,
+          "description": "An uploaded PKCS#12 file, or a PEM certificate with `key`."
+        },
+        {
+          "name": "key",
+          "type": "file",
+          "description": "The PEM private key that goes with a PEM `certificate`."
+        },
+        {
+          "name": "certificatePassword",
+          "type": "string",
+          "description": "The password that opens a PKCS#12 `certificate`."
+        },
+        {
+          "name": "reason",
+          "type": "string",
+          "description": "Why the PDF is signed."
+        },
+        {
+          "name": "location",
+          "type": "string",
+          "description": "Where it is signed."
+        },
+        {
+          "name": "contactInfo",
+          "type": "string",
+          "description": "How to reach the signer."
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "description": "The signer's name."
+        },
+        {
+          "name": "pades",
+          "type": "boolean",
+          "default": "false",
+          "description": "Makes a PAdES signature, the format eIDAS recognizes."
+        },
+        {
+          "name": "timestampUrl",
+          "type": "string",
+          "description": "An RFC 3161 timestamp authority to timestamp the signature with."
+        }
+      ],
+      "example": {
+        "files": ["report.pdf", "cert.pem", "key.pem"],
+        "stages": [
+          {
+            "op": "sign",
+            "certificate": "cert.pem",
+            "key": "key.pem",
+            "reason": "Approved",
+            "pades": true
+          }
+        ]
+      }
+    },
+    {
+      "op": "timestamp",
+      "summary": "Adds a document timestamp from an RFC 3161 timestamp authority: proof the PDF existed, unchanged, at that time.",
+      "options": [
+        {
+          "name": "timestampUrl",
+          "type": "string",
+          "required": true,
+          "description": "The authority's `http://` or `https://` URL."
+        }
+      ],
+      "example": {
+        "files": ["report.pdf"],
+        "stages": [
+          {
+            "op": "timestamp",
+            "timestampUrl": "http://timestamp.digicert.com"
+          }
+        ]
+      }
+    },
+    {
+      "op": "render",
+      "summary": "Draws pages as images, which come back in a ZIP next to the PDF: `report_1.png`. `/forms/pdf/render` returns the images alone.",
+      "options": [
+        {
+          "name": "pages",
+          "type": "pages",
+          "default": "all",
+          "description": "The pages to draw."
+        },
+        {
+          "name": "dpi",
+          "type": "integer",
+          "default": "150",
+          "description": "The resolution."
+        },
+        {
+          "name": "format",
+          "type": "string",
+          "default": "png",
+          "description": "`png` or `jpeg`."
+        },
+        {
+          "name": "quality",
+          "type": "integer",
+          "default": "100",
+          "description": "`jpeg` only, from 1 to 100."
+        }
+      ],
+      "example": {
+        "files": ["report.pdf"],
+        "stages": [
+          {
+            "op": "render",
+            "pages": "1",
+            "dpi": 72
+          }
+        ],
+        "output": "report.zip"
+      }
+    }
+  ]
+}

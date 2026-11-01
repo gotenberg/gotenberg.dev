@@ -151,7 +151,7 @@ module.exports = {
             },
             {
               label: "Configuration",
-              to: "/docs",
+              to: "/docs/configuration",
             },
           ],
         },

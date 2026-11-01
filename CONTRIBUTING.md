@@ -15,6 +15,8 @@ npm run build    # Verify the site builds without errors
 npm run serve    # Preview the production build locally
 npm run clear    # Clear the Docusaurus cache
 npm run check:examples  # Run the docs' examples against Gotenberg (docs/README.md)
+npm run check:api       # Compare the reference data with Gotenberg (docs/README.md)
+npm run sync:flags      # Regenerate src/data/flags.json from Gotenberg's --help
 ```
 
 ## Project layout
@@ -38,7 +40,8 @@ src/
   css/                         Global CSS (custom.css)
   pages/                       Custom pages (index.js)
   theme/                       Docusaurus theme overrides (DocSidebar)
-scripts/                       check-examples.mjs: runs the docs' examples against Gotenberg
+scripts/                       Checks the docs against Gotenberg, syncs the flags
+src/data/                      Reference data: flags.json (generated), stages.json
 sidebars.js                    9.x navigation (8.x: versioned_sidebars/)
 docusaurus.config.js           Site configuration
 ```

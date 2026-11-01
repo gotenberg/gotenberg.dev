@@ -57,6 +57,15 @@ docker run --rm -p "3000:3000" gotenberg/gotenberg:9
 npm run check:examples
 ```
 
+## Reference data
+
+The reference pages render data, so a fact lives in one place:
+
+- `src/data/flags.json`: every flag, generated from Gotenberg's own `--help` by `npm run sync:flags` (`GOTENBERG_IMAGE` picks the image). Don't edit it by hand: fix a description in Gotenberg, then sync. `<ConfigReference module="…">` renders a module's flags on the configuration page.
+- `src/data/stages.json`: every stage, its options and an example, written by hand. `<Stage op="…">` renders one on the stages page.
+
+`npm run check:api` compares both with Gotenberg: stage and option names with the stage structs of a checkout (`GOTENBERG_SOURCE`, `../gotenberg` by default), flags with the image's `--help`. Run it, and `npm run check:examples`, before a release.
+
 ## ApiEndpoint component
 
 Reference pages document a route with the `<ApiEndpoint>` React component (`src/components/documentation/ApiEndpoint.js`). It accepts:

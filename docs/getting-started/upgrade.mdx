@@ -89,14 +89,7 @@ The Chromium routes, the LibreOffice route and `/forms/pdf/pipe` take `stages`. 
 
 A stage names the files it needs, such as an image to stamp or an XML to attach, by their uploaded names. Upload them under `files`: the `embeds`, `watermark`, `stamp` and `facturxXml` fields are gone.
 
-Gotenberg checks the order of the stages before it runs them, and answers 400 with the rule a list breaks:
-
-- `decrypt` comes first, and `render` last.
-- A list has at most one `remediate` and one `encrypt`.
-- After `remediate`, only `encrypt`, `optimize`, `sign`, `timestamp` and `render` may follow.
-- After `encrypt`, only `optimize` and `render` may follow.
-- After `sign` or `timestamp`, only `sign`, `timestamp` and `render` may follow.
-- `encrypt` doesn't combine with `sign`, `timestamp`, or a PDF/A or Factur-X `remediate`.
+Gotenberg checks the order of the stages before it runs them, and answers 400 when a list breaks one of the [order rules](/docs/reference/stages#order-rules).
 
 Gotenberg 8 converted to PDF/A again after its other steps. Gotenberg 9 doesn't: LibreOffice's `nativePdfa` applies at export, and the stages after it may break conformance. End the list with a `remediate` stage instead.
 

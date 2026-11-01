@@ -1,0 +1,75 @@
+---
+id: configuration
+title: Configuration
+slug: /configuration
+---
+
+import ConfigReference, {
+  FlagFilter,
+} from "@site/src/components/documentation/ConfigReference";
+
+Gotenberg needs no configuration to start. Flags and environment variables tune it: every flag has a variable, so `--api-timeout` is `API_TIMEOUT`.
+
+## Set a flag
+
+Pass flags to the `gotenberg` command, which the image runs by default:
+
+```bash
+docker run --rm -p "3000:3000" gotenberg/gotenberg:9 \
+  gotenberg --api-timeout=60s
+```
+
+Or set the variable instead, which suits Compose and Kubernetes:
+
+```yaml title="compose.yaml"
+services:
+  gotenberg:
+    image: gotenberg/gotenberg:9
+    environment:
+      API_TIMEOUT: 60s
+      CHROMIUM_DENY_PRIVATE_IPS: "true"
+```
+
+- The variable wins when you set both.
+- A list takes repeated flags, or comma-separated values: `CHROMIUM_DENY_LIST=^ftp:.*,^file:.*`.
+- A duration takes a unit: `30s`, `5m`. A size takes one too: `5MB`, `1GB`.
+
+## Flags
+
+Gotenberg's own `--help` describes the flags below, with their defaults.
+
+<FlagFilter />
+
+### API
+
+The HTTP server: port, limits, timeouts, authentication, and the files Gotenberg downloads for `downloadFrom`.
+
+<ConfigReference module="api" />
+
+### Chromium
+
+<ConfigReference module="chromium" />
+
+### LibreOffice
+
+<ConfigReference module="libreoffice" />
+
+### PDF
+
+How litho processes PDFs, and the timestamp authorities the `sign` and `timestamp` stages may call.
+
+<ConfigReference module="pdf" />
+
+### Webhook
+
+<ConfigReference module="webhook" />
+
+### Logging
+
+<ConfigReference module="log" />
+
+### Gotenberg
+
+The process itself: startup banner, debug data, graceful shutdown.
+
+<ConfigReference module="gotenberg" />

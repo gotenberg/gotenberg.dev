@@ -1,0 +1,67 @@
+/* A stage's options: one panel, one row per option, as the configuration
+   reference lists flags. */
+.options {
+  margin-bottom: 1.25rem;
+  border: 1px solid var(--ifm-border-color);
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+
+.option {
+  padding: 12px 18px;
+}
+
+.option + .option {
+  border-top: 1px solid var(--ifm-border-color);
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  margin-bottom: 2px;
+}
+
+:global(.markdown) code.name {
+  padding: 0;
+  background: none;
+  color: var(--ifm-color-primary);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.type {
+  color: var(--ifm-color-content-secondary);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.75rem;
+}
+
+.required {
+  margin-left: auto;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: rgba(180, 35, 24, 0.07);
+  color: var(--rubric);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+:global(.markdown) p.description {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+:global(.markdown) p.default {
+  margin: 4px 0 0;
+  color: var(--ifm-color-content-secondary);
+  font-size: 0.8rem;
+}
+
+:global(.markdown) p.none {
+  color: var(--ifm-color-content-secondary);
+  font-size: 0.9rem;
+}

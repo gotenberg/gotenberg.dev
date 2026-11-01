@@ -49,7 +49,7 @@ List URLs in `downloadFrom` and Gotenberg downloads them before it starts, as if
   run={false}
 />
 
-The server must answer with a `Content-Disposition` header that names the file. Operators can turn the feature off with `--api-disable-download-from`.
+The server must answer with a `Content-Disposition` header that names the file. Operators can turn the feature off with [`--api-disable-download-from`](/docs/configuration#api-disable-download-from).
 
 ## Name the result
 
@@ -108,26 +108,8 @@ Every answer carries two headers:
 - `Gotenberg-Trace` identifies the request in Gotenberg's logs. Send your own value to correlate it with yours; otherwise Gotenberg makes one up.
 - `Gotenberg-Version` names the Gotenberg version that answered.
 
+[Headers](/docs/reference/headers) lists every header a request and an answer may carry.
+
 ## Errors
 
-An error answers with a status and a message that says what to fix:
-
-<Request
-  route="/forms/chromium/convert/url"
-  fields={{ url: "https://example.com", paperSize: "A9" }}
-  status={400}
-  response={`HTTP/1.1 400 Bad Request
-
-Invalid form data: form field 'paperSize' is invalid (got 'A9', want A3, A4, A5, B4, B5, Letter, Legal or Tabloid)`}
-/>
-
-| Status | Meaning                                                                         |
-| :----- | :------------------------------------------------------------------------------ |
-| 400    | A form field or header is missing or invalid. The message names it.             |
-| 403    | A URL to load or download is blocked by the outbound URL filtering.             |
-| 404    | The route doesn't exist, or its engine isn't in this image.                     |
-| 413    | The request is larger than `--api-body-limit` allows.                           |
-| 415    | The request isn't `multipart/form-data`.                                        |
-| 429    | The Chromium or LibreOffice queue is full. Retry shortly.                       |
-| 503    | The request took longer than `--api-timeout`, 30 seconds by default.            |
-| 500    | Something else failed. `Gotenberg-Trace` finds the details in Gotenberg's logs. |
+An error answers with a status and a plain-text message that says what failed and how to fix it, such as `Invalid form data: form field 'url' is required`. [Errors](/docs/reference/errors) lists the statuses and the messages.

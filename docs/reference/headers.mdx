@@ -1,0 +1,61 @@
+---
+id: headers
+title: Headers
+---
+
+Every route reads the request headers below, and every answer carries the response headers.
+
+## Request headers
+
+| Header                                 | Effect                                                                                                                                                  |
+| :------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `Gotenberg-Output-Filename`            | Names the result, without extension: Gotenberg adds the right one.                                                                                      |
+| `Gotenberg-Trace`                      | Your identifier for the request. Gotenberg logs it and sends it back; it makes one up when you don't. `--api-correlation-id-header` renames the header. |
+| `Gotenberg-Webhook-Url`                | Uploads the result to this URL instead of answering with it. Gotenberg answers `204 No Content` right away.                                             |
+| `Gotenberg-Webhook-Method`             | The method of the upload: `POST`, the default, `PUT` or `PATCH`.                                                                                        |
+| `Gotenberg-Webhook-Events-Url`         | Required with `Gotenberg-Webhook-Url`. Receives a `webhook.success` or `webhook.error` event once the work is done.                                     |
+| `Gotenberg-Webhook-Extra-Http-Headers` | A JSON object of headers to send with the upload and the event, such as `{"Authorization": "Bearer …"}`.                                                |
+| `Authorization`                        | Basic credentials or an OIDC bearer token, when `--api-enable-basic-auth` or `--api-enable-oidc-auth` is on.                                            |
+| `traceparent`, `baggage`               | W3C Trace Context and Baggage: Gotenberg continues your trace. `OTEL_PROPAGATORS` picks other formats.                                                  |
+
+## Response headers
+
+| Header                              | Content                                                                                                                 |
+| :---------------------------------- | :---------------------------------------------------------------------------------------------------------------------- |
+| `Content-Type`                      | `application/pdf` for one PDF, `application/zip` for several files, `application/json` for the routes that read.        |
+| `Content-Disposition`               | `attachment` and the file name.                                                                                         |
+| `Gotenberg-Trace`                   | Your identifier, or the one Gotenberg made up.                                                                          |
+| `Gotenberg-Version`                 | The version of Gotenberg that answered.                                                                                 |
+| `Traceparent`                       | The trace the request's spans belong to.                                                                                |
+| `Gotenberg-Remediation-Residual`    | After a `remediate` stage: the violations left, summed over the documents. `0` means every document conforms.           |
+| `Gotenberg-Remediation-Rolled-Back` | After a `remediate` stage: the fixes Gotenberg undid because they changed how pages look. Allow them with `aggressive`. |
+
+## Webhook requests
+
+With `Gotenberg-Webhook-Url`, Gotenberg makes two requests once the work is done.
+
+The upload sends the result to `Gotenberg-Webhook-Url`, with the method of `Gotenberg-Webhook-Method`. It carries the result's `Content-Type`, `Content-Disposition`, `Gotenberg-Trace`, `Gotenberg-Version`, the remediation headers when they apply, and your extra headers.
+
+The event goes to `Gotenberg-Webhook-Events-Url` as a JSON `POST`, with `Gotenberg-Trace`, `Gotenberg-Version` and your extra headers:
+
+```json
+{
+  "event": "webhook.success",
+  "correlationId": "my-request-42",
+  "timestamp": "2026-11-01T17:02:51.123456789Z"
+}
+```
+
+An error sends `webhook.error` instead, with the status and message the request would have answered:
+
+```json
+{
+  "event": "webhook.error",
+  "correlationId": "my-request-42",
+  "timestamp": "2026-11-01T17:02:51.123456789Z",
+  "error": {
+    "status": 400,
+    "message": "Invalid form data: form field 'paperSize' is invalid (got 'A9', want A3, A4, A5, B4, B5, Letter, Legal or Tabloid)"
+  }
+}
+```

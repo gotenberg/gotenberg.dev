@@ -15,5 +15,16 @@ module.exports = {
         "getting-started/upgrade",
       ],
     },
+    {
+      type: "category",
+      label: "Reference",
+      collapsible: false,
+      items: [
+        "reference/stages",
+        "reference/headers",
+        "reference/configuration",
+        "reference/errors",
+      ],
+    },
   ],
 };
