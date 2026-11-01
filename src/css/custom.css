@@ -1203,10 +1203,6 @@ html[data-theme="dark"] .footer--dark {
   div[class^="docMainContainer_"] {
     padding-left: 4rem !important;
   }
-
-  div[class*="theme-doc-toc-desktop"] {
-    padding-left: 2rem;
-  }
 }
 
 @media screen and (min-width: 1400px) {
