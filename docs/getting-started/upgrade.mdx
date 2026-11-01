@@ -85,7 +85,7 @@ The Chromium conversion routes, the LibreOffice route and `/forms/pdf/pipe` take
 | `watermark*`, `stamp*`                      | `stamp-text`, `stamp-image` or `stamp-pdf`, always over the page                 |
 | `rotateAngle`, `rotatePages`                | `{"op": "rotate", "angle": 90, "pages": "1"}`                                    |
 | `flatten`                                   | `{"op": "flatten-form"}`                                                         |
-| `optimizeImages`, `imageQuality`            | `{"op": "optimize"}`                                                             |
+| `optimizeImages`, `imageQuality`            | No direct equivalent: see [below](#no-direct-equivalent)                         |
 | `facturxXml` file and the `facturx*` fields | `{"op": "remediate", "profile": "Factur-X", "xml": "invoice.xml", "level": "…"}` |
 
 A stage names the files it needs, such as an image to stamp or an XML to attach, by their uploaded names. Upload them under `files`: the `embeds`, `watermark`, `stamp` and `facturxXml` fields are gone.
@@ -125,9 +125,18 @@ A field that has a twin among the stages now starts with `native`. Some values c
 | LibreOffice | `firstPageOnLeft`            | Removed: LibreOffice ignores it                                           |
 | LibreOffice | `nativePdfFormats`           | Removed: `nativePdfa` and `nativePdfua` always apply natively             |
 | Both        | none                         | `paperSize`: `A3`, `A4`, `A5`, `B4`, `B5`, `Letter`, `Legal` or `Tabloid` |
-| All         | `downloadFrom[].embedded`    | Removed: downloaded files are inputs                                      |
+| All         | `downloadFrom[].embedded`    | Removed: downloaded files are inputs; see [below](#no-direct-equivalent)  |
 
 Chromium no longer makes PDF/A on its own: add a `remediate` stage.
+
+## No direct equivalent
+
+Some Gotenberg 8 options have no field of their own in Gotenberg 9:
+
+- **Lower image quality on a PDF.** `optimize` keeps the quality of every image. Lower it where the PDF is made instead: LibreOffice's `nativeQuality` and `nativeReduceImageResolution`, or smaller images in the HTML you send Chromium.
+- **Merge bookmark options** (`bookmarks`, `autoIndexBookmarks`, `titleBookmarks`). `merge` keeps the bookmarks of each PDF and points them at the merged pages. For a bookmark per file, add a `set-bookmarks` stage after `merge`.
+- **Stamp anchors, relative sizes, page numbers and fonts.** A stamp takes a position in points from the bottom-left corner, one of the 14 standard PDF fonts, and draws over the page. Number pages with a Chromium [footer](/docs/convert/headers-footers).
+- **Embed a downloaded file** (`downloadFrom[].embedded`). Name it in an [`attach`](/docs/process/attachments) stage, by the name its server's `Content-Disposition` header gives.
 
 ## Metadata and bookmarks
 

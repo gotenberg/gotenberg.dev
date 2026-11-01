@@ -1,0 +1,49 @@
+---
+id: user-html
+title: Print user-supplied HTML safely
+---
+
+You let your users write HTML, such as an invoice or a letter template, and print it with Gotenberg. You want their HTML to reach nothing but what it should, and no request to take the container down.
+
+## Deployment
+
+```yaml title="compose.yaml"
+services:
+  gotenberg:
+    image: gotenberg/gotenberg:9
+    environment:
+      CHROMIUM_DENY_PRIVATE_IPS: "true"
+      CHROMIUM_DISABLE_JAVASCRIPT: "true"
+      API_DISABLE_DOWNLOAD_FROM: "true"
+      WEBHOOK_DENY_PRIVATE_IPS: "true"
+      API_BODY_LIMIT: 20MB
+      API_TIMEOUT: 30s
+      CHROMIUM_MAX_QUEUE_SIZE: "20"
+```
+
+## Request
+
+Your backend sends the user's HTML as usual:
+
+<Request
+  route="/forms/chromium/convert/html"
+  files={["index.html", "style.css"]}
+  output="invoice.pdf"
+/>
+
+## Result
+
+The PDF prints as before. An image or a style sheet the HTML points at an internal address is left out, and Gotenberg logs which.
+
+## How it works
+
+- `CHROMIUM_DENY_PRIVATE_IPS` keeps the HTML's images, style sheets, fonts and iframes off your private network, and a cloud's metadata service: see [Restrict outbound requests](/docs/operate/outbound).
+- `CHROMIUM_DISABLE_JAVASCRIPT` stops the user's scripts, which could call any URL or loop forever.
+- `API_DISABLE_DOWNLOAD_FROM` and `WEBHOOK_DENY_PRIVATE_IPS` close the other ways a request reaches a URL.
+- The size limit, the timeout and the queue cap keep one request, or a burst, from exhausting the container: see [Limit resources](/docs/operate/limits).
+
+## Variations
+
+- The templates need your own assets: upload them with the page, or allow your asset host with `CHROMIUM_ALLOW_LIST`, together with `^file:///tmp/` for the page itself.
+- The templates need scripts: keep JavaScript on, and keep the timeout short.
+- Users send URLs, not HTML: the same settings apply to `/forms/chromium/convert/url`.

@@ -1,0 +1,41 @@
+---
+id: combine-word-and-web
+title: Combine a Word document and a web page
+---
+
+You have a cover page as HTML and a report as a Word document. You want one PDF: the cover printed by Chromium, then the report.
+
+## Requests
+
+Convert the Word document first:
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["report.docx"]}
+  output="report.pdf"
+/>
+
+Then print the cover, and insert the report after its page:
+
+<Request
+  route="/forms/chromium/convert/html"
+  files={["index.html", "style.css", "report.pdf"]}
+  stages={[{ op: "insert", source: "report.pdf", at: 1 }]}
+  output="combined.pdf"
+/>
+
+## Result
+
+A four-page PDF: the cover, then the report's three pages.
+
+## How it works
+
+- Each engine makes its own part: Chromium the web page, LibreOffice the document.
+- A conversion's stages see only the PDF it prints. `insert` brings in the uploaded `report.pdf` by name: see [Organize pages](/docs/process/pages#insert-pages).
+- `at: 1` inserts after the first page. `at: 0` puts the report before the cover.
+
+## Variations
+
+- Several documents: convert them in one request with a [`merge` stage](/docs/convert/office#merge-them), then insert the result.
+- The cover on each page instead: [`stamp-pdf`](/docs/process/stamps#stamp-a-letterhead) draws one PDF's page over another's.
+- One request only: the LibreOffice route converts `.html` too, but LibreOffice then lays the page out, not Chromium.

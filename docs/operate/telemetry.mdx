@@ -60,6 +60,10 @@ The service is `gotenberg`, unless `OTEL_SERVICE_NAME` names it otherwise. A req
 
 The system routes, `/health` and `/version` among them, leave no trace by default: see [the system routes](/docs/reference/system).
 
+## Sample traces
+
+Gotenberg records and exports every trace by default. The standard variables tune it: `OTEL_TRACES_SAMPLER=parentbased_traceidratio` with `OTEL_TRACES_SAMPLER_ARG=0.1` keeps one trace in ten. Sampling in the collector instead, on errors and slow requests, keeps the traces you'd want to read.
+
 ## Scrape with Prometheus
 
 The Prometheus exporter serves the metrics on port 9464:

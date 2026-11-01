@@ -1,0 +1,39 @@
+---
+id: s3-upload
+title: Upload results to S3
+---
+
+You have documents to convert, and an S3 bucket, or any store that speaks its API. You want the PDFs in the bucket, without waiting for them.
+
+## Request
+
+Have your backend create a presigned `PUT` URL for the object, then hand it to Gotenberg:
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["report.docx"]}
+  headers={{
+    "Gotenberg-Webhook-Url":
+      "https://my-bucket.s3.amazonaws.com/report.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Signature=…",
+    "Gotenberg-Webhook-Method": "PUT",
+    "Gotenberg-Webhook-Events-Url": "https://api.example.com/gotenberg-events",
+  }}
+  status={204}
+  run={false}
+/>
+
+## Result
+
+Gotenberg answers `204 No Content` at once. When the PDF is ready, it uploads it to the presigned URL, and posts a `webhook.success` event to your events URL, or `webhook.error` with the reason.
+
+## How it works
+
+- `Gotenberg-Webhook-Method: PUT` sends the PDF as the request body, which is what a presigned `PUT` expects. Gotenberg keeps the URL's query string, signature included.
+- The events URL is required: it tells your system the object is there, or why it isn't. See [Deliver with webhooks](/docs/webhook-download).
+- The presigned URL keeps your credentials out of Gotenberg: it can write that one object, until it expires.
+
+## Variations
+
+- A URL that signs a `Content-Type`: sign `application/pdf`, the type Gotenberg sends with one PDF, or `application/zip` for several files.
+- Your events endpoint checks a secret: send it with `Gotenberg-Webhook-Extra-Http-Headers`, which reaches the upload too.
+- A private bucket endpoint, or an internal store such as MinIO: allow its host with [`--webhook-allow-list`](/docs/operate/outbound#match-urls-with-lists) when the webhook filters are on.

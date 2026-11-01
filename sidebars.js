@@ -92,6 +92,9 @@ module.exports = {
         "cookbook/sign-contract",
         "cookbook/bulk-conversion",
         "cookbook/redacted-copy",
+        "cookbook/combine-word-and-web",
+        "cookbook/s3-upload",
+        "cookbook/user-html",
       ],
     },
     {
