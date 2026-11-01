@@ -45,7 +45,7 @@ The value holds a `;`, so cURL sends it with `--form-string`: `--form` would cut
 
 ## Fail on errors
 
-A page that answers a 4xx or 5xx status fails the request with `409 Conflict`, rather than printing the error page:
+A page that answers a 4xx or 5xx status fails the request with `409 Conflict`, rather than printing the error page. After a redirect, the status of the page it lands on counts:
 
 <Request
   route="/forms/chromium/convert/url"

@@ -5,11 +5,12 @@ title: Upgrade from 8.x
 
 Gotenberg 9 hands its PDF work to litho, one PDF engine, and turns post-processing into stages you list in order. Most upgrades rename fields and move options into `stages`.
 
-:::warning
+A Gotenberg 8 request that sends a field Gotenberg 9 moved, renamed or removed answers 400, and the message says where the field went:
 
-Gotenberg 9 ignores form fields it doesn't know. A Gotenberg 8 request still answers 200, without the steps its old fields asked for: `pdfa=PDF/A-2b` no longer makes a PDF/A, and `merge=true` no longer merges. Check each request against this page.
-
-:::
+```text
+Invalid form data: form field 'merge' is unknown to this route; Gotenberg 9 moved it to a stage: add {"op":"merge"} to 'stages'
+Invalid form data: form field 'generateDocumentOutline' is unknown to this route; Gotenberg 9 renamed it 'nativeBookmarks'
+```
 
 ## The image
 

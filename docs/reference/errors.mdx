@@ -34,18 +34,26 @@ With a webhook, the error reaches the events URL instead: see [Webhook requests]
 
 ## Messages
 
-A form field names itself, and the values it takes:
+A form field names itself, the value you sent, and what it wants:
 
 ```text
 Invalid form data: form field 'url' is required
 Invalid form data: form field 'paperSize' is invalid (got 'A9', want A3, A4, A5, B4, B5, Letter, Legal or Tabloid)
+Invalid form data: form field 'landscape' is invalid (got 'foo', want true or false)
+```
+
+A field the route doesn't read answers 400 too. A Gotenberg 8 field says where it went:
+
+```text
+Invalid form data: form field 'merge' is unknown to this route; Gotenberg 9 moved it to a stage: add {"op":"merge"} to 'stages'
 ```
 
 A list of stages names the stage, counted from 0, and the rule it breaks:
 
 ```text
+Invalid form data: form field 'stages' is invalid: stage 0: rotate: "angle" is invalid (got "x", want an integer)
 Invalid form data: form field 'stages' is invalid: stage 0: rotate: "angle" must be a multiple of 90, got 45
-Invalid form data: form field 'stages' is invalid: stage 1: "rotate" cannot follow "encrypt", which must come last
+Invalid form data: form field 'stages' is invalid: stage 1: "rotate" cannot follow "encrypt": only optimize and render may
 ```
 
 A stage that fails on a file names both:

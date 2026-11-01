@@ -604,7 +604,7 @@
           "name": "name",
           "type": "string",
           "required": true,
-          "description": "The name the PDF lists the file under. `/forms/pdf/attachments` lists them."
+          "description": "The name the PDF lists the file under. `/forms/pdf/attachments` lists them; a name it doesn't list answers 400."
         }
       ],
       "example": {
