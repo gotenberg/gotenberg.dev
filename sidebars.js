@@ -8,7 +8,7 @@ module.exports = {
     {
       type: "category",
       label: "Get started",
-      collapsible: false,
+      collapsed: true,
       items: [
         "getting-started/first-pdf",
         "getting-started/requests",
@@ -18,7 +18,7 @@ module.exports = {
     {
       type: "category",
       label: "Convert",
-      collapsible: false,
+      collapsed: true,
       items: [
         "convert/html",
         "convert/url",
@@ -33,7 +33,7 @@ module.exports = {
     {
       type: "category",
       label: "Process PDFs",
-      collapsible: false,
+      collapsed: true,
       items: [
         "process/merge-split",
         "process/pages",
@@ -49,7 +49,7 @@ module.exports = {
     {
       type: "category",
       label: "Reference",
-      collapsible: false,
+      collapsed: true,
       items: [
         "reference/routes",
         "reference/chromium",
