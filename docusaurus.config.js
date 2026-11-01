@@ -122,6 +122,7 @@ module.exports = {
         {
           type: "docsVersionDropdown",
           position: "right",
+          className: "navbar-version",
         },
         {
           type: "search",

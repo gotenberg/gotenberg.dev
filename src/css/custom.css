@@ -664,6 +664,11 @@ a[class*="sidebarLogo"] b {
   color: var(--ifm-heading-color);
 }
 
+/* A version keeps its case: 9.x, not 9.X. */
+.navbar__link.navbar-version {
+  text-transform: none;
+}
+
 .navbar__link--active,
 .navbar__link--active:hover {
   color: var(--accent-text);
