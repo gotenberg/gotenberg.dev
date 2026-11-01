@@ -41,6 +41,8 @@ module.exports = {
         "process/redact",
         "process/forms",
         "process/attachments",
+        "process/metadata",
+        "process/render",
       ],
     },
     {

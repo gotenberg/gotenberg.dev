@@ -1,0 +1,69 @@
+---
+id: render
+title: Render pages as images
+---
+
+Draw the pages of a PDF as PNG or JPEG images: thumbnails, previews, social cards.
+
+## Render a page
+
+<Request
+  route="/forms/pdf/render"
+  files={["report.pdf"]}
+  fields={{ pages: "1" }}
+  output="report_1.png"
+/>
+
+One image answers on its own, named after the PDF and the page: `report_1.png`. Several come back in a ZIP.
+
+## Pick the resolution and the format
+
+<Request
+  route="/forms/pdf/render"
+  files={["report.pdf"]}
+  fields={{ pages: "1", dpi: 72, format: "jpeg", quality: 80 }}
+  output="report_1.jpeg"
+/>
+
+`dpi` sets the resolution, 150 by default. At 72, a pixel stands for a point, so a Letter page gives a 612 by 792 image. `quality` applies to JPEG.
+
+## Render every page
+
+Without `pages`, Gotenberg draws them all:
+
+<Request route="/forms/pdf/render" files={["report.pdf"]} output="report.zip" />
+
+The ZIP holds `report_1.png`, `report_2.png` and `report_3.png`.
+
+## Render after other stages
+
+`render` comes last in a list of stages. The ZIP then holds the PDF and its images:
+
+<Request
+  route="/forms/pdf/pipe"
+  files={["report.pdf"]}
+  stages={[
+    { op: "stamp-text", text: "DRAFT", x: 72, y: 72, fontSize: 24 },
+    { op: "render", pages: "1" },
+  ]}
+  output="report.zip"
+/>
+
+Fonts the PDF doesn't embed, such as the stamp's Helvetica, draw with the fonts in Gotenberg's image.
+
+## Preview a document
+
+A conversion renders too. This one answers the PDF of a Word document and a thumbnail of its first page:
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["report.docx"]}
+  stages={[{ op: "render", pages: "1", dpi: 72 }]}
+  output="report.zip"
+/>
+
+The ZIP holds `report.docx.pdf` and `report.docx_1.png`.
+
+## Next
+
+To capture a web page rather than a PDF, [take a screenshot](/docs/convert/screenshots).

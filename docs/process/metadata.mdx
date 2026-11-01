@@ -1,0 +1,95 @@
+---
+id: metadata
+title: Edit metadata and bookmarks
+---
+
+Set the title, author and dates a viewer shows, and the bookmarks it lists beside the pages.
+
+## Read the metadata
+
+<Request
+  route="/forms/pdf/metadata"
+  files={["report.pdf"]}
+  response={{ "report.pdf": { title: "Quarterly report", author: "Finance" } }}
+/>
+
+A PDF without metadata answers `{}`.
+
+## Set the metadata
+
+<Request
+  route="/forms/pdf/set-metadata"
+  files={["report.pdf"]}
+  fields={{
+    title: "Annual report",
+    author: "Finance",
+    creationDate: "D:20261001090000Z",
+  }}
+  output="report.pdf"
+/>
+
+A field you leave out keeps its value. Dates take the PDF format: `D:` then the year, month, day, hours, minutes, seconds and a time zone, `Z` for UTC. The read route answers with the same names, so its answer feeds straight back into `set-metadata`.
+
+## Set them while converting
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["report.docx"]}
+  stages={[{ op: "set-metadata", title: "Annual report", author: "Finance" }]}
+  output="report.pdf"
+/>
+
+## Read the bookmarks
+
+<Request
+  route="/forms/pdf/bookmarks"
+  files={["report.pdf"]}
+  response={{
+    "report.pdf": [
+      {
+        title: "Summary",
+        pageNumber: 1,
+        children: [{ title: "Figures", pageNumber: 2 }],
+      },
+      { title: "Appendix", pageNumber: 3 },
+    ],
+  }}
+/>
+
+## Set the bookmarks
+
+<Request
+  route="/forms/pdf/set-bookmarks"
+  files={["report.pdf"]}
+  fields={{
+    bookmarks: [
+      {
+        title: "Summary",
+        pageNumber: 1,
+        children: [{ title: "Figures", pageNumber: 2 }],
+      },
+      { title: "Appendix", pageNumber: 3 },
+    ],
+  }}
+  output="report.pdf"
+/>
+
+The list replaces the bookmarks the PDF had. `children` nests bookmarks under another, as deep as you need.
+
+## Build them from headings
+
+Chromium builds bookmarks from the page's headings with `nativeBookmarks`:
+
+<Request
+  route="/forms/chromium/convert/html"
+  dir="print"
+  files={["index.html", "print.css"]}
+  fields={{ nativeBookmarks: true }}
+  output="handbook.pdf"
+/>
+
+This handbook gets "Handbook" on page 1, with "Holidays" on page 2 under it. LibreOffice exports a document's headings as bookmarks without being asked: [`nativeBookmarks`](/docs/reference/libreoffice#nativeBookmarks) is on by default.
+
+## Next
+
+[Attach files](/docs/process/attachments), or [organize the pages](/docs/process/pages) the bookmarks point to.
