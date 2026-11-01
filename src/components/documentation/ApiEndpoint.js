@@ -20,6 +20,21 @@ function renderValues(text) {
   );
 }
 
+// Lets a long path wrap after a slash on a narrow screen, never inside a
+// segment.
+function wrappablePath(path) {
+  return path.split("/").map((segment, i) => (
+    <React.Fragment key={i}>
+      {i > 0 && (
+        <>
+          /<wbr />
+        </>
+      )}
+      {segment}
+    </React.Fragment>
+  ));
+}
+
 const MethodBadge = ({ method = "" }) => {
   const colors = {
     GET: { bg: "rgba(97, 175, 254, 0.18)", fg: "var(--method-get-text)" },
@@ -100,7 +115,7 @@ export default function ApiEndpoint({
       {hasHeader && (
         <div className={styles.apiHeader}>
           <MethodBadge method={method} />
-          <span className={styles.apiPath}>{path}</span>
+          <span className={styles.apiPath}>{wrappablePath(path)}</span>
         </div>
       )}
 

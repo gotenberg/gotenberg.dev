@@ -69,23 +69,26 @@
      or backgrounds. */
   --rubric: #b42318;
 
-  /* Code syntax palette, shared by the docs (Prism) and the homepage terminal
-     so both read identically, on the dark ink-plate. */
-  --code-bg: var(--ink-plate);
-  --code-plain: #e2e8f0;
-  --code-comment: #94a3b8;
-  --code-command: #a5b4fc;
-  --code-flag: #67e8f9;
-  --code-string: #fbbf24;
-  --code-url: #6ee7b7;
-  --code-punct: #94a3b8;
+  /* Code syntax palette, shared by the docs (Prism) and the homepage: code
+     sits on a white panel in light mode and on the ink plate in dark mode.
+     Every color clears 4.5:1 on its panel and on the panel bar. */
+  --code-bg: var(--panel);
+  --code-plain: #1f1c19;
+  --code-comment: #6e675e;
+  --code-command: #4338ca;
+  --code-flag: #0e7490;
+  --code-string: #a14a0a;
+  --code-url: #047857;
+  --code-punct: #6e675e;
+  /* A highlighted line: an indigo tint the code keeps its contrast on. */
+  --docusaurus-highlighted-code-line-bg: rgba(67, 56, 202, 0.08);
 
   /* HTTP method labels are reused by sidebar badges and endpoint examples. */
   --method-get-text: #0060a1;
-  --method-post-text: #047857;
+  --method-post-text: #036b4e;
   --method-put-text: #92400e;
   --method-delete-text: #b91c1c;
-  --method-patch-text: #0f766e;
+  --method-patch-text: #0d6e66;
   --method-head-text: #6d28d9;
   --method-default-text: #475569;
 }
@@ -116,6 +119,16 @@ html[data-theme="dark"] {
   --announcement-bg: #3730a3;
   --table-row-border: rgba(255, 255, 255, 0.08);
   --link-underline-color: rgba(165, 180, 252, 0.45);
+
+  --code-bg: var(--ink-plate);
+  --code-plain: #e2e8f0;
+  --code-comment: #94a3b8;
+  --code-command: #a5b4fc;
+  --code-flag: #67e8f9;
+  --code-string: #fbbf24;
+  --code-url: #6ee7b7;
+  --code-punct: #94a3b8;
+  --docusaurus-highlighted-code-line-bg: rgba(165, 180, 252, 0.12);
 
   --method-get-text: #7dd3fc;
   --method-post-text: #6ee7b7;
@@ -224,9 +237,45 @@ h4:hover > .hash-link,
   }
 }
 
+/* --- CODE BLOCKS --- */
+/* Code panels as on the homepage: a rounded panel, a title bar, a square copy
+   button. */
+.theme-code-block {
+  border: 1px solid var(--ifm-border-color);
+  border-radius: var(--radius);
+  box-shadow: none;
+  overflow: hidden;
+}
+
+.theme-code-block pre {
+  border-radius: 0;
+}
+
+.theme-code-block div[class*="codeBlockTitle"] {
+  padding: 10px 18px;
+  border-bottom: 1px solid var(--ifm-border-color);
+  background: var(--panel-2);
+  color: var(--ifm-color-content-secondary);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+html[data-theme="dark"] .theme-code-block div[class*="codeBlockTitle"] {
+  background: #1b2024;
+}
+
 .theme-code-block button[class*="copyButton"] {
+  border: 1px solid var(--ifm-border-color);
+  border-radius: 9px;
+  background: var(--panel);
+  color: var(--ifm-color-content-secondary);
   opacity: 0.4;
   transition: opacity 0.15s ease;
+}
+
+html[data-theme="dark"] .theme-code-block button[class*="copyButton"] {
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .theme-code-block:hover button[class*="copyButton"],
@@ -291,6 +340,13 @@ h4:hover > .hash-link,
   .markdown table,
   .alert {
     break-inside: avoid;
+  }
+
+  /* Paper does not scroll: tables take the full width again. */
+  .markdown table {
+    display: table;
+    width: 100%;
+    overflow: visible;
   }
 
   .theme-code-block pre,
@@ -393,7 +449,11 @@ h4:hover > .hash-link,
   font-family: var(--ifm-font-family-monospace);
   font-size: 0.85em;
   font-weight: 500;
-  background-color: rgba(110, 103, 94, 0.1);
+  background-color: color-mix(
+    in srgb,
+    var(--ifm-color-content-secondary) 12%,
+    transparent
+  );
   border: none;
   border-radius: 4px;
   box-shadow: none;
@@ -403,28 +463,66 @@ h4:hover > .hash-link,
   vertical-align: 1px;
 }
 
-/* --- MARKDOWN TABLES (booktabs) --- */
+/* Flag and variable names in tables are secondary badges: show them as code
+   chips, like inline code, in both themes. */
+.markdown .badge--secondary {
+  padding: 2px 7px;
+  border: 0;
+  border-radius: 6px;
+  background-color: color-mix(
+    in srgb,
+    var(--ifm-color-content-secondary) 12%,
+    transparent
+  );
+  color: var(--ifm-heading-color);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* --- MARKDOWN TABLES --- */
+/* A panel: rounded, its header row on the panel bar. A table as wide as its
+   content, up to the column; one whose names cannot fit scrolls sideways in
+   its panel rather than running under the table of contents. */
 .markdown table {
-  display: table;
-  width: 100%;
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  overflow-x: auto;
   border-collapse: separate;
   border-spacing: 0;
   margin-bottom: 2.5rem;
   font-size: 0.875rem;
-  background-color: transparent;
-  border: none;
-  border-top: 2px solid var(--ifm-heading-color);
-  border-bottom: 2px solid var(--ifm-heading-color);
+  /* A shade at an edge says the table scrolls that way, as on the homepage's
+     code panels: the covers move with the table and hide each shade once its
+     edge is reached. */
+  --edge: color-mix(
+    in srgb,
+    var(--ifm-color-content-secondary) 55%,
+    transparent
+  );
+  background:
+    linear-gradient(90deg, var(--panel) 40%, transparent) left / 32px 100%
+      no-repeat local,
+    linear-gradient(270deg, var(--panel) 40%, transparent) right / 32px 100%
+      no-repeat local,
+    radial-gradient(farthest-side at 0 50%, var(--edge), transparent) left /
+      14px 100% no-repeat scroll,
+    radial-gradient(farthest-side at 100% 50%, var(--edge), transparent) right /
+      14px 100% no-repeat scroll,
+    var(--panel);
+  border: 1px solid var(--ifm-border-color);
+  border-radius: var(--radius);
 }
 
 .markdown table th {
-  background-color: transparent;
+  background-color: var(--panel-2);
   color: var(--ifm-color-content-secondary);
   font-family: var(--ifm-font-family-base);
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  font-size: 0.72rem;
   padding: 12px 16px;
   border: none;
   border-bottom: 1px solid var(--ifm-border-color);
@@ -444,13 +542,41 @@ h4:hover > .hash-link,
   border-bottom: none;
 }
 
-@media screen and (max-width: 1280px) {
-  .markdown table {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-    min-width: 100px;
-  }
+/* --- TABS --- */
+/* A segmented control, as on the homepage: a track with the picked tab
+   raised on a panel. */
+.tabs {
+  display: inline-flex;
+  max-width: 100%;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 12px;
+  background: var(--panel-2);
+}
+
+.tabs__item {
+  padding: 7px 14px;
+  border: 0;
+  border-radius: 9px;
+  color: var(--ifm-color-content-secondary);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.tabs__item:hover {
+  background: transparent;
+  color: var(--ifm-heading-color);
+}
+
+.tabs__item--active,
+.tabs__item--active:hover {
+  background: var(--panel);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.14);
+  color: var(--ifm-heading-color);
 }
 
 /* --- TABLES IN ALERTS --- */
@@ -474,11 +600,11 @@ h4:hover > .hash-link,
   border-bottom: 1px solid rgba(0, 0, 0, 0.04);
 }
 
-/* --- CRISP ADMONITIONS --- */
+/* --- ADMONITIONS --- */
+/* A tinted, rounded panel, its heading a small uppercase label. */
 .alert {
   border: 1px solid transparent;
-  border-left-width: 4px;
-  border-radius: 4px;
+  border-radius: 12px;
   box-shadow: none;
   padding: 16px 20px;
   margin-bottom: 24px;
@@ -487,10 +613,10 @@ h4:hover > .hash-link,
 
 .alert .alert__heading {
   font-family: var(--ifm-font-family-base);
-  font-size: 0.85rem;
-  font-weight: 800;
+  font-size: 0.75rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
   margin-bottom: 8px;
   display: flex;
   align-items: center;
@@ -506,7 +632,6 @@ h4:hover > .hash-link,
 .alert--info {
   background-color: rgba(67, 56, 202, 0.06);
   border-color: rgba(67, 56, 202, 0.2);
-  border-left-color: var(--ifm-color-primary);
 }
 
 .alert--info .alert__heading {
@@ -514,10 +639,8 @@ h4:hover > .hash-link,
 }
 
 .alert--success {
-  --alert-success-color: #10b981;
   background-color: rgba(16, 185, 129, 0.08);
   border-color: rgba(16, 185, 129, 0.25);
-  border-left-color: var(--alert-success-color);
 }
 
 .alert--success .alert__heading {
@@ -525,10 +648,8 @@ h4:hover > .hash-link,
 }
 
 .alert--warning {
-  --alert-warning-color: #f59e0b;
   background-color: rgba(245, 158, 11, 0.08);
   border-color: rgba(245, 158, 11, 0.25);
-  border-left-color: var(--alert-warning-color);
 }
 
 .alert--warning .alert__heading {
@@ -536,10 +657,8 @@ h4:hover > .hash-link,
 }
 
 .alert--danger {
-  --alert-danger-color: var(--rubric);
   background-color: rgba(180, 35, 24, 0.05);
   border-color: rgba(180, 35, 24, 0.2);
-  border-left-color: var(--alert-danger-color);
 }
 
 .alert--danger .alert__heading {
@@ -924,8 +1043,8 @@ a[class*="sidebarLogo"] b {
   color: var(--ifm-heading-color);
 }
 
-/* Prev/next: a borderless "continue reading" footer: gray small-caps labels
-   and display titles that warm to the accent on hover.
+/* Prev/next: two panels, as the homepage's cards: gray small-caps labels and
+   display titles that warm to the accent on hover.
    Extra bottom room so it does not crowd the sponsors band below. */
 .pagination-nav {
   margin-top: 2.5rem;
@@ -933,10 +1052,27 @@ a[class*="sidebarLogo"] b {
 }
 
 .pagination-nav__link {
-  border: none;
-  border-radius: 0;
-  padding: 0;
-  background: transparent;
+  border: 1px solid var(--ifm-border-color);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  background: var(--panel);
+  transition: border-color 0.2s ease;
+}
+
+.pagination-nav__link:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--ifm-color-primary) 45%,
+    var(--ifm-border-color)
+  );
+}
+
+.pagination-nav__link--prev .pagination-nav__label::before {
+  content: "← ";
+}
+
+.pagination-nav__link--next .pagination-nav__label::after {
+  content: " →";
 }
 
 .pagination-nav__sublabel {

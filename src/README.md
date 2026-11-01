@@ -26,7 +26,7 @@ One indigo across the homepage and docs. It clears WCAG AA on paper (~7.7:1) and
 | `--rubric`                      | `#b42318`                      | Printer's marks only: pilcrows, required flags, folios                     |
 | `--ifm-background-color`        | `#fdfcfa`                      | Paper                                                                      |
 | `--paper-shade`                 | `#f6f5f1`                      | Alternating sections, table headers, technical zones                       |
-| `--ink-plate`                   | `#1c1917` (dark: `#0f1214`)    | Terminal windows, footer                                                   |
+| `--ink-plate`                   | `#1c1917` (dark: `#0f1214`)    | Footer; code panels in dark mode                                           |
 | `--ifm-heading-color`           | `#1f1c19`                      | Headings, booktabs rules                                                   |
 | `--ifm-color-content`           | `#38332e`                      | Body text                                                                  |
 | `--ifm-color-content-secondary` | `#6e675e`                      | Secondary text, sidebar links                                              |
@@ -34,7 +34,7 @@ One indigo across the homepage and docs. It clears WCAG AA on paper (~7.7:1) and
 | `--panel`                       | `#ffffff` (dark: `#1d2226`)    | Panels and cards on the paper                                              |
 | `--panel-2`                     | `#f3f1ec` (dark: `#23292e`)    | Panel bars, segmented-control tracks                                       |
 
-HTTP method badges: tinted background with dark text (WCAG AA), e.g. POST `rgba(73,204,144,0.16)` / `#047857`. Never white text on pastel fills.
+HTTP method badges: tinted background with dark text (WCAG AA), e.g. POST `rgba(73,204,144,0.16)` / `#036b4e`, clearing 4.5:1 on the panel bar. Never white text on pastel fills.
 
 ### Typography
 
@@ -46,7 +46,8 @@ HTTP method badges: tinted background with dark text (WCAG AA), e.g. POST `rgba(
 - Headings carry no rule or underline
 - Lede: the paragraph after h1 renders larger (1.2rem) in heading ink
 - Stats and tables: lining tabular numerals
-- Code: JetBrains Mono Variable, ligatures disabled
+- Code: JetBrains Mono Variable, ligatures disabled. Code panels are white in light mode and the ink plate in dark mode, with a title bar and a square copy button. One palette (`--code-*` in `custom.css`) colors Prism and the homepage; every color clears 4.5:1 on its panel
+- Tables, admonitions, API endpoints and prev/next links are panels too; tabs are a segmented control, as on the homepage
 - Links: `--accent-text` underline with muted decoration color, full color on hover
 - Panels: `--radius` (14px) corners, a 1px `--ifm-border-color` border, `--lift` on hover
 
@@ -98,7 +99,7 @@ Full-width light-gray sponsors bandeau shown below the content on every doc page
 
 ## Responsive design
 
-- Tables switch to horizontal scroll below 1280px.
+- Tables are as wide as their content, up to the column; one that cannot fit scrolls sideways inside its panel, with a shade at the edge that has more. `src/clientModules/scrollableTables.js` makes such a table a Tab stop, so the keyboard can scroll it.
 - Content padding adjusts at 996px and 1400px breakpoints.
 - The homepage uses its own CSS grids, with breakpoints at 1100px and 640px. The delivery diagram turns into a numbered list of its steps when its panel is narrower than the diagram (a container query), and the run command wraps instead of scrolling.
 - Homepage code panels that scroll sideways show a shade at the edge that has more code.

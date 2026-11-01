@@ -249,4 +249,5 @@ module.exports = {
     ],
   ],
   plugins: ["@docusaurus/plugin-ideal-image"],
+  clientModules: [require.resolve("./src/clientModules/scrollableTables.js")],
 };

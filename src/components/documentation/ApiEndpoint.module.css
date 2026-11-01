@@ -1,9 +1,11 @@
 /* --- API CONTAINER --- */
+/* A panel, as on the homepage: a bar with the method and path, the inputs,
+   then the request and responses. */
 .apiContainer {
   margin-bottom: 2.5rem;
   border: 1px solid var(--ifm-border-color);
-  border-radius: 4px;
-  background-color: var(--ifm-background-surface-color);
+  border-radius: var(--radius);
+  background-color: var(--panel);
   overflow: hidden;
 }
 
@@ -12,21 +14,18 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 16px;
-  background-color: var(--paper-shade);
+  padding: 12px 18px;
+  background-color: var(--panel-2);
   border-bottom: 1px solid var(--ifm-border-color);
-  overflow-x: auto;
-  overflow-y: hidden;
 }
 
 .methodBadge {
-  font-family: var(--ifm-font-family-base);
-  font-weight: 800;
-  font-size: 0.75rem;
-  letter-spacing: 0.05em;
-  padding: 4px 10px;
+  font-family: var(--ifm-font-family-monospace);
+  font-weight: 700;
+  font-size: 0.8rem;
+  padding: 3px 9px;
   border-radius: 6px;
-  min-width: 65px;
+  min-width: 56px;
   text-align: center;
   white-space: nowrap;
 }
@@ -37,7 +36,10 @@
   min-width: auto;
 }
 
+/* A long path wraps after a slash on a narrow screen (see wrappablePath)
+   rather than scrolling the bar. */
 .apiPath {
+  min-width: 0;
   font-family: var(--ifm-font-family-monospace);
   font-weight: 600;
   font-size: 0.95rem;
@@ -47,11 +49,11 @@
 
 /* --- LAYOUT ZONES --- */
 .sectionInput {
-  padding: 1.25rem 1rem;
+  padding: 1.25rem 1.25rem;
 }
 
 .sectionTechnical {
-  padding: 1.25rem 1rem;
+  padding: 1.25rem 1.25rem;
   background-color: var(--paper-shade);
 }
 
@@ -59,12 +61,12 @@
   border-top: 1px solid var(--ifm-border-color);
 }
 
-/* --- SECTION LABELS --- */
+/* --- SECTION LABELS: the homepage's small uppercase labels --- */
 .sectionLabel {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-weight: 800;
+  letter-spacing: 0.12em;
+  font-weight: 700;
   color: var(--ifm-color-content-secondary);
   margin-bottom: 10px;
 }
@@ -79,14 +81,14 @@
 }
 
 .paramsSectionLabel {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-weight: 800;
-  color: var(--ifm-heading-color);
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  color: var(--ifm-color-content-secondary);
   margin-bottom: 12px;
-  border-bottom: 2px solid var(--ifm-border-color);
-  padding-bottom: 6px;
+  border-bottom: 1px solid var(--ifm-border-color);
+  padding-bottom: 8px;
 }
 
 .listWrapper {
@@ -125,13 +127,14 @@
   font-size: 0.875rem;
 }
 
+/* On the panel bar, not the border color: the muted text keeps 4.5:1. */
 .paramType {
   font-size: 0.75rem;
   color: var(--ifm-color-content-secondary);
   font-family: var(--ifm-font-family-monospace);
-  background-color: var(--ifm-border-color);
-  padding: 2px 6px;
-  border-radius: 2px;
+  background-color: var(--panel-2);
+  padding: 2px 7px;
+  border-radius: 6px;
   font-weight: 500;
 }
 
@@ -143,8 +146,8 @@
   font-weight: 800;
   margin-left: auto;
   background-color: rgba(180, 35, 24, 0.07);
-  padding: 2px 6px;
-  border-radius: 2px;
+  padding: 2px 7px;
+  border-radius: 6px;
 }
 
 /* --- PARAMETER BODY STYLING --- */
@@ -179,7 +182,7 @@
   color: var(--accent-text);
   background-color: rgba(67, 56, 202, 0.06);
   padding: 0.05em 0.3em;
-  border-radius: 3px;
+  border-radius: 4px;
 }
 
 .paramDefault code {
@@ -199,7 +202,7 @@
   padding: 12px 16px;
   margin-bottom: 12px;
   color: var(--ifm-color-content);
-  background-color: var(--paper-shade);
+  background-color: var(--panel);
   border: 1px solid var(--ifm-border-color);
-  border-radius: 4px;
+  border-radius: 10px;
 }

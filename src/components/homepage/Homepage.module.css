@@ -1,6 +1,7 @@
 /* Gotenberg 9 homepage. The base: tokens, layout and code. Light tokens
    sit on .g9, dark ones follow the site's data-theme. The display font, the
-   panels, their radius and lift come from the site's custom.css. The layers below
+   panels, their radius and lift, and the code palette come from the site's
+   custom.css. The layers below
    style the hero sheet, the page frame, the conformance instrument and the
    delivery diagram; the last layer gives the page its look. */
 
@@ -25,13 +26,6 @@
   --nav-bg: #fdfcfa;
   --sheet: #ffffff;
   --shadow: 0 34px 70px -34px rgba(28, 25, 23, 0.45);
-  --code-plain: #e2e8f0;
-  --code-comment: #94a3b8;
-  --code-command: #7dd3fc;
-  --code-flag: #c4b5fd;
-  --code-string: #fbbf24;
-  --code-url: #6ee7b7;
-  --code-punct: #94a3b8;
   --serif: var(--font-serif);
   --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --mono: var(--ifm-font-family-monospace);
@@ -1166,22 +1160,8 @@
   --g: #7dd3fc;
 }
 
-/* --- Code: light terminals in light mode, dark in dark mode --- */
-
-:global([data-theme="light"]) .xb {
-  --code-plain: #1f1c19;
-  --code-command: #4338ca;
-  --code-flag: #0e7490;
-  --code-string: #a14a0a;
-  --code-url: #047857;
-  --code-punct: #6e675e;
-  --code-comment: #6e675e;
-}
-
-:global([data-theme="dark"]) .xb {
-  --code-command: #a5b4fc;
-  --code-flag: #67e8f9;
-}
+/* --- Code: light terminals in light mode, dark in dark mode. The palette
+   comes from the site's custom.css. --- */
 
 .g9-code .in2 {
   padding-left: 4ch;
