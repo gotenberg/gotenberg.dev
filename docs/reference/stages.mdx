@@ -37,11 +37,12 @@ Stages process PDFs. List them in the `stages` form field, as JSON, and Gotenber
 Gotenberg checks the order of the stages before it runs any, and answers 400 with the rule a list breaks:
 
 - `decrypt` comes first, and `render` last.
-- A list has at most one `remediate` and one `encrypt`.
+- A list has at most one `remediate`, one `encrypt`, one `sign` and one `timestamp`.
 - After `remediate`, only `encrypt`, `optimize`, `sign`, `timestamp` and `render` may follow.
 - After `encrypt`, only `optimize` and `render` may follow.
 - After `sign` or `timestamp`, only `sign`, `timestamp` and `render` may follow.
 - `encrypt` doesn't combine with `sign`, `timestamp`, or a PDF/A or Factur-X `remediate`.
+- `decrypt` doesn't combine with `sign` or `timestamp`: sign the decrypted PDF in a request of its own.
 
 ## Page selections
 

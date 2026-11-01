@@ -21,7 +21,7 @@ Two headers turn a request into a webhook:
   response={`HTTP/1.1 204 No Content`}
 />
 
-Gotenberg checks both URLs, then answers `204 No Content` right away. Once the work is done, it uploads the result to `Gotenberg-Webhook-Url`, then posts an event to `Gotenberg-Webhook-Events-Url`. Both headers are required, and a URL whose host doesn't resolve, or that the [filters](#restrict-the-destinations) refuse, answers 403.
+Gotenberg checks both URLs, then answers `204 No Content` right away. Once the work is done, it uploads the result to `Gotenberg-Webhook-Url`, then posts an event to `Gotenberg-Webhook-Events-Url`. Both headers are required. A URL whose host doesn't resolve answers 400, and one the [filters](#restrict-the-destinations) refuse answers 403.
 
 ## The upload
 
@@ -41,6 +41,13 @@ A JSON `webhook.success` event follows a delivered upload. A failed request, or 
     "message": "Invalid form data: form field 'paperSize' is invalid (got 'A9', want A3, A4, A5, B4, B5, Letter, Legal or Tabloid)"
   }
 }
+```
+
+When the upload itself fails for good, the message says what the webhook URL answered, or why Gotenberg couldn't reach it:
+
+```text
+The webhook URL answered 500 Internal Server Error after 5 attempts
+The webhook URL could not be reached after 5 attempts: the connection was refused
 ```
 
 `correlationId` is the request's `Gotenberg-Trace`: set it to your own identifier to match events to requests.
