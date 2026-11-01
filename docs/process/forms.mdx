@@ -33,6 +33,21 @@ Fill the fields of a PDF form, then lock the values into the page.
 
 `fields` keys each value by the field's fully qualified name: `name`, or `address.city` for a field `city` inside a field `address`. The fields stay editable.
 
+## Find the field names
+
+A name the PDF doesn't have answers 400, with the names it does have:
+
+<Request
+  route="/forms/pdf/set-form"
+  files={["form.pdf"]}
+  fields={{ fields: { nope: "x" } }}
+  status={400}
+  response={`HTTP/1.1 400 Bad Request
+Content-Type: text/plain; charset=UTF-8
+
+Stage 'set-form' failed on 'form.pdf': form field "nope" not found; the PDF's fields are: name`}
+/>
+
 ## Flatten the form
 
 Fill the fields, then flatten them:
