@@ -940,6 +940,16 @@ html[data-theme="dark"] .footer--dark {
   text-underline-offset: 4px;
 }
 
+/* Once the link columns stack, the logo and copyright take the full width
+   under them. */
+@media (max-width: 996px) {
+  .footer__links,
+  .footer__bottom {
+    width: 100%;
+    float: none;
+  }
+}
+
 /* --- LAYOUT AND SPACING --- */
 .theme-doc-markdown {
   max-width: 840px;
