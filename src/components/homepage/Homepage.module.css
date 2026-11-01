@@ -918,11 +918,14 @@
   color: var(--ok);
 }
 
-.cc-foot {
-  margin-top: 18px;
+/* The same gap under the violations and under the headers. The .g9 prefix
+   outranks the page's paragraph reset. */
+.g9 .cc-foot {
+  max-width: 60ch;
+  margin-top: 24px;
   color: var(--muted);
   font-size: 14.5px;
-  line-height: 1.55;
+  line-height: 1.6;
 }
 
 @media (max-width: 1100px) {
