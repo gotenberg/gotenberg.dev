@@ -26,7 +26,7 @@ One indigo across the homepage and docs. It clears WCAG AA on paper (~7.7:1) and
 | `--rubric`                      | `#b42318`                      | Printer's marks only: pilcrows, required flags, folios                     |
 | `--ifm-background-color`        | `#fdfcfa`                      | Paper                                                                      |
 | `--paper-shade`                 | `#f6f5f1`                      | Alternating sections, table headers, technical zones                       |
-| `--ink-plate`                   | `#1c1917`                      | Terminal windows, footer                                                   |
+| `--ink-plate`                   | `#1c1917` (dark: `#0f1214`)    | Terminal windows, footer                                                   |
 | `--ifm-heading-color`           | `#1f1c19`                      | Headings, booktabs rules                                                   |
 | `--ifm-color-content`           | `#38332e`                      | Body text                                                                  |
 | `--ifm-color-content-secondary` | `#6e675e`                      | Secondary text, sidebar links                                              |

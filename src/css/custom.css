@@ -89,6 +89,8 @@ html[data-theme="dark"] {
   --ifm-background-surface-color: #202529;
   --ifm-border-color: #3b4349;
   --paper-shade: #252b30;
+  /* Terminals and the footer stay darker than the page, in its cool tone. */
+  --ink-plate: #0f1214;
   --ifm-color-content: #dfdcd5;
   --ifm-color-content-secondary: #b9b5ae;
   --ifm-heading-color: #f5f2e9;
@@ -890,6 +892,10 @@ a[class*="sidebarLogo"] b {
      indigo primary (which would vanish). Use the light end of the ramp. */
   --ifm-footer-link-hover-color: var(--ifm-color-primary-lighter);
   border-top: 1px solid #2b2724;
+}
+
+html[data-theme="dark"] .footer--dark {
+  border-top-color: #1b2024;
 }
 
 .footer__links {
