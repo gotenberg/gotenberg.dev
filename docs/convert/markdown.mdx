@@ -1,0 +1,62 @@
+---
+id: markdown
+title: Convert Markdown to PDF
+---
+
+Print Markdown files with the layout and styles of your own HTML page.
+
+## Write the page
+
+An `index.html` places each Markdown file with `{{ toHTML "<name>" }}`:
+
+```html title="index.html"
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Release notes</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    {{ toHTML "notes.md" }}
+  </body>
+</html>
+```
+
+Call `toHTML` once per file, anywhere in the page.
+
+## Send it
+
+Upload the page, the Markdown files and the page's assets:
+
+<Request
+  route="/forms/chromium/convert/markdown"
+  dir="markdown"
+  files={["index.html", "notes.md", "style.css"]}
+  output="notes.pdf"
+/>
+
+Gotenberg turns each Markdown file into HTML in place, then Chromium prints the page as on [the HTML route](/docs/convert/html): the same fields, the same stages, [headers and footers](/docs/convert/headers-footers) included. A file the page names but the request lacks answers 400.
+
+## What Markdown supports
+
+Besides the usual syntax, Markdown files take tables, fenced code blocks, strikethrough, definition lists and bare links:
+
+```markdown title="notes.md"
+# Release notes
+
+Gotenberg converts **Markdown** too:
+
+- Chromium renders it.
+- Your `index.html` styles it.
+
+| Version | Date       |
+| ------- | ---------- |
+| 9.0.0   | 2026-11-01 |
+```
+
+Gotenberg sanitizes the HTML each file gives: a `<script>` in the Markdown doesn't reach the page. Scripts in `index.html` itself run.
+
+## Next
+
+[Set the page size and margins](/docs/convert/page-size), or take a screenshot of the same page: [Take screenshots](/docs/convert/screenshots).

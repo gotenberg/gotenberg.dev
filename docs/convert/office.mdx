@@ -1,0 +1,91 @@
+---
+id: office
+title: Convert office documents
+---
+
+Turn Word, Excel, PowerPoint and OpenDocument files, and over a hundred other formats, into PDF with LibreOffice.
+
+## Convert a document
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["report.docx"]}
+  output="report.pdf"
+/>
+
+The PDF takes the document's name, `report.docx.pdf`, unless the `Gotenberg-Output-Filename` header names it. The [LibreOffice reference](/docs/reference/libreoffice#formats) lists every format.
+
+## Convert several
+
+Upload several documents to get one PDF each, in a ZIP:
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["report.docx", "annex.docx"]}
+  output="documents.zip"
+/>
+
+## Merge them
+
+Add a `merge` stage for one PDF instead:
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["report.docx", "annex.docx"]}
+  stages={[{ op: "merge" }]}
+  output="documents.pdf"
+/>
+
+The documents merge in the alphanumeric order of their names, so `annex.docx` comes first. Name them `1-report.docx` and `2-annex.docx` to pick the order.
+
+## Open a protected document
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["protected.docx"]}
+  fields={{ password: "secret" }}
+  output="report.pdf"
+/>
+
+Without the password, or with a wrong one, Gotenberg answers 400 and says which.
+
+## Fit a spreadsheet on one page
+
+A spreadsheet spreads over as many pages as its print settings ask. `sales.csv` gives three. `singlePage` puts each sheet on one page:
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["sales.csv"]}
+  fields={{ singlePage: true }}
+  output="sales.pdf"
+/>
+
+## Make it archival
+
+LibreOffice writes PDF/A itself with `nativePdfa`:
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["report.docx"]}
+  fields={{ nativePdfa: "PDF/A-2b" }}
+  output="report.pdf"
+/>
+
+The `remediate` stage does the same after the conversion, on any route and for every PDF/A level, and reports what it couldn't fix:
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["report.docx"]}
+  stages={[{ op: "remediate", profile: "PDF/A-2b" }]}
+  output="report.pdf"
+  response={`HTTP/1.1 200 OK
+Content-Type: application/pdf
+Gotenberg-Remediation-Residual: 0
+Gotenberg-Remediation-Rolled-Back: 0`}
+/>
+
+Both PDFs pass Gotenberg's own PDF/A-2b [validation](/docs/reference/pdf#validate).
+
+## Next
+
+[Set the page size](/docs/convert/page-size#office-documents) of the documents, or go through every field in the [LibreOffice reference](/docs/reference/libreoffice).

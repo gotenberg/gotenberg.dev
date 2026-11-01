@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Sales report</title>
+  </head>
+  <body>
+    <h1>Sales report</h1>
+    <div id="chart">Loading…</div>
+    <script>
+      // Stands in for a chart that draws once its data arrives.
+      setTimeout(() => {
+        const chart = document.getElementById("chart");
+        chart.textContent = "Revenue: 42,000 EUR";
+        chart.className = "ready";
+        window.chartReady = true;
+        window.status = "ready";
+      }, 1000);
+    </script>
+  </body>
+</html>

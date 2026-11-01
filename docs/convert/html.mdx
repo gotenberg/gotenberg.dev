@@ -1,0 +1,83 @@
+---
+id: html
+title: Convert HTML to PDF
+---
+
+Turn your own HTML, CSS and images into a PDF, printed by Chromium.
+
+## Send the page
+
+Upload the page as `index.html`, with every file it uses:
+
+<Request
+  route="/forms/chromium/convert/html"
+  files={["index.html", "style.css"]}
+  output="invoice.pdf"
+/>
+
+Gotenberg keeps the names of the files and drops their folders. Link each file by its name alone: `href="style.css"`, `src="logo.png"`.
+
+## Send a ZIP
+
+A page with many assets travels better as one ZIP. Upload it under `archives`, and Gotenberg unpacks it:
+
+<Request
+  route="/forms/chromium/convert/html"
+  files={[{ field: "archives", name: "site.zip" }]}
+  output="invoice.pdf"
+/>
+
+The entries lose their folders too, so the links stay bare names.
+
+## Style the print
+
+Chromium prints with your print styles. This stylesheet hides the navigation and starts each chapter on a new page:
+
+```css title="print.css"
+@page {
+  size: A5;
+  margin: 15mm;
+}
+
+body {
+  font-family: sans-serif;
+}
+
+h2 {
+  break-before: page;
+}
+
+@media print {
+  nav {
+    display: none;
+  }
+}
+```
+
+<Request
+  route="/forms/chromium/convert/html"
+  dir="print"
+  files={["index.html", "print.css"]}
+  output="handbook.pdf"
+/>
+
+The PDF has two pages and no navigation. `emulatedMediaType=screen` prints the page as a screen shows it instead, navigation included. The `@page` size waits for `preferCssPageSize`: see [Set the page size and margins](/docs/convert/page-size#let-the-css-decide).
+
+## Print backgrounds
+
+Chromium leaves background colors and images out, as a browser's print dialog does. Turn them on:
+
+<Request
+  route="/forms/chromium/convert/html"
+  files={["index.html", "style.css"]}
+  fields={{ printBackground: true }}
+  output="invoice.pdf"
+/>
+
+## Run scripts
+
+Scripts run before Chromium prints, unless the operator turned them off with [`--chromium-disable-javascript`](/docs/configuration#chromium-disable-javascript). Chromium prints once the page loads: a script that draws later needs a wait, see [Wait for the page](/docs/convert/wait).
+
+## Next
+
+[Add headers and footers](/docs/convert/headers-footers) for page numbers, and [set the page size](/docs/convert/page-size). Every field is in the [Chromium reference](/docs/reference/chromium).

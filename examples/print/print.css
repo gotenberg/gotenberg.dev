@@ -1,0 +1,18 @@
+@page {
+  size: A5;
+  margin: 15mm;
+}
+
+body {
+  font-family: sans-serif;
+}
+
+h2 {
+  break-before: page;
+}
+
+@media print {
+  nav {
+    display: none;
+  }
+}

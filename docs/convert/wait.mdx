@@ -1,0 +1,113 @@
+---
+id: wait
+title: Wait for the page
+---
+
+Print a page once its scripts have drawn it: charts, tables filled from an API, content that loads late.
+
+Chromium prints as soon as the page loads. This chart draws a second later:
+
+```html title="index.html"
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Sales report</title>
+  </head>
+  <body>
+    <h1>Sales report</h1>
+    <div id="chart">Loading…</div>
+    <script>
+      // Stands in for a chart that draws once its data arrives.
+      setTimeout(() => {
+        const chart = document.getElementById("chart");
+        chart.textContent = "Revenue: 42,000 EUR";
+        chart.className = "ready";
+        window.chartReady = true;
+        window.status = "ready";
+      }, 1000);
+    </script>
+  </body>
+</html>
+```
+
+So the PDF reads "Loading…":
+
+<Request
+  route="/forms/chromium/convert/html"
+  dir="wait"
+  files={["index.html"]}
+  output="report.pdf"
+/>
+
+Each wait below gets "Revenue: 42,000 EUR" instead.
+
+## Wait for an element
+
+Chromium waits until an element matching the CSS selector is visible:
+
+<Request
+  route="/forms/chromium/convert/html"
+  dir="wait"
+  files={["index.html"]}
+  fields={{ waitForSelector: "#chart.ready" }}
+  output="report.pdf"
+/>
+
+Mark the page ready from your own code, and wait for the mark. It's the most precise signal.
+
+## Wait for an expression
+
+Chromium evaluates the JavaScript expression until it returns true:
+
+<Request
+  route="/forms/chromium/convert/html"
+  dir="wait"
+  files={["index.html"]}
+  fields={{ waitForExpression: "window.chartReady === true" }}
+  output="report.pdf"
+/>
+
+An expression that throws, such as one that reads a property of `undefined`, answers 400.
+
+## Wait for the window status
+
+Chromium waits until `window.status` equals the value:
+
+<Request
+  route="/forms/chromium/convert/html"
+  dir="wait"
+  files={["index.html"]}
+  fields={{ waitForWindowStatus: "ready" }}
+  output="report.pdf"
+/>
+
+## Wait a fixed delay
+
+<Request
+  route="/forms/chromium/convert/html"
+  dir="wait"
+  files={["index.html"]}
+  fields={{ waitDelay: "2s" }}
+  output="report.pdf"
+/>
+
+A delay is the last resort. Too short, the chart is missing. Too long, every request pays for it.
+
+## Wait for the network
+
+`skipNetworkIdleEvent=false` waits until the page stops making requests, for pages that fetch their content once they load:
+
+<Request
+  route="/forms/chromium/convert/url"
+  fields={{ url: "https://example.com", skipNetworkIdleEvent: false }}
+  output="example.pdf"
+/>
+
+## Order and limits
+
+Chromium waits for the page to load, then for `waitForWindowStatus`, `waitForExpression`, `waitForSelector` and `waitDelay`, in that order. Every wait counts against [`--api-timeout`](/docs/configuration#api-timeout), 30 seconds by default: a wait that never ends fails the request then.
+
+## Next
+
+[Add headers and footers](/docs/convert/headers-footers) to the printed pages.

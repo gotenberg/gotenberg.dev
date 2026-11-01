@@ -17,6 +17,21 @@ module.exports = {
     },
     {
       type: "category",
+      label: "Convert",
+      collapsible: false,
+      items: [
+        "convert/html",
+        "convert/url",
+        "convert/markdown",
+        "convert/office",
+        "convert/wait",
+        "convert/headers-footers",
+        "convert/page-size",
+        "convert/screenshots",
+      ],
+    },
+    {
+      type: "category",
       label: "Reference",
       collapsible: false,
       items: [
