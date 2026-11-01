@@ -1,0 +1,18 @@
+---
+id: clients
+title: Clients and SDKs
+---
+
+Gotenberg is an HTTP API that takes `multipart/form-data`, so any HTTP library talks to it. A client adds types and file handling on top.
+
+## PHP
+
+[gotenberg/gotenberg-php](https://github.com/gotenberg/gotenberg-php) is the official client. It targets Gotenberg 8 today: check its README before you upgrade.
+
+## Other languages
+
+The [Awesome Gotenberg](https://github.com/gotenberg/awesome-gotenberg#clients) list gathers the community's clients. Each follows Gotenberg at its own pace: check that it supports Gotenberg 9 and its [stages](/docs/reference/stages).
+
+## Without a client
+
+Every request in these docs is a cURL command you can copy, and [How requests work](/docs/getting-started/requests) covers what a wrapper needs. Gotenberg's repository also ships a [Bruno collection](https://github.com/gotenberg/gotenberg/tree/main/.bruno), with a request for every route.

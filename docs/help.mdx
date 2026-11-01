@@ -1,0 +1,28 @@
+---
+id: help
+title: Get help
+---
+
+Where to ask, and what to send so someone can answer.
+
+## Search first
+
+[Troubleshooting](/docs/troubleshooting) covers the common symptoms. Gotenberg's [GitHub issues](https://github.com/gotenberg/gotenberg/issues) and [discussions](https://github.com/gotenberg/gotenberg/discussions) hold the rest.
+
+## Ask a question
+
+Ask on [GitHub Discussions](https://github.com/gotenberg/gotenberg/discussions): how to do something, whether Gotenberg fits a use case, how to deploy it.
+
+## Report a bug
+
+Open a [GitHub issue](https://github.com/gotenberg/gotenberg/issues) with what it takes to reproduce it:
+
+- The version: `GET /version`, or the `Gotenberg-Version` header of any answer, and the image variant.
+- The request, as a cURL command with the files, cut down to the smallest one that still fails.
+- The answer: its status, its message and its `Gotenberg-Trace`.
+- Gotenberg's logs for that trace, at [`--log-level=debug`](/docs/configuration#log-level) if you can.
+- The configuration: the answer of [`GET /debug`](/docs/reference/system#debug), with `--api-enable-debug-route` on. Remove anything private first.
+
+## Support the project
+
+Gotenberg is free and open source, and [sponsors](https://github.com/sponsors/gulien) fund its maintenance.

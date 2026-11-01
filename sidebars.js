@@ -12,6 +12,7 @@ module.exports = {
       items: [
         "getting-started/first-pdf",
         "getting-started/requests",
+        "getting-started/clients",
         "getting-started/upgrade",
       ],
     },
@@ -98,6 +99,12 @@ module.exports = {
         "reference/configuration",
         "reference/errors",
       ],
+    },
+    {
+      type: "category",
+      label: "Help",
+      collapsed: true,
+      items: ["troubleshooting", "help"],
     },
   ],
 };

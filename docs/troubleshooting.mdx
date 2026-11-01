@@ -1,0 +1,111 @@
+---
+id: troubleshooting
+title: Troubleshooting
+---
+
+Find your symptom, then the fix. Every answer that isn't a PDF says what failed: start with its message, and its `Gotenberg-Trace` in Gotenberg's logs.
+
+## Answers
+
+### 400 after upgrading from 8.x
+
+Gotenberg 9 answers 400 for a field it moved, renamed or removed, and the message says where it went. [Upgrade from 8.x](/docs/getting-started/upgrade) lists every change.
+
+### 400 Bad Request
+
+The message names the field and what it wants, such as `form field 'paperSize' is invalid (got 'A9', want A3, A4, …)`. [Errors](/docs/reference/errors) shows the message styles.
+
+### 403 Forbidden
+
+An outbound filter refused a URL the request names: the page Chromium loads, a `downloadFrom` file or a webhook. The message stays generic, and Gotenberg's logs say which filter refused it. See [Secure Gotenberg](/docs/security/secure#filter-outbound-requests).
+
+### 409 Conflict
+
+The page Chromium loaded answered a 4xx or 5xx status, or failed another check you asked for. The message quotes the status or the console. See [Fail on errors](/docs/convert/url#fail-on-errors).
+
+### 413, or a cut-off upload
+
+The request is larger than [`--api-body-limit`](/docs/configuration#api-body-limit). On Cloud Run, HTTP/1 requests stop at 32MB: use HTTP/2. On AWS Lambda, answers stop at 6MB: deliver with a [webhook](/docs/webhook-download).
+
+### 429 Too Many Requests
+
+The engine's queue is full: retry shortly, or run more containers. See [Run in production](/docs/operate/production#bound-the-waits).
+
+### 503 Service Unavailable
+
+The request ran past [`--api-timeout`](/docs/configuration#api-timeout), or Chromium crashed. A wait that never ends names itself. Look for a page that never gets ready, a document too heavy for the container's memory, or more requests than the containers serve.
+
+## Chromium
+
+### The PDF misses what JavaScript draws
+
+Chromium prints as soon as the page loads. Wait for your page: see [Wait for the page](/docs/convert/wait).
+
+### Backgrounds are missing
+
+Chromium leaves backgrounds out by default, as a browser's print dialog does. Set `printBackground: true`.
+
+### Images, styles or fonts don't load
+
+- Link the files you upload by their names alone: `src="logo.png"`, not `src="img/logo.png"`. Gotenberg drops the folders.
+- `localhost` is the container itself, not your machine. On Docker Desktop, reach your machine at `host.docker.internal`.
+- The [outbound filters](/docs/security/secure#filter-outbound-requests) drop a resource they block from the page, without failing the request: check them.
+
+### The header or footer is tiny, or unstyled
+
+Header and footer templates need their own font size and `<style>` tag, and take images as data URIs only. See [Add headers and footers](/docs/convert/headers-footers#style-them).
+
+### `landscape` doesn't turn the page
+
+A CSS `@page` size keeps its own orientation. See [Let the CSS decide](/docs/convert/page-size#let-the-css-decide).
+
+### Chromium failed to print the PDF
+
+The page is too large to print in one go: split its content across requests.
+
+## LibreOffice
+
+### The layout shifts
+
+LibreOffice lays the document out with the fonts installed in the image. A font it lacks gets a substitute, and the lines break elsewhere. The image ships metric-compatible substitutes for the common ones: Liberation for Arial, Times New Roman and Courier New, Carlito for Calibri, Caladea for Cambria. For any other font, [install it](#install-fonts).
+
+### Linked images are missing
+
+LibreOffice doesn't load content an uploaded document links to, an image on a server for instance: it would let a document make Gotenberg fetch any URL. Embed the images in the document.
+
+### 500 Internal Server Error
+
+`LibreOffice failed to convert the document`: the conversion ran out of memory or CPU, most often. The request is valid: retry it, give the container more resources, or split the document.
+
+### The document is password-protected
+
+Send its password in the `password` field. A missing or wrong one answers 400 and says which.
+
+## Fonts
+
+### Install fonts
+
+Build your own image from Gotenberg's, with the fonts your documents use:
+
+```dockerfile title="Dockerfile"
+FROM gotenberg/gotenberg:9
+
+USER root
+
+COPY fonts/*.ttf /usr/local/share/fonts/
+RUN fc-cache -f
+
+USER gotenberg
+```
+
+Chromium and LibreOffice both read the fonts installed in the image. Web fonts work without this on Chromium routes: upload the font files with the page, and declare them with `@font-face`.
+
+## Startup
+
+### An engine doesn't start in time
+
+A slow machine or a cold start can outlast [`--chromium-start-timeout`](/docs/configuration#chromium-start-timeout) or [`--libreoffice-start-timeout`](/docs/configuration#libreoffice-start-timeout), 20 seconds by default. Raise them.
+
+## Next
+
+Still stuck? [Get help](/docs/help).
