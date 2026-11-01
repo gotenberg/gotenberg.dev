@@ -931,6 +931,7 @@ a[class*="sidebarLogo"] b {
 }
 
 .theme-doc-version-badge {
+  margin-bottom: 1.25rem;
   padding: 3px 10px;
   border: 1px solid var(--ifm-border-color);
   border-radius: 999px;
