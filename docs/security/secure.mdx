@@ -1,0 +1,80 @@
+---
+id: secure
+title: Secure Gotenberg
+---
+
+Gotenberg trusts the network it runs in: it asks for no credentials, and fetches from any address it can reach. Lock it down before untrusted clients reach it.
+
+## Authenticate requests
+
+Basic authentication takes a username and a password from the environment:
+
+```yaml title="compose.yaml"
+services:
+  gotenberg:
+    image: gotenberg/gotenberg:9
+    environment:
+      API_ENABLE_BASIC_AUTH: "true"
+      GOTENBERG_API_BASIC_AUTH_USERNAME: gotenberg
+      GOTENBERG_API_BASIC_AUTH_PASSWORD: change-me
+```
+
+```bash
+curl \
+  --user gotenberg:change-me \
+  --request POST http://localhost:3000/forms/chromium/convert/url \
+  --form url=https://example.com \
+  -o example.pdf
+```
+
+A request without valid credentials answers 401. `/health` stays open, so probes need none.
+
+OIDC bearer tokens work instead of basic authentication: set [`--api-enable-oidc-auth`](/docs/configuration#api-enable-oidc-auth), the issuer with [`--api-oidc-issuer`](/docs/configuration#api-oidc-issuer), and the audience the tokens carry with [`--api-oidc-audience`](/docs/configuration#api-oidc-audience). Gotenberg finds the keys from the issuer's configuration.
+
+## Serve HTTPS
+
+```yaml title="compose.yaml"
+services:
+  gotenberg:
+    image: gotenberg/gotenberg:9
+    environment:
+      API_TLS_CERT_FILE: /certs/cert.pem
+      API_TLS_KEY_FILE: /certs/key.pem
+    volumes:
+      - ./certs:/certs:ro
+```
+
+Gotenberg then serves HTTPS only, on the same port.
+
+## Filter outbound requests
+
+Five parts of Gotenberg fetch URLs a request names. Each takes an allow list and a deny list of regular expressions, and can refuse private or public addresses:
+
+| Fetches                                           | Flags                   |
+| :------------------------------------------------ | :---------------------- |
+| Chromium: the page and its resources              | `--chromium-*`          |
+| LibreOffice: linked images and content            | `--libreoffice-*`       |
+| `downloadFrom`                                    | `--api-download-from-*` |
+| Webhooks                                          | `--webhook-*`           |
+| Timestamp authorities, for `sign` and `timestamp` | `--pdf-*`               |
+
+For instance, `CHROMIUM_DENY_PRIVATE_IPS=true` keeps Chromium off your internal network, and [`--chromium-allow-list`](/docs/configuration#chromium-allow-list) lets one internal host through. A blocked URL answers 403, with a generic message; Gotenberg's logs say why.
+
+## Limit requests
+
+- [`--api-body-limit`](/docs/configuration#api-body-limit) caps the size of a request: `50MB`. A larger one answers 413.
+- [`--api-archive-max-entries`](/docs/configuration#api-archive-max-entries) and [`--api-archive-max-ratio`](/docs/configuration#api-archive-max-ratio) guard against ZIP bombs.
+- [`--api-timeout`](/docs/configuration#api-timeout) bounds each request, 30 seconds by default.
+- [`--chromium-max-queue-size`](/docs/configuration#chromium-max-queue-size) and [`--libreoffice-max-queue-size`](/docs/configuration#libreoffice-max-queue-size) cap the requests waiting for an engine. The next one answers 429.
+
+## Turn off what you don't use
+
+- `CHROMIUM_DISABLE_ROUTES`, `LIBREOFFICE_DISABLE_ROUTES` and `PDF_DISABLE_ROUTES` remove a module's routes.
+- `API_DISABLE_DOWNLOAD_FROM` and `WEBHOOK_DISABLE` turn off `downloadFrom` and webhooks.
+- `CHROMIUM_DISABLE_JAVASCRIPT` stops the pages' scripts.
+
+The image already runs as an unprivileged user, `gotenberg`, UID 1001.
+
+## Next
+
+The [configuration reference](/docs/configuration) lists every flag, and [Run in production](/docs/operate/production) sizes and scales Gotenberg.

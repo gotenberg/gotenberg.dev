@@ -1,0 +1,61 @@
+---
+id: accessibility
+title: Make accessible PDFs
+---
+
+Produce PDFs that screen readers can follow, and PDF/UA-conformant ones.
+
+## Tag while converting
+
+A tagged PDF carries its structure: headings, paragraphs, lists, tables, figures. Chromium tags the PDF from your HTML:
+
+<Request
+  route="/forms/chromium/convert/html"
+  files={["index.html", "style.css"]}
+  fields={{ nativeTaggedPdf: true }}
+  output="invoice.pdf"
+/>
+
+Write semantic HTML, with headings, lists, tables and `alt` text on images, and the tags follow it. LibreOffice tags a document with the same field: [`nativeTaggedPdf`](/docs/reference/libreoffice#nativeTaggedPdf).
+
+## Tag an existing PDF
+
+`autotag` infers the structure of an untagged PDF:
+
+<Request
+  route="/forms/pdf/autotag"
+  files={["report.pdf"]}
+  output="report.pdf"
+/>
+
+`/forms/pdf/info` then answers `"tagged": true`.
+
+## Make it PDF/UA
+
+The `remediate` stage repairs the PDF until it conforms to PDF/UA-1 or PDF/UA-2, and tags it if it isn't:
+
+<Request
+  route="/forms/pdf/remediate"
+  files={["report.pdf"]}
+  fields={{ profile: "PDF/UA-1", language: "en-US" }}
+  output="report.pdf"
+  response={`HTTP/1.1 200 OK
+Content-Type: application/pdf
+Gotenberg-Remediation-Residual: 0
+Gotenberg-Remediation-Rolled-Back: 0`}
+/>
+
+- `language` sets the document's language, `en` by default. Screen readers pick their voice from it.
+- `figureAltText` gives a description to the figures that lack one. Better, write the `alt` text in your HTML.
+
+## Validate it
+
+<Request
+  route="/forms/pdf/validate"
+  files={["report.pdf"]}
+  fields={{ profile: "PDF/UA-1" }}
+/>
+
+## Next
+
+[Make PDF/A](/docs/conformance/pdfa): `PDF/A-2a` and `PDF/A-3a` combine archival and tags.

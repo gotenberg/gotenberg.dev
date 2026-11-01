@@ -1,0 +1,97 @@
+---
+id: telemetry
+title: Telemetry
+slug: /telemetry
+---
+
+Follow what Gotenberg does: logs on standard output, and OpenTelemetry traces, metrics and logs for your collector.
+
+## Logs
+
+Gotenberg logs each request with its status, latency and `Gotenberg-Trace`, as JSON:
+
+```json
+{
+  "ts": 1793561981.9256449,
+  "level": "info",
+  "msg": "request handled",
+  "logger": "api",
+  "log_type": "access",
+  "correlation_id": "req-42",
+  "remote_ip": "fd07:b51a:cc66:1::1",
+  "host": "localhost:3009",
+  "uri": "/forms/libreoffice/convert",
+  "method": "POST",
+  "path": "/forms/libreoffice/convert",
+  "referer": "",
+  "user_agent": "curl/8.7.1",
+  "status": 200,
+  "latency": 124050996,
+  "latency_human": "124.050996ms",
+  "bytes_in": 6670,
+  "bytes_out": 11813,
+  "trace_id": "7ddb493b5d89f659b26c4fa9370d243b",
+  "span_id": "e15ea573b02a5d50"
+}
+```
+
+Each record is one line; it's spread here for reading.
+
+- [`--log-std-format`](/docs/configuration#log-std-format) takes `auto`, the default, `json` or `text`. `auto` writes text to a terminal, and JSON otherwise.
+- [`--log-level`](/docs/configuration#log-level) takes `error`, `warn`, `info`, the default, or `debug`.
+- [`--log-std-enable-gcp-fields`](/docs/configuration#log-std-enable-gcp-fields) uses the field names Google Cloud Logging reads, and [`--log-fields-prefix`](/docs/configuration#log-fields-prefix) prefixes every field.
+
+## Export to OpenTelemetry
+
+The image turns the exporters off. Turn them on with the standard OpenTelemetry variables:
+
+```yaml title="compose.yaml"
+services:
+  gotenberg:
+    image: gotenberg/gotenberg:9
+    environment:
+      OTEL_TRACES_EXPORTER: otlp
+      OTEL_METRICS_EXPORTER: otlp
+      OTEL_LOGS_EXPORTER: otlp
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://collector:4318
+```
+
+The service is `gotenberg`, unless `OTEL_SERVICE_NAME` names it otherwise. A request carrying a W3C `traceparent` header continues your trace, and every answer carries the trace it belongs to in `Traceparent`.
+
+The system routes, `/health` and `/version` among them, leave no trace by default: see [the system routes](/docs/reference/system).
+
+## Scrape with Prometheus
+
+The Prometheus exporter serves the metrics on port 9464:
+
+```yaml title="compose.yaml"
+services:
+  gotenberg:
+    image: gotenberg/gotenberg:9
+    environment:
+      OTEL_METRICS_EXPORTER: prometheus
+      OTEL_EXPORTER_PROMETHEUS_HOST: 0.0.0.0
+```
+
+Scrape `http://gotenberg:9464/metrics`.
+
+## Metrics
+
+Each engine, `chromium` and `libreoffice`, reports the same set, as Prometheus names them:
+
+| Metric                                 | Type      | What                         |
+| :------------------------------------- | :-------- | :--------------------------- |
+| `<engine>_requests_total`              | counter   | Requests the engine handled. |
+| `<engine>_errors_total`                | counter   | Requests that failed.        |
+| `<engine>_requests_active`             | gauge     | Requests running now.        |
+| `<engine>_requests_queue_size`         | gauge     | Requests waiting.            |
+| `<engine>_queue_wait_duration_seconds` | histogram | Time spent in the queue.     |
+| `<engine>_conversion_duration_seconds` | histogram | Time spent converting.       |
+| `<engine>_process_restarts_total`      | counter   | Engine restarts.             |
+| `<engine>_pdf_output_size_bytes`       | histogram | Size of the PDFs it made.    |
+
+Chromium adds `chromium_image_output_size_bytes`, `chromium_network_requests_total` and `chromium_network_bytes`, and LibreOffice `libreoffice_conversion_retries_total`. The HTTP server reports `http_server_request_duration_seconds` and the sizes of requests and answers.
+
+## Next
+
+[Run in production](/docs/operate/production).

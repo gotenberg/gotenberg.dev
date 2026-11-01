@@ -1,0 +1,52 @@
+---
+id: production
+title: Run in production
+---
+
+Size, tune and scale Gotenberg for real traffic.
+
+## What one container does
+
+A container runs one Chromium and one LibreOffice, both started on first use:
+
+- Chromium converts up to six pages at once: [`--chromium-max-concurrency`](/docs/configuration#chromium-max-concurrency).
+- LibreOffice converts one document at a time.
+- The PDF stages process one document at a time across requests: [`--pdf-max-concurrency`](/docs/configuration#pdf-max-concurrency) raises it, for more memory and CPU.
+
+The other requests wait in a queue. To serve more at once, run more containers behind a load balancer: Gotenberg keeps no state between requests.
+
+## Bound the waits
+
+- [`--api-timeout`](/docs/configuration#api-timeout) bounds each request, 30 seconds by default, queue included. A request past it answers 503.
+- [`--chromium-max-queue-size`](/docs/configuration#chromium-max-queue-size) and [`--libreoffice-max-queue-size`](/docs/configuration#libreoffice-max-queue-size) cap the queues, unlimited by default. A request past the cap answers 429: retry it, or route it to another container.
+
+## Start fast
+
+The first request starts the engine it needs, and pays for it. Start them with the container instead:
+
+```yaml title="compose.yaml"
+services:
+  gotenberg:
+    image: gotenberg/gotenberg:9
+    environment:
+      CHROMIUM_AUTO_START: "true"
+      LIBREOFFICE_AUTO_START: "true"
+```
+
+[`--chromium-idle-shutdown-timeout`](/docs/configuration#chromium-idle-shutdown-timeout) and [`--libreoffice-idle-shutdown-timeout`](/docs/configuration#libreoffice-idle-shutdown-timeout) do the opposite: they stop an idle engine to free its memory.
+
+## Restart the engines
+
+Chromium restarts every 100 conversions and LibreOffice every 10, which keeps their memory in check. [`--chromium-restart-after`](/docs/configuration#chromium-restart-after) and [`--libreoffice-restart-after`](/docs/configuration#libreoffice-restart-after) change the counts; `0` turns the restarts off.
+
+## Probe the health
+
+`/health` answers 200 while Gotenberg and its engines are up, and 503 when one is down. It never asks for credentials. Point your liveness and readiness probes at it: see [Kubernetes](/docs/getting-started/installation#kubernetes) and [the health route](/docs/reference/system#health).
+
+## Shut down gracefully
+
+On `SIGTERM` or `SIGINT`, Gotenberg stops taking requests and waits for the running ones, webhooks included, up to [`--gotenberg-graceful-shutdown-duration`](/docs/configuration#gotenberg-graceful-shutdown-duration), 30 seconds by default. Give your orchestrator a grace period at least as long.
+
+## Next
+
+[Watch it with telemetry](/docs/telemetry), and [secure it](/docs/security/secure).

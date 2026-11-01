@@ -1,0 +1,64 @@
+---
+id: factur-x
+title: Create Factur-X invoices
+---
+
+Turn an invoice into a Factur-X e-invoice, the format Germany also publishes as ZUGFeRD: a PDF/A-3 people read, carrying the XML machines read.
+
+## Make one
+
+Send the invoice's HTML and its XML, and remediate to `Factur-X`:
+
+<Request
+  route="/forms/chromium/convert/html"
+  files={["index.html", "style.css", "invoice.xml"]}
+  stages={[
+    {
+      op: "remediate",
+      profile: "Factur-X",
+      xml: "invoice.xml",
+      level: "MINIMUM",
+    },
+  ]}
+  output="invoice.pdf"
+  response={`HTTP/1.1 200 OK
+Content-Type: application/pdf
+Gotenberg-Remediation-Residual: 0
+Gotenberg-Remediation-Rolled-Back: 0`}
+/>
+
+Gotenberg embeds the XML under the name and relationship the level requires, writes the Factur-X metadata, and makes the PDF conform to PDF/A-3.
+
+## Write the XML
+
+The XML is a Cross Industry Invoice (CII), the syntax Factur-X uses. Its profile and `level` must match: `MINIMUM`, `BASIC WL`, `BASIC`, `EN 16931`, `EXTENDED` or `XRECHNUNG`. `documentType` sets the document type of the metadata, `INVOICE` by default.
+
+## Start from a PDF
+
+An invoice you already have as PDF takes the same stage, on its own route:
+
+<Request
+  route="/forms/pdf/remediate"
+  files={["report.pdf", "invoice.xml"]}
+  fields={{ profile: "Factur-X", xml: "invoice.xml", level: "MINIMUM" }}
+  output="invoice.pdf"
+/>
+
+Without `xml`, the stage repairs a Factur-X invoice the PDF already carries.
+
+## Validate it
+
+<Request
+  route="/forms/pdf/validate"
+  files={["invoice.pdf"]}
+  fields={{ profile: "Factur-X" }}
+  response={{
+    "invoice.pdf": { profile: "Factur-X", compliant: true, violations: [] },
+  }}
+/>
+
+The check covers the Factur-X rules, the XML's included, and reports warnings for the softer ones, which don't make the invoice non-compliant. Validate against `PDF/A-3b` too for the archival side.
+
+## Next
+
+[Attach other files](/docs/process/attachments), or [sign the invoice](/docs/security/sign).

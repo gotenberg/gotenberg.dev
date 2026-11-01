@@ -1,0 +1,93 @@
+---
+id: sign
+title: Sign and timestamp PDFs
+---
+
+Sign a PDF with your certificate, so readers can check who signed it and that nothing changed since, and prove when it existed.
+
+## Sign a PDF
+
+Upload the PDF, a PEM certificate and its private key:
+
+<Request
+  route="/forms/pdf/sign"
+  files={["report.pdf", "cert.pem", "key.pem"]}
+  fields={{
+    certificate: "cert.pem",
+    key: "key.pem",
+    reason: "Approved",
+    location: "Paris",
+  }}
+  output="report.pdf"
+/>
+
+`reason`, `location`, `contactInfo` and `name` show in the viewer's signature panel. `cert.pem` is a self-signed test certificate, so viewers flag the signature as untrusted: sign with a certificate from an authority they trust.
+
+## Sign with a PKCS#12 file
+
+A `.p12` or `.pfx` file holds the certificate and its key. `certificatePassword` opens it:
+
+<Request
+  route="/forms/pdf/sign"
+  files={["report.pdf", "cert.p12"]}
+  fields={{ certificate: "cert.p12", certificatePassword: "secret" }}
+  output="report.pdf"
+/>
+
+## Make it PAdES
+
+`pades: true` makes a PAdES signature, the format the EU's eIDAS regulation recognizes:
+
+<Request
+  route="/forms/pdf/sign"
+  files={["report.pdf", "cert.pem", "key.pem"]}
+  fields={{ certificate: "cert.pem", key: "key.pem", pades: true }}
+  output="report.pdf"
+/>
+
+## Timestamp the signature
+
+`timestampUrl` asks an RFC 3161 timestamp authority to vouch for the signing time:
+
+<Request
+  route="/forms/pdf/sign"
+  files={["report.pdf", "cert.pem", "key.pem"]}
+  fields={{
+    certificate: "cert.pem",
+    key: "key.pem",
+    pades: true,
+    timestampUrl: "http://timestamp.digicert.com",
+  }}
+  output="report.pdf"
+/>
+
+## Timestamp without signing
+
+A document timestamp proves the PDF existed, unchanged, at that time, without naming a signer:
+
+<Request
+  route="/forms/pdf/timestamp"
+  files={["report.pdf"]}
+  fields={{ timestampUrl: "http://timestamp.digicert.com" }}
+  output="report.pdf"
+/>
+
+Operators decide which authorities Gotenberg may call with [`--pdf-allow-list`](/docs/configuration#pdf-allow-list), [`--pdf-deny-list`](/docs/configuration#pdf-deny-list) and [`--pdf-deny-private-ips`](/docs/configuration#pdf-deny-private-ips).
+
+## Sign last
+
+A change after a signature breaks it, so only another `sign`, a `timestamp` or a `render` may follow a `sign` stage. Optimize before you sign: `optimize` refuses a signed PDF, since its rewrite would drop the signature.
+
+<Request
+  route="/forms/pdf/pipe"
+  files={["report.pdf", "cert.pem", "key.pem"]}
+  stages={[
+    { op: "optimize" },
+    { op: "sign", certificate: "cert.pem", key: "key.pem", pades: true },
+  ]}
+  output="report.pdf"
+/>
+
+## Next
+
+[Secure Gotenberg](/docs/security/secure) itself.

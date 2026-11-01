@@ -1,0 +1,63 @@
+---
+id: pdfa
+title: Make PDF/A
+---
+
+Turn any PDF into an archival PDF/A, and check that it conforms.
+
+## Remediate a PDF
+
+<Request
+  route="/forms/pdf/remediate"
+  files={["report.pdf"]}
+  fields={{ profile: "PDF/A-2b" }}
+  output="report.pdf"
+  response={`HTTP/1.1 200 OK
+Content-Type: application/pdf
+Gotenberg-Remediation-Residual: 0
+Gotenberg-Remediation-Rolled-Back: 0`}
+/>
+
+The `remediate` stage repairs the PDF until it meets the profile. Two headers report how it went:
+
+- `Gotenberg-Remediation-Residual` counts the violations left. `0` means the PDF conforms.
+- `Gotenberg-Remediation-Rolled-Back` counts the fixes Gotenberg undid because they changed how the pages look. `aggressive: true` keeps them, for better compliance.
+
+## Pick a level
+
+`profile` takes `PDF/A-1a`, `PDF/A-1b`, `PDF/A-2a`, `PDF/A-2b`, `PDF/A-2u`, `PDF/A-3a`, `PDF/A-3b`, `PDF/A-3u`, `PDF/A-4`, `PDF/A-4e` or `PDF/A-4f`.
+
+- The letter sets how much the PDF keeps: `b` its look, `u` its text as Unicode too, `a` its structure too, through tags.
+- The number sets the base: PDF/A-1 builds on PDF 1.4, PDF/A-2 adds transparency and layers, PDF/A-3 accepts embedded files of any type, and PDF/A-4 builds on PDF 2.0.
+
+PDF/A-2b suits most archives. An e-invoice needs PDF/A-3: see [Create Factur-X invoices](/docs/conformance/factur-x).
+
+## Convert to PDF/A
+
+Add the stage to a conversion:
+
+<Request
+  route="/forms/chromium/convert/html"
+  files={["index.html", "style.css"]}
+  stages={[{ op: "remediate", profile: "PDF/A-2b" }]}
+  output="invoice.pdf"
+/>
+
+LibreOffice also writes PDF/A itself, with [`nativePdfa`](/docs/convert/office#make-it-archival).
+
+## Validate a PDF
+
+<Request
+  route="/forms/pdf/validate"
+  files={["invoice.pdf"]}
+  fields={{ profile: "PDF/A-3b" }}
+  response={{
+    "invoice.pdf": { profile: "PDF/A-3b", compliant: true, violations: [] },
+  }}
+/>
+
+A PDF that doesn't conform lists its violations, each with the clause it breaks: see [the validate route](/docs/reference/pdf#validate).
+
+## Next
+
+[Make accessible PDFs](/docs/conformance/accessibility), or [create Factur-X invoices](/docs/conformance/factur-x).

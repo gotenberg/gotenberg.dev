@@ -48,6 +48,28 @@ module.exports = {
     },
     {
       type: "category",
+      label: "Conformance",
+      collapsed: true,
+      items: [
+        "conformance/pdfa",
+        "conformance/accessibility",
+        "conformance/factur-x",
+      ],
+    },
+    {
+      type: "category",
+      label: "Security",
+      collapsed: true,
+      items: ["security/encrypt", "security/sign", "security/secure"],
+    },
+    {
+      type: "category",
+      label: "Operate",
+      collapsed: true,
+      items: ["operate/webhooks", "operate/production", "operate/telemetry"],
+    },
+    {
+      type: "category",
       label: "Reference",
       collapsed: true,
       items: [

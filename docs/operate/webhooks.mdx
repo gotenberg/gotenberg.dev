@@ -1,0 +1,94 @@
+---
+id: webhooks
+title: Deliver with webhooks
+slug: /webhook-download
+---
+
+Have Gotenberg upload results to your storage or service, instead of answering with them, and download its inputs from URLs.
+
+## Send a webhook
+
+Two headers turn a request into a webhook:
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["report.docx"]}
+  headers={{
+    "Gotenberg-Webhook-Url": "https://example.com/upload",
+    "Gotenberg-Webhook-Events-Url": "https://example.com/events",
+  }}
+  status={204}
+  response={`HTTP/1.1 204 No Content`}
+/>
+
+Gotenberg checks both URLs, then answers `204 No Content` right away. Once the work is done, it uploads the result to `Gotenberg-Webhook-Url`, then posts an event to `Gotenberg-Webhook-Events-Url`. Both headers are required, and a URL whose host doesn't resolve, or that the [filters](#restrict-the-destinations) refuse, answers 403.
+
+## The upload
+
+The upload is a `POST` of the result, with its `Content-Type`, a `Content-Disposition` that names the file, and the request's `Gotenberg-Trace`. `Gotenberg-Webhook-Method` makes it a `PUT` or a `PATCH`.
+
+## The events
+
+A JSON `webhook.success` event follows a delivered upload. A failed request, or an upload that fails for good, sends `webhook.error` instead, with the status and the message the request would have answered:
+
+```json
+{
+  "event": "webhook.error",
+  "correlationId": "my-request-42",
+  "timestamp": "2026-11-01T17:02:51.123456789Z",
+  "error": {
+    "status": 400,
+    "message": "Invalid form data: form field 'paperSize' is invalid (got 'A9', want A3, A4, A5, B4, B5, Letter, Legal or Tabloid)"
+  }
+}
+```
+
+`correlationId` is the request's `Gotenberg-Trace`: set it to your own identifier to match events to requests.
+
+## Authenticate the calls
+
+`Gotenberg-Webhook-Extra-Http-Headers` takes a JSON object of headers, which Gotenberg sends with the upload and the event:
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["report.docx"]}
+  headers={{
+    "Gotenberg-Webhook-Url": "https://example.com/upload",
+    "Gotenberg-Webhook-Events-Url": "https://example.com/events",
+    "Gotenberg-Webhook-Extra-Http-Headers":
+      '{"Authorization": "Bearer abc123"}',
+    "Gotenberg-Trace": "my-request-42",
+  }}
+  status={204}
+/>
+
+## Retries
+
+An upload that fails is tried four more times, waiting 1, 2, 4, then 8 seconds. [`--webhook-max-retry`](/docs/configuration#webhook-max-retry), [`--webhook-retry-min-wait`](/docs/configuration#webhook-retry-min-wait) and [`--webhook-retry-max-wait`](/docs/configuration#webhook-retry-max-wait) tune it.
+
+## Wait for the delivery
+
+With [`--webhook-enable-sync-mode`](/docs/configuration#webhook-enable-sync-mode), Gotenberg answers the `204` only once the upload and the event are done. The AWS Lambda images turn it on, since Lambda may freeze a function that has answered.
+
+## Download the inputs
+
+`downloadFrom` lists URLs Gotenberg downloads before it starts, as if you had uploaded the files. Each server must answer with a `Content-Disposition` header that names the file:
+
+<Request
+  route="/forms/libreoffice/convert"
+  fields={{
+    downloadFrom: [{ url: "https://files.example.com/report.docx" }],
+  }}
+  output="report.pdf"
+  run={false}
+/>
+
+With webhooks, a request then carries no file at all. [How requests work](/docs/getting-started/requests#download-files) shows the headers each download can send.
+
+## Restrict the destinations
+
+Webhooks and downloads reach any address by default. [`--webhook-deny-private-ips`](/docs/configuration#webhook-deny-private-ips), [`--api-download-from-deny-private-ips`](/docs/configuration#api-download-from-deny-private-ips) and their allow and deny lists restrict them: see [Secure Gotenberg](/docs/security/secure#filter-outbound-requests).
+
+## Next
+
+[Run in production](/docs/operate/production).
