@@ -46,7 +46,7 @@ Which route takes which feature. A field name in `code` is a form field of the r
 | PDF/A, PDF/UA                       | `remediate`; `autotag` for tags       | `/forms/pdf/remediate`                 | `/forms/pdf/validate`  |
 | Password-protected input            | A `decrypt` stage first               | `/forms/pdf/decrypt` only              | `password`             |
 | Encrypt, sign, timestamp            | The stages                            | `/forms/pdf/encrypt` and the others    | No                     |
-| Forms                               | `set-form`, `flatten-form`            | `/forms/pdf/set-form` and the other    | `/forms/pdf/info`      |
+| Forms                               | `set-form`, `flatten-form`            | `/forms/pdf/set-form` and the other    | `/forms/pdf/form`      |
 | Images of the pages                 | `render`                              | `/forms/pdf/render`                    | No                     |
 | Smaller files                       | `optimize`, which keeps the quality   | `/forms/pdf/optimize`                  | No                     |
 

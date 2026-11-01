@@ -95,6 +95,13 @@
     {
       "group": "pdf",
       "method": "POST",
+      "path": "/forms/pdf/form",
+      "summary": "Lists the form's fields: name, type, value, pages, and the values each takes.",
+      "to": "/docs/reference/pdf#form"
+    },
+    {
+      "group": "pdf",
+      "method": "POST",
       "path": "/forms/pdf/validate",
       "summary": "Checks PDFs against PDF/A, PDF/UA or Factur-X, and lists the violations.",
       "to": "/docs/reference/pdf#validate"

@@ -447,7 +447,7 @@
           "name": "fields",
           "type": "object",
           "required": true,
-          "description": "Values keyed by the fields' fully qualified names. `/forms/pdf/info` tells whether a PDF has a form."
+          "description": "Values keyed by the fields' fully qualified names: a string, or an array of strings for a list that selects several. `/forms/pdf/form` lists the fields and the values each takes."
         }
       ],
       "example": {

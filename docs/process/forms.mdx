@@ -5,48 +5,71 @@ title: Fill and flatten forms
 
 Fill the fields of a PDF form, then lock the values into the page. Works on any PDF: a PDF you upload, through the stage's own route or `/forms/pdf/pipe`, and a PDF a Chromium or LibreOffice conversion makes, through its `stages`.
 
-## Check for a form
+## List the fields
 
 <Request
-  route="/forms/pdf/info"
-  files={["form.pdf"]}
+  route="/forms/pdf/form"
+  files={["fields.pdf"]}
   response={{
-    "form.pdf": {
-      pages: 1,
-      version: "1.7",
-      encrypted: false,
-      tagged: false,
-      linearized: false,
-      formFields: true,
-    },
+    "fields.pdf": [
+      {
+        name: "agree",
+        type: "checkbox",
+        value: "Off",
+        pages: [1],
+        states: ["Yes"],
+      },
+      {
+        name: "color",
+        type: "combo",
+        value: "Red",
+        pages: [1],
+        options: ["Red", "Green"],
+      },
+    ],
   }}
 />
+
+Each field comes with its fully qualified `name`, its `type`, its `value`, and the `pages` it sits on. `states` lists what a checkbox or a radio group takes besides `Off`, and `options` what a choice field takes. A PDF without a form answers `[]`.
 
 ## Fill the fields
 
 <Request
   route="/forms/pdf/set-form"
-  files={["form.pdf"]}
-  fields={{ fields: { name: "Ada Lovelace" } }}
-  output="form.pdf"
+  files={["fields.pdf"]}
+  fields={{ fields: { agree: "Yes", color: "Green" } }}
+  output="fields.pdf"
 />
 
-`fields` keys each value by the field's fully qualified name: `name`, or `address.city` for a field `city` inside a field `address`. The fields stay editable.
+`fields` keys each value by the field's name, as `/forms/pdf/form` lists them: `name`, or `address.city` for a field `city` inside a field `address`. A checkbox takes one of its states, a choice field one of its options. The fields stay editable.
 
-## Find the field names
+## Select several items
 
-A name the PDF doesn't have answers 400, with the names it does have:
+A list that selects several takes an array:
 
 <Request
   route="/forms/pdf/set-form"
-  files={["form.pdf"]}
-  fields={{ fields: { nope: "x" } }}
+  files={["multi.pdf"]}
+  fields={{ fields: { tags: ["b", "c"] } }}
+  output="multi.pdf"
+/>
+
+## Values a field can't hold
+
+A value the field can't hold answers 400, and says what the field takes:
+
+<Request
+  route="/forms/pdf/set-form"
+  files={["fields.pdf"]}
+  fields={{ fields: { color: "Blue" } }}
   status={400}
   response={`HTTP/1.1 400 Bad Request
 Content-Type: text/plain; charset=UTF-8
 
-Stage 'set-form' failed on 'form.pdf': form field "nope" not found; the PDF's fields are: name`}
+Stage 'set-form' failed on 'fields.pdf': value the form field cannot hold: "Blue" for field "color": "Blue" is none of its options: Red, Green`}
 />
+
+A name the PDF doesn't have answers 400 too, with the names it has. Signature fields and push buttons take no value.
 
 ## Flatten the form
 

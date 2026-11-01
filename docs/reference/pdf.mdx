@@ -121,6 +121,48 @@ The embedded files: name, media type, and their relationship to the document:
   }}
 />
 
+### form
+
+The form's fields, in a shape `set-form` takes: each field's `name`, `type` (`text`, `checkbox`, `radio`, `button`, `combo`, `list` or `signature`), `value`, and the `pages` it sits on:
+
+<Request
+  route="/forms/pdf/form"
+  files={["form.pdf"]}
+  response={{
+    "form.pdf": [{ name: "name", type: "text", value: "", pages: [1] }],
+  }}
+/>
+
+`options` lists what a choice field takes, and `states` what a checkbox or a radio group takes besides `Off`. A list that selects several has an array `value`. `readOnly`, `required`, `multiSelect`, `editable` and `maxLength` show when they apply. A PDF without a form answers `[]`.
+
+A `pages` field keeps the fields on those pages, as a [page selection](/docs/reference/stages#page-selections):
+
+<Request
+  route="/forms/pdf/form"
+  files={["multi.pdf"]}
+  fields={{ pages: "2" }}
+  response={{
+    "multi.pdf": [
+      {
+        name: "total",
+        type: "text",
+        value: "42",
+        pages: [1, 2],
+        readOnly: true,
+      },
+      {
+        name: "size",
+        type: "radio",
+        value: "Off",
+        pages: [2],
+        states: ["S", "M", "L"],
+        required: true,
+      },
+      { name: "sig", type: "signature", value: "", pages: [2] },
+    ],
+  }}
+/>
+
 ### validate
 
 Checks the PDFs against the `profile` field: `PDF/A-1a`, `PDF/A-1b`, `PDF/A-2a`, `PDF/A-2b`, `PDF/A-2u`, `PDF/A-3a`, `PDF/A-3b`, `PDF/A-3u`, `PDF/A-4`, `PDF/A-4e`, `PDF/A-4f`, `PDF/UA-1`, `PDF/UA-2` or `Factur-X`.
