@@ -1,5 +1,5 @@
-/* Self-hosted variable fonts: same-origin, latin-subset, font-display swap. */
-@import "@fontsource-variable/newsreader/opsz.css";
+/* Self-hosted variable fonts: same-origin, latin-subset, font-display swap.
+   Newsreader is kept for one italic word on the homepage's hero sheet. */
 @import "@fontsource-variable/newsreader/opsz-italic.css";
 @import "@fontsource-variable/jetbrains-mono";
 @import "@fontsource-variable/bricolage-grotesque/opsz.css";
@@ -17,7 +17,7 @@
   --ifm-color-primary-lighter: #a5b4fc;
   --ifm-color-primary-lightest: #c7d2fe;
 
-  /* Paper and ink: warm neutrals so the serif reads typeset, never cream. */
+  /* Paper and ink: warm neutrals, never cream. */
   --ifm-background-color: #fdfcfa;
   --ifm-background-surface-color: #fdfcfa;
   --ifm-border-color: #e6e2da;
@@ -28,6 +28,13 @@
   --table-row-border: rgba(0, 0, 0, 0.04);
   --link-underline-color: rgba(67, 56, 202, 0.3);
 
+  /* Bricolage for display type, system sans for text and UI, JetBrains Mono
+     for code and small labels. A custom property naming a font family must
+     have "font" in its name: the production CSS minifier keeps a @font-face
+     only when its family appears in a property named so. */
+  --font-display:
+    "Bricolage Grotesque Variable", system-ui, -apple-system, "Segoe UI",
+    Roboto, sans-serif;
   --font-serif: "Newsreader Variable", Georgia, "Times New Roman", serif;
   --ifm-font-family-base:
     system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -46,6 +53,13 @@
 
   --ifm-button-border-radius: 2px;
   --ifm-code-border-radius: 3px;
+
+  /* Panels: rounded, white on paper, with a soft lift on hover. */
+  --panel: #ffffff;
+  --panel-2: #f3f1ec;
+  --radius: 14px;
+  --lift:
+    0 1px 2px rgba(28, 25, 23, 0.08), 0 10px 24px -14px rgba(28, 25, 23, 0.4);
 
   /* The indigo clears WCAG AA on paper (~7.7:1), so body-size links use it
      directly. */
@@ -89,6 +103,9 @@ html[data-theme="dark"] {
   --ifm-background-surface-color: #202529;
   --ifm-border-color: #3b4349;
   --paper-shade: #252b30;
+  --panel: #1d2226;
+  --panel-2: #23292e;
+  --lift: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 26px -14px rgba(0, 0, 0, 0.7);
   /* Terminals and the footer stay darker than the page, in its cool tone. */
   --ink-plate: #0f1214;
   --ifm-color-content: #dfdcd5;
@@ -299,15 +316,18 @@ h4:hover > .hash-link,
 
 .markdown h1,
 .markdown h2,
-.markdown h3 {
-  font-family: var(--font-serif);
-  font-optical-sizing: auto;
-  font-weight: 600;
-  letter-spacing: -0.005em;
+.markdown h3,
+.markdown h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .markdown h1 {
-  font-size: 2.6rem;
+  font-size: 2.9rem;
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
   margin-bottom: 2rem;
 }
 
@@ -319,19 +339,10 @@ h4:hover > .hash-link,
 }
 
 .markdown h2 {
-  font-size: 1.8rem;
+  font-size: 2rem;
+  letter-spacing: -0.025em;
   margin-top: 4rem;
   margin-bottom: 1.5rem;
-}
-
-/* Chapter mark: a short ink rule above, instead of an underline. */
-.markdown h2::before {
-  content: "";
-  display: block;
-  width: 2.5rem;
-  height: 2px;
-  background: var(--ifm-heading-color);
-  margin-bottom: 1rem;
 }
 
 .markdown h3 {
@@ -342,7 +353,7 @@ h4:hover > .hash-link,
 
 .markdown h4 {
   font-size: 1.15rem;
-  font-weight: 600;
+  letter-spacing: -0.01em;
   margin-top: 1.5rem;
 }
 
@@ -637,17 +648,14 @@ button[class*="closeButton_"]:hover {
 }
 
 /* --- CHROME TYPE --- */
-/* The brand wordmark is the serif masthead beside the navbar logo image; the
-   nav links take the uppercase, letter-spaced label register used elsewhere
-   (folio marks, section headers, sponsor labels) so they read as navigation
-   rather than a smaller copy of the title. Also styles the sidebar brand shown
-   when the navbar hides on scroll. */
+/* The brand wordmark, in the display type beside the navbar logo image. Also
+   styles the sidebar brand shown when the navbar hides on scroll. */
 .navbar__title,
 a[class*="sidebarLogo"] b {
-  font-family: var(--font-serif);
-  font-optical-sizing: auto;
-  font-weight: 600;
-  font-size: 1.2rem;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.3rem;
+  letter-spacing: -0.025em;
   color: var(--ifm-heading-color);
 }
 
@@ -703,31 +711,24 @@ a[class*="sidebarLogo"] b {
 }
 
 .footer__title {
-  font-family: var(--font-serif);
-  font-optical-sizing: auto;
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 .footer__item a {
-  font-family: var(--font-serif);
-  font-optical-sizing: auto;
-  font-size: 1.05rem;
+  font-size: 0.95rem;
 }
 
 .table-of-contents__link {
-  font-family: var(--font-serif);
-  font-optical-sizing: auto;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 /* --- MODERN SIDEBAR --- */
 .menu__link {
-  font-family: var(--font-serif);
-  font-optical-sizing: auto;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 500;
   line-height: 1.5;
-  letter-spacing: -0.01em;
   color: var(--ifm-color-content-secondary);
   padding: 8px 12px;
   margin-bottom: 4px;
@@ -852,8 +853,8 @@ a[class*="sidebarLogo"] b {
   color: var(--ifm-heading-color);
 }
 
-/* Prev/next: a borderless, typeset "continue reading" footer — gray
-   small-caps labels and serif ink titles that warm to the accent on hover.
+/* Prev/next: a borderless "continue reading" footer: gray small-caps labels
+   and display titles that warm to the accent on hover.
    Extra bottom room so it does not crowd the sponsors band below. */
 .pagination-nav {
   margin-top: 2.5rem;
@@ -877,10 +878,10 @@ a[class*="sidebarLogo"] b {
 }
 
 .pagination-nav__label {
-  font-family: var(--font-serif);
-  font-optical-sizing: auto;
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-weight: 700;
   font-size: 1.2rem;
+  letter-spacing: -0.015em;
   color: var(--ifm-heading-color);
   transition: color 0.2s ease;
 }

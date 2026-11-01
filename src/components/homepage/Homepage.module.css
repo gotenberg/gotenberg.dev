@@ -1,5 +1,6 @@
 /* Gotenberg 9 homepage. The base: tokens, layout and code. Light tokens
-   sit on .g9, dark ones follow the site's data-theme. The layers below
+   sit on .g9, dark ones follow the site's data-theme. The display font, the
+   panels, their radius and lift come from the site's custom.css. The layers below
    style the hero sheet, the page frame, the conformance instrument and the
    delivery diagram; the last layer gives the page its look. */
 
@@ -422,20 +423,6 @@
   }
 }
 /* The page frame: hero, sections and tiles. */
-
-.cb {
-  /* The name must contain "font": the production CSS minifier keeps a
-     @font-face only when its family appears in a property named so. */
-  --font-display: "Bricolage Grotesque Variable", var(--sans);
-  --panel: #ffffff;
-  --panel-2: #f3f1ec;
-  --radius: 14px;
-}
-
-:global([data-theme="dark"]) .cb {
-  --panel: #1d2226;
-  --panel-2: #23292e;
-}
 
 .cb .g-pages {
   --g: #0e7ba3;
@@ -1143,8 +1130,6 @@
   --green: #047857;
   --amber: #a14a0a;
   --star: #d4a017;
-  --lift:
-    0 1px 2px rgba(28, 25, 23, 0.08), 0 10px 24px -14px rgba(28, 25, 23, 0.4);
 }
 
 :global([data-theme="dark"]) .xb {
@@ -1155,7 +1140,6 @@
   --green: #6ee7b7;
   --amber: #fcd34d;
   --star: #f5c84b;
-  --lift: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 26px -14px rgba(0, 0, 0, 0.7);
 }
 
 .xb button:focus,

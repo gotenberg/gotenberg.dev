@@ -6,13 +6,13 @@ Guidelines for modifying site design, React components, styles, or layout.
 
 - Docusaurus 3.10 (React 19)
 - CSS Modules (`.module.css`) for components, global CSS (`src/css/custom.css`) for theme overrides
-- Fonts: Newsreader Variable (headings, prose), system sans (UI chrome), JetBrains Mono Variable (code), Bricolage Grotesque Variable (homepage display type); self-hosted via Fontsource
+- Fonts: Bricolage Grotesque Variable (display: headings, wordmark), system sans (text and UI), JetBrains Mono Variable (code, small labels); self-hosted via Fontsource. Newsreader Variable italic is kept for one word on the homepage's hero sheet
 - Icons: inline SVGs in React components (no icon library)
 - Images: `@docusaurus/plugin-ideal-image` for optimization
 
 ## Design system
 
-"Rubric & Rule": ink on warm paper. The site about producing documents is itself typeset. Serif for headings and prose, system sans for UI, a single indigo for interaction, and rubric red strictly rationed to printer's marks. The homepage keeps the paper, the indigo and the rubric, and sets its own product look on top (see Homepage below).
+Ink on warm paper, set like a product. The homepage and the docs share one look: Bricolage display headings, system sans text, rounded panels with a soft lift, a single indigo for interaction, and rubric red strictly rationed to printer's marks. The homepage adds its interactive sections on top (see Homepage below).
 
 ### Colors
 
@@ -31,21 +31,23 @@ One indigo across the homepage and docs. It clears WCAG AA on paper (~7.7:1) and
 | `--ifm-color-content`           | `#38332e`                      | Body text                                                                  |
 | `--ifm-color-content-secondary` | `#6e675e`                      | Secondary text, sidebar links                                              |
 | `--ifm-border-color`            | `#e6e2da`                      | Hairlines, dividers                                                        |
+| `--panel`                       | `#ffffff` (dark: `#1d2226`)    | Panels and cards on the paper                                              |
+| `--panel-2`                     | `#f3f1ec` (dark: `#23292e`)    | Panel bars, segmented-control tracks                                       |
 
 HTTP method badges: tinted background with dark text (WCAG AA), e.g. POST `rgba(73,204,144,0.16)` / `#047857`. Never white text on pastel fills.
 
 ### Typography
 
-- Headings (h1-h3), the brand wordmark, TOC, and footer links: Newsreader Variable, weight 600, `font-optical-sizing: auto`, letter-spacing -0.005em
-- Prose and UI (body text, buttons, badges, param lists, sidebar links): system sans
-- Navbar links: uppercase small-caps system sans (letter-spaced), distinct from the serif brand wordmark
-- Brand mark: the Gutenberg caricature (`static/img/logo.png`) as the navbar and footer logo, with the "Gotenberg" wordmark in the serif
-- H2: short 2px ink rule above (chapter mark), no underline
+- Headings (h1-h4), the brand wordmark, footer titles and prev/next titles: `--font-display` (Bricolage), weight 700 (h1 800), tight negative letter-spacing
+- Prose and UI (body text, sidebar, TOC, footer links, buttons, badges, param lists): system sans
+- Navbar links: uppercase small-caps system sans (letter-spaced)
+- Brand mark: the Gutenberg caricature (`static/img/logo.png`) as the navbar and footer logo, with the "Gotenberg" wordmark in the display type
+- Headings carry no rule or underline
 - Lede: the paragraph after h1 renders larger (1.2rem) in heading ink
 - Stats and tables: lining tabular numerals
 - Code: JetBrains Mono Variable, ligatures disabled
 - Links: `--accent-text` underline with muted decoration color, full color on hover
-- Chrome geometry: 2px buttons and tags, 4px cards (print geometry, no pills)
+- Panels: `--radius` (14px) corners, a 1px `--ifm-border-color` border, `--lift` on hover
 
 ### Spacing
 
