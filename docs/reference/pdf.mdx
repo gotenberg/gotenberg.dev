@@ -76,12 +76,12 @@ The page count, the PDF version, and whether the PDF is encrypted, tagged for ac
 
 ### metadata
 
-The entries of the PDF's document information: `Title`, `Author`, `Subject`, `Keywords`, `Creator`, `Producer`, `CreationDate` and `ModDate`, when set:
+The metadata, as the `set-metadata` stage takes it: `title`, `author`, `subject`, `keywords`, `creator`, `producer`, `creationDate` and `modDate`, each when set. A PDF without metadata answers `{}`.
 
 <Request
   route="/forms/pdf/metadata"
   files={["report.pdf"]}
-  response={{ "report.pdf": { Author: "Finance", Title: "Quarterly report" } }}
+  response={{ "report.pdf": { title: "Quarterly report", author: "Finance" } }}
 />
 
 ### bookmarks

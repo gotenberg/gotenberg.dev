@@ -566,7 +566,7 @@
         "section": "watermark",
         "name": "nativeWatermarkText",
         "type": "string",
-        "description": "Draws this text on every page."
+        "description": "Draws this text on every page. Set it or `nativeTiledWatermarkText`, not both."
       },
       {
         "section": "watermark",
@@ -598,7 +598,7 @@
         "section": "watermark",
         "name": "nativeTiledWatermarkText",
         "type": "string",
-        "description": "Repeats this text across every page, in a grid."
+        "description": "Repeats this text across every page, in a grid. Set it or `nativeWatermarkText`, not both: the size, color, font and rotation fields apply to `nativeWatermarkText` only."
       },
       {
         "section": "conformance",
@@ -652,14 +652,7 @@
         "name": "pageLayout",
         "type": "string",
         "default": "default",
-        "description": "How a viewer lays the pages out: `default`, `singlePage`, `oneColumn`, `twoColumnLeft` or `twoColumnRight`."
-      },
-      {
-        "section": "viewer",
-        "name": "firstPageOnLeft",
-        "type": "boolean",
-        "default": "false",
-        "description": "Shows the first page on the left, in a two-column layout."
+        "description": "How a viewer lays the pages out: `default`, `singlePage`, `oneColumn` or `twoColumnRight`, two columns with the first page on the right. LibreOffice can't put it on the left."
       },
       {
         "section": "viewer",
