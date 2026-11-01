@@ -92,7 +92,7 @@ module.exports = {
     },
     announcementBar: {
       id: "gotenberg_9",
-      content: `Gotenberg 9 is out: one PDF engine, 26 stages, real conformance. <a target="_blank" rel="noopener noreferrer" href="https://github.com/gotenberg/gotenberg/releases">Read the release notes</a>`,
+      content: `Gotenberg 9 is out: one PDF engine, 26 stages, real conformance. <a href="/docs/getting-started/upgrade">Upgrade from 8.x</a>`,
     },
     // announcementBar: {
     //   id: "support_us",
@@ -112,8 +112,9 @@ module.exports = {
           docId: "index",
         },
         {
-          href: "https://github.com/gotenberg/gotenberg/discussions",
+          type: "doc",
           label: "Help",
+          docId: "help",
         },
         {
           href: "https://github.com/gotenberg/gotenberg",
@@ -146,12 +147,20 @@ module.exports = {
               to: "/docs/getting-started/first-pdf",
             },
             {
+              label: "Cookbook",
+              to: "/docs/cookbook/e-invoice",
+            },
+            {
               label: "Explore All Routes",
               to: "/docs/reference/routes",
             },
             {
               label: "Configuration",
               to: "/docs/configuration",
+            },
+            {
+              label: "Troubleshooting",
+              to: "/docs/troubleshooting",
             },
           ],
         },
@@ -167,12 +176,12 @@ module.exports = {
               href: "https://github.com/gotenberg/gotenberg-php",
             },
             {
-              label: "Upgrade from 7.x",
-              href: "https://github.com/gotenberg/gotenberg/releases/tag/v8.0.0",
+              label: "Upgrade from 8.x",
+              to: "/docs/getting-started/upgrade",
             },
             {
               label: "Help",
-              href: "https://github.com/gotenberg/gotenberg/discussions",
+              to: "/docs/help",
             },
             {
               label: "GitHub",
@@ -257,6 +266,68 @@ module.exports = {
       },
     ],
   ],
-  plugins: ["@docusaurus/plugin-ideal-image"],
+  plugins: [
+    "@docusaurus/plugin-ideal-image",
+    [
+      "@docusaurus/plugin-client-redirects",
+      {
+        // The 8.x pages whose topic moved in 9.x. The 8.x docs themselves live
+        // under /docs/8.x/; the slugs 9.x kept need no redirect.
+        redirects: [
+          ["/docs/getting-started/introduction", "/docs"],
+          ["/docs/getting-started/routes", "/docs/reference/routes"],
+          [
+            "/docs/convert-with-chromium/convert-html-to-pdf",
+            "/docs/convert/html",
+          ],
+          [
+            "/docs/convert-with-chromium/convert-markdown-to-pdf",
+            "/docs/convert/markdown",
+          ],
+          [
+            "/docs/convert-with-chromium/convert-url-to-pdf",
+            "/docs/convert/url",
+          ],
+          [
+            "/docs/convert-with-chromium/screenshot-html",
+            "/docs/convert/screenshots",
+          ],
+          [
+            "/docs/convert-with-chromium/screenshot-markdown",
+            "/docs/convert/screenshots",
+          ],
+          [
+            "/docs/convert-with-chromium/screenshot-url",
+            "/docs/convert/screenshots",
+          ],
+          [
+            "/docs/convert-with-libreoffice/convert-to-pdf",
+            "/docs/convert/office",
+          ],
+          ["/docs/manipulate-pdfs/attachments", "/docs/process/attachments"],
+          ["/docs/manipulate-pdfs/encrypt-pdfs", "/docs/security/encrypt"],
+          ["/docs/manipulate-pdfs/factur-x", "/docs/conformance/factur-x"],
+          ["/docs/manipulate-pdfs/flatten-pdfs", "/docs/process/forms"],
+          ["/docs/manipulate-pdfs/merge-pdfs", "/docs/process/merge-split"],
+          ["/docs/manipulate-pdfs/optimize-pdfs", "/docs/process/compress"],
+          ["/docs/manipulate-pdfs/pdfa-pdfua", "/docs/conformance/pdfa"],
+          ["/docs/manipulate-pdfs/read-bookmarks", "/docs/process/metadata"],
+          ["/docs/manipulate-pdfs/read-metadata", "/docs/process/metadata"],
+          ["/docs/manipulate-pdfs/rotate-pdfs", "/docs/process/pages"],
+          ["/docs/manipulate-pdfs/split-pdfs", "/docs/process/merge-split"],
+          ["/docs/manipulate-pdfs/stamp-pdfs", "/docs/process/stamps"],
+          ["/docs/manipulate-pdfs/watermark-pdfs", "/docs/process/stamps"],
+          ["/docs/manipulate-pdfs/write-bookmarks", "/docs/process/metadata"],
+          ["/docs/manipulate-pdfs/write-metadata", "/docs/process/metadata"],
+          ["/docs/outbound-url-filtering", "/docs/security/secure"],
+          ["/docs/system/debug", "/docs/reference/system"],
+          ["/docs/system/get-health-check", "/docs/reference/system"],
+          ["/docs/system/head-health-check", "/docs/reference/system"],
+          ["/docs/system/version", "/docs/reference/system"],
+          ["/docs/system/prometheus-metrics", "/docs/telemetry"],
+        ].map(([from, to]) => ({ from, to })),
+      },
+    ],
+  ],
   clientModules: [require.resolve("./src/clientModules/scrollableTables.js")],
 };
