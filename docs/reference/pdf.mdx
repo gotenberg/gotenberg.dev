@@ -112,7 +112,11 @@ The embedded files: name, media type, and their relationship to the document:
   files={["invoice.pdf"]}
   response={{
     "invoice.pdf": [
-      { name: "factur-x.xml", mimeType: "text/xml", relationship: "Data" },
+      {
+        name: "factur-x.xml",
+        mimeType: "text/xml",
+        relationship: "Alternative",
+      },
     ],
   }}
 />

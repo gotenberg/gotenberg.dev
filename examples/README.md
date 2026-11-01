@@ -15,7 +15,7 @@ The files the docs' `<Request>` examples upload. `npm run check:examples` copies
 - `black.png`: one black pixel, stretched over redacted regions.
 - `letterhead.pdf`: a band with a company name on a transparent page the size of `report.pdf`'s, made by Gotenberg from HTML.
 - `form.pdf`: a PDF form with one field, `name`.
-- `invoice.xml`: a Factur-X invoice at the MINIMUM level. `invoice.pdf` is `report.pdf` with it embedded, made by Gotenberg.
+- `invoice.xml`: a Factur-X invoice at the EN 16931 level, the European standard for e-invoices. `invoice.pdf` is `report.pdf` with it embedded, made by Gotenberg.
 - `protected.docx`: `report.docx` encrypted with the password `secret`, by msoffcrypto-tool.
 - `sales.csv`: 120 rows of sales, which LibreOffice prints on three pages, for spreadsheets.
 - `encrypted.pdf`: `report.pdf` encrypted with the user password `secret`, made by Gotenberg.

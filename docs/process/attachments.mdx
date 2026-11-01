@@ -50,7 +50,11 @@ A Factur-X invoice needs more than its XML: the [`remediate` stage](/docs/refere
   files={["invoice.pdf"]}
   response={{
     "invoice.pdf": [
-      { name: "factur-x.xml", mimeType: "text/xml", relationship: "Data" },
+      {
+        name: "factur-x.xml",
+        mimeType: "text/xml",
+        relationship: "Alternative",
+      },
     ],
   }}
 />

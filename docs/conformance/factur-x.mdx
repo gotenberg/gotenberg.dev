@@ -17,7 +17,7 @@ Send the invoice's HTML and its XML, and remediate to `Factur-X`:
       op: "remediate",
       profile: "Factur-X",
       xml: "invoice.xml",
-      level: "MINIMUM",
+      level: "EN 16931",
     },
   ]}
   output="invoice.pdf"
@@ -31,7 +31,7 @@ Gotenberg embeds the XML under the name and relationship the level requires, wri
 
 ## Write the XML
 
-The XML is a Cross Industry Invoice (CII), the syntax Factur-X uses. The XML declares its level, and `level` names the same one: `MINIMUM`, `BASIC WL`, `BASIC`, `EN 16931`, `EXTENDED` or `XRECHNUNG`. `documentType` sets the document type of the metadata, `INVOICE` by default.
+The XML is a Cross Industry Invoice (CII), the syntax Factur-X uses. The XML declares its level, and `level` names the same one: `MINIMUM`, `BASIC WL`, `BASIC`, `EN 16931`, `EXTENDED` or `XRECHNUNG`. `EN 16931` carries everything the European standard for e-invoices requires; `MINIMUM` and `BASIC WL` carry less, so check what your recipient accepts. `documentType` sets the document type of the metadata, `INVOICE` by default.
 
 ## Start from a PDF
 
@@ -40,7 +40,7 @@ An invoice you already have as PDF takes the same stage, on its own route:
 <Request
   route="/forms/pdf/remediate"
   files={["report.pdf", "invoice.xml"]}
-  fields={{ profile: "Factur-X", xml: "invoice.xml", level: "MINIMUM" }}
+  fields={{ profile: "Factur-X", xml: "invoice.xml", level: "EN 16931" }}
   output="invoice.pdf"
 />
 
