@@ -619,7 +619,7 @@
     },
     {
       "op": "optimize",
-      "summary": "Shrinks the PDF. Every option is on unless you turn it off.",
+      "summary": "Rewrites the PDF to shrink it. Every option is on unless you turn it off. A signed PDF answers 400, and so does an encrypted one, unless the stages decrypt or encrypt it.",
       "options": [
         {
           "name": "objectStreams",

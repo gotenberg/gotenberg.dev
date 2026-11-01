@@ -585,7 +585,7 @@
         "section": "watermark",
         "name": "nativeWatermarkRotation",
         "type": "number",
-        "description": "The angle, in degrees, counter-clockwise. Without it, the text runs down a portrait page and across a landscape one."
+        "description": "The angle, in degrees, counter-clockwise: `0` draws the text across the page. Without it, the text runs down a portrait page and across a landscape one."
       },
       {
         "section": "watermark",

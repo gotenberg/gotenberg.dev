@@ -106,7 +106,11 @@ A delay is the last resort. Too short, the chart is missing. Too long, every req
 
 ## Order and limits
 
-Chromium waits for the page to load, then for `waitForWindowStatus`, `waitForExpression`, `waitForSelector` and `waitDelay`, in that order. Every wait counts against [`--api-timeout`](/docs/configuration#api-timeout), 30 seconds by default: a wait that never ends fails the request then.
+Chromium waits for the page to load, then for `waitForWindowStatus`, `waitForExpression`, `waitForSelector` and `waitDelay`, in that order. Every wait counts against [`--api-timeout`](/docs/configuration#api-timeout), 30 seconds by default. A wait that never ends answers `503 Service Unavailable` then, and names itself:
+
+```text
+The selector '#never' (waitForSelector) did not become visible within the time limit. Increase it with --api-timeout (API_TIMEOUT), or check the selector.
+```
 
 ## Next
 
