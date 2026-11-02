@@ -110,16 +110,6 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Standards",
-      collapsed: true,
-      items: [
-        "conformance/pdfa",
-        "conformance/accessibility",
-        "conformance/factur-x",
-      ],
-    },
-    {
-      type: "category",
       label: "Operate",
       collapsed: true,
       items: [

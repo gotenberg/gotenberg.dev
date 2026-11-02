@@ -37,7 +37,7 @@ Gotenberg answers 200 even when violations remain: check `Gotenberg-Remediation-
 - The letter sets how much the PDF keeps: `b` its look, `u` its text as Unicode too, `a` its structure too, through tags.
 - The number sets the base: PDF/A-1 builds on PDF 1.4, PDF/A-2 adds transparency and layers, PDF/A-3 accepts embedded files of any type, and PDF/A-4 builds on PDF 2.0.
 
-Pick the level your archive or portal asks for. Without one, PDF/A-4 is the latest version. [Make PDF/A](/docs/conformance/pdfa) walks through a conversion.
+Pick the level your archive or portal asks for. Without one, PDF/A-4 is the latest version.
 
 ## Make it PDF/UA
 
@@ -78,7 +78,7 @@ The PDF version sets the pairs. PDF/A-1, PDF/A-2, PDF/A-3 and `Factur-X` pair wi
 
 ## Make it a Factur-X
 
-`Factur-X` embeds the invoice's XML and makes the PDF a PDF/A-3 e-invoice:
+`Factur-X` embeds the invoice's XML and makes the PDF a PDF/A-3 e-invoice, the format Germany also publishes as ZUGFeRD:
 
 <Request
   route="/forms/pdf/remediate"
@@ -87,7 +87,9 @@ The PDF version sets the pairs. PDF/A-1, PDF/A-2, PDF/A-3 and `Factur-X` pair wi
   output="invoice.pdf"
 />
 
-`level` names the level the XML declares. Without `xml`, the stage repairs a Factur-X invoice the PDF already carries. [Create Factur-X invoices](/docs/conformance/factur-x) covers the XML.
+The XML is a Cross Industry Invoice (CII), the syntax Factur-X uses. It declares its level, and `level` names the same one. `EN 16931` carries everything the European standard for e-invoices requires; `MINIMUM` and `BASIC WL` carry less, so check what your recipient accepts.
+
+Without `xml`, the stage repairs a Factur-X invoice the PDF already carries. The [e-invoice recipe](/docs/cookbook/e-invoice) makes one from HTML.
 
 ## Remediate last
 
