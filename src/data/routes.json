@@ -301,7 +301,7 @@
       "method": "GET",
       "path": "/",
       "summary": "Answers a short note: Gotenberg has no UI.",
-      "to": "/docs/reference/system#root",
+      "to": "/docs/system/root",
       "response": "A short HTML note: Gotenberg has no UI."
     },
     {
@@ -309,7 +309,7 @@
       "method": "GET, HEAD",
       "path": "/health",
       "summary": "Reports whether Gotenberg and its engines are up.",
-      "to": "/docs/reference/system#health",
+      "to": "/docs/system/health",
       "response": "JSON, whose `status` is `up`, or `down` with a 503 when an engine is down. `HEAD` answers the status alone."
     },
     {
@@ -317,7 +317,7 @@
       "method": "GET",
       "path": "/version",
       "summary": "Answers the version of Gotenberg.",
-      "to": "/docs/reference/system#version",
+      "to": "/docs/system/version",
       "response": "The version of Gotenberg, as plain text."
     },
     {
@@ -325,7 +325,7 @@
       "method": "GET",
       "path": "/debug",
       "summary": "Answers the modules, engine versions and flags, once `--api-enable-debug-route` is on.",
-      "to": "/docs/reference/system#debug",
+      "to": "/docs/system/debug",
       "response": "JSON: the modules, the engine versions and every flag. It answers 404 until `--api-enable-debug-route` is on."
     }
   ],

@@ -1,0 +1,16 @@
+---
+id: root
+title: Root
+---
+
+Answers a short HTML note that points here: Gotenberg has no UI.
+
+<Endpoint path="/" />
+
+<Request
+  method="GET"
+  route="/"
+  response={`Hey, Gotenberg has no UI, it's an API. Head to the <a href="https://gotenberg.dev">documentation</a> to learn how to interact with it 🚀`}
+/>
+
+With [authentication](/docs/configuration#api-enable-basic-auth) on, the route needs credentials like the others. Gotenberg doesn't log or trace it, unless [`--api-disable-root-route-telemetry`](/docs/configuration#api-disable-root-route-telemetry) is `false`.

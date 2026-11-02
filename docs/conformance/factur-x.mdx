@@ -33,32 +33,8 @@ Gotenberg embeds the XML under the name and relationship the level requires, wri
 
 The XML is a Cross Industry Invoice (CII), the syntax Factur-X uses. The XML declares its level, and `level` names the same one: `MINIMUM`, `BASIC WL`, `BASIC`, `EN 16931`, `EXTENDED` or `XRECHNUNG`. `EN 16931` carries everything the European standard for e-invoices requires; `MINIMUM` and `BASIC WL` carry less, so check what your recipient accepts. `documentType` sets the document type of the metadata, `INVOICE` by default.
 
-## Start from a PDF
+## Where to go from here
 
-An invoice you already have as PDF takes the same stage, on its own route:
-
-<Request
-  route="/forms/pdf/remediate"
-  files={["report.pdf", "invoice.xml"]}
-  fields={{ profile: "Factur-X", xml: "invoice.xml", level: "EN 16931" }}
-  output="invoice.pdf"
-/>
-
-Without `xml`, the stage repairs a Factur-X invoice the PDF already carries.
-
-## Validate it
-
-<Request
-  route="/forms/pdf/validate"
-  files={["invoice.pdf"]}
-  fields={{ profile: "Factur-X" }}
-  response={{
-    "invoice.pdf": { profile: "Factur-X", compliant: true, violations: [] },
-  }}
-/>
-
-The check covers the Factur-X rules, the XML's included, and reports warnings for the softer ones, which don't make the invoice non-compliant. Validate against `PDF/A-3b` too for the archival side.
-
-## Next
-
-[Attach other files](/docs/pdf/attach), or [sign the invoice](/docs/pdf/sign).
+- **Start from a PDF:** an invoice you already have as PDF takes the same stage, on [its own route](/docs/pdf/remediate#make-it-a-factur-x). Without `xml`, it repairs a Factur-X invoice the PDF already carries.
+- **Check it:** [`/forms/pdf/validate`](/docs/pdf/validate#validate-a-factur-x) with `profile: Factur-X` covers the Factur-X rules, the XML's included.
+- **Name, sign and deliver it:** see the [e-invoice recipe](/docs/cookbook/e-invoice).

@@ -58,7 +58,7 @@ services:
 
 The service is `gotenberg`, unless `OTEL_SERVICE_NAME` names it otherwise. A request carrying a W3C `traceparent` header continues your trace, and every answer carries the trace it belongs to in `Traceparent`.
 
-The system routes, `/health` and `/version` among them, leave no trace by default: see [the system routes](/docs/reference/system).
+The system routes, `/health` and `/version` among them, leave no trace by default: see [Health](/docs/system/health).
 
 ## Sample traces
 

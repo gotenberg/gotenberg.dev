@@ -1,0 +1,12 @@
+---
+id: version
+title: Version
+---
+
+Answers the version of Gotenberg.
+
+<Endpoint path="/version" />
+
+<Request method="GET" route="/version" response="9.0.0" />
+
+The conversion and PDF routes send it too, in the `Gotenberg-Version` header. With [authentication](/docs/configuration#api-enable-basic-auth) on, the route needs credentials like the others. Gotenberg doesn't log or trace it, unless [`--api-disable-version-route-telemetry`](/docs/configuration#api-disable-version-route-telemetry) is `false`.

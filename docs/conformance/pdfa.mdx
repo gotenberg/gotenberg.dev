@@ -5,49 +5,24 @@ title: Make PDF/A
 
 Turn any PDF into an archival PDF/A, and check that it conforms.
 
-## Remediate a PDF
-
-<Request
-  route="/forms/pdf/remediate"
-  files={["report.pdf"]}
-  fields={{ profile: "PDF/A-2b" }}
-  output="report.pdf"
-  response={`HTTP/1.1 200 OK
-Content-Type: application/pdf
-Gotenberg-Remediation-Residual: 0
-Gotenberg-Remediation-Rolled-Back: 0`}
-/>
-
-The `remediate` stage repairs the PDF until it meets the profile. Two headers report how it went:
-
-- `Gotenberg-Remediation-Residual` counts the violations left. `0` means the PDF conforms.
-- `Gotenberg-Remediation-Rolled-Back` counts the fixes Gotenberg undid because they changed how the pages look. `aggressive: true` keeps them, for better compliance.
-
-Gotenberg answers 200 even when violations remain: check `Gotenberg-Remediation-Residual`, and list what's left with [`/forms/pdf/validate`](#validate-a-pdf). With several PDFs, the headers sum their counts.
-
-## Pick a level
-
-`profile` takes `PDF/A-1a`, `PDF/A-1b`, `PDF/A-2a`, `PDF/A-2b`, `PDF/A-2u`, `PDF/A-3a`, `PDF/A-3b`, `PDF/A-3u`, `PDF/A-4`, `PDF/A-4e` or `PDF/A-4f`.
-
-- The letter sets how much the PDF keeps: `b` its look, `u` its text as Unicode too, `a` its structure too, through tags.
-- The number sets the base: PDF/A-1 builds on PDF 1.4, PDF/A-2 adds transparency and layers, PDF/A-3 accepts embedded files of any type, and PDF/A-4 builds on PDF 2.0.
-
-Pick the level your archive or portal asks for. Without one, PDF/A-4 is the latest version. An e-invoice needs PDF/A-3: see [Create Factur-X invoices](/docs/conformance/factur-x).
-
 ## Convert to PDF/A
 
-Add the stage to a conversion:
+Add a `remediate` stage to a conversion:
 
 <Request
   route="/forms/chromium/convert/html"
   files={["index.html", "style.css"]}
   stages={[{ op: "remediate", profile: "PDF/A-2b" }]}
   output="invoice.pdf"
+  response={`HTTP/1.1 200 OK
+Content-Type: application/pdf
+Gotenberg-Remediation-Residual: 0
+Gotenberg-Remediation-Rolled-Back: 0`}
 />
 
-LibreOffice also writes PDF/A itself, with [`nativePdfa`](/docs/libreoffice/convert#make-it-archival).
+`Gotenberg-Remediation-Residual: 0` means the PDF conforms. Gotenberg answers 200 even when violations remain, so check the header.
 
-## Validate a PDF
+## Check it
 
 <Request
   route="/forms/pdf/validate"
@@ -58,8 +33,12 @@ LibreOffice also writes PDF/A itself, with [`nativePdfa`](/docs/libreoffice/conv
   }}
 />
 
-A PDF that doesn't conform lists its violations, each with the clause it breaks: see [the validate route](/docs/pdf/validate).
+A PDF that doesn't conform lists its violations, each with the clause it breaks.
 
-## Next
+## Where to go from here
 
-[Make accessible PDFs](/docs/conformance/accessibility), or [create Factur-X invoices](/docs/conformance/factur-x).
+- **Pick a level:** the letter and the number of `PDF/A-2b` say what the PDF keeps, and what it builds on: see [`remediate`](/docs/pdf/remediate#pick-a-pdfa-level). Pick the one your archive or portal asks for.
+- **Any PDF:** [`/forms/pdf/remediate`](/docs/pdf/remediate) takes a PDF you already have.
+- **Office documents:** LibreOffice writes PDF/A itself, with [`nativePdfa`](/docs/libreoffice/convert#make-it-archival).
+- **E-invoices:** a Factur-X is a PDF/A-3 that carries its XML: see [Create Factur-X invoices](/docs/conformance/factur-x).
+- **Accessible too:** see [Make accessible PDFs](/docs/conformance/accessibility).

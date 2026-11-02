@@ -9,6 +9,7 @@ const route = (method) => (id) => ({
   className: `sidebar-method-${method}`,
 });
 const post = route("post");
+const get = route("get");
 
 // A group of PDF route pages, each docs/pdf/<op>.
 const group = (label, ops) => ({
@@ -30,7 +31,7 @@ module.exports = {
         "getting-started/first-pdf",
         "about",
         "getting-started/requests",
-        "getting-started/what-works-where",
+        "getting-started/routes",
         "getting-started/clients",
         "getting-started/upgrade",
       ],
@@ -98,6 +99,17 @@ module.exports = {
     },
     {
       type: "category",
+      label: "System",
+      collapsed: true,
+      items: [
+        "system/health",
+        "system/version",
+        "system/debug",
+        "system/root",
+      ].map(get),
+    },
+    {
+      type: "category",
       label: "Standards",
       collapsed: true,
       items: [
@@ -142,8 +154,6 @@ module.exports = {
       label: "Reference",
       collapsed: true,
       items: [
-        "reference/routes",
-        "reference/system",
         "reference/headers",
         "reference/configuration",
         "reference/errors",

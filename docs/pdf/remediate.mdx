@@ -37,7 +37,7 @@ Gotenberg answers 200 even when violations remain: check `Gotenberg-Remediation-
 - The letter sets how much the PDF keeps: `b` its look, `u` its text as Unicode too, `a` its structure too, through tags.
 - The number sets the base: PDF/A-1 builds on PDF 1.4, PDF/A-2 adds transparency and layers, PDF/A-3 accepts embedded files of any type, and PDF/A-4 builds on PDF 2.0.
 
-Pick the level your archive or portal asks for. Without one, PDF/A-4 is the latest version. [Make archival PDFs](/docs/conformance/pdfa) covers the choice.
+Pick the level your archive or portal asks for. Without one, PDF/A-4 is the latest version. [Make PDF/A](/docs/conformance/pdfa) walks through a conversion.
 
 ## Make it PDF/UA
 
@@ -70,14 +70,7 @@ Gotenberg-Remediation-Rolled-Back: 0`}
 
 `level` names the level the XML declares. Without `xml`, the stage repairs a Factur-X invoice the PDF already carries. [Create Factur-X invoices](/docs/conformance/factur-x) covers the XML.
 
-## Remediate a conversion
-
-<Request
-  route="/forms/chromium/convert/html"
-  files={["index.html", "style.css"]}
-  stages={[{ op: "remediate", profile: "PDF/A-2b" }]}
-  output="invoice.pdf"
-/>
+## Remediate last
 
 A list takes one `remediate`, after the stages that change the content: only `encrypt`, `optimize`, `sign`, `timestamp` and `render` may follow it. A PDF/A or Factur-X can't be encrypted.
 

@@ -152,7 +152,7 @@ module.exports = {
             },
             {
               label: "Explore All Routes",
-              to: "/docs/reference/routes",
+              to: "/docs/getting-started/routes",
             },
             {
               label: "Configuration",
@@ -275,7 +275,6 @@ module.exports = {
         // under /docs/8.x/; the slugs 9.x kept need no redirect.
         redirects: [
           ["/docs/getting-started/introduction", "/docs"],
-          ["/docs/getting-started/routes", "/docs/reference/routes"],
           [
             "/docs/convert-with-chromium/convert-html-to-pdf",
             "/docs/chromium/convert-html",
@@ -320,10 +319,8 @@ module.exports = {
           ["/docs/manipulate-pdfs/write-bookmarks", "/docs/pdf/set-bookmarks"],
           ["/docs/manipulate-pdfs/write-metadata", "/docs/pdf/set-metadata"],
           ["/docs/outbound-url-filtering", "/docs/operate/outbound"],
-          ["/docs/system/debug", "/docs/reference/system"],
-          ["/docs/system/get-health-check", "/docs/reference/system"],
-          ["/docs/system/head-health-check", "/docs/reference/system"],
-          ["/docs/system/version", "/docs/reference/system"],
+          ["/docs/system/get-health-check", "/docs/system/health"],
+          ["/docs/system/head-health-check", "/docs/system/health"],
           ["/docs/system/prometheus-metrics", "/docs/telemetry"],
         ].map(([from, to]) => ({ from, to })),
       },

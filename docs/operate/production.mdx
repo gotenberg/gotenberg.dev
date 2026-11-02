@@ -41,7 +41,7 @@ Chromium restarts every 100 conversions and LibreOffice every 10, which keeps th
 
 ## Probe the health
 
-`/health` answers 200 while Gotenberg and its engines are up, and 503 when one is down. It never asks for credentials. Point your liveness and readiness probes at it: see [Kubernetes](/docs/getting-started/installation#kubernetes) and [the health route](/docs/reference/system#health).
+`/health` answers 200 while Gotenberg and its engines are up, and 503 when one is down. It never asks for credentials. Point your liveness and readiness probes at it: see [Kubernetes](/docs/getting-started/installation#kubernetes) and [the health route](/docs/system/health).
 
 ## Shut down gracefully
 

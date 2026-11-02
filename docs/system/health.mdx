@@ -1,0 +1,29 @@
+---
+id: health
+title: Health
+---
+
+Reports whether Gotenberg and each of its engines are up, for probes and load balancers.
+
+<Endpoint path="/health" />
+
+<Request
+  method="GET"
+  route="/health"
+  response={{
+    status: "up",
+    details: {
+      chromium: { status: "up", timestamp: "2026-11-01T17:31:16.526522968Z" },
+      libreoffice: {
+        status: "up",
+        timestamp: "2026-11-01T17:31:16.514805871Z",
+      },
+    },
+  }}
+/>
+
+An engine that's down turns the status to `down`, with its `error`, and the answer to `503 Service Unavailable`. `HEAD /health` answers the same status, without the body:
+
+<Request method="HEAD" route="/health" />
+
+`/health` never needs credentials, even with [authentication](/docs/configuration#api-enable-basic-auth) on, so probes work without them. Gotenberg doesn't log or trace it, unless [`--api-disable-health-check-route-telemetry`](/docs/configuration#api-disable-health-check-route-telemetry) is `false`.

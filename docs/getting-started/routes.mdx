@@ -1,11 +1,47 @@
 ---
-id: what-works-where
-title: What works where
+id: routes
+title: Routes
 ---
+
+import RouteTable from "@site/src/components/documentation/RouteTable";
+
+Gotenberg serves every route below on port 3000, under [`--api-root-path`](/docs/configuration#api-root-path): `/` by default. Each has its own page.
+
+## Chromium
+
+<RouteTable group="chromium" />
+
+## LibreOffice
+
+<RouteTable group="libreoffice" />
+
+## PDF
+
+<RouteTable group="pdf" />
+
+## System
+
+<RouteTable group="system" />
+
+## Fields every route takes
+
+The `POST` routes take `multipart/form-data`. Besides their own fields, they all take:
+
+| Field          | Takes                                                                                  |
+| :------------- | :------------------------------------------------------------------------------------- |
+| `files`        | The files to process, one upload each.                                                 |
+| `archives`     | ZIP files, which Gotenberg unpacks as if you had uploaded their entries under `files`. |
+| `downloadFrom` | URLs Gotenberg downloads first, as if you had uploaded the files.                      |
+
+The Chromium conversion routes, the LibreOffice route and `/forms/pdf/pipe` also take [`stages`](/docs/pdf/pipe), which run on the PDFs they make or receive. The screenshot routes, the single-stage routes and the read routes answer 400 to it.
+
+[How requests work](/docs/getting-started/requests) shows each one. The [headers](/docs/reference/headers) work on every route, except where they say otherwise.
+
+## What works where
 
 Which route takes which feature. A field name in `code` is a form field of the route. A stage name, such as `stamp-text`, goes in the route's `stages` field, or, on a single-stage route, is the route itself: `/forms/pdf/stamp-text`.
 
-## Conversion routes
+### Conversion routes
 
 | Feature                             | Chromium PDF                                          | Screenshots         | LibreOffice                                           |
 | :---------------------------------- | :---------------------------------------------------- | :------------------ | :---------------------------------------------------- |
@@ -30,7 +66,7 @@ Which route takes which feature. A field name in `code` is a form field of the r
 | Images of the pages                 | `render`, after the PDF                               | The route itself    | `render`, after the PDF                               |
 | Smaller images, lower quality       | No                                                    | `quality`, for JPEG | `nativeQuality`, `nativeReduceImageResolution`        |
 
-## PDF routes
+### PDF routes
 
 | Feature                             | `/forms/pdf/pipe`                     | Single-stage routes                    | Read routes            |
 | :---------------------------------- | :------------------------------------ | :------------------------------------- | :--------------------- |
@@ -50,10 +86,10 @@ Which route takes which feature. A field name in `code` is a form field of the r
 | Images of the pages                 | `render`                              | `/forms/pdf/render`                    | No                     |
 | Smaller files                       | `optimize`, which keeps the quality   | `/forms/pdf/optimize`                  | No                     |
 
-## Two ways to the same result
+### Two ways to the same result
 
 A field whose name starts with `native` asks the engine to do the work while it makes the PDF. A stage does it afterwards, the same way on every route. [How Gotenberg works](/docs/about#native-field-or-stage) says which to pick.
 
-## An uploaded PDF on a conversion
+### An uploaded PDF on a conversion
 
 A conversion's stages see only the PDFs the conversion makes. To bring in a PDF you upload, name it in a stage that reads a file, such as [`insert`](/docs/pdf/insert) or [`stamp-pdf`](/docs/pdf/stamp-pdf). On the LibreOffice route, a PDF no stage names goes through LibreOffice like any document.
