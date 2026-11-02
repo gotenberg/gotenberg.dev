@@ -31,11 +31,11 @@ A four-page PDF: the cover, then the report's three pages.
 ## How it works
 
 - Each engine makes its own part: Chromium the web page, LibreOffice the document.
-- A conversion's stages see only the PDF it prints. `insert` brings in the uploaded `report.pdf` by name: see [Organize pages](/docs/process/pages#insert-pages).
+- A conversion's stages see only the PDF it prints. `insert` brings in the uploaded `report.pdf` by name: see [Insert pages](/docs/pdf/insert).
 - `at: 1` inserts after the first page. `at: 0` puts the report before the cover.
 
 ## Variations
 
 - Several documents: convert them in one request with a [`merge` stage](/docs/libreoffice/convert#merge-them), then insert the result.
-- The cover on each page instead: [`stamp-pdf`](/docs/process/stamps#stamp-a-letterhead) draws one PDF's page over another's.
+- The cover on each page instead: [`stamp-pdf`](/docs/pdf/stamp-pdf) draws one PDF's page over another's.
 - One request only: the LibreOffice route converts `.html` too, but LibreOffice then lays the page out, not Chromium.

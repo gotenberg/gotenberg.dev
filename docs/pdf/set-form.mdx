@@ -1,38 +1,18 @@
 ---
-id: forms
-title: Fill and flatten forms
+id: set-form
+title: Fill a form
+sidebar_label: Fill form
 ---
 
-Fill the fields of a PDF form, then lock the values into the page. Works on any PDF: a PDF you upload, through the stage's own route or `/forms/pdf/pipe`, and a PDF a Chromium or LibreOffice conversion makes, through its `stages`.
+import AsStage from "./_shared/_as-stage.mdx";
 
-## List the fields
+Fills the fields of a PDF form.
 
-<Request
-  route="/forms/pdf/form"
-  files={["fields.pdf"]}
-  response={{
-    "fields.pdf": [
-      {
-        name: "agree",
-        type: "checkbox",
-        value: "Off",
-        pages: [1],
-        states: ["Yes"],
-      },
-      {
-        name: "color",
-        type: "combo",
-        value: "Red",
-        pages: [1],
-        options: ["Red", "Green"],
-      },
-    ],
-  }}
-/>
-
-Each field comes with its fully qualified `name`, its `type`, its `value`, and the `pages` it sits on. `states` lists what a checkbox or a radio group takes besides `Off`, and `options` what a choice field takes. A PDF without a form answers `[]`.
+<Endpoint op="set-form" />
 
 ## Fill the fields
+
+[`/forms/pdf/form`](/docs/pdf/form) lists a form's fields, with the values each takes. This form has a checkbox `agree`, whose state is `Yes`, and a combo `color`, with the options `Red` and `Green`:
 
 <Request
   route="/forms/pdf/set-form"
@@ -71,26 +51,10 @@ Stage 'set-form' failed on 'fields.pdf': value the form field cannot hold: "Blue
 
 A name the PDF doesn't have answers 400 too, with the names it has. Signature fields and push buttons take no value.
 
-## Flatten the form
-
-Fill the fields, then flatten them:
-
-<Request
-  route="/forms/pdf/pipe"
-  files={["form.pdf"]}
-  stages={[
-    { op: "set-form", fields: { name: "Ada Lovelace" } },
-    { op: "flatten-form" },
-  ]}
-  output="form.pdf"
-/>
-
-The values become part of the page. No reader can change them, and `/forms/pdf/info` answers `"formFields": false`.
-
-## Forms from LibreOffice
+## Fill a converted document
 
 LibreOffice exports a document's form fields as fields a reader can fill, unless [`exportFormFields`](/docs/libreoffice/convert#exportFormFields) is `false`. Add the `set-form` stage to the conversion to fill them in the same request.
 
-## Next
+<AsStage op="set-form" />
 
-[Attach files](/docs/process/attachments), or go through every stage in the [Stages reference](/docs/reference/stages).
+To lock the values into the page, [flatten the form](/docs/pdf/flatten-form).

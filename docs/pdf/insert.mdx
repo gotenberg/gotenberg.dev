@@ -1,0 +1,24 @@
+---
+id: insert
+title: Insert pages
+sidebar_label: Insert pages
+---
+
+import AsStage from "./_shared/_as-stage.mdx";
+
+Inserts the pages of another PDF.
+
+<Endpoint op="insert" />
+
+Insert the pages of another PDF after a given page:
+
+<Request
+  route="/forms/pdf/insert"
+  files={["report.pdf", "annex.pdf"]}
+  fields={{ source: "annex.pdf", at: 1 }}
+  output="report.pdf"
+/>
+
+`at: 0` inserts before the first page, and `sourcePages` picks the pages of `annex.pdf` to insert. The stage reads `annex.pdf`, so Gotenberg doesn't process it as a PDF of its own.
+
+<AsStage op="insert" />

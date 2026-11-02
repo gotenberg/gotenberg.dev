@@ -1,0 +1,23 @@
+---
+id: autotag
+title: Tag a PDF
+sidebar_label: Autotag
+---
+
+import AsStage from "./_shared/_as-stage.mdx";
+
+Infers a structure tree for an untagged PDF, so screen readers can follow it.
+
+<Endpoint op="autotag" />
+
+## Tag an existing PDF
+
+<Request
+  route="/forms/pdf/autotag"
+  files={["report.pdf"]}
+  output="report.pdf"
+/>
+
+[`/forms/pdf/info`](/docs/pdf/info) then answers `"tagged": true`. A PDF you make tags better at the source, from its HTML or its document: Chromium and LibreOffice take [`nativeTaggedPdf`](/docs/chromium/convert-html#tags). For PDF/UA, [remediate](/docs/pdf/remediate#make-it-pdfua) the PDF, which tags it too.
+
+<AsStage op="autotag" />

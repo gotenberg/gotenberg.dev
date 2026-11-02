@@ -1,0 +1,22 @@
+---
+id: delete
+title: Delete pages
+sidebar_label: Delete pages
+---
+
+import AsStage from "./_shared/_as-stage.mdx";
+
+Removes the pages you list.
+
+<Endpoint op="delete" />
+
+<Request
+  route="/forms/pdf/delete"
+  files={["report.pdf"]}
+  fields={{ pages: "last" }}
+  output="report.pdf"
+/>
+
+`pages` takes a [page selection](/docs/pdf/pipe#page-selections). To keep a few pages rather than remove a few, [select them](/docs/pdf/select).
+
+<AsStage op="delete" />

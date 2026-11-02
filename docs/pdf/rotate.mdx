@@ -1,0 +1,22 @@
+---
+id: rotate
+title: Rotate pages
+sidebar_label: Rotate
+---
+
+import AsStage from "./_shared/_as-stage.mdx";
+
+Turns pages by a quarter, a half or three quarters.
+
+<Endpoint op="rotate" />
+
+<Request
+  route="/forms/pdf/rotate"
+  files={["report.pdf"]}
+  fields={{ angle: 90, pages: "1" }}
+  output="report.pdf"
+/>
+
+Viewers turn the page by the angle, clockwise. `-90` turns it the other way. Without `pages`, every page turns.
+
+<AsStage op="rotate" />

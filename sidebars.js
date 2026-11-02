@@ -10,6 +10,14 @@ const route = (method) => (id) => ({
 });
 const post = route("post");
 
+// A group of PDF route pages, each docs/pdf/<op>.
+const group = (label, ops) => ({
+  type: "category",
+  label,
+  collapsed: true,
+  items: ops.map((op) => post(`pdf/${op}`)),
+});
+
 module.exports = {
   docs: [
     "index",
@@ -48,19 +56,44 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Process PDFs",
+      label: "PDF",
       collapsed: true,
-      link: { type: "doc", id: "process/index" },
       items: [
-        "process/merge-split",
-        "process/pages",
-        "process/stamps",
-        "process/redact",
-        "process/forms",
-        "process/attachments",
-        "process/metadata",
-        "process/compress",
-        "process/render",
+        post("pdf/pipe"),
+        group("Pages", [
+          "merge",
+          "split",
+          "select",
+          "delete",
+          "insert",
+          "rotate",
+        ]),
+        group("Stamps", ["stamp-text", "stamp-image", "stamp-pdf"]),
+        group("Content", [
+          "set-metadata",
+          "set-bookmarks",
+          "attach",
+          "detach",
+          "set-form",
+          "flatten-form",
+          "redact",
+        ]),
+        group("Conformance", ["remediate", "autotag"]),
+        group("Security", ["encrypt", "decrypt", "sign", "timestamp"]),
+        group("Output", [
+          "optimize",
+          "convert-colors",
+          "flatten-transparency",
+          "render",
+        ]),
+        group("Read", [
+          "info",
+          "metadata",
+          "bookmarks",
+          "attachments",
+          "form",
+          "validate",
+        ]),
       ],
     },
     {
@@ -72,12 +105,6 @@ module.exports = {
         "conformance/accessibility",
         "conformance/factur-x",
       ],
-    },
-    {
-      type: "category",
-      label: "Protect PDFs",
-      collapsed: true,
-      items: ["security/encrypt", "security/sign"],
     },
     {
       type: "category",
@@ -116,8 +143,6 @@ module.exports = {
       collapsed: true,
       items: [
         "reference/routes",
-        "reference/pdf",
-        "reference/stages",
         "reference/system",
         "reference/headers",
         "reference/configuration",

@@ -1,0 +1,46 @@
+---
+id: info
+title: Read the info
+sidebar_label: Info
+---
+
+Reads the page count, the PDF version, and whether a PDF is encrypted, tagged, linearized or holds form fields.
+
+<Endpoint path="/forms/pdf/info" />
+
+<Request
+  route="/forms/pdf/info"
+  files={["report.pdf"]}
+  response={{
+    "report.pdf": {
+      pages: 3,
+      version: "1.7",
+      encrypted: false,
+      tagged: false,
+      linearized: false,
+      formFields: false,
+    },
+  }}
+/>
+
+`tagged` says whether the PDF carries a structure for screen readers, and `linearized` whether it's built for fast web view. Each PDF answers under its name.
+
+## Read an encrypted PDF
+
+Every read route takes a `password` field to open encrypted PDFs. A wrong or missing one answers 400:
+
+<Request
+  route="/forms/pdf/info"
+  files={["encrypted.pdf"]}
+  fields={{ password: "secret" }}
+  response={{
+    "encrypted.pdf": {
+      pages: 3,
+      version: "1.7",
+      encrypted: true,
+      tagged: false,
+      linearized: false,
+      formFields: false,
+    },
+  }}
+/>

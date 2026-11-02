@@ -1,0 +1,35 @@
+---
+id: set-bookmarks
+title: Set the bookmarks
+sidebar_label: Set bookmarks
+---
+
+import AsStage from "./_shared/_as-stage.mdx";
+
+Replaces the bookmarks, the outline viewers show beside the pages.
+
+<Endpoint op="set-bookmarks" />
+
+<Request
+  route="/forms/pdf/set-bookmarks"
+  files={["report.pdf"]}
+  fields={{
+    bookmarks: [
+      {
+        title: "Summary",
+        pageNumber: 1,
+        children: [{ title: "Figures", pageNumber: 2 }],
+      },
+      { title: "Appendix", pageNumber: 3 },
+    ],
+  }}
+  output="report.pdf"
+/>
+
+The list replaces the bookmarks the PDF had. `children` nests bookmarks under another, as deep as you need. [`/forms/pdf/bookmarks`](/docs/pdf/bookmarks) reads them in the same shape.
+
+## Build them from headings
+
+Chromium builds bookmarks from the page's headings with [`nativeBookmarks`](/docs/chromium/convert-html#bookmarks). LibreOffice exports a document's headings as bookmarks without being asked: [`nativeBookmarks`](/docs/libreoffice/convert#nativeBookmarks) is on by default.
+
+<AsStage op="set-bookmarks" />

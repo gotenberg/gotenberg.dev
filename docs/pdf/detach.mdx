@@ -1,0 +1,22 @@
+---
+id: detach
+title: Remove an attachment
+sidebar_label: Detach
+---
+
+import AsStage from "./_shared/_as-stage.mdx";
+
+Removes a file embedded in a PDF.
+
+<Endpoint op="detach" />
+
+<Request
+  route="/forms/pdf/detach"
+  files={["invoice.pdf"]}
+  fields={{ name: "factur-x.xml" }}
+  output="invoice.pdf"
+/>
+
+`name` is the name [`/forms/pdf/attachments`](/docs/pdf/attachments) lists. A name the PDF doesn't list answers 400, with the names it does list.
+
+<AsStage op="detach" />

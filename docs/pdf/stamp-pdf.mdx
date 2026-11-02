@@ -1,0 +1,27 @@
+---
+id: stamp-pdf
+title: Stamp a PDF page
+sidebar_label: Stamp PDF
+---
+
+import AsStage from "./_shared/_as-stage.mdx";
+import Place from "./_shared/_place.mdx";
+
+Draws a page of another PDF over pages: a letterhead, a seal.
+
+<Endpoint op="stamp-pdf" />
+
+<Place />
+
+## Stamp a letterhead
+
+<Request
+  route="/forms/pdf/stamp-pdf"
+  files={["report.pdf", "letterhead.pdf"]}
+  fields={{ source: "letterhead.pdf" }}
+  output="report.pdf"
+/>
+
+Draw the letterhead on a transparent page, so the content under it shows: Chromium makes one from HTML with `printBackground` and `omitBackground`. `scale` resizes the page, and `sourcePage` picks another page of the source.
+
+<AsStage op="stamp-pdf" />

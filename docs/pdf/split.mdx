@@ -1,0 +1,51 @@
+---
+id: split
+title: Split PDFs
+sidebar_label: Split
+---
+
+import AsStage from "./_shared/_as-stage.mdx";
+
+Cuts a PDF into several, which come back in a ZIP.
+
+<Endpoint op="split" />
+
+## Split every page
+
+<Request
+  route="/forms/pdf/split"
+  files={["report.pdf"]}
+  fields={{ every: 1 }}
+  output="report.zip"
+/>
+
+The answer is a ZIP of `report_0.pdf`, `report_1.pdf` and `report_2.pdf`. `every: 2` cuts every two pages instead.
+
+## Split by ranges
+
+`ranges` gives one PDF per entry, each a [page selection](/docs/pdf/pipe#page-selections):
+
+<Request
+  route="/forms/pdf/split"
+  files={["report.pdf"]}
+  fields={{ ranges: ["1", "2-3"] }}
+  output="report.zip"
+/>
+
+## Process each part
+
+The stages after a split run on each part. This one stamps both parts:
+
+<Request
+  route="/forms/pdf/pipe"
+  files={["report.pdf"]}
+  stages={[
+    { op: "split", ranges: ["1", "2-3"] },
+    { op: "stamp-text", text: "DRAFT", x: 36, y: 36, fontSize: 18 },
+  ]}
+  output="report.zip"
+/>
+
+<AsStage op="split" />
+
+To keep some pages in one PDF rather than cut it, [select them](/docs/pdf/select).

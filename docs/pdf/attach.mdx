@@ -1,0 +1,51 @@
+---
+id: attach
+title: Attach files
+sidebar_label: Attach
+---
+
+import AsStage from "./_shared/_as-stage.mdx";
+
+Embeds files in a PDF: the source data, a spreadsheet, the XML of an e-invoice.
+
+<Endpoint op="attach" />
+
+## Attach a file
+
+<Request
+  route="/forms/pdf/attach"
+  files={["report.pdf", "invoice.xml"]}
+  fields={{ file: "invoice.xml" }}
+  output="report.pdf"
+/>
+
+The PDF lists the file under its name. `name` renames it, and `mimeType` overrides the type Gotenberg reads from the name. [`/forms/pdf/attachments`](/docs/pdf/attachments) lists the files a PDF holds.
+
+## Attach several
+
+One `attach` stage per file:
+
+<Request
+  route="/forms/pdf/pipe"
+  files={["report.pdf", "invoice.xml", "logo.png"]}
+  stages={[
+    { op: "attach", file: "invoice.xml" },
+    { op: "attach", file: "logo.png", name: "brand.png" },
+  ]}
+  output="report.pdf"
+/>
+
+## Mark an associated file
+
+`relationship` makes the file a PDF/A-3 associated file, and says how it relates to the document: `Source`, `Data`, `Alternative`, `Supplement` or `Unspecified`.
+
+<Request
+  route="/forms/pdf/attach"
+  files={["report.pdf", "invoice.xml"]}
+  fields={{ file: "invoice.xml", relationship: "Data" }}
+  output="report.pdf"
+/>
+
+A Factur-X invoice needs more than its XML: the [`remediate` stage](/docs/pdf/remediate) with the `Factur-X` profile embeds it and makes the PDF conform.
+
+<AsStage op="attach" />

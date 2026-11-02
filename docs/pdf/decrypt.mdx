@@ -1,0 +1,22 @@
+---
+id: decrypt
+title: Decrypt a PDF
+sidebar_label: Decrypt
+---
+
+import AsStage from "./_shared/_as-stage.mdx";
+
+Opens encrypted PDFs and removes their encryption.
+
+<Endpoint op="decrypt" />
+
+<Request
+  route="/forms/pdf/decrypt"
+  files={["encrypted.pdf"]}
+  fields={{ password: "secret" }}
+  output="report.pdf"
+/>
+
+In a list of stages, `decrypt` comes first, and the stages after it work on the open PDF. It doesn't combine with `sign` or `timestamp`: sign the decrypted PDF in a request of its own. The [read routes](/docs/pdf/info#read-an-encrypted-pdf) take a `password` field instead.
+
+<AsStage op="decrypt" />

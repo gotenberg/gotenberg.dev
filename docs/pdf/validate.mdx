@@ -1,0 +1,50 @@
+---
+id: validate
+title: Validate a PDF
+sidebar_label: Validate
+---
+
+Checks PDFs against PDF/A, PDF/UA or Factur-X, and lists the violations.
+
+<Endpoint path="/forms/pdf/validate" />
+
+<Request
+  route="/forms/pdf/validate"
+  files={["invoice.pdf"]}
+  fields={{ profile: "PDF/A-3b" }}
+  response={{
+    "invoice.pdf": { profile: "PDF/A-3b", compliant: true, violations: [] },
+  }}
+/>
+
+`profile` takes the profiles [`remediate`](/docs/pdf/remediate) makes: the PDF/A levels, `PDF/UA-1`, `PDF/UA-2` and `Factur-X`.
+
+## Validate a Factur-X
+
+<Request
+  route="/forms/pdf/validate"
+  files={["invoice.pdf"]}
+  fields={{ profile: "Factur-X" }}
+  response={{
+    "invoice.pdf": { profile: "Factur-X", compliant: true, violations: [] },
+  }}
+/>
+
+The check covers the Factur-X rules, the XML's included, and reports warnings for the softer ones of its Schematron, which don't make the invoice non-compliant. Validate against `PDF/A-3b` too for the archival side.
+
+## Read the violations
+
+Each violation names the rule a PDF breaks, and where:
+
+```json
+{
+  "specification": "ISO_19005_2",
+  "clause": "6.1.7.1",
+  "testNumber": 2,
+  "description": "The stream keyword shall be followed either by a CARRIAGE RETURN (0Dh) and LINE FEED (0Ah) character sequence or by a single LINE FEED (0Ah) character. The endstream keyword shall be preceded by an EOL marker",
+  "context": "object 6: endstream keyword not immediately preceded by an EOL marker",
+  "severity": "fatal"
+}
+```
+
+A `fatal` violation makes the PDF non-compliant. A `warning` or an `info` doesn't.

@@ -1,0 +1,26 @@
+---
+id: set-metadata
+title: Set the metadata
+sidebar_label: Set metadata
+---
+
+import AsStage from "./_shared/_as-stage.mdx";
+
+Writes the title, author and dates a viewer shows.
+
+<Endpoint op="set-metadata" />
+
+<Request
+  route="/forms/pdf/set-metadata"
+  files={["report.pdf"]}
+  fields={{
+    title: "Annual report",
+    author: "Finance",
+    creationDate: "D:20261001090000Z",
+  }}
+  output="report.pdf"
+/>
+
+A field you leave out keeps its value. Dates take the PDF format: `D:` then the year, month, day, hours, minutes, seconds and a time zone, `Z` for UTC. [`/forms/pdf/metadata`](/docs/pdf/metadata) reads the metadata under the same names, so its answer feeds straight back into this route.
+
+<AsStage op="set-metadata" />

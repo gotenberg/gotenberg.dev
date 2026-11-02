@@ -129,7 +129,7 @@
       "method": "POST",
       "path": "/forms/pdf/pipe",
       "summary": "Runs a list of stages on PDFs.",
-      "to": "/docs/reference/pdf#run-stages",
+      "to": "/docs/pdf/pipe",
       "input": [
         {
           "name": "files",
@@ -151,14 +151,14 @@
       "method": "POST",
       "path": "/forms/pdf/{op}",
       "summary": "Runs one stage, its options as form fields: `/forms/pdf/merge`, `/forms/pdf/rotate`, and so on.",
-      "to": "/docs/reference/pdf#run-one-stage"
+      "to": "/docs/pdf/pipe#every-stage"
     },
     {
       "group": "pdf",
       "method": "POST",
       "path": "/forms/pdf/info",
       "summary": "Reads the page count, the PDF version, and whether a PDF is encrypted, tagged, linearized or holds form fields.",
-      "to": "/docs/reference/pdf#info",
+      "to": "/docs/pdf/info",
       "input": [
         {
           "name": "files",
@@ -172,14 +172,15 @@
           "description": "Opens encrypted PDFs. A wrong or missing one answers 400."
         }
       ],
-      "response": "JSON, one entry per PDF under its file name."
+      "response": "JSON, one entry per PDF under its file name.",
+      "read": true
     },
     {
       "group": "pdf",
       "method": "POST",
       "path": "/forms/pdf/metadata",
       "summary": "Reads the metadata: title, author, dates.",
-      "to": "/docs/reference/pdf#metadata",
+      "to": "/docs/pdf/metadata",
       "input": [
         {
           "name": "files",
@@ -193,14 +194,15 @@
           "description": "Opens encrypted PDFs. A wrong or missing one answers 400."
         }
       ],
-      "response": "JSON, one entry per PDF under its file name."
+      "response": "JSON, one entry per PDF under its file name.",
+      "read": true
     },
     {
       "group": "pdf",
       "method": "POST",
       "path": "/forms/pdf/bookmarks",
       "summary": "Reads the bookmarks.",
-      "to": "/docs/reference/pdf#bookmarks",
+      "to": "/docs/pdf/bookmarks",
       "input": [
         {
           "name": "files",
@@ -214,14 +216,15 @@
           "description": "Opens encrypted PDFs. A wrong or missing one answers 400."
         }
       ],
-      "response": "JSON, one entry per PDF under its file name."
+      "response": "JSON, one entry per PDF under its file name.",
+      "read": true
     },
     {
       "group": "pdf",
       "method": "POST",
       "path": "/forms/pdf/attachments",
       "summary": "Lists the embedded files.",
-      "to": "/docs/reference/pdf#attachments",
+      "to": "/docs/pdf/attachments",
       "input": [
         {
           "name": "files",
@@ -235,14 +238,15 @@
           "description": "Opens encrypted PDFs. A wrong or missing one answers 400."
         }
       ],
-      "response": "JSON, one entry per PDF under its file name."
+      "response": "JSON, one entry per PDF under its file name.",
+      "read": true
     },
     {
       "group": "pdf",
       "method": "POST",
       "path": "/forms/pdf/form",
       "summary": "Lists the form's fields: name, type, value, pages, and the values each takes.",
-      "to": "/docs/reference/pdf#form",
+      "to": "/docs/pdf/form",
       "input": [
         {
           "name": "files",
@@ -261,14 +265,15 @@
           "description": "Lists the fields on these pages only."
         }
       ],
-      "response": "JSON, one entry per PDF under its file name."
+      "response": "JSON, one entry per PDF under its file name.",
+      "read": true
     },
     {
       "group": "pdf",
       "method": "POST",
       "path": "/forms/pdf/validate",
       "summary": "Checks PDFs against PDF/A, PDF/UA or Factur-X, and lists the violations.",
-      "to": "/docs/reference/pdf#validate",
+      "to": "/docs/pdf/validate",
       "input": [
         {
           "name": "files",
@@ -288,7 +293,8 @@
           "description": "The standard to check against: `PDF/A-1a`, `PDF/A-1b`, `PDF/A-2a`, `PDF/A-2b`, `PDF/A-2u`, `PDF/A-3a`, `PDF/A-3b`, `PDF/A-3u`, `PDF/A-4`, `PDF/A-4e`, `PDF/A-4f`, `PDF/UA-1`, `PDF/UA-2` or `Factur-X`."
         }
       ],
-      "response": "JSON, one entry per PDF under its file name."
+      "response": "JSON, one entry per PDF under its file name.",
+      "read": true
     },
     {
       "group": "system",

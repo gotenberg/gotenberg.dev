@@ -1,0 +1,19 @@
+---
+id: flatten-transparency
+title: Flatten transparency
+sidebar_label: Flatten transparency
+---
+
+import AsStage from "./_shared/_as-stage.mdx";
+
+Replaces transparent content with opaque content, for printers and archival formats that don't take transparency.
+
+<Endpoint op="flatten-transparency" />
+
+<Request
+  route="/forms/pdf/flatten-transparency"
+  files={["report.pdf"]}
+  output="report.pdf"
+/>
+
+<AsStage op="flatten-transparency" />

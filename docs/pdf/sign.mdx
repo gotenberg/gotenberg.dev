@@ -1,11 +1,14 @@
 ---
 id: sign
-title: Sign and timestamp PDFs
+title: Sign a PDF
+sidebar_label: Sign
 ---
 
-Sign a PDF with your certificate, so readers can check who signed it and that nothing changed since, and prove when it existed.
+import AsStage from "./_shared/_as-stage.mdx";
 
-## Sign a PDF
+Signs a PDF with your certificate, so readers can check who signed it and that nothing changed since.
+
+<Endpoint op="sign" />
 
 Upload the PDF, a PEM certificate and its private key:
 
@@ -61,22 +64,11 @@ A `.p12` or `.pfx` file holds the certificate and its key. `certificatePassword`
   output="report.pdf"
 />
 
-## Timestamp without signing
-
-A document timestamp proves the PDF existed, unchanged, at that time, without naming a signer:
-
-<Request
-  route="/forms/pdf/timestamp"
-  files={["report.pdf"]}
-  fields={{ timestampUrl: "http://timestamp.digicert.com" }}
-  output="report.pdf"
-/>
-
-Operators decide which authorities Gotenberg may call with [`--pdf-allow-list`](/docs/configuration#pdf-allow-list), [`--pdf-deny-list`](/docs/configuration#pdf-deny-list) and [`--pdf-deny-private-ips`](/docs/configuration#pdf-deny-private-ips).
+Operators decide which authorities Gotenberg may call: see [`timestamp`](/docs/pdf/timestamp#pick-the-authorities).
 
 ## Sign last
 
-A change after a signature breaks it, so only a `timestamp` or a `render` may follow the `sign` stage, and a list signs once. Process before you sign: a stage that rewrites the file, such as `select`, `merge`, `remediate` or `optimize`, refuses a signed PDF, since its rewrite would drop the signature. Stamps, rotations, metadata, bookmarks, attachments and tags append to the file and keep it: see [what each stage does to the file](/docs/reference/stages#what-each-stage-does-to-the-file). An encrypted PDF signs in two requests: decrypt it, then sign the result.
+A change after a signature breaks it, so only a `timestamp` or a `render` may follow the `sign` stage, and a list signs once. Process before you sign: a stage that rewrites the file, such as `select`, `merge`, `remediate` or `optimize`, refuses a signed PDF, since its rewrite would drop the signature. Stamps, rotations, metadata, bookmarks, attachments and tags append to the file and keep it: see [what each stage does to the file](/docs/pdf/pipe#what-each-stage-does-to-the-file). An encrypted PDF signs in two requests: decrypt it, then sign the result.
 
 <Request
   route="/forms/pdf/pipe"
@@ -88,6 +80,4 @@ A change after a signature breaks it, so only a `timestamp` or a `render` may fo
   output="report.pdf"
 />
 
-## Next
-
-[Secure your deployment](/docs/operate/secure) itself.
+<AsStage op="sign" />

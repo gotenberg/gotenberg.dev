@@ -1,11 +1,14 @@
 ---
-id: compress
-title: Compress PDFs
+id: optimize
+title: Optimize a PDF
+sidebar_label: Optimize
 ---
 
-Make PDFs smaller, and fit them to printers: fewer bytes, no transparency, one color space. Works on any PDF: a PDF you upload, through the stage's own route or `/forms/pdf/pipe`, and a PDF a Chromium or LibreOffice conversion makes, through its `stages`.
+import AsStage from "./_shared/_as-stage.mdx";
 
-## Optimize a PDF
+Rewrites a PDF to make it smaller, without losing quality.
+
+<Endpoint op="optimize" />
 
 <Request
   route="/forms/pdf/optimize"
@@ -59,31 +62,8 @@ A rewrite removes signatures, so a signed PDF answers 400: optimize first, then 
 
 A PDF/A-1 stays conformant: Gotenberg leaves out the object streams PDF/A-1 forbids.
 
-## Flatten transparency
-
-Some printers and archival formats don't take transparency. `flatten-transparency` replaces it with opaque content:
-
-<Request
-  route="/forms/pdf/flatten-transparency"
-  files={["report.pdf"]}
-  output="report.pdf"
-/>
-
-## Convert the colors
-
-`convert-colors` puts every color in one color space: `cmyk` for a print shop, `gray` for black and white printing, `rgb` for screens, or `output-intent` for the one the PDF declares:
-
-<Request
-  route="/forms/pdf/convert-colors"
-  files={["report.pdf"]}
-  fields={{ target: "gray" }}
-  output="report.pdf"
-/>
-
 ## Lower the image quality
 
 `optimize` never lowers the quality of an image. To trade quality for size, set it where the PDF is made: LibreOffice's [`nativeQuality` and `nativeReduceImageResolution`](/docs/libreoffice/convert#nativeQuality), or smaller images in the HTML you send Chromium.
 
-## Next
-
-LibreOffice can shrink a document's images as it exports them: see [the image fields](/docs/libreoffice/convert#nativeQuality). Every stage is in the [Stages reference](/docs/reference/stages).
+<AsStage op="optimize" />

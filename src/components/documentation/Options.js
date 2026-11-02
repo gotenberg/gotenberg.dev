@@ -38,7 +38,7 @@ export default function Options({ options, anchored = false, className }) {
             )}
             <span className={styles.type}>
               {option.type === "pages" ? (
-                <Link to="/docs/reference/stages#page-selections">pages</Link>
+                <Link to="/docs/pdf/pipe#page-selections">pages</Link>
               ) : (
                 option.type
               )}

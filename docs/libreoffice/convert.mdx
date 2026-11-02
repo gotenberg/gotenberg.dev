@@ -102,11 +102,11 @@ Gotenberg-Remediation-Residual: 0
 Gotenberg-Remediation-Rolled-Back: 0`}
 />
 
-Both PDFs pass Gotenberg's own PDF/A-2b [validation](/docs/reference/pdf#validate). Nothing checks `nativePdfa`'s output, though, and a stage after it, such as `stamp-text`, can break its conformance. `remediate` comes after the other stages and reports what's left.
+Both PDFs pass Gotenberg's own PDF/A-2b [validation](/docs/pdf/validate). Nothing checks `nativePdfa`'s output, though, and a stage after it, such as `stamp-text`, can break its conformance. `remediate` comes after the other stages and reports what's left.
 
 ## Fill forms
 
-LibreOffice exports a document's form fields as fields a reader can fill, unless [`exportFormFields`](#exportFormFields) is `false`. Add the [`set-form` stage](/docs/reference/stages#set-form) to fill them in the same request.
+LibreOffice exports a document's form fields as fields a reader can fill, unless [`exportFormFields`](#exportFormFields) is `false`. Add the [`set-form` stage](/docs/pdf/set-form) to fill them in the same request.
 
 ## Native fields or stages
 
@@ -151,7 +151,7 @@ Encryption comes last: only `optimize` and `render` may follow it.
   output="report.pdf"
 />
 
-A PDF/A or Factur-X can't be encrypted, and an encrypted PDF can't be signed: the [order rules](/docs/reference/stages#order-rules) answer 400 first.
+A PDF/A or Factur-X can't be encrypted, and an encrypted PDF can't be signed: the [order rules](/docs/pdf/pipe#order-rules) answer 400 first.
 
 `render` previews the document. This request answers the PDF and a thumbnail of its first page:
 
@@ -162,7 +162,7 @@ A PDF/A or Factur-X can't be encrypted, and an encrypted PDF can't be signed: th
   output="report.zip"
 />
 
-The ZIP holds `report.docx.pdf` and `report.docx_1.png`. [Stages](/docs/reference/stages) lists every stage.
+The ZIP holds `report.docx.pdf` and `report.docx_1.png`. [Stages](/docs/pdf/pipe) lists every stage.
 
 ## Formats
 

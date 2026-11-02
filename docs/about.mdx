@@ -32,7 +32,7 @@ A stage is one operation on a PDF: merge, stamp, redact, sign, make PDF/A. A req
   output="documents.pdf"
 />
 
-The conversion routes and `/forms/pdf/pipe` take `stages`. A few rules keep a list sensible, such as signing last: see [Order rules](/docs/reference/stages#order-rules).
+The conversion routes and `/forms/pdf/pipe` take `stages`. A few rules keep a list sensible, such as signing last: see [Order rules](/docs/pdf/pipe#order-rules).
 
 ## Native field or stage
 
@@ -59,7 +59,7 @@ Some results have two ways in. A field whose name starts with `native` asks Chro
 
 - `remediate` reports the violations it couldn't fix in `Gotenberg-Remediation-Residual`, and still answers 200: check the header.
 - Nothing checks what the `native` fields produce. `/forms/pdf/validate` checks any PDF against PDF/A, PDF/UA or Factur-X.
-- A stage that rewrites the file refuses a signed PDF, since rewriting it would drop the signature: see [which stages rewrite](/docs/reference/stages#what-each-stage-does-to-the-file).
+- A stage that rewrites the file refuses a signed PDF, since rewriting it would drop the signature: see [which stages rewrite](/docs/pdf/pipe#what-each-stage-does-to-the-file).
 
 ## How a request flows
 

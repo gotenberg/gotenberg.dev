@@ -1,9 +1,14 @@
 ---
 id: encrypt
-title: Encrypt and decrypt PDFs
+title: Encrypt a PDF
+sidebar_label: Encrypt
 ---
 
-Protect a PDF with passwords, restrict what readers may do with it, and lift the protection again.
+import AsStage from "./_shared/_as-stage.mdx";
+
+Protects a PDF with passwords, and restricts what readers may do with it.
+
+<Endpoint op="encrypt" />
 
 ## Require a password
 
@@ -37,30 +42,10 @@ The owner password guards the permissions: printing, copying text, editing, fill
 
 `algorithm` takes `aes256`, the default, `aes128`, `rc4-128` or `rc4-40`. Keep AES-256 unless an old reader can't open it.
 
-## Encrypt while converting
+## Encrypt last
 
-Encryption comes last in a list of stages: only `optimize` and `render` may follow it.
+Encryption comes last in a list of stages: only `optimize` and `render` may follow it. A PDF/A or Factur-X can't be encrypted, and an encrypted PDF can't be signed: the [order rules](/docs/pdf/pipe#order-rules) answer 400 first.
 
-<Request
-  route="/forms/libreoffice/convert"
-  files={["report.docx"]}
-  stages={[{ op: "encrypt", userPassword: "secret" }]}
-  output="report.pdf"
-/>
+<AsStage op="encrypt" />
 
-A PDF/A or Factur-X can't be encrypted, and an encrypted PDF can't be signed: the [order rules](/docs/reference/stages#order-rules) answer 400 first.
-
-## Decrypt a PDF
-
-<Request
-  route="/forms/pdf/decrypt"
-  files={["encrypted.pdf"]}
-  fields={{ password: "secret" }}
-  output="report.pdf"
-/>
-
-In a list of stages, `decrypt` comes first, and the stages after it work on the open PDF. The [read routes](/docs/reference/pdf#read-pdfs) take a `password` field instead.
-
-## Next
-
-[Sign and timestamp PDFs](/docs/security/sign).
+To lift the protection, [decrypt the PDF](/docs/pdf/decrypt).

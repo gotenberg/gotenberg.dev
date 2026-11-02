@@ -1,0 +1,35 @@
+---
+id: select
+title: Select pages
+sidebar_label: Select pages
+---
+
+import AsStage from "./_shared/_as-stage.mdx";
+
+Keeps the pages you list, in the order you list them.
+
+<Endpoint op="select" />
+
+## Keep pages
+
+<Request
+  route="/forms/pdf/select"
+  files={["report.pdf"]}
+  fields={{ pages: "1-2" }}
+  output="report.pdf"
+/>
+
+`pages` takes a [page selection](/docs/pdf/pipe#page-selections): a page, a range, a list of both, or `odd`, `even` or `last`.
+
+## Reorder pages
+
+`select` keeps the pages in the order you list them:
+
+<Request
+  route="/forms/pdf/select"
+  files={["report.pdf"]}
+  fields={{ pages: "3,1,2" }}
+  output="report.pdf"
+/>
+
+<AsStage op="select" />

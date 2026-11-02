@@ -1,0 +1,25 @@
+---
+id: merge
+title: Merge PDFs
+sidebar_label: Merge
+---
+
+import AsStage from "./_shared/_as-stage.mdx";
+
+Combines PDFs into one.
+
+<Endpoint op="merge" />
+
+<Request
+  route="/forms/pdf/merge"
+  files={["report.pdf", "annex.pdf"]}
+  output="merged.pdf"
+/>
+
+Gotenberg merges the files in the alphanumeric order of their names, not in the order you upload them: `annex.pdf` comes first here. Name them `1-report.pdf` and `2-annex.pdf` to pick the order. The result takes the name of the first file.
+
+Each PDF keeps its bookmarks, pointed at the merged pages. For one bookmark per file, add a [`set-bookmarks`](/docs/pdf/set-bookmarks) stage after `merge`.
+
+<AsStage op="merge" />
+
+Conversions merge too: a `merge` stage turns [several office documents](/docs/libreoffice/convert#merge-them) into one PDF.

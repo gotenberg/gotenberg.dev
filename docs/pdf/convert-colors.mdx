@@ -1,0 +1,22 @@
+---
+id: convert-colors
+title: Convert the colors
+sidebar_label: Convert colors
+---
+
+import AsStage from "./_shared/_as-stage.mdx";
+
+Converts every color of a PDF to one color space.
+
+<Endpoint op="convert-colors" />
+
+<Request
+  route="/forms/pdf/convert-colors"
+  files={["report.pdf"]}
+  fields={{ target: "gray" }}
+  output="report.pdf"
+/>
+
+`target` takes `cmyk` for a print shop, `gray` for black and white printing, `rgb` for screens, or `output-intent` for the one the PDF declares.
+
+<AsStage op="convert-colors" />

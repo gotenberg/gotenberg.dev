@@ -1,0 +1,28 @@
+---
+id: timestamp
+title: Timestamp a PDF
+sidebar_label: Timestamp
+---
+
+import AsStage from "./_shared/_as-stage.mdx";
+
+Adds a document timestamp from an RFC 3161 timestamp authority: proof the PDF existed, unchanged, at that time.
+
+<Endpoint op="timestamp" />
+
+## Timestamp without signing
+
+<Request
+  route="/forms/pdf/timestamp"
+  files={["report.pdf"]}
+  fields={{ timestampUrl: "http://timestamp.digicert.com" }}
+  output="report.pdf"
+/>
+
+A document timestamp names no signer. To timestamp a signature, give [`sign`](/docs/pdf/sign#timestamp-the-signature) a `timestampUrl` instead.
+
+## Pick the authorities
+
+Operators decide which authorities Gotenberg may call with [`--pdf-allow-list`](/docs/configuration#pdf-allow-list), [`--pdf-deny-list`](/docs/configuration#pdf-deny-list) and [`--pdf-deny-private-ips`](/docs/configuration#pdf-deny-private-ips): see [Restrict outbound requests](/docs/operate/outbound).
+
+<AsStage op="timestamp" />

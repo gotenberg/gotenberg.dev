@@ -1,0 +1,26 @@
+---
+id: bookmarks
+title: Read the bookmarks
+sidebar_label: Bookmarks
+---
+
+Reads the bookmarks, the outline viewers show beside the pages.
+
+<Endpoint path="/forms/pdf/bookmarks" />
+
+<Request
+  route="/forms/pdf/bookmarks"
+  files={["report.pdf"]}
+  response={{
+    "report.pdf": [
+      {
+        title: "Summary",
+        pageNumber: 1,
+        children: [{ title: "Figures", pageNumber: 2 }],
+      },
+      { title: "Appendix", pageNumber: 3 },
+    ],
+  }}
+/>
+
+`children` nests bookmarks under another. The shape is the one [`set-bookmarks`](/docs/pdf/set-bookmarks) takes.

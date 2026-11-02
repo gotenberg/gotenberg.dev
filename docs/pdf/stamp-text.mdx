@@ -1,0 +1,35 @@
+---
+id: stamp-text
+title: Stamp text
+sidebar_label: Stamp text
+---
+
+import AsStage from "./_shared/_as-stage.mdx";
+import Place from "./_shared/_place.mdx";
+
+Draws a line of text over pages: a watermark, a label, a status.
+
+<Endpoint op="stamp-text" />
+
+<Place />
+
+<Request
+  route="/forms/pdf/stamp-text"
+  files={["report.pdf"]}
+  fields={{
+    text: "CONFIDENTIAL",
+    x: 120,
+    y: 250,
+    fontSize: 36,
+    color: "#b42318",
+    opacity: 0.4,
+    rotation: 30,
+  }}
+  output="report.pdf"
+/>
+
+`rotation` turns the text counter-clockwise around `x` and `y`. `font` takes one of the 14 standard PDF fonts, `Helvetica` by default, which draw Western European text only. For other scripts, stamp a page Chromium renders with [`stamp-pdf`](/docs/pdf/stamp-pdf), or use LibreOffice's [`nativeWatermarkText`](/docs/libreoffice/convert#nativeWatermarkText).
+
+<AsStage op="stamp-text" />
+
+A stamp only covers what's under it: [redact](/docs/pdf/redact) to remove content for good.

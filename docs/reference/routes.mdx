@@ -33,6 +33,6 @@ The `POST` routes take `multipart/form-data`. Besides their own fields, they all
 | `archives`     | ZIP files, which Gotenberg unpacks as if you had uploaded their entries under `files`. |
 | `downloadFrom` | URLs Gotenberg downloads first, as if you had uploaded the files.                      |
 
-The Chromium conversion routes, the LibreOffice route and `/forms/pdf/pipe` also take [`stages`](/docs/reference/stages), which run on the PDFs they make or receive. The screenshot routes, the single-stage routes and the read routes answer 400 to it.
+The Chromium conversion routes, the LibreOffice route and `/forms/pdf/pipe` also take [`stages`](/docs/pdf/pipe), which run on the PDFs they make or receive. The screenshot routes, the single-stage routes and the read routes answer 400 to it.
 
 [How requests work](/docs/getting-started/requests) shows each one. The [headers](/docs/reference/headers) work on every route too.

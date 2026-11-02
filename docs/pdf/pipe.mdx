@@ -1,11 +1,14 @@
 ---
-id: stages
-title: Stages
+id: pipe
+title: Run stages
+sidebar_label: Pipe
 ---
 
-import Stage from "@site/src/components/documentation/Stage";
+import StageTable from "@site/src/components/documentation/StageTable";
 
-Stages process PDFs. List them in the `stages` form field, as JSON, and Gotenberg runs them in that order:
+Runs a list of stages on the PDFs you upload, in order.
+
+<Endpoint path="/forms/pdf/pipe" />
 
 <Request
   route="/forms/pdf/pipe"
@@ -20,17 +23,15 @@ Stages process PDFs. List them in the `stages` form field, as JSON, and Gotenber
 
 ## How stages work
 
-- `stages` works on `/forms/pdf/pipe` and on every conversion route, where the stages run on the converted PDFs.
-- Each stage works on what the previous one produced.
+- Each stage works on what the previous one produced, so its page numbers count from that PDF.
+- The stages take the PDFs in the alphanumeric order of their names.
 - A stage names the files it needs, such as an image to stamp or a certificate, by their uploaded names. Upload them under `files`: they don't count as PDFs to process.
-- Each stage also has its own route, `/forms/pdf/<op>`, which takes the stage's options as form fields. Send a list or an object as JSON:
+- `stages` works on this route and on the [Chromium](/docs/chromium/convert-html#add-stages) and [LibreOffice](/docs/libreoffice/convert#add-stages) conversions, where the stages run on the converted PDFs. The screenshot routes, the stages' own routes and the read routes answer 400 to it.
+- Each stage also has its own route, `/forms/pdf/<op>`, which takes its options as form fields, with a list or an object as JSON.
 
-<Request
-  route="/forms/pdf/rotate"
-  files={["report.pdf"]}
-  fields={{ angle: 90, pages: "1" }}
-  output="report.pdf"
-/>
+## Every stage
+
+<StageTable />
 
 ## Order rules
 
@@ -57,121 +58,3 @@ A stage either rewrites the PDF whole or appends an update to it. A rewrite drop
 ## Page selections
 
 An option of type `pages` takes a page (`3`), a range (`2-5`), a list of both (`1,3,5-7`), or `odd`, `even` or `last` on their own. Pages count from 1, and a page past the end answers 400.
-
-## Pages
-
-### merge
-
-<Stage op="merge" />
-
-### split
-
-<Stage op="split" />
-
-### select
-
-<Stage op="select" />
-
-### delete
-
-<Stage op="delete" />
-
-### insert
-
-<Stage op="insert" />
-
-### rotate
-
-<Stage op="rotate" />
-
-## Stamps
-
-### stamp-text
-
-<Stage op="stamp-text" />
-
-### stamp-image
-
-<Stage op="stamp-image" />
-
-### stamp-pdf
-
-<Stage op="stamp-pdf" />
-
-## Content
-
-### redact
-
-<Stage op="redact" />
-
-### set-form
-
-<Stage op="set-form" />
-
-### flatten-form
-
-<Stage op="flatten-form" />
-
-### flatten-transparency
-
-<Stage op="flatten-transparency" />
-
-### convert-colors
-
-<Stage op="convert-colors" />
-
-## Document
-
-### set-metadata
-
-<Stage op="set-metadata" />
-
-### set-bookmarks
-
-<Stage op="set-bookmarks" />
-
-### attach
-
-<Stage op="attach" />
-
-### detach
-
-<Stage op="detach" />
-
-### optimize
-
-<Stage op="optimize" />
-
-## Accessibility and conformance
-
-### autotag
-
-<Stage op="autotag" />
-
-### remediate
-
-<Stage op="remediate" />
-
-## Security
-
-### encrypt
-
-<Stage op="encrypt" />
-
-### decrypt
-
-<Stage op="decrypt" />
-
-### sign
-
-<Stage op="sign" />
-
-### timestamp
-
-<Stage op="timestamp" />
-
-## Output
-
-### render
-
-<Stage op="render" />

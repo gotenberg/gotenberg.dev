@@ -31,13 +31,13 @@ A Letter PDF with a faint red DRAFT across the middle of each page, over the con
 
 ## How it works
 
-- LibreOffice converts the document, then `stamp-text` draws on every page: see [Stamp and watermark PDFs](/docs/process/stamps).
+- LibreOffice converts the document, then `stamp-text` draws on every page: see [Stamp text](/docs/pdf/stamp-text).
 - `x` and `y` count in points from the bottom-left corner, and `rotation` turns the text around that point. On a Letter page, 612 by 792 points, these values center it.
 - `opacity` keeps the content readable under it.
 
 ## Variations
 
 - Some pages only: add `pages`, such as `"1"`.
-- A logo instead of text: [`stamp-image`](/docs/process/stamps#stamp-an-image).
+- A logo instead of text: [`stamp-image`](/docs/pdf/stamp-image).
 - LibreOffice's own watermark: [`nativeWatermarkText`](/docs/libreoffice/convert#nativeWatermarkText) sizes the text to the page.
 - PDFs you already have: send them to `/forms/pdf/stamp-text` with the same options.

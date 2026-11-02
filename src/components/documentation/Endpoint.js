@@ -76,30 +76,40 @@ export default function Endpoint({ path, op }) {
         ))}
         <span className={card.apiPath}>{wrappablePath(r.path)}</span>
       </div>
-      <div className={card.sectionInput}>
-        {input.length > 0 && (
-          <Section label={multipart ? "Form data" : "Input"}>
+      {multipart && (
+        <div className={card.sectionInput}>
+          <Section label="Form data">
             <Options options={input} anchored className={styles.fields} />
           </Section>
-        )}
-        {r.sections.map(({ label, fields }) => (
-          <Section key={label} label={label}>
-            {fields.length > 0 ? (
-              <Options options={fields} anchored className={styles.fields} />
-            ) : (
-              <NoOptions />
-            )}
-          </Section>
-        ))}
-      </div>
+          {r.sections.map(({ label, fields }) => (
+            <Section key={label} label={label}>
+              {fields.length > 0 ? (
+                <Options options={fields} anchored className={styles.fields} />
+              ) : (
+                <NoOptions />
+              )}
+            </Section>
+          ))}
+        </div>
+      )}
       <div className={card.sectionTechnical}>
         <Section label="Response">
           <p className={styles.response}>{inline(r.response)}</p>
           {multipart && (
             <p className={styles.response}>
-              The route also takes the{" "}
-              <Link to="/docs/reference/headers">headers</Link>, and answers an
-              error with a status and a message: see{" "}
+              {r.read ? (
+                <>
+                  The route answers directly: it ignores{" "}
+                  <code>Gotenberg-Output-Filename</code>, and answers 400 to the{" "}
+                  <Link to="/docs/reference/headers">webhook headers</Link>.
+                </>
+              ) : (
+                <>
+                  The route also takes the{" "}
+                  <Link to="/docs/reference/headers">headers</Link>.
+                </>
+              )}{" "}
+              An error answers a status and a message: see{" "}
               <Link to="/docs/reference/errors">Errors</Link>.
             </p>
           )}

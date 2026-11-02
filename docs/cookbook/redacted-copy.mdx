@@ -43,12 +43,12 @@ Page 1 no longer holds its label, in its pages or in any text a script extracts.
 
 ## How it works
 
-- `redact` removes the content under the region from the file: see [Redact content](/docs/process/redact).
-- `stamp-image` stretches one black pixel over the region, and `stamp-text` marks every page: see [Stamp and watermark PDFs](/docs/process/stamps).
-- `redact` rewrites the whole file, so no earlier revision keeps the removed content. `optimize` then shrinks it: see [Compress PDFs](/docs/process/compress).
+- `redact` removes the content under the region from the file: see [Redact content](/docs/pdf/redact).
+- `stamp-image` stretches one black pixel over the region, and `stamp-text` marks every page: see [`stamp-image`](/docs/pdf/stamp-image) and [`stamp-text`](/docs/pdf/stamp-text).
+- `redact` rewrites the whole file, so no earlier revision keeps the removed content. `optimize` then shrinks it: see [Optimize a PDF](/docs/pdf/optimize).
 
 ## Variations
 
 - Several regions or pages: list more entries in `regions`.
-- Drop whole pages: add a [`delete` stage](/docs/process/pages#remove-pages).
-- The metadata names the author: a [`set-metadata` stage](/docs/process/metadata) overwrites the fields you give, and keeps the others.
+- Drop whole pages: add a [`delete` stage](/docs/pdf/delete).
+- The metadata names the author: a [`set-metadata` stage](/docs/pdf/set-metadata) overwrites the fields you give, and keeps the others.

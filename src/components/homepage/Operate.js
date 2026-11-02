@@ -51,7 +51,7 @@ function Write({ recipeKey, setRecipeKey }) {
             </Radio>
           ))}
         </RadioGroup>
-        <Link className={cx("xb-more")} to="/docs/reference/stages">
+        <Link className={cx("xb-more")} to="/docs/pdf/pipe">
           All 26 stages, in the documentation
           <svg
             className={cx("xb-more__icon")}

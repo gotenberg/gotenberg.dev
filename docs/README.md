@@ -67,8 +67,8 @@ npm run check:examples
 The reference pages render data, so a fact lives in one place:
 
 - `src/data/flags.json`: every flag, generated from Gotenberg's own `--help` by `npm run sync:flags` (`GOTENBERG_IMAGE` picks the image). Don't edit it by hand: fix a description in Gotenberg, then sync. `<ConfigReference module="…">` renders a module's flags on the configuration page.
-- `src/data/stages.json`: every stage, its options and an example, written by hand. `<Stage op="…">` renders one on the stages page.
-- `src/data/routes.json`: every route, written by hand: its `input` fields, whether it takes `stages`, the field `groups` it takes, and its `response`. Then the fields of each group with their defaults (`common` holds the fields every route takes), and the extensions LibreOffice converts. `<RouteTable group="…">` renders a group of routes, and `<Extensions>` the extensions.
+- `src/data/stages.json`: every stage, its options, an example and, when it differs from the default, its `response`, written by hand. `<StageTable>` lists the stages on the pipe page, and `<StageExample op="…">` renders a stage's example as a list of stages, through `docs/pdf/_shared/_as-stage.mdx`.
+- `src/data/routes.json`: every route, written by hand: its `input` fields, whether it takes `stages`, the field `groups` it takes, its `response`, and `read` for a route that answers JSON directly. Then the fields of each group with their defaults (`common` holds the fields every route takes), and the extensions LibreOffice converts. `<RouteTable group="…">` renders a group of routes, and `<Extensions>` the extensions.
 
 `npm run check:api` compares them with Gotenberg: stage and option names with the stage structs of a checkout (`GOTENBERG_SOURCE`, `../gotenberg` by default), route paths, input and field names and extensions with the route code of that checkout, flags with the image's `--help`. Run it, and `npm run check:examples`, before a release.
 

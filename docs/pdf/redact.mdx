@@ -1,9 +1,14 @@
 ---
 id: redact
 title: Redact content
+sidebar_label: Redact
 ---
 
-Remove text and images from a PDF for good, not just hide them. Works on any PDF: a PDF you upload, through the stage's own route or `/forms/pdf/pipe`, and a PDF a Chromium or LibreOffice conversion makes, through its `stages`.
+import AsStage from "./_shared/_as-stage.mdx";
+
+Removes text and images from a PDF for good, not just from view.
+
+<Endpoint op="redact" />
 
 ## Redact a region
 
@@ -49,6 +54,4 @@ Stamp a black box over the region to show where content was. A one-pixel black P
 
 Redact first: a stamp only covers what's under it.
 
-## Next
-
-[Stamp and watermark PDFs](/docs/process/stamps), or [organize the pages](/docs/process/pages) to drop whole pages.
+<AsStage op="redact" />

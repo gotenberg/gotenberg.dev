@@ -1,9 +1,14 @@
 ---
 id: render
 title: Render pages as images
+sidebar_label: Render
 ---
 
-Draw the pages of a PDF as PNG or JPEG images: thumbnails, previews, social cards. Works on any PDF: a PDF you upload, through the stage's own route or `/forms/pdf/pipe`, and a PDF a Chromium or LibreOffice conversion makes, through its `stages`.
+import AsStage from "./_shared/_as-stage.mdx";
+
+Draws the pages of a PDF as PNG or JPEG images: thumbnails, previews, social cards.
+
+<Endpoint op="render" />
 
 ## Render a page
 
@@ -49,21 +54,6 @@ The ZIP holds `report_1.png`, `report_2.png` and `report_3.png`.
   output="report.zip"
 />
 
-Fonts the PDF doesn't embed, such as the stamp's Helvetica, draw with the fonts in Gotenberg's image.
+Fonts the PDF doesn't embed, such as the stamp's Helvetica, draw with the fonts in Gotenberg's image. A conversion renders too: [preview an office document](/docs/libreoffice/convert#add-stages) with its first page. To capture a web page rather than a PDF, [take a screenshot](/docs/chromium/screenshot-url).
 
-## Preview a document
-
-A conversion renders too. This one answers the PDF of a Word document and a thumbnail of its first page:
-
-<Request
-  route="/forms/libreoffice/convert"
-  files={["report.docx"]}
-  stages={[{ op: "render", pages: "1", dpi: 72 }]}
-  output="report.zip"
-/>
-
-The ZIP holds `report.docx.pdf` and `report.docx_1.png`.
-
-## Next
-
-To capture a web page rather than a PDF, [take a screenshot](/docs/chromium/screenshot-url).
+<AsStage op="render" />

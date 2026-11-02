@@ -1,0 +1,17 @@
+---
+id: metadata
+title: Read the metadata
+sidebar_label: Metadata
+---
+
+Reads the title, author and dates a viewer shows.
+
+<Endpoint path="/forms/pdf/metadata" />
+
+<Request
+  route="/forms/pdf/metadata"
+  files={["report.pdf"]}
+  response={{ "report.pdf": { title: "Quarterly report", author: "Finance" } }}
+/>
+
+The answer holds `title`, `author`, `subject`, `keywords`, `creator`, `producer`, `creationDate` and `modDate`, each when set. A PDF without metadata answers `{}`. The names are the ones [`set-metadata`](/docs/pdf/set-metadata) takes, so the answer feeds straight back into it.

@@ -91,7 +91,7 @@ The Chromium conversion routes, the LibreOffice route and `/forms/pdf/pipe` take
 
 A stage names the files it needs, such as an image to stamp or an XML to attach, by their uploaded names. Upload them under `files`: the `embeds`, `watermark`, `stamp` and `facturxXml` fields are gone.
 
-Gotenberg checks the order of the stages before it runs them, and answers 400 when a list breaks one of the [order rules](/docs/reference/stages#order-rules).
+Gotenberg checks the order of the stages before it runs them, and answers 400 when a list breaks one of the [order rules](/docs/pdf/pipe#order-rules).
 
 Gotenberg 8 converted to PDF/A again after its other steps. Gotenberg 9 doesn't: LibreOffice's `nativePdfa` applies at export, and the stages after it may break conformance. End the list with a `remediate` stage instead.
 
@@ -137,7 +137,7 @@ Some Gotenberg 8 options have no field of their own in Gotenberg 9:
 - **Lower image quality on a PDF.** `optimize` keeps the quality of every image. Lower it where the PDF is made instead: LibreOffice's `nativeQuality` and `nativeReduceImageResolution`, or smaller images in the HTML you send Chromium.
 - **Merge bookmark options** (`bookmarks`, `autoIndexBookmarks`, `titleBookmarks`). `merge` keeps the bookmarks of each PDF and points them at the merged pages. For a bookmark per file, add a `set-bookmarks` stage after `merge`.
 - **Stamp anchors, relative sizes, page numbers and fonts.** A stamp takes a position in points from the bottom-left corner, one of the 14 standard PDF fonts, and draws over the page. Number pages with a Chromium [footer](/docs/chromium/convert-html#add-a-header-and-a-footer).
-- **Embed a downloaded file** (`downloadFrom[].embedded`). Name it in an [`attach`](/docs/process/attachments) stage, by the name its server's `Content-Disposition` header gives.
+- **Embed a downloaded file** (`downloadFrom[].embedded`). Name it in an [`attach`](/docs/pdf/attach) stage, by the name its server's `Content-Disposition` header gives.
 
 ## Metadata and bookmarks
 

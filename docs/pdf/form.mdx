@@ -1,0 +1,73 @@
+---
+id: form
+title: List the form fields
+sidebar_label: Form
+---
+
+Lists a form's fields, with the values each takes, in the shape `set-form` fills.
+
+<Endpoint path="/forms/pdf/form" />
+
+## List the fields
+
+<Request
+  route="/forms/pdf/form"
+  files={["fields.pdf"]}
+  response={{
+    "fields.pdf": [
+      {
+        name: "agree",
+        type: "checkbox",
+        value: "Off",
+        pages: [1],
+        states: ["Yes"],
+      },
+      {
+        name: "color",
+        type: "combo",
+        value: "Red",
+        pages: [1],
+        options: ["Red", "Green"],
+      },
+    ],
+  }}
+/>
+
+Each field comes with its fully qualified `name`, its `type` (`text`, `checkbox`, `radio`, `button`, `combo`, `list` or `signature`), its `value`, and the `pages` it sits on:
+
+- `states` lists what a checkbox or a radio group takes besides `Off`.
+- `options` lists what a choice field takes.
+- A list that selects several has an array `value`.
+- `readOnly`, `required`, `multiSelect`, `editable` and `maxLength` show when they apply.
+
+A PDF without a form answers `[]`. [`set-form`](/docs/pdf/set-form) takes the names and the values as listed.
+
+## List the fields of some pages
+
+`pages` keeps the fields on those pages, as a [page selection](/docs/pdf/pipe#page-selections):
+
+<Request
+  route="/forms/pdf/form"
+  files={["multi.pdf"]}
+  fields={{ pages: "2" }}
+  response={{
+    "multi.pdf": [
+      {
+        name: "total",
+        type: "text",
+        value: "42",
+        pages: [1, 2],
+        readOnly: true,
+      },
+      {
+        name: "size",
+        type: "radio",
+        value: "Off",
+        pages: [2],
+        states: ["S", "M", "L"],
+        required: true,
+      },
+      { name: "sig", type: "signature", value: "", pages: [2] },
+    ],
+  }}
+/>

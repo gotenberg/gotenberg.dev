@@ -1,0 +1,33 @@
+---
+id: flatten-form
+title: Flatten a form
+sidebar_label: Flatten form
+---
+
+import AsStage from "./_shared/_as-stage.mdx";
+
+Burns the form fields into the pages, which can then no longer be edited.
+
+<Endpoint op="flatten-form" />
+
+<Request
+  route="/forms/pdf/flatten-form"
+  files={["form.pdf"]}
+  output="form.pdf"
+/>
+
+The values become part of the page. No reader can change them, and [`/forms/pdf/info`](/docs/pdf/info) answers `"formFields": false`.
+
+## Fill, then flatten
+
+<Request
+  route="/forms/pdf/pipe"
+  files={["form.pdf"]}
+  stages={[
+    { op: "set-form", fields: { name: "Ada Lovelace" } },
+    { op: "flatten-form" },
+  ]}
+  output="form.pdf"
+/>
+
+<AsStage op="flatten-form" />

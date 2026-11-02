@@ -1,0 +1,25 @@
+---
+id: stamp-image
+title: Stamp an image
+sidebar_label: Stamp image
+---
+
+import AsStage from "./_shared/_as-stage.mdx";
+import Place from "./_shared/_place.mdx";
+
+Draws an uploaded PNG or JPEG image over pages: a logo, a signature, a seal.
+
+<Endpoint op="stamp-image" />
+
+<Place />
+
+<Request
+  route="/forms/pdf/stamp-image"
+  files={["report.pdf", "logo.png"]}
+  fields={{ image: "logo.png", x: 374, y: 24, width: 48, pages: "1" }}
+  output="report.pdf"
+/>
+
+Set `width` or `height` and Gotenberg keeps the image's proportions. The image is a PNG or a JPEG.
+
+<AsStage op="stamp-image" />

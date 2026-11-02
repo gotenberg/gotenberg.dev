@@ -1,0 +1,25 @@
+---
+id: attachments
+title: List the attachments
+sidebar_label: Attachments
+---
+
+Lists the files embedded in a PDF.
+
+<Endpoint path="/forms/pdf/attachments" />
+
+<Request
+  route="/forms/pdf/attachments"
+  files={["invoice.pdf"]}
+  response={{
+    "invoice.pdf": [
+      {
+        name: "factur-x.xml",
+        mimeType: "text/xml",
+        relationship: "Alternative",
+      },
+    ],
+  }}
+/>
+
+Each file comes with its name, its media type, and its relationship to the document. [`attach`](/docs/pdf/attach) embeds files, and [`detach`](/docs/pdf/detach) removes one by the name listed here.
