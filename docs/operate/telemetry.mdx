@@ -77,24 +77,26 @@ services:
       OTEL_EXPORTER_PROMETHEUS_HOST: 0.0.0.0
 ```
 
-Scrape `http://gotenberg:9464/metrics`.
+Scrape `http://gotenberg:9464/metrics`. The exporter turns dots into underscores, in names and attributes, and ends a name with its unit or `_total`: `gotenberg.chromium.requests` becomes `gotenberg_chromium_requests_total`, and `gotenberg.chromium.conversion.duration` becomes `gotenberg_chromium_conversion_duration_seconds`.
 
 ## Metrics
 
-Each engine, `chromium` and `libreoffice`, reports the same set, as Prometheus names them:
+Each engine, `chromium` and `libreoffice`, reports the same set:
 
-| Metric                                 | Type      | What                         |
-| :------------------------------------- | :-------- | :--------------------------- |
-| `<engine>_requests_total`              | counter   | Requests the engine handled. |
-| `<engine>_errors_total`                | counter   | Requests that failed.        |
-| `<engine>_requests_active`             | gauge     | Requests running now.        |
-| `<engine>_requests_queue_size`         | gauge     | Requests waiting.            |
-| `<engine>_queue_wait_duration_seconds` | histogram | Time spent in the queue.     |
-| `<engine>_conversion_duration_seconds` | histogram | Time spent converting.       |
-| `<engine>_process_restarts_total`      | counter   | Engine restarts.             |
-| `<engine>_pdf_output_size_bytes`       | histogram | Size of the PDFs it made.    |
+| Metric                                   | Type      | What                                 |
+| :--------------------------------------- | :-------- | :----------------------------------- |
+| `gotenberg.<engine>.requests`            | counter   | Requests the engine handled.         |
+| `gotenberg.<engine>.errors`              | counter   | Requests that failed.                |
+| `gotenberg.<engine>.request.active`      | gauge     | Requests running now.                |
+| `gotenberg.<engine>.queue.size`          | gauge     | Requests waiting.                    |
+| `gotenberg.<engine>.queue.wait.duration` | histogram | Time spent in the queue, in seconds. |
+| `gotenberg.<engine>.conversion.duration` | histogram | Time spent converting, in seconds.   |
+| `gotenberg.<engine>.process.restarts`    | counter   | Engine restarts.                     |
+| `gotenberg.<engine>.pdf.output.size`     | histogram | Size of the PDFs it made, in bytes.  |
 
-Chromium adds `chromium_image_output_size_bytes`, `chromium_network_requests_total` and `chromium_network_bytes`, and LibreOffice `libreoffice_conversion_retries_total`. The HTTP server reports `http_server_request_duration_seconds` and the sizes of requests and answers.
+`gotenberg.conversion.status` splits the requests and durations into `success`, `error`, `timeout` and `canceled`. `error.type` splits the errors, and `_OTHER` marks an error Gotenberg doesn't classify.
+
+Chromium adds `gotenberg.chromium.image.output.size`, `gotenberg.chromium.network.requests` and `gotenberg.chromium.network.response.size`, and LibreOffice `gotenberg.libreoffice.conversion.retries`. The HTTP server reports the standard `http.server.request.duration`, `http.server.request.body.size` and `http.server.response.body.size`.
 
 ## Next
 

@@ -194,8 +194,36 @@ docker run --rm -p "3000:3000" -p "9464:9464" \
   gotenberg/gotenberg:9
 ```
 
-Prometheus then scrapes `http://localhost:9464/metrics`. The metric names lose their `gotenberg_` prefix: `gotenberg_chromium_requests_queue_size` becomes `chromium_requests_queue_size`.
+Prometheus then scrapes `http://localhost:9464/metrics`. The module's metrics change names:
+
+| 8.x                                      | 9.x                                                    |
+| :--------------------------------------- | :----------------------------------------------------- |
+| `gotenberg_<engine>_requests_queue_size` | `gotenberg_<engine>_queue_size`                        |
+| `gotenberg_<engine>_restarts_count`      | `gotenberg_<engine>_process_restarts_total`, a counter |
+
+The OpenTelemetry names follow the [OpenTelemetry naming rules](https://opentelemetry.io/docs/specs/semconv/general/naming/). They start with `gotenberg.` and drop `.total`: `chromium.requests.total` becomes `gotenberg.chromium.requests`. Some names change further, and so do attributes and events:
+
+| 8.x                                                | 9.x                                                                                             |
+| :------------------------------------------------- | :---------------------------------------------------------------------------------------------- |
+| `<engine>.requests.active`                         | `gotenberg.<engine>.request.active`                                                             |
+| `<engine>.requests.queue_size`                     | `gotenberg.<engine>.queue.size`                                                                 |
+| `chromium.network.bytes`                           | `gotenberg.chromium.network.response.size`                                                      |
+| `status`                                           | `gotenberg.conversion.status`                                                                   |
+| `reason`, `unknown` value                          | `error.type`, `_OTHER` value                                                                    |
+| `outcome`                                          | `gotenberg.chromium.network.request.outcome`                                                    |
+| `gotenberg.conversion.input.bytes`                 | `gotenberg.conversion.input.size`                                                               |
+| `gotenberg.conversion.input.html.bytes`            | `gotenberg.conversion.input.html.size`                                                          |
+| `gotenberg.conversion.input.files.count`           | `gotenberg.conversion.input.file.count`                                                         |
+| `gotenberg.conversion.output.bytes`                | `gotenberg.conversion.output.size`                                                              |
+| `gotenberg.chromium.resources.count`               | `gotenberg.chromium.network.request.count`                                                      |
+| `gotenberg.chromium.resources.failed_count`        | `gotenberg.chromium.network.request.failed.count`                                               |
+| `gotenberg.chromium.resources.bytes_total`         | `gotenberg.chromium.network.response.size`                                                      |
+| `gotenberg.chromium.resources.unique_origins`      | `gotenberg.chromium.network.origin.count`                                                       |
+| `chromium.heaviest_resource` event: `url`, `bytes` | `gotenberg.chromium.heaviest_resource`: `url.full`, `gotenberg.chromium.heaviest_resource.size` |
+| `conversion.retry` event: `attempt`                | `gotenberg.conversion.retry`: `gotenberg.conversion.retry.attempt`                              |
+
+The server span drops its `error` attribute: the error message is the span's status description. Webhook and download spans set `server.address` to the host, and `url.full` to the URL without its credentials, query and fragment.
 
 ## Custom builds
 
-A Go program that builds its own Gotenberg imports `github.com/gotenberg/gotenberg/v9`. The `PdfEngine`, `PdfEngineProvider` and `MetricsProvider` interfaces are gone.
+A Go program that builds its own Gotenberg imports `github.com/gotenberg/gotenberg/v9`. The `PdfEngine`, `PdfEngineProvider` and `MetricsProvider` interfaces are gone. `ErrorTypeUnknown` is now `ErrorTypeOther`.
