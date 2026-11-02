@@ -106,15 +106,16 @@ module.exports = {
         src: "img/logo.png",
       },
       items: [
+        // Plain links: a doc item is active on every page of its sidebar, so
+        // Help, which sits in the docs sidebar, would light up everywhere.
         {
-          type: "doc",
+          to: "/docs",
           label: "Documentation",
-          docId: "index",
+          activeBaseRegex: "^/docs(?!/help$)",
         },
         {
-          type: "doc",
+          to: "/docs/help",
           label: "Help",
-          docId: "help",
         },
         {
           href: "https://github.com/gotenberg/gotenberg",
