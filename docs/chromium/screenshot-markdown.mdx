@@ -1,0 +1,32 @@
+---
+id: screenshot-markdown
+title: Screenshot Markdown
+sidebar_label: Screenshot Markdown
+---
+
+import Screenshot from "./_shared/_screenshot.mdx";
+import Wait from "./_shared/_wait.mdx";
+
+Captures Markdown files, laid out by your own HTML page, as a PNG, JPEG or WebP image.
+
+<Endpoint path="/forms/chromium/screenshot/markdown" />
+
+## Capture the page
+
+Upload an `index.html` that places each Markdown file with `{{ toHTML "<name>" }}`, the Markdown files and the page's assets, as on [the Markdown conversion](/docs/chromium/convert-markdown):
+
+<Request
+  route="/forms/chromium/screenshot/markdown"
+  dir="markdown"
+  files={["index.html", "notes.md", "style.css"]}
+  output="notes.png"
+/>
+
+<Screenshot
+  route="/forms/chromium/screenshot/markdown"
+  dir="markdown"
+  files={["index.html", "notes.md", "style.css"]}
+  name="notes"
+/>
+
+<Wait kind="screenshot" />

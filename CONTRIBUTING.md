@@ -96,5 +96,5 @@ Stage specific files. Never `git add -A` or `git add .`.
 
 ## Scoped guidelines
 
-- [Documentation content](docs/README.md): page structure, ApiEndpoint component, shared partials, sidebar, versioning.
+- [Documentation content](docs/README.md): page structure, Endpoint component, shared partials, sidebar, versioning.
 - [Site design and components](src/README.md): design system, component architecture, CSS conventions, responsive design.

@@ -1,0 +1,56 @@
+## Log in
+
+Send the cookies a session needs. Each takes a `name`, a `value` and a `domain`:
+
+<Request
+  route={props.route}
+  fields={{
+    url: "https://example.com",
+    cookies: [{ name: "session", value: "abc123", domain: "example.com" }],
+  }}
+  output={props.output}
+/>
+
+Or send a header, such as a token. End its value with `;scope=` and a regex, and Chromium sends it only to the URLs the regex matches, not to the third-party scripts the page loads:
+
+<Request
+  route={props.route}
+  fields={{
+    url: "https://example.com",
+    extraHttpHeaders: {
+      Authorization: "Bearer abc123;scope=https://example\\.com/.*",
+    },
+  }}
+  output={props.output}
+/>
+
+The value holds a `;`, so cURL sends it with `--form-string`: `--form` would cut it there. `userAgent` replaces Chromium's `User-Agent` header, for sites that answer bots differently.
+
+## Fail on errors
+
+A page that answers a 4xx or 5xx status fails the request with `409 Conflict`, rather than {props.route.includes("screenshot") ? "capturing" : "printing"} the error page. After a redirect, the status of the page it lands on counts:
+
+<Request
+  route={props.route}
+  fields={{ url: "https://example.com/missing" }}
+  output={props.output}
+  status={409}
+/>
+
+`failOnHttpStatusCodes` changes the statuses. The resources the page loads, failed loads and the console can fail the request too:
+
+<Request
+  route={props.route}
+  fields={{
+    url: "https://example.com",
+    failOnResourceHttpStatusCodes: [499, 599],
+    failOnConsoleExceptions: true,
+  }}
+  output={props.output}
+/>
+
+`499` stands for every status from 400 to 499, and `599` for 500 to 599.
+
+## Reach private addresses
+
+Chromium reaches any address Gotenberg's network reaches, private ones included, such as `http://intranet.local/report`. Operators restrict it with [`--chromium-deny-private-ips`](/docs/configuration#chromium-deny-private-ips), [`--chromium-allow-list`](/docs/configuration#chromium-allow-list) and [`--chromium-deny-list`](/docs/configuration#chromium-deny-list): see [Restrict outbound requests](/docs/operate/outbound). A blocked URL answers 403.

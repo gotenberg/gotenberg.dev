@@ -1,0 +1,17 @@
+## Add stages
+
+Stages run on the PDF Chromium prints, in order, before Gotenberg answers. List them in `stages`, each naming its operation in `op`, with its options beside it:
+
+<Request
+  route={props.route}
+  dir={props.dir}
+  files={props.files}
+  fields={props.fields}
+  stages={[
+    { op: "stamp-text", text: "DRAFT", x: 72, y: 72 },
+    { op: "optimize" },
+  ]}
+  output={props.output}
+/>
+
+Every stage works here: merge, stamp, redact, sign, make PDF/A, and so on. A stage that names a file, such as an image to stamp, takes it from the files you upload. [Stages](/docs/reference/stages) lists them all.

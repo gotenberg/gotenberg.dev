@@ -1,0 +1,105 @@
+---
+id: convert-markdown
+title: Convert Markdown to PDF
+sidebar_label: Convert Markdown
+---
+
+import Wait from "./_shared/_wait.mdx";
+import PageSize from "./_shared/_page-size.mdx";
+import HeadersFooters from "./_shared/_headers-footers.mdx";
+import Print from "./_shared/_print.mdx";
+import Structure from "./_shared/_structure.mdx";
+import Stages from "./_shared/_stages.mdx";
+
+Prints Markdown files with the layout and styles of your own HTML page.
+
+<Endpoint path="/forms/chromium/convert/markdown" />
+
+## Write the page
+
+An `index.html` places each Markdown file with `{{ toHTML "<name>" }}`:
+
+```html title="index.html"
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Release notes</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    {{ toHTML "notes.md" }}
+  </body>
+</html>
+```
+
+Call `toHTML` once per file, anywhere in the page.
+
+## Send it
+
+Upload the page, the Markdown files and the page's assets:
+
+<Request
+  route="/forms/chromium/convert/markdown"
+  dir="markdown"
+  files={["index.html", "notes.md", "style.css"]}
+  output="notes.pdf"
+/>
+
+Gotenberg turns each Markdown file into HTML in place, then Chromium prints the page as on [the HTML route](/docs/chromium/convert-html). A file the page names but the request lacks answers 400.
+
+## What Markdown supports
+
+Besides the usual syntax, Markdown files take tables, fenced code blocks, strikethrough, definition lists and bare links:
+
+```markdown title="notes.md"
+# Release notes
+
+Gotenberg converts **Markdown** too:
+
+- Chromium renders it.
+- Your `index.html` styles it.
+
+| Version | Date       |
+| ------- | ---------- |
+| 9.0.0   | 2026-11-01 |
+```
+
+Gotenberg sanitizes the HTML each file gives: a `<script>` in the Markdown doesn't reach the page. Scripts in `index.html` itself run.
+
+<Wait kind="convert" />
+
+<PageSize
+  route="/forms/chromium/convert/markdown"
+  dir="markdown"
+  files={["index.html", "notes.md", "style.css"]}
+  output="notes.pdf"
+/>
+
+<HeadersFooters
+  route="/forms/chromium/convert/markdown"
+  dir="markdown"
+  files={["index.html", "notes.md", "style.css"]}
+  output="notes.pdf"
+/>
+
+<Print
+  route="/forms/chromium/convert/markdown"
+  dir="markdown"
+  files={["index.html", "notes.md", "style.css"]}
+  output="notes.pdf"
+/>
+
+<Structure
+  route="/forms/chromium/convert/markdown"
+  dir="markdown"
+  files={["index.html", "notes.md", "style.css"]}
+  output="notes.pdf"
+/>
+
+<Stages
+  route="/forms/chromium/convert/markdown"
+  dir="markdown"
+  files={["index.html", "notes.md", "style.css"]}
+  output="notes.pdf"
+/>

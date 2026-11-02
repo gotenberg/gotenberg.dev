@@ -13,7 +13,8 @@
           }
         ],
         "output": "merged.pdf"
-      }
+      },
+      "response": "One PDF."
     },
     {
       "op": "split",
@@ -39,7 +40,8 @@
           }
         ],
         "output": "report.zip"
-      }
+      },
+      "response": "A ZIP of the parts."
     },
     {
       "op": "select",
@@ -895,7 +897,8 @@
           }
         ],
         "output": "report.zip"
-      }
+      },
+      "response": "The image, or a ZIP of the images when there are several."
     }
   ]
 }

@@ -1,0 +1,61 @@
+---
+id: convert-url
+title: Convert a URL to PDF
+sidebar_label: Convert URL
+---
+
+import Url from "./_shared/_url.mdx";
+import Wait from "./_shared/_wait.mdx";
+import PageSize from "./_shared/_page-size.mdx";
+import HeadersFooters from "./_shared/_headers-footers.mdx";
+import Print from "./_shared/_print.mdx";
+import Structure from "./_shared/_structure.mdx";
+import Stages from "./_shared/_stages.mdx";
+
+Prints any page Chromium can reach, as a browser would.
+
+<Endpoint path="/forms/chromium/convert/url" />
+
+## Send the URL
+
+<Request
+  route="/forms/chromium/convert/url"
+  fields={{ url: "https://example.com" }}
+  output="example.pdf"
+/>
+
+The URL starts with `http://` or `https://`. A `file://` URL answers 400: upload the HTML to [the HTML route](/docs/chromium/convert-html) instead.
+
+<Url route="/forms/chromium/convert/url" output="example.pdf" />
+
+<Wait kind="convert" />
+
+<PageSize
+  route="/forms/chromium/convert/url"
+  fields={{ url: "https://example.com" }}
+  output="example.pdf"
+/>
+
+<HeadersFooters
+  route="/forms/chromium/convert/url"
+  fields={{ url: "https://example.com" }}
+  output="example.pdf"
+/>
+
+<Print
+  route="/forms/chromium/convert/url"
+  fields={{ url: "https://example.com" }}
+  output="example.pdf"
+/>
+
+<Structure
+  route="/forms/chromium/convert/url"
+  fields={{ url: "https://example.com" }}
+  output="example.pdf"
+/>
+
+<Stages
+  route="/forms/chromium/convert/url"
+  fields={{ url: "https://example.com" }}
+  output="example.pdf"
+/>

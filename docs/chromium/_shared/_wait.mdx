@@ -1,11 +1,6 @@
----
-id: wait
-title: Wait for the page
----
+## Wait for the page
 
-Print a page once its scripts have drawn it: charts, tables filled from an API, content that loads late. Works on every Chromium route: the URL, HTML and Markdown conversions and screenshots.
-
-Chromium prints as soon as the page loads. This chart draws a second later:
+Scripts run, unless the operator turned them off with [`--chromium-disable-javascript`](/docs/configuration#chromium-disable-javascript). Chromium {props.kind === "convert" ? "prints" : "captures"} the page as soon as it loads, though. A page that draws later with JavaScript, such as a chart or a table filled from an API, needs a wait. The examples upload this page, whose chart draws a second after it loads, to the HTML route; the fields work the same on every Chromium route:
 
 ```html title="index.html"
 <!doctype html>
@@ -31,87 +26,83 @@ Chromium prints as soon as the page loads. This chart draws a second later:
 </html>
 ```
 
-So the PDF reads "Loading…":
+Without a wait, the result reads "Loading…":
 
 <Request
-  route="/forms/chromium/convert/html"
+  route={`/forms/chromium/${props.kind}/html`}
   dir="wait"
   files={["index.html"]}
-  output="report.pdf"
+  output={props.kind === "convert" ? "report.pdf" : "report.png"}
 />
 
 Each wait below gets "Revenue: 42,000 EUR" instead.
 
-## Wait for an element
+### Wait for an element
 
 Chromium waits until an element matching the CSS selector is visible:
 
 <Request
-  route="/forms/chromium/convert/html"
+  route={`/forms/chromium/${props.kind}/html`}
   dir="wait"
   files={["index.html"]}
   fields={{ waitForSelector: "#chart.ready" }}
-  output="report.pdf"
+  output={props.kind === "convert" ? "report.pdf" : "report.png"}
 />
 
 Mark the page ready from your own code, and wait for the mark. It's the most precise signal.
 
-## Wait for an expression
+### Wait for an expression
 
 Chromium evaluates the JavaScript expression until it returns true:
 
 <Request
-  route="/forms/chromium/convert/html"
+  route={`/forms/chromium/${props.kind}/html`}
   dir="wait"
   files={["index.html"]}
   fields={{ waitForExpression: "window.chartReady === true" }}
-  output="report.pdf"
+  output={props.kind === "convert" ? "report.pdf" : "report.png"}
 />
 
 An expression that throws, such as one that reads a property of `undefined`, answers 400.
 
-## Wait for the window status
+### Wait for the window status
 
 Chromium waits until `window.status` equals the value:
 
 <Request
-  route="/forms/chromium/convert/html"
+  route={`/forms/chromium/${props.kind}/html`}
   dir="wait"
   files={["index.html"]}
   fields={{ waitForWindowStatus: "ready" }}
-  output="report.pdf"
+  output={props.kind === "convert" ? "report.pdf" : "report.png"}
 />
 
-## Wait a fixed delay
+### Wait a fixed delay
 
 <Request
-  route="/forms/chromium/convert/html"
+  route={`/forms/chromium/${props.kind}/html`}
   dir="wait"
   files={["index.html"]}
   fields={{ waitDelay: "2s" }}
-  output="report.pdf"
+  output={props.kind === "convert" ? "report.pdf" : "report.png"}
 />
 
 A delay is the last resort. Too short, the chart is missing. Too long, every request pays for it.
 
-## Wait for the network
+### Wait for the network
 
 `skipNetworkIdleEvent=false` waits until the page stops making requests, for pages that fetch their content once they load:
 
 <Request
-  route="/forms/chromium/convert/url"
+  route={`/forms/chromium/${props.kind}/url`}
   fields={{ url: "https://example.com", skipNetworkIdleEvent: false }}
-  output="example.pdf"
+  output={props.kind === "convert" ? "example.pdf" : "example.png"}
 />
 
-## Order and limits
+### Order and limits
 
 Chromium waits for the page to load, then for `waitForWindowStatus`, `waitForExpression`, `waitForSelector` and `waitDelay`, in that order. Every wait counts against [`--api-timeout`](/docs/configuration#api-timeout), 30 seconds by default. A wait that never ends answers `503 Service Unavailable` then, and names itself:
 
 ```text
 The selector '#never' (waitForSelector) did not become visible within the time limit. Increase it with --api-timeout (API_TIMEOUT), or check the selector.
 ```
-
-## Next
-
-[Add headers and footers](/docs/convert/headers-footers) to the printed pages.

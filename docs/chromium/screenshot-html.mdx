@@ -1,0 +1,30 @@
+---
+id: screenshot-html
+title: Screenshot HTML
+sidebar_label: Screenshot HTML
+---
+
+import Screenshot from "./_shared/_screenshot.mdx";
+import Wait from "./_shared/_wait.mdx";
+
+Captures your own HTML, CSS and images as a PNG, JPEG or WebP image.
+
+<Endpoint path="/forms/chromium/screenshot/html" />
+
+## Capture the page
+
+Upload the page as `index.html`, with every file it uses, as on [the HTML conversion](/docs/chromium/convert-html):
+
+<Request
+  route="/forms/chromium/screenshot/html"
+  files={["index.html", "style.css"]}
+  output="invoice.png"
+/>
+
+<Screenshot
+  route="/forms/chromium/screenshot/html"
+  files={["index.html", "style.css"]}
+  name="invoice"
+/>
+
+<Wait kind="screenshot" />

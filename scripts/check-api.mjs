@@ -130,6 +130,39 @@ for (const [group, want] of [
   compare(`fields ${group}`, want, got);
 }
 
+// Inputs: each field a route's card lists, beyond files and stages, is one
+// its handler reads. A read route also reads readRoute's password.
+const pdfGo = modules("pdf/routes.go");
+const handlers = [chromium, libreoffice, pdfGo].flatMap((go) =>
+  [...go.matchAll(/\nfunc (\w+)\([^]*?\n\}\n/g)].map((m) => ({
+    go,
+    fn: m[1],
+    body: m[0],
+  })),
+);
+for (const r of routes.routes) {
+  const names = (r.input ?? [])
+    .map((f) => f.name)
+    .filter((name) => name !== "files" && name !== "stages");
+  if (!names.length) continue;
+  const marker = new RegExp(
+    `Path:\\s+"${r.path}"|readRoute\\(processor, "${r.path.split("/").pop()}"`,
+  );
+  const handler = handlers.find((h) => marker.test(h.body));
+  if (!handler) {
+    problems.push(`input ${r.path}: no handler in Gotenberg`);
+    continue;
+  }
+  const read = bound(handler.go, handler.fn);
+  if (handler.go === pdfGo) {
+    bound(pdfGo, "readRoute").forEach((name) => read.add(name));
+  }
+  const missing = names.filter((name) => !read.has(name));
+  if (missing.length) {
+    problems.push(`input ${r.path}: not in Gotenberg ${missing.join(", ")}`);
+  }
+}
+
 // Extensions: what LibreOffice accepts.
 const extensions = modules("libreoffice/api/api.go").match(
   /func \(a \*Api\) Extensions\(\) \[\]string \{([^]*?)\n\}/,

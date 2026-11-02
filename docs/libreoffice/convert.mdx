@@ -1,0 +1,171 @@
+---
+id: convert
+title: Convert office documents to PDF
+sidebar_label: Convert to PDF
+---
+
+import Extensions from "@site/src/components/documentation/Extensions";
+
+Converts Word, Excel, PowerPoint and OpenDocument files, and over a hundred other formats, to PDF with LibreOffice.
+
+<Endpoint path="/forms/libreoffice/convert" />
+
+## Convert a document
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["report.docx"]}
+  output="report.pdf"
+/>
+
+The PDF takes the document's name, `report.docx.pdf`, unless the `Gotenberg-Output-Filename` header names it. [Formats](#formats) lists every format.
+
+## Convert several
+
+Upload several documents to get one PDF each, in a ZIP:
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["report.docx", "annex.docx"]}
+  output="documents.zip"
+/>
+
+## Merge them
+
+Add a `merge` stage for one PDF instead:
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["report.docx", "annex.docx"]}
+  stages={[{ op: "merge" }]}
+  output="documents.pdf"
+/>
+
+The documents merge in the alphanumeric order of their names, so `annex.docx` comes first. Name them `1-report.docx` and `2-annex.docx` to pick the order.
+
+## Open a protected document
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["protected.docx"]}
+  fields={{ password: "secret" }}
+  output="report.pdf"
+/>
+
+Without the password, or with a wrong one, Gotenberg answers 400 and says which.
+
+## Set the page size
+
+LibreOffice takes the `paperSize`, `paperWidth`, `paperHeight` and `landscape` fields of the Chromium routes:
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["report.docx"]}
+  fields={{ paperSize: "A4" }}
+  output="report.pdf"
+/>
+
+Without them, each document keeps the page size it defines. Without `paperSize`, set both `paperWidth` and `paperHeight`, or neither. The margins, headers and footers come from the document.
+
+## Fit a spreadsheet on one page
+
+A spreadsheet spreads over as many pages as its print settings ask. `sales.csv` gives three. `singlePage` puts each sheet on one page:
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["sales.csv"]}
+  fields={{ singlePage: true }}
+  output="sales.pdf"
+/>
+
+## Make it archival
+
+LibreOffice writes PDF/A itself with `nativePdfa`:
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["report.docx"]}
+  fields={{ nativePdfa: "PDF/A-2b" }}
+  output="report.pdf"
+/>
+
+The `remediate` stage does the same after the conversion, on any route and for every PDF/A level, and reports what it couldn't fix:
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["report.docx"]}
+  stages={[{ op: "remediate", profile: "PDF/A-2b" }]}
+  output="report.pdf"
+  response={`HTTP/1.1 200 OK
+Content-Type: application/pdf
+Gotenberg-Remediation-Residual: 0
+Gotenberg-Remediation-Rolled-Back: 0`}
+/>
+
+Both PDFs pass Gotenberg's own PDF/A-2b [validation](/docs/reference/pdf#validate). Nothing checks `nativePdfa`'s output, though, and a stage after it, such as `stamp-text`, can break its conformance. `remediate` comes after the other stages and reports what's left.
+
+## Fill forms
+
+LibreOffice exports a document's form fields as fields a reader can fill, unless [`exportFormFields`](#exportFormFields) is `false`. Add the [`set-form` stage](/docs/reference/stages#set-form) to fill them in the same request.
+
+## Native fields or stages
+
+A field whose name starts with `native` asks LibreOffice itself. A stage does the same job on the PDF afterwards, the same way for every route: `nativeWatermarkText` has `stamp-text`, `nativePdfa` has `remediate`.
+
+## Add stages
+
+Stages run on the PDFs LibreOffice makes, in order, before Gotenberg answers. A stamp, for example:
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["report.docx"]}
+  stages={[
+    {
+      op: "stamp-text",
+      text: "DRAFT",
+      x: 200,
+      y: 400,
+      fontSize: 48,
+      opacity: 0.3,
+      rotation: 45,
+    },
+  ]}
+  output="report.pdf"
+/>
+
+Or the document's metadata:
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["report.docx"]}
+  stages={[{ op: "set-metadata", title: "Annual report", author: "Finance" }]}
+  output="report.pdf"
+/>
+
+Encryption comes last: only `optimize` and `render` may follow it.
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["report.docx"]}
+  stages={[{ op: "encrypt", userPassword: "secret" }]}
+  output="report.pdf"
+/>
+
+A PDF/A or Factur-X can't be encrypted, and an encrypted PDF can't be signed: the [order rules](/docs/reference/stages#order-rules) answer 400 first.
+
+`render` previews the document. This request answers the PDF and a thumbnail of its first page:
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["report.docx"]}
+  stages={[{ op: "render", pages: "1", dpi: 72 }]}
+  output="report.zip"
+/>
+
+The ZIP holds `report.docx.pdf` and `report.docx_1.png`. [Stages](/docs/reference/stages) lists every stage.
+
+## Formats
+
+LibreOffice converts the files with these extensions, and skips the others. A request with none answers 400.
+
+<Extensions />

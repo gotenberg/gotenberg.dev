@@ -6,56 +6,145 @@
       "method": "POST",
       "path": "/forms/chromium/convert/url",
       "summary": "Prints a web page to PDF.",
-      "to": "/docs/reference/chromium#convert-a-url"
+      "to": "/docs/chromium/convert-url",
+      "input": [
+        {
+          "name": "url",
+          "type": "string",
+          "required": true,
+          "description": "The page to load. It starts with `http://` or `https://`."
+        }
+      ],
+      "stages": true,
+      "groups": ["chromium", "chromium-pdf"],
+      "response": "The PDF. A stage that makes several files, such as `split`, answers a ZIP."
     },
     {
       "group": "chromium",
       "method": "POST",
       "path": "/forms/chromium/convert/html",
       "summary": "Prints an HTML file, with the assets beside it, to PDF.",
-      "to": "/docs/reference/chromium#convert-html"
+      "to": "/docs/chromium/convert-html",
+      "input": [
+        {
+          "name": "files",
+          "type": "file[]",
+          "required": true,
+          "description": "`index.html`, and the files it loads: style sheets, images, fonts, scripts. Link each by its name alone, such as `style.css`."
+        }
+      ],
+      "stages": true,
+      "groups": ["chromium", "chromium-pdf"],
+      "response": "The PDF. A stage that makes several files, such as `split`, answers a ZIP."
     },
     {
       "group": "chromium",
       "method": "POST",
       "path": "/forms/chromium/convert/markdown",
       "summary": "Prints Markdown files, laid out by an HTML template, to PDF.",
-      "to": "/docs/reference/chromium#convert-markdown"
+      "to": "/docs/chromium/convert-markdown",
+      "input": [
+        {
+          "name": "files",
+          "type": "file[]",
+          "required": true,
+          "description": "`index.html`, the Markdown files it places with `{{ toHTML \"notes.md\" }}`, and the files the page loads."
+        }
+      ],
+      "stages": true,
+      "groups": ["chromium", "chromium-pdf"],
+      "response": "The PDF. A stage that makes several files, such as `split`, answers a ZIP."
     },
     {
       "group": "chromium",
       "method": "POST",
       "path": "/forms/chromium/screenshot/url",
       "summary": "Captures a web page as an image.",
-      "to": "/docs/reference/chromium#screenshot-a-url"
+      "to": "/docs/chromium/screenshot-url",
+      "input": [
+        {
+          "name": "url",
+          "type": "string",
+          "required": true,
+          "description": "The page to load. It starts with `http://` or `https://`."
+        }
+      ],
+      "groups": ["chromium", "chromium-screenshot"],
+      "response": "The image, as PNG unless `format` picks another."
     },
     {
       "group": "chromium",
       "method": "POST",
       "path": "/forms/chromium/screenshot/html",
       "summary": "Captures an HTML file as an image.",
-      "to": "/docs/reference/chromium#screenshot-html"
+      "to": "/docs/chromium/screenshot-html",
+      "input": [
+        {
+          "name": "files",
+          "type": "file[]",
+          "required": true,
+          "description": "`index.html`, and the files it loads: style sheets, images, fonts, scripts. Link each by its name alone, such as `style.css`."
+        }
+      ],
+      "groups": ["chromium", "chromium-screenshot"],
+      "response": "The image, as PNG unless `format` picks another."
     },
     {
       "group": "chromium",
       "method": "POST",
       "path": "/forms/chromium/screenshot/markdown",
       "summary": "Captures Markdown files, laid out by an HTML template, as an image.",
-      "to": "/docs/reference/chromium#screenshot-markdown"
+      "to": "/docs/chromium/screenshot-markdown",
+      "input": [
+        {
+          "name": "files",
+          "type": "file[]",
+          "required": true,
+          "description": "`index.html`, the Markdown files it places with `{{ toHTML \"notes.md\" }}`, and the files the page loads."
+        }
+      ],
+      "groups": ["chromium", "chromium-screenshot"],
+      "response": "The image, as PNG unless `format` picks another."
     },
     {
       "group": "libreoffice",
       "method": "POST",
       "path": "/forms/libreoffice/convert",
       "summary": "Converts office documents, such as Word, Excel and PowerPoint files, to PDF.",
-      "to": "/docs/reference/libreoffice"
+      "to": "/docs/libreoffice/convert",
+      "input": [
+        {
+          "name": "files",
+          "type": "file[]",
+          "required": true,
+          "description": "The documents. LibreOffice converts the formats listed below, and skips the others."
+        }
+      ],
+      "stages": true,
+      "groups": ["libreoffice"],
+      "response": "One PDF per document, named after it: `report.docx` gives `report.docx.pdf`. Several documents answer a ZIP, unless a `merge` stage joins them."
     },
     {
       "group": "pdf",
       "method": "POST",
       "path": "/forms/pdf/pipe",
       "summary": "Runs a list of stages on PDFs.",
-      "to": "/docs/reference/pdf#run-stages"
+      "to": "/docs/reference/pdf#run-stages",
+      "input": [
+        {
+          "name": "files",
+          "type": "file[]",
+          "required": true,
+          "description": "The PDFs, and the files the stages name, such as a stamp's image."
+        },
+        {
+          "name": "stages",
+          "type": "json",
+          "required": true,
+          "description": "The stages to run, in order, such as `[{\"op\":\"merge\"},{\"op\":\"optimize\"}]`."
+        }
+      ],
+      "response": "The PDF, or a ZIP when several PDFs come out: several uploads without a `merge`, or a `split`."
     },
     {
       "group": "pdf",
@@ -69,70 +158,169 @@
       "method": "POST",
       "path": "/forms/pdf/info",
       "summary": "Reads the page count, the PDF version, and whether a PDF is encrypted, tagged, linearized or holds form fields.",
-      "to": "/docs/reference/pdf#info"
+      "to": "/docs/reference/pdf#info",
+      "input": [
+        {
+          "name": "files",
+          "type": "file[]",
+          "required": true,
+          "description": "The PDFs."
+        },
+        {
+          "name": "password",
+          "type": "string",
+          "description": "Opens encrypted PDFs. A wrong or missing one answers 400."
+        }
+      ],
+      "response": "JSON, one entry per PDF under its file name."
     },
     {
       "group": "pdf",
       "method": "POST",
       "path": "/forms/pdf/metadata",
       "summary": "Reads the metadata: title, author, dates.",
-      "to": "/docs/reference/pdf#metadata"
+      "to": "/docs/reference/pdf#metadata",
+      "input": [
+        {
+          "name": "files",
+          "type": "file[]",
+          "required": true,
+          "description": "The PDFs."
+        },
+        {
+          "name": "password",
+          "type": "string",
+          "description": "Opens encrypted PDFs. A wrong or missing one answers 400."
+        }
+      ],
+      "response": "JSON, one entry per PDF under its file name."
     },
     {
       "group": "pdf",
       "method": "POST",
       "path": "/forms/pdf/bookmarks",
       "summary": "Reads the bookmarks.",
-      "to": "/docs/reference/pdf#bookmarks"
+      "to": "/docs/reference/pdf#bookmarks",
+      "input": [
+        {
+          "name": "files",
+          "type": "file[]",
+          "required": true,
+          "description": "The PDFs."
+        },
+        {
+          "name": "password",
+          "type": "string",
+          "description": "Opens encrypted PDFs. A wrong or missing one answers 400."
+        }
+      ],
+      "response": "JSON, one entry per PDF under its file name."
     },
     {
       "group": "pdf",
       "method": "POST",
       "path": "/forms/pdf/attachments",
       "summary": "Lists the embedded files.",
-      "to": "/docs/reference/pdf#attachments"
+      "to": "/docs/reference/pdf#attachments",
+      "input": [
+        {
+          "name": "files",
+          "type": "file[]",
+          "required": true,
+          "description": "The PDFs."
+        },
+        {
+          "name": "password",
+          "type": "string",
+          "description": "Opens encrypted PDFs. A wrong or missing one answers 400."
+        }
+      ],
+      "response": "JSON, one entry per PDF under its file name."
     },
     {
       "group": "pdf",
       "method": "POST",
       "path": "/forms/pdf/form",
       "summary": "Lists the form's fields: name, type, value, pages, and the values each takes.",
-      "to": "/docs/reference/pdf#form"
+      "to": "/docs/reference/pdf#form",
+      "input": [
+        {
+          "name": "files",
+          "type": "file[]",
+          "required": true,
+          "description": "The PDFs."
+        },
+        {
+          "name": "password",
+          "type": "string",
+          "description": "Opens encrypted PDFs. A wrong or missing one answers 400."
+        },
+        {
+          "name": "pages",
+          "type": "pages",
+          "description": "Lists the fields on these pages only."
+        }
+      ],
+      "response": "JSON, one entry per PDF under its file name."
     },
     {
       "group": "pdf",
       "method": "POST",
       "path": "/forms/pdf/validate",
       "summary": "Checks PDFs against PDF/A, PDF/UA or Factur-X, and lists the violations.",
-      "to": "/docs/reference/pdf#validate"
+      "to": "/docs/reference/pdf#validate",
+      "input": [
+        {
+          "name": "files",
+          "type": "file[]",
+          "required": true,
+          "description": "The PDFs."
+        },
+        {
+          "name": "password",
+          "type": "string",
+          "description": "Opens encrypted PDFs. A wrong or missing one answers 400."
+        },
+        {
+          "name": "profile",
+          "type": "enum",
+          "required": true,
+          "description": "The standard to check against: `PDF/A-1a`, `PDF/A-1b`, `PDF/A-2a`, `PDF/A-2b`, `PDF/A-2u`, `PDF/A-3a`, `PDF/A-3b`, `PDF/A-3u`, `PDF/A-4`, `PDF/A-4e`, `PDF/A-4f`, `PDF/UA-1`, `PDF/UA-2` or `Factur-X`."
+        }
+      ],
+      "response": "JSON, one entry per PDF under its file name."
     },
     {
       "group": "system",
       "method": "GET",
       "path": "/",
       "summary": "Answers a short note: Gotenberg has no UI.",
-      "to": "/docs/reference/system#root"
+      "to": "/docs/reference/system#root",
+      "response": "A short HTML note: Gotenberg has no UI."
     },
     {
       "group": "system",
       "method": "GET, HEAD",
       "path": "/health",
       "summary": "Reports whether Gotenberg and its engines are up.",
-      "to": "/docs/reference/system#health"
+      "to": "/docs/reference/system#health",
+      "response": "JSON, whose `status` is `up`, or `down` with a 503 when an engine is down. `HEAD` answers the status alone."
     },
     {
       "group": "system",
       "method": "GET",
       "path": "/version",
       "summary": "Answers the version of Gotenberg.",
-      "to": "/docs/reference/system#version"
+      "to": "/docs/reference/system#version",
+      "response": "The version of Gotenberg, as plain text."
     },
     {
       "group": "system",
       "method": "GET",
       "path": "/debug",
       "summary": "Answers the modules, engine versions and flags, once `--api-enable-debug-route` is on.",
-      "to": "/docs/reference/system#debug"
+      "to": "/docs/reference/system#debug",
+      "response": "JSON: the modules, the engine versions and every flag. It answers 404 until `--api-enable-debug-route` is on."
     }
   ],
   "fields": {
@@ -716,6 +904,25 @@
         "type": "boolean",
         "default": "false",
         "description": "Hides the viewer's window controls."
+      }
+    ],
+    "common": [
+      {
+        "name": "archives",
+        "type": "file[]",
+        "description": "ZIP files Gotenberg unpacks: each entry counts as a file uploaded under `files`."
+      },
+      {
+        "name": "downloadFrom",
+        "type": "json",
+        "description": "URLs Gotenberg downloads first, as if you had uploaded the files. Each entry takes a `url`, and optionally `extraHttpHeaders`."
+      }
+    ],
+    "stages": [
+      {
+        "name": "stages",
+        "type": "json",
+        "description": "Stages to run on the PDF, in order, such as `[{\"op\":\"merge\"}]`. Upload the files they name under `files`."
       }
     ]
   },

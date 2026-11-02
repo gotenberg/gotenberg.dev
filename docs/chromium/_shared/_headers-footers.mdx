@@ -1,13 +1,6 @@
----
-id: headers-footers
-title: Add headers and footers
----
+## Add a header and a footer
 
-Print a title, page numbers or a date on every page of a Chromium PDF. Works on the Chromium conversions: URL, HTML and Markdown. LibreOffice prints the headers and footers a document defines.
-
-## Add a footer
-
-Write the footer as its own small HTML file:
+Print a title, page numbers or a date on every page. Write the footer as its own small HTML file:
 
 ```html title="footer.html"
 <!doctype html>
@@ -29,12 +22,24 @@ Write the footer as its own small HTML file:
 </html>
 ```
 
-Upload it as `footer.html`, beside the page:
+Upload it as `footer.html`:
 
 <Request
-  route="/forms/chromium/convert/html"
-  files={["index.html", "style.css", "footer.html"]}
-  output="invoice.pdf"
+  route={props.route}
+  dir={props.dir}
+  files={[...(props.files ?? []), "footer.html"]}
+  fields={props.fields}
+  output={props.output}
+/>
+
+`header.html` works the same way, at the top of each page:
+
+<Request
+  route={props.route}
+  dir={props.dir}
+  files={[...(props.files ?? []), "header.html", "footer.html"]}
+  fields={props.fields}
+  output={props.output}
 />
 
 Chromium fills in the elements with these classes:
@@ -47,17 +52,7 @@ Chromium fills in the elements with these classes:
 | `date`       | The print date, as `11/1/26, 5:55 PM`.           |
 | `url`        | The page's address, meaningful on the URL route. |
 
-## Add a header
-
-`header.html` works the same way, at the top of each page:
-
-<Request
-  route="/forms/chromium/convert/html"
-  files={["index.html", "style.css", "header.html", "footer.html"]}
-  output="invoice.pdf"
-/>
-
-## Style them
+### Style them
 
 Chromium renders the header and footer apart from the page, with rules of their own:
 
@@ -66,17 +61,16 @@ Chromium renders the header and footer apart from the page, with rules of their 
 - Embed images as data URIs, such as `src="data:image/png;base64,…"`. They don't load files.
 - Give each its own class names. Chromium renders both in one document, so a rule in the footer reaches the header.
 
-## Make room
+### Make room
 
 The header and footer print inside the top and bottom margins, 0.39 inches by default. Widen them for a taller header:
 
 <Request
-  route="/forms/chromium/convert/html"
-  files={["index.html", "style.css", "header.html", "footer.html"]}
-  fields={{ marginTop: "1in", marginBottom: "1in" }}
-  output="invoice.pdf"
+  route={props.route}
+  dir={props.dir}
+  files={[...(props.files ?? []), "header.html", "footer.html"]}
+  fields={{ ...props.fields, marginTop: "1in", marginBottom: "1in" }}
+  output={props.output}
 />
 
-## Next
-
-[Set the page size and margins](/docs/convert/page-size). LibreOffice prints the headers and footers the document defines. On any PDF, the [`stamp-text` stage](/docs/reference/stages#stamp-text) writes the same text on every page: it can't number them.
+On any PDF, the [`stamp-text` stage](/docs/reference/stages#stamp-text) writes the same text on every page, but it can't number them.

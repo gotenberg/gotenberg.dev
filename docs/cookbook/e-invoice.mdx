@@ -33,7 +33,7 @@ Gotenberg-Remediation-Rolled-Back: 0`}
 
 ## How it works
 
-- Chromium prints the HTML as on [the HTML route](/docs/convert/html). `invoice.xml` isn't HTML, so Chromium leaves it alone, and the stage reads it.
+- Chromium prints the HTML as on [the HTML route](/docs/chromium/convert-html). `invoice.xml` isn't HTML, so Chromium leaves it alone, and the stage reads it.
 - The `remediate` stage embeds the XML and makes the PDF a Factur-X: see [Create Factur-X invoices](/docs/conformance/factur-x).
 - `Gotenberg-Output-Filename` names the result.
 

@@ -25,7 +25,7 @@ With a webhook, the error reaches the events URL instead: see [Webhook requests]
 | 401    | The credentials are missing or wrong, with [authentication](/docs/configuration#api-enable-basic-auth) on.                                                                    |
 | 403    | The outbound URL filtering blocks a URL to load or download. The message stays generic; Gotenberg's logs say why. A host that doesn't resolve answers 400 instead, naming it. |
 | 404    | The route doesn't exist, or its engine isn't in this [image variant](/docs/getting-started/installation#image-variants).                                                      |
-| 409    | The page Chromium loaded answered an error status, 4xx or 5xx by default, or failed another [`failOn` check](/docs/reference/chromium#page-fields).                           |
+| 409    | The page Chromium loaded answered an error status, 4xx or 5xx by default, or failed another [`failOn` check](/docs/chromium/convert-url#fail-on-errors).                      |
 | 413    | The request is larger than [`--api-body-limit`](/docs/configuration#api-body-limit) allows.                                                                                   |
 | 415    | The request isn't `multipart/form-data`.                                                                                                                                      |
 | 429    | The Chromium or LibreOffice queue is full: see [`--chromium-max-queue-size`](/docs/configuration#chromium-max-queue-size). Retry shortly.                                     |

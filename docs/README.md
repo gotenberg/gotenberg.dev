@@ -2,14 +2,15 @@
 
 Guidelines for writing or editing documentation pages: new pages, fixing docs, rewording, editing `.mdx` files.
 
-The 9.x docs follow what you want to do, not the list of routes. Their tone and shape take after [Ghostty's docs](https://ghostty.org/docs): get running first, then one short explanation and one copyable example at a time, with the full reference kept on its own pages.
+The 9.x docs follow the API, as the 8.x docs did: one page per route, with everything the route takes. Guides, recipes and operations pages surround them. Their tone takes after [Ghostty's docs](https://ghostty.org/docs): one short explanation and one copyable example at a time.
 
 ## Page types
 
-- **Landing and section pages** route the reader by goal with `<CardGrid>` and `<Card>`. `docs/index.mdx` is the landing page, served at `/docs`.
+- **The landing page**, `docs/index.mdx`, served at `/docs`, routes the reader with `<CardGrid>` and `<Card>`.
+- **Route pages** document one route each, under a URL that follows the route: `/forms/chromium/convert/html` is `docs/chromium/convert-html.mdx`, `/forms/pdf/merge` is `docs/pdf/merge.mdx`. Title the page after what the route does, "Convert HTML to PDF", with a short `sidebar_label`. Open with one sentence, then `<Endpoint>`, then a basic `<Request>`, then one section per feature, each with its example.
 - **Guides** cover one task: "Your first PDF", "Sign a PDF". Title the page after the task. Open with one sentence that says what the reader gets, then alternate a short explanation and a `<Request>`. Each section adds one thing. End with `## Next`: one sentence, one or two links.
 - **Recipes** (the Cookbook) solve one end-to-end problem in as few requests as possible: what you have, what you want, the request, the result, why it works, variations. Link to the guides instead of re-explaining them.
-- **Reference pages** list every route, stage, header and flag, once. Guides and recipes link to them instead of repeating option lists.
+- **Reference pages** list every header, flag and error, once. Guides and recipes link to them, and to the route pages, instead of repeating option lists.
 - **Help pages** cover troubleshooting and support.
 
 Sponsor logos render automatically as a full-width band below every doc page (mounted in `src/theme/DocRoot/Layout`). Do not add a `<Sponsors />` import or component to pages.
@@ -47,6 +48,7 @@ Content-Type: application/pdf`}
 - `fields`: form fields. An array prints one item per line; an object prints as JSON.
 - `stages`: the `stages` field.
 - `method`: `GET` or `HEAD` for the system routes, `POST` by default.
+- `host`: another Gotenberg than `http://localhost:3000`, such as the live demo. The check runs the example against its container all the same.
 - `dir`: a subfolder of `examples/` to run from, when a route needs a file name another example already uses, such as the Markdown route's `index.html`.
 - `response`: the response, as text, or as an object for JSON, which the component indents: MDX strips the indentation of a multi-line string.
 - `status`: the status the example answers with, 200 by default.
@@ -66,72 +68,21 @@ The reference pages render data, so a fact lives in one place:
 
 - `src/data/flags.json`: every flag, generated from Gotenberg's own `--help` by `npm run sync:flags` (`GOTENBERG_IMAGE` picks the image). Don't edit it by hand: fix a description in Gotenberg, then sync. `<ConfigReference module="…">` renders a module's flags on the configuration page.
 - `src/data/stages.json`: every stage, its options and an example, written by hand. `<Stage op="…">` renders one on the stages page.
-- `src/data/routes.json`: every route, the form fields of the Chromium and LibreOffice routes with their defaults, and the extensions LibreOffice converts, written by hand. `<RouteTable group="…">` renders a group of routes, `<Fields group="…" section="…">` a list of fields, each an anchor, and `<Extensions>` the extensions.
+- `src/data/routes.json`: every route, written by hand: its `input` fields, whether it takes `stages`, the field `groups` it takes, and its `response`. Then the fields of each group with their defaults (`common` holds the fields every route takes), and the extensions LibreOffice converts. `<RouteTable group="…">` renders a group of routes, and `<Extensions>` the extensions.
 
-`npm run check:api` compares them with Gotenberg: stage and option names with the stage structs of a checkout (`GOTENBERG_SOURCE`, `../gotenberg` by default), route paths, field names and extensions with the route code of that checkout, flags with the image's `--help`. Run it, and `npm run check:examples`, before a release.
+`npm run check:api` compares them with Gotenberg: stage and option names with the stage structs of a checkout (`GOTENBERG_SOURCE`, `../gotenberg` by default), route paths, input and field names and extensions with the route code of that checkout, flags with the image's `--help`. Run it, and `npm run check:examples`, before a release.
 
-## ApiEndpoint component
+## Endpoint component
 
-Reference pages document a route with the `<ApiEndpoint>` React component (`src/components/documentation/ApiEndpoint.js`). It accepts:
+`<Endpoint path="…">` opens a route page with the route's card: its method and path, the fields it takes, grouped, each an anchor such as `/docs/chromium/convert-html#waitDelay`, and its response. It renders `src/data/routes.json`. `<Endpoint op="…">` renders a stage's own route, `/forms/pdf/<op>`, from `src/data/stages.json`, whose optional `response` overrides the default one. Both are available on every page without an import.
 
-- `method`: HTTP method (GET, POST, HEAD)
-- `path`: endpoint path (e.g., `/forms/chromium/convert/html`)
-- `headers`: array of `{ name, type, required, description }` objects
-- `formFields`: array of `{ name, type, required, description, defaultValue }` objects
-- `formFiles`: array of `{ name, type, required, description }` objects
-- `curl`: example cURL command string
-- `responses`: array of `{ status, description, body }` objects
-
-Example:
-
-```jsx
-<ApiEndpoint
-  method="POST"
-  path="/forms/chromium/convert/url"
-  headers={[
-    {
-      name: "Gotenberg-Output-Filename",
-      type: "string",
-      required: false,
-      description: "The filename of the resulting file...",
-    },
-  ]}
-  formFields={[
-    {
-      name: "url",
-      type: "string",
-      required: true,
-      description: "The URL to convert to PDF.",
-    },
-  ]}
-  curl={`
-curl \\
---request POST http://localhost:3000/forms/chromium/convert/url \\
---form url=https://my.url \\
--o my.pdf`}
-  responses={[
-    {
-      status: 200,
-      description: "A PDF file or a ZIP archive...",
-    },
-  ]}
-/>
-```
-
-Rules:
-
-- The `curl` example must be a valid, copy-pasteable command.
-- Response descriptions must match Gotenberg's actual behavior.
-- Use `defaultValue` in form fields when a default exists.
-- Mark fields as `required: true` only when genuinely required.
-- `type` is one of `string`, `boolean`, `enum`, `integer`, `number`, `json`, `file`, `file[]`, `duration`. Use `enum` for a fixed set of allowed values (never `string`); pick `integer` vs `number` to match the value.
-- In `description` strings, wrap literal values in backticks (`` `intervals` ``, `` `PDF/A-3b` ``, `` `90` ``). The component renders them as subtly highlighted value spans, so don't use quotes.
+The 8.x pages use `<ApiEndpoint>` (`src/components/documentation/ApiEndpoint.js`), with the card's content written inline. Leave it to them.
 
 ## Shared partials
 
-Reusable documentation blocks live in `_shared/` directories next to the pages that import them. The 8.x docs keep theirs in `versioned_docs/version-8.x/convert-with-chromium/_shared/` (Chromium features) and `versioned_docs/version-8.x/_shared/` (PDF engine features).
+Reusable documentation blocks live in `_shared/` directories next to the pages that import them, such as `docs/chromium/_shared/` for the features every Chromium route shares. A partial takes the page's route and input as props, `route`, `dir`, `files`, `fields` and `output`, so its examples run on the route the reader is on. An example that needs a page built for it, such as the waits, names its route itself.
 
-When a feature applies to multiple endpoints, it must be a shared partial. Never duplicate content across pages.
+When a feature applies to multiple routes, it must be a shared partial. Never duplicate content across pages.
 
 ## Admonitions
 
@@ -155,9 +106,9 @@ Reserve `:::danger` for genuinely dangerous situations. Use `:::info` for most c
 
 When adding a new page, update `sidebars.js`:
 
-- Place the page in the section of the task it serves, following the existing order.
+- Place a route page in its engine's section, and any other page in the section of the task it serves, following the existing order.
 - Use the document `id` matching the frontmatter.
-- Reference pages for a route include `className: "sidebar-method-post"` (or `-get`, `-head`) for the HTTP method badge.
+- Route pages go through `post(...)` (or `get(...)`), which adds the method badge.
 
 ## Versioning
 

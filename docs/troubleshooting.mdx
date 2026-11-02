@@ -21,7 +21,7 @@ An outbound filter refused a URL the request names: the page Chromium loads, a `
 
 ### 409 Conflict
 
-The page Chromium loaded answered a 4xx or 5xx status, or failed another check you asked for. The message quotes the status or the console. See [Fail on errors](/docs/convert/url#fail-on-errors).
+The page Chromium loaded answered a 4xx or 5xx status, or failed another check you asked for. The message quotes the status or the console. See [Fail on errors](/docs/chromium/convert-url#fail-on-errors).
 
 ### 413, or a cut-off upload
 
@@ -39,7 +39,7 @@ The request ran past [`--api-timeout`](/docs/configuration#api-timeout), or Chro
 
 ### The PDF misses what JavaScript draws
 
-Chromium prints as soon as the page loads. Wait for your page: see [Wait for the page](/docs/convert/wait).
+Chromium prints as soon as the page loads. Wait for your page: see [Wait for the page](/docs/chromium/convert-html#wait-for-the-page).
 
 ### Backgrounds are missing
 
@@ -63,11 +63,11 @@ Chromium leaves backgrounds out by default, as a browser's print dialog does. Se
 
 ### The header or footer is tiny, or unstyled
 
-Header and footer templates need their own font size and `<style>` tag, and take images as data URIs only. See [Add headers and footers](/docs/convert/headers-footers#style-them).
+Header and footer templates need their own font size and `<style>` tag, and take images as data URIs only. See [Add headers and footers](/docs/chromium/convert-html#style-them).
 
 ### `landscape` doesn't turn the page
 
-A CSS `@page` size keeps its own orientation. See [Let the CSS decide](/docs/convert/page-size#let-the-css-decide).
+A CSS `@page` size keeps its own orientation. See [Let the CSS decide](/docs/chromium/convert-html#let-the-css-decide).
 
 ### Chromium failed to print the PDF
 

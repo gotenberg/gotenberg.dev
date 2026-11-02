@@ -1,0 +1,47 @@
+## Style the print
+
+Chromium prints with the page's print styles. This stylesheet hides the navigation and starts each chapter on a new page:
+
+```css title="print.css"
+@page {
+  size: A5;
+  margin: 15mm;
+}
+
+body {
+  font-family: sans-serif;
+}
+
+h2 {
+  break-before: page;
+}
+
+@media print {
+  nav {
+    display: none;
+  }
+}
+```
+
+Sent with its page to the HTML route:
+
+<Request
+  route="/forms/chromium/convert/html"
+  dir="print"
+  files={["index.html", "print.css"]}
+  output="handbook.pdf"
+/>
+
+The PDF has two pages and no navigation. `emulatedMediaType=screen` prints the page as a screen shows it instead, navigation included. The `@page` size waits for `preferCssPageSize`: see [Let the CSS decide](#let-the-css-decide).
+
+### Print backgrounds
+
+Chromium leaves background colors and images out, as a browser's print dialog does. Turn them on:
+
+<Request
+  route={props.route}
+  dir={props.dir}
+  files={props.files}
+  fields={{ ...props.fields, printBackground: true }}
+  output={props.output}
+/>

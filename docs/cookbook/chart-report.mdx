@@ -26,12 +26,12 @@ The PDF shows "Revenue: 42,000 EUR", not "Loading…", with "Sales report" above
 
 ## How it works
 
-- The page's script adds the class `ready` to `#chart` once it draws, and `waitForSelector` waits for it: see [Wait for the page](/docs/convert/wait).
-- `header.html` prints the page's `<title>`, and `footer.html` the page numbers: see [Add headers and footers](/docs/convert/headers-footers).
+- The page's script adds the class `ready` to `#chart` once it draws, and `waitForSelector` waits for it: see [Wait for the page](/docs/chromium/convert-html#wait-for-the-page).
+- `header.html` prints the page's `<title>`, and `footer.html` the page numbers: see [Add headers and footers](/docs/chromium/convert-html#add-a-header-and-a-footer).
 - The one-inch margins make room for both.
 
 ## Variations
 
 - The page sets a global when it's ready: `waitForExpression: "window.chartReady === true"`.
 - The charts fetch their data: add `skipNetworkIdleEvent: false`.
-- A live dashboard: send its `url` to `/forms/chromium/convert/url` with the same fields, and its session in [`cookies`](/docs/convert/url#log-in).
+- A live dashboard: send its `url` to `/forms/chromium/convert/url` with the same fields, and its session in [`cookies`](/docs/chromium/convert-url#log-in).

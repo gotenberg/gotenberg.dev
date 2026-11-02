@@ -278,31 +278,31 @@ module.exports = {
           ["/docs/getting-started/routes", "/docs/reference/routes"],
           [
             "/docs/convert-with-chromium/convert-html-to-pdf",
-            "/docs/convert/html",
+            "/docs/chromium/convert-html",
           ],
           [
             "/docs/convert-with-chromium/convert-markdown-to-pdf",
-            "/docs/convert/markdown",
+            "/docs/chromium/convert-markdown",
           ],
           [
             "/docs/convert-with-chromium/convert-url-to-pdf",
-            "/docs/convert/url",
+            "/docs/chromium/convert-url",
           ],
           [
             "/docs/convert-with-chromium/screenshot-html",
-            "/docs/convert/screenshots",
+            "/docs/chromium/screenshot-html",
           ],
           [
             "/docs/convert-with-chromium/screenshot-markdown",
-            "/docs/convert/screenshots",
+            "/docs/chromium/screenshot-markdown",
           ],
           [
             "/docs/convert-with-chromium/screenshot-url",
-            "/docs/convert/screenshots",
+            "/docs/chromium/screenshot-url",
           ],
           [
             "/docs/convert-with-libreoffice/convert-to-pdf",
-            "/docs/convert/office",
+            "/docs/libreoffice/convert",
           ],
           ["/docs/manipulate-pdfs/attachments", "/docs/process/attachments"],
           ["/docs/manipulate-pdfs/encrypt-pdfs", "/docs/security/encrypt"],

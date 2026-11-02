@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "@docusaurus/Link";
+import clsx from "clsx";
 import useBrokenLinks from "@docusaurus/useBrokenLinks";
 import styles from "./Options.module.css";
 
@@ -12,14 +13,15 @@ export function inline(text) {
 
 // Stage options or route form fields, one row each: name, type, whether it's
 // required, what it does, its default. Anchored rows take their name as id,
-// so other pages can link to a field.
-export default function Options({ options, anchored = false }) {
+// so other pages can link to a field. className restyles the panel, such as
+// inside an endpoint card.
+export default function Options({ options, anchored = false, className }) {
   // Tells the build these anchors exist, so links to a field are checked.
   const brokenLinks = useBrokenLinks();
   if (anchored) options.forEach((o) => brokenLinks.collectAnchor(o.name));
 
   return (
-    <div className={styles.options}>
+    <div className={clsx(styles.options, className)}>
       {options.map((option) => (
         <div
           key={option.name}

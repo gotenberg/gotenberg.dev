@@ -1,0 +1,20 @@
+/* The endpoint card reuses ApiEndpoint's panel; these rules lay out what
+   goes inside it. */
+.section + .section {
+  margin-top: 1.25rem;
+}
+
+/* The field rows sit flush in the card, not in a panel of their own. */
+.fields {
+  margin: 0;
+  border-radius: var(--radius);
+  background: var(--ifm-background-surface-color);
+}
+
+.response {
+  margin-bottom: 0.5rem;
+}
+
+.response:last-child {
+  margin-bottom: 0;
+}

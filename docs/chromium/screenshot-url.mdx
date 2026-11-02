@@ -1,0 +1,32 @@
+---
+id: screenshot-url
+title: Screenshot a URL
+sidebar_label: Screenshot URL
+---
+
+import Screenshot from "./_shared/_screenshot.mdx";
+import Url from "./_shared/_url.mdx";
+import Wait from "./_shared/_wait.mdx";
+
+Captures any page Chromium can reach as a PNG, JPEG or WebP image.
+
+<Endpoint path="/forms/chromium/screenshot/url" />
+
+## Capture a page
+
+<Request
+  route="/forms/chromium/screenshot/url"
+  fields={{ url: "https://example.com" }}
+  output="example.png"
+/>
+
+<Screenshot
+  route="/forms/chromium/screenshot/url"
+  fields={{ url: "https://example.com" }}
+  name="example"
+  selector="p"
+/>
+
+<Url route="/forms/chromium/screenshot/url" output="example.png" />
+
+<Wait kind="screenshot" />

@@ -1,0 +1,29 @@
+## Add bookmarks and tags
+
+### Bookmarks
+
+`nativeBookmarks` turns the page's headings into bookmarks, each nested under the heading above it:
+
+<Request
+  route={props.route}
+  dir={props.dir}
+  files={props.files}
+  fields={{ ...props.fields, nativeBookmarks: true }}
+  output={props.output}
+/>
+
+The [`set-bookmarks` stage](/docs/reference/stages#set-bookmarks) writes bookmarks of your own instead.
+
+### Tags
+
+A tagged PDF carries its structure, so screen readers can follow it: headings, paragraphs, lists, tables, figures. `nativeTaggedPdf` tags the PDF from the HTML:
+
+<Request
+  route={props.route}
+  dir={props.dir}
+  files={props.files}
+  fields={{ ...props.fields, nativeTaggedPdf: true }}
+  output={props.output}
+/>
+
+Write semantic HTML, with headings, lists, tables and `alt` text on images, and the tags follow it. [Make accessible PDFs](/docs/conformance/accessibility) goes on to PDF/UA.

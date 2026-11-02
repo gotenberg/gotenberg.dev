@@ -1,0 +1,83 @@
+## Set the page size and margins
+
+### Pick a paper size
+
+<Request
+  route={props.route}
+  dir={props.dir}
+  files={props.files}
+  fields={{ ...props.fields, paperSize: "A4" }}
+  output={props.output}
+/>
+
+`paperSize` takes `A3`, `A4`, `A5`, `B4`, `B5`, `Letter`, `Legal` or `Tabloid`. Chromium prints on Letter without it.
+
+### Turn it sideways
+
+<Request
+  route={props.route}
+  dir={props.dir}
+  files={props.files}
+  fields={{ ...props.fields, paperSize: "A4", landscape: true }}
+  output={props.output}
+/>
+
+### Set a custom size
+
+`paperWidth` and `paperHeight` take a length: a number of inches, or a number with a unit, `mm`, `cm`, `in`, `pt`, `px` or `pc`:
+
+<Request
+  route={props.route}
+  dir={props.dir}
+  files={props.files}
+  fields={{ ...props.fields, paperWidth: "210mm", paperHeight: "99mm" }}
+  output={props.output}
+/>
+
+Next to `paperSize`, each overrides one side.
+
+### Set the margins
+
+<Request
+  route={props.route}
+  dir={props.dir}
+  files={props.files}
+  fields={{
+    ...props.fields,
+    marginTop: "2cm",
+    marginBottom: "2cm",
+    marginLeft: "1.5cm",
+    marginRight: "1.5cm",
+  }}
+  output={props.output}
+/>
+
+Each margin is 0.39 inches by default. [Headers and footers](#add-a-header-and-a-footer) print inside the top and bottom ones.
+
+### Let the CSS decide
+
+`preferCssPageSize` takes the size from the page's CSS `@page` rule. This page, sent to the HTML route, sets `size: A5`:
+
+<Request
+  route="/forms/chromium/convert/html"
+  dir="print"
+  files={["index.html", "print.css"]}
+  fields={{ preferCssPageSize: true }}
+  output="handbook.pdf"
+/>
+
+Without it, Chromium takes the size from the fields, but keeps the orientation of the `@page` size: a portrait rule keeps the PDF portrait, over `landscape`.
+
+### Fit the content on one page
+
+`singlePage` prints the whole page on one page, as tall as the content, such as a receipt:
+
+<Request
+  route={props.route}
+  dir={props.dir}
+  files={props.files}
+  fields={{ ...props.fields, singlePage: true }}
+  output={props.output}
+/>
+
+`scale` shrinks or enlarges the content instead, from `0.1` to `2`.

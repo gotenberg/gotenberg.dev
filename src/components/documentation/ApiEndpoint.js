@@ -22,7 +22,7 @@ function renderValues(text) {
 
 // Lets a long path wrap after a slash on a narrow screen, never inside a
 // segment.
-function wrappablePath(path) {
+export function wrappablePath(path) {
   return path.split("/").map((segment, i) => (
     <React.Fragment key={i}>
       {i > 0 && (
@@ -35,7 +35,7 @@ function wrappablePath(path) {
   ));
 }
 
-const MethodBadge = ({ method = "" }) => {
+export const MethodBadge = ({ method = "" }) => {
   const colors = {
     GET: { bg: "rgba(97, 175, 254, 0.18)", fg: "var(--method-get-text)" },
     POST: { bg: "rgba(73, 204, 144, 0.16)", fg: "var(--method-post-text)" },

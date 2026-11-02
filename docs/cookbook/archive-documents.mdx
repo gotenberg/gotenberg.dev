@@ -28,7 +28,7 @@ One PDF/A-2b of four pages: the annex, then the report.
 
 ## How it works
 
-- LibreOffice converts each document, then the stages run on the PDFs in order: see [Convert office documents](/docs/convert/office).
+- LibreOffice converts each document, then the stages run on the PDFs in order: see [Convert office documents](/docs/libreoffice/convert).
 - `merge` joins them in the alphanumeric order of their names. Name them `1-report.docx` and `2-annex.docx` to pick another order.
 - `remediate` makes the merged PDF conform to PDF/A-2b: see [Make PDF/A](/docs/conformance/pdfa).
 - `optimize` comes after: it shrinks the file and keeps it conformant.
@@ -37,4 +37,4 @@ One PDF/A-2b of four pages: the annex, then the report.
 
 - One PDF/A per document: drop `merge`, and the answer is a ZIP.
 - Keep the sources with the archive: make it `PDF/A-3b` and [attach](/docs/process/attachments) the `.docx` files.
-- Mixed formats: LibreOffice takes spreadsheets, presentations and [over a hundred other formats](/docs/reference/libreoffice#formats) in the same request.
+- Mixed formats: LibreOffice takes spreadsheets, presentations and [over a hundred other formats](/docs/libreoffice/convert#formats) in the same request.

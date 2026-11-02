@@ -1,0 +1,63 @@
+## Pick the format
+
+<Request
+  route={props.route}
+  dir={props.dir}
+  files={props.files}
+  fields={{ ...props.fields, format: "jpeg", quality: 80 }}
+  output={`${props.name}.jpeg`}
+/>
+
+`format` takes `png`, the default, `jpeg` or `webp`. `quality` applies to JPEG.
+
+## Size the window
+
+`width` and `height` set the browser window, in CSS pixels. `clip` keeps that window only, instead of the whole page:
+
+<Request
+  route={props.route}
+  dir={props.dir}
+  files={props.files}
+  fields={{ ...props.fields, width: 1280, height: 720, clip: true }}
+  output={`${props.name}.png`}
+/>
+
+Without them, the image is 800 pixels wide and as tall as the page.
+
+## Capture one element
+
+<Request
+  route={props.route}
+  dir={props.dir}
+  files={props.files}
+  fields={{ ...props.fields, selector: props.selector ?? "h1" }}
+  output={`${props.name}.png`}
+/>
+
+The image takes the bounds of the first element the CSS selector matches. No visible match answers 400.
+
+## Sharpen it
+
+`deviceScaleFactor` sets the image pixels per CSS pixel. At `2`, an 800 by 600 window gives a 1600 by 1200 image:
+
+<Request
+  route={props.route}
+  dir={props.dir}
+  files={props.files}
+  fields={{ ...props.fields, deviceScaleFactor: 2, clip: true }}
+  output={`${props.name}.png`}
+/>
+
+## Drop the background
+
+`omitBackground` leaves the white default background out, so a PNG stays transparent where the page paints nothing:
+
+<Request
+  route={props.route}
+  dir={props.dir}
+  files={props.files}
+  fields={{ ...props.fields, omitBackground: true }}
+  output={`${props.name}.png`}
+/>
+
+Screenshots take no `stages`: a request with it answers 400. To render a PDF's pages as images, see the [`render` stage](/docs/reference/stages#render).

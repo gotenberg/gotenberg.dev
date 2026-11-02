@@ -1,0 +1,72 @@
+---
+id: convert-html
+title: Convert HTML to PDF
+sidebar_label: Convert HTML
+---
+
+import Wait from "./_shared/_wait.mdx";
+import PageSize from "./_shared/_page-size.mdx";
+import HeadersFooters from "./_shared/_headers-footers.mdx";
+import Print from "./_shared/_print.mdx";
+import Structure from "./_shared/_structure.mdx";
+import Stages from "./_shared/_stages.mdx";
+
+Prints your own HTML, CSS and images to PDF.
+
+<Endpoint path="/forms/chromium/convert/html" />
+
+## Send the page
+
+Upload the page as `index.html`, with every file it uses:
+
+<Request
+  route="/forms/chromium/convert/html"
+  files={["index.html", "style.css"]}
+  output="invoice.pdf"
+/>
+
+Gotenberg keeps the names of the files and drops their folders. Link each file by its name alone: `href="style.css"`, `src="logo.png"`.
+
+## Send a ZIP
+
+A page with many assets travels better as one ZIP. Upload it under `archives`, and Gotenberg unpacks it:
+
+<Request
+  route="/forms/chromium/convert/html"
+  files={[{ field: "archives", name: "site.zip" }]}
+  output="invoice.pdf"
+/>
+
+The entries lose their folders too, so the links stay bare names.
+
+<Wait kind="convert" />
+
+<PageSize
+  route="/forms/chromium/convert/html"
+  files={["index.html", "style.css"]}
+  output="invoice.pdf"
+/>
+
+<HeadersFooters
+  route="/forms/chromium/convert/html"
+  files={["index.html", "style.css"]}
+  output="invoice.pdf"
+/>
+
+<Print
+  route="/forms/chromium/convert/html"
+  files={["index.html", "style.css"]}
+  output="invoice.pdf"
+/>
+
+<Structure
+  route="/forms/chromium/convert/html"
+  files={["index.html", "style.css"]}
+  output="invoice.pdf"
+/>
+
+<Stages
+  route="/forms/chromium/convert/html"
+  files={["index.html", "style.css"]}
+  output="invoice.pdf"
+/>

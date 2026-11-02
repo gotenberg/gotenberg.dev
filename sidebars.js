@@ -1,5 +1,15 @@
-// The 9.x docs, organised by what you want to do. The 8.x sidebar lives in
-// versioned_sidebars/version-8.x-sidebars.json.
+// The 9.x docs, organised around the API: one page per route, with a badge
+// for its method, then guides, operations and reference. The 8.x sidebar
+// lives in versioned_sidebars/version-8.x-sidebars.json.
+
+// A route page, badged with its HTTP method.
+const route = (method) => (id) => ({
+  type: "doc",
+  id,
+  className: `sidebar-method-${method}`,
+});
+const post = route("post");
+
 module.exports = {
   docs: [
     "index",
@@ -19,19 +29,22 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Convert",
+      label: "Chromium",
       collapsed: true,
-      link: { type: "doc", id: "convert/index" },
       items: [
-        "convert/html",
-        "convert/url",
-        "convert/markdown",
-        "convert/office",
-        "convert/wait",
-        "convert/headers-footers",
-        "convert/page-size",
-        "convert/screenshots",
-      ],
+        "chromium/convert-url",
+        "chromium/convert-html",
+        "chromium/convert-markdown",
+        "chromium/screenshot-url",
+        "chromium/screenshot-html",
+        "chromium/screenshot-markdown",
+      ].map(post),
+    },
+    {
+      type: "category",
+      label: "LibreOffice",
+      collapsed: true,
+      items: ["libreoffice/convert"].map(post),
     },
     {
       type: "category",
@@ -103,8 +116,6 @@ module.exports = {
       collapsed: true,
       items: [
         "reference/routes",
-        "reference/chromium",
-        "reference/libreoffice",
         "reference/pdf",
         "reference/stages",
         "reference/system",
