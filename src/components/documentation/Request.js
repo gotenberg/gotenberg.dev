@@ -10,10 +10,12 @@ import styles from "./Request.module.css";
 // JSX around it, so the component indents it instead. The cURL text also lands
 // in data-curl: scripts/check-examples.mjs runs it against a Gotenberg
 // container, from the examples/ subfolder dir when given, and expects
-// data-status, unless run is false.
+// data-status, unless run is false. A host other than localhost, such as the
+// live demo, lands in data-host, and the check swaps it for the container.
 export default function Request({
   route,
   method = "POST",
+  host,
   dir,
   files = [],
   fields = {},
@@ -40,13 +42,14 @@ export default function Request({
   Object.entries(headers).forEach(([name, value]) =>
     args.push(["header", name, value]),
   );
-  const { text } = curl(route, args, output, method);
+  const { text } = curl(route, args, output, method, host);
 
   return (
     <div
       className={styles.request}
       data-curl={text}
       data-dir={dir}
+      data-host={host}
       data-status={status}
       data-run={run ? undefined : "false"}
     >

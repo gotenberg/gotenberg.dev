@@ -11,7 +11,13 @@ const flat = (value) => JSON.stringify(value, null, 1).replace(/\n\s*/g, " ");
 // request uses --head, since curl --request HEAD waits for a body. A value
 // holding ";" goes with --form-string: --form reads ";" as the start of an
 // attribute such as type=, and cuts the value there.
-export function curl(route, args, out, method = "POST") {
+export function curl(
+  route,
+  args,
+  out,
+  method = "POST",
+  host = "http://localhost:3000",
+) {
   const lines = [
     { cls: "ln pr", parts: [part("curl", "t-c")] },
     {
@@ -20,7 +26,7 @@ export function curl(route, args, out, method = "POST") {
         ...(method === "HEAD"
           ? [part("--head", "t-f"), part(" ")]
           : [part("--request", "t-f"), part(` ${method} `)]),
-        part("http://localhost:3000" + route, "t-u"),
+        part(host + route, "t-u"),
       ],
     },
   ];

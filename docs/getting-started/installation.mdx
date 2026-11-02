@@ -5,6 +5,21 @@ title: Install
 
 Gotenberg runs anywhere Docker runs. Keep it behind your firewall: it loads the URLs and runs the documents you send it.
 
+## Live demo
+
+Try the API before you install it. A public instance runs at [demo.gotenberg.dev](https://demo.gotenberg.dev):
+
+<Request
+  host="https://demo.gotenberg.dev"
+  route="/forms/chromium/convert/url"
+  fields={{ url: "https://sparksuite.github.io/simple-html-invoice-template/" }}
+  output="invoice.pdf"
+/>
+
+The demo runs on a small [Render](https://render.com) instance, with 512 MB of RAM and half a CPU. It takes 2 requests per second from each address, and 5 MB per request. It's public: keep confidential documents for your own instance.
+
+[GotenUI](https://gotenui.nktnet.org), a web interface the community maintains, sends the same requests from a form. Its code lives at [nktnet1/gotenui](https://github.com/nktnet1/gotenui).
+
 ## Docker
 
 ```bash

@@ -55,8 +55,16 @@ for (const file of htmlFiles(buildDir)) {
     const status = tag.match(/\bdata-status="(\d+)"/)?.[1] ?? "200";
     const run = !/\bdata-run="false"/.test(tag);
     const sub = tag.match(/\bdata-dir="([^"]*)"/)?.[1] ?? "";
+    const host =
+      tag.match(/\bdata-host="([^"]*)"/)?.[1] ?? "http://localhost:3000";
     const page = "/" + path.relative(buildDir, file).replace(/\.html$/, "");
-    const example = examples.get(command) ?? { status, run, sub, pages: [] };
+    const example = examples.get(command) ?? {
+      status,
+      run,
+      sub,
+      host,
+      pages: [],
+    };
     example.pages.push(page);
     examples.set(command, example);
   }
@@ -64,7 +72,7 @@ for (const file of htmlFiles(buildDir)) {
 
 let failed = 0;
 let skipped = 0;
-for (const [command, { status, run, sub, pages }] of examples) {
+for (const [command, { status, run, sub, host, pages }] of examples) {
   const where = [...new Set(pages)].join(", ");
   if (!run) {
     skipped++;
@@ -74,7 +82,7 @@ for (const [command, { status, run, sub, pages }] of examples) {
   const dir = mkdtempSync(path.join(tmpdir(), "gotenberg-example-"));
   cpSync(fixtures, dir, { recursive: true });
   // The reader's command, pointed at the container, writing its status out.
-  const script = `${command.replaceAll("http://localhost:3000", gotenberg)} --silent --show-error --write-out '%{http_code}' --output /dev/null`;
+  const script = `${command.replaceAll(host, gotenberg)} --silent --show-error --write-out '%{http_code}' --output /dev/null`;
   let got;
   try {
     got = execFileSync("sh", ["-c", script], {
