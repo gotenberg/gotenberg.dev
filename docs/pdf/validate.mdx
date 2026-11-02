@@ -4,7 +4,7 @@ title: Validate a PDF
 sidebar_label: Validate
 ---
 
-Checks PDFs against PDF/A, PDF/UA or Factur-X, and lists the violations.
+Checks PDFs against PDF/A, PDF/UA or Factur-X, or against PDF/A and PDF/UA together, and lists the violations.
 
 <Endpoint path="/forms/pdf/validate" />
 
@@ -18,6 +18,25 @@ Checks PDFs against PDF/A, PDF/UA or Factur-X, and lists the violations.
 />
 
 `profile` takes the profiles [`remediate`](/docs/pdf/remediate) makes: the PDF/A levels, `PDF/UA-1`, `PDF/UA-2` and `Factur-X`.
+
+## Validate against two profiles
+
+A JSON array, or the field repeated, checks a PDF/A profile and a PDF/UA one together:
+
+<Request
+  route="/forms/pdf/validate"
+  files={["archive.pdf"]}
+  fields={{ profile: ["PDF/A-2b", "PDF/UA-1"] }}
+  response={{
+    "archive.pdf": {
+      profile: ["PDF/A-2b", "PDF/UA-1"],
+      compliant: true,
+      violations: [],
+    },
+  }}
+/>
+
+`compliant` is `true` only when the PDF conforms to both, and each violation names the standard it breaks in `specification`. The pairs are the ones [`remediate`](/docs/pdf/remediate#make-it-pdfa-and-pdfua) makes: another answers 400.
 
 ## Validate a Factur-X
 

@@ -38,7 +38,7 @@ Runs a list of stages on the PDFs you upload, in order.
 Gotenberg checks the order of the stages before it runs any, and answers 400 with the rule a list breaks:
 
 - `decrypt` comes first, and `render` last.
-- A list has at most one `remediate`, one `encrypt`, one `sign` and one `timestamp`.
+- A list has at most one `remediate`, one `encrypt`, one `sign` and one `timestamp`. One `remediate` takes a PDF/A profile and a PDF/UA one together.
 - After `remediate`, only `encrypt`, `optimize`, `sign`, `timestamp` and `render` may follow.
 - After `encrypt`, only `optimize` and `render` may follow.
 - After `sign` or `timestamp`, only `sign`, `timestamp` and `render` may follow.

@@ -80,6 +80,7 @@ The Chromium conversion routes, the LibreOffice route and `/forms/pdf/pipe` take
 | `splitMode=pages`, `splitUnify=true`        | `{"op": "select", "pages": "1-3"}`                                               |
 | `pdfa`                                      | `{"op": "remediate", "profile": "<the level you sent>"}`                         |
 | `pdfua`                                     | `{"op": "remediate", "profile": "PDF/UA-1"}`                                     |
+| `pdfa` and `pdfua` together                 | `{"op": "remediate", "profile": ["<the level you sent>", "PDF/UA-1"]}`           |
 | `metadata`                                  | `{"op": "set-metadata", "title": "…"}`: see [Metadata](#metadata-and-bookmarks)  |
 | `userPassword`, `ownerPassword`, `allow*`   | `{"op": "encrypt", "userPassword": "…", "permissions": {"print": false}}`        |
 | `embeds` files, `embedsMetadata`            | `{"op": "attach", "file": "data.xml"}`, one stage per file                       |

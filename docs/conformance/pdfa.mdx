@@ -41,4 +41,4 @@ A PDF that doesn't conform lists its violations, each with the clause it breaks.
 - **Any PDF:** [`/forms/pdf/remediate`](/docs/pdf/remediate) takes a PDF you already have.
 - **Office documents:** LibreOffice writes PDF/A itself, with [`nativePdfa`](/docs/libreoffice/convert#make-it-archival).
 - **E-invoices:** a Factur-X is a PDF/A-3 that carries its XML: see [Create Factur-X invoices](/docs/conformance/factur-x).
-- **Accessible too:** see [Make accessible PDFs](/docs/conformance/accessibility).
+- **Accessible too:** one `remediate` stage takes a PDF/A profile and a PDF/UA one together, such as `["PDF/A-2b", "PDF/UA-1"]`: see [`remediate`](/docs/pdf/remediate#make-it-pdfa-and-pdfua). [Make accessible PDFs](/docs/conformance/accessibility) covers the tags.

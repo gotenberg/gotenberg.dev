@@ -21,5 +21,6 @@ The files the docs' `<Request>` examples upload. `npm run check:examples` copies
 - `protected.docx`: `report.docx` encrypted with the password `secret`, by msoffcrypto-tool.
 - `sales.csv`: 120 rows of sales, which LibreOffice prints on three pages, for spreadsheets.
 - `encrypted.pdf`: `report.pdf` encrypted with the user password `secret`, made by Gotenberg.
+- `archive.pdf`: `report.pdf` remediated to PDF/A-2b and PDF/UA-1 together, made by Gotenberg. veraPDF passes it on both.
 - `cert.pem`, `key.pem`: a self-signed test certificate and its key, from Gotenberg's tests. Never sign anything real with them.
 - `cert.p12`: the same certificate and key as a PKCS#12 file, with the password `secret`, made with OpenSSL. Test only, like them.

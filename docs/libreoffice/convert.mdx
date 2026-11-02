@@ -104,6 +104,20 @@ Gotenberg-Remediation-Rolled-Back: 0`}
 
 Both PDFs pass Gotenberg's own PDF/A-2b [validation](/docs/pdf/validate). Nothing checks `nativePdfa`'s output, though, and a stage after it, such as `stamp-text`, can break its conformance. `remediate` comes after the other stages and reports what's left.
 
+## Make it archival and accessible
+
+`nativePdfa` and `nativePdfua` together make a PDF/A that is also PDF/UA-1. PDF/UA needs a title, which `report.docx` lacks, so a `set-metadata` stage gives it one:
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["report.docx"]}
+  fields={{ nativePdfa: "PDF/A-2b", nativePdfua: "PDF/UA-1" }}
+  stages={[{ op: "set-metadata", title: "Annual report" }]}
+  output="report.pdf"
+/>
+
+The PDF passes Gotenberg's validation against both. With `nativePdfa: PDF/A-4`, LibreOffice claims PDF/UA-2 without meeting it, so Gotenberg answers 400: pair the profiles in [`remediate`](/docs/pdf/remediate#make-it-pdfa-and-pdfua) instead, which checks the result too.
+
 ## Fill forms
 
 LibreOffice exports a document's form fields as fields a reader can fill, unless [`exportFormFields`](#exportFormFields) is `false`. Add the [`set-form` stage](/docs/pdf/set-form) to fill them in the same request.

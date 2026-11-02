@@ -35,4 +35,4 @@ Write semantic HTML, with headings, lists, tables and `alt` text on images, and 
 
 - **Office documents:** LibreOffice tags a document with [`nativeTaggedPdf`](/docs/libreoffice/convert#nativeTaggedPdf) too.
 - **A PDF you already have:** [`autotag`](/docs/pdf/autotag) infers its structure, and [`remediate`](/docs/pdf/remediate#make-it-pdfua) makes it PDF/UA-1 or PDF/UA-2.
-- **Archival too:** `PDF/A-2a` and `PDF/A-3a` archive a tagged PDF, though that alone doesn't make it PDF/UA: see [Make PDF/A](/docs/conformance/pdfa).
+- **Archival too:** one `remediate` stage takes a PDF/UA profile and a PDF/A one together, such as `["PDF/A-2b", "PDF/UA-1"]`: see [`remediate`](/docs/pdf/remediate#make-it-pdfa-and-pdfua). `PDF/A-2a` alone archives a tagged PDF, but doesn't make it PDF/UA.

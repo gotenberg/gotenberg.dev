@@ -719,13 +719,13 @@
     },
     {
       "op": "remediate",
-      "summary": "Repairs the PDF until it conforms to a profile. `Gotenberg-Remediation-Residual` counts the violations left: `0` means it conforms.",
+      "summary": "Repairs the PDF until it conforms to a profile, or to a PDF/A profile and a PDF/UA one together. `Gotenberg-Remediation-Residual` counts the violations left: `0` means it conforms.",
       "options": [
         {
           "name": "profile",
-          "type": "string",
+          "type": "string or list",
           "required": true,
-          "description": "`PDF/A-1a`, `PDF/A-1b`, `PDF/A-2a`, `PDF/A-2b`, `PDF/A-2u`, `PDF/A-3a`, `PDF/A-3b`, `PDF/A-3u`, `PDF/A-4`, `PDF/A-4e`, `PDF/A-4f`, `PDF/UA-1`, `PDF/UA-2` or `Factur-X`."
+          "description": "`PDF/A-1a`, `PDF/A-1b`, `PDF/A-2a`, `PDF/A-2b`, `PDF/A-2u`, `PDF/A-3a`, `PDF/A-3b`, `PDF/A-3u`, `PDF/A-4`, `PDF/A-4e`, `PDF/A-4f`, `PDF/UA-1`, `PDF/UA-2` or `Factur-X`. A list pairs a PDF/A profile, or `Factur-X`, with the PDF/UA profile of its PDF version: PDF/A-1 to PDF/A-3 with `PDF/UA-1`, PDF/A-4 with `PDF/UA-2`."
         },
         {
           "name": "language",

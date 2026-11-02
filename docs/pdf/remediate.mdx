@@ -6,7 +6,7 @@ sidebar_label: Remediate
 
 import AsStage from "./_shared/_as-stage.mdx";
 
-Repairs a PDF until it conforms to PDF/A, PDF/UA or Factur-X, and reports what it couldn't fix.
+Repairs a PDF until it conforms to PDF/A, PDF/UA or Factur-X, or to PDF/A and PDF/UA together, and reports what it couldn't fix.
 
 <Endpoint op="remediate" />
 
@@ -57,6 +57,25 @@ Gotenberg-Remediation-Rolled-Back: 0`}
 - `language` sets the document's language, `en` by default. Screen readers pick their voice from it.
 - `figureAltText` gives a description to the figures that lack one. Better, write the `alt` text in your HTML.
 
+## Make it PDF/A and PDF/UA
+
+A PDF can be archival and accessible at once. Give `profile` a PDF/A profile and a PDF/UA one, as a JSON array or as the field repeated:
+
+<Request
+  route="/forms/pdf/remediate"
+  files={["report.pdf"]}
+  fields={{ profile: ["PDF/A-2b", "PDF/UA-1"], language: "en-US" }}
+  output="report.pdf"
+  response={`HTTP/1.1 200 OK
+Content-Type: application/pdf
+Gotenberg-Remediation-Residual: 0
+Gotenberg-Remediation-Rolled-Back: 0`}
+/>
+
+In a list of stages, the array goes in the stage: `{"op": "remediate", "profile": ["PDF/A-2b", "PDF/UA-1"]}`. The residual counts the violations of both profiles, so `0` means the PDF conforms to each.
+
+The PDF version sets the pairs. PDF/A-1, PDF/A-2, PDF/A-3 and `Factur-X` pair with `PDF/UA-1`, and PDF/A-4 with `PDF/UA-2`. Any other pair answers 400 and lists these.
+
 ## Make it a Factur-X
 
 `Factur-X` embeds the invoice's XML and makes the PDF a PDF/A-3 e-invoice:
@@ -72,6 +91,6 @@ Gotenberg-Remediation-Rolled-Back: 0`}
 
 ## Remediate last
 
-A list takes one `remediate`, after the stages that change the content: only `encrypt`, `optimize`, `sign`, `timestamp` and `render` may follow it. A PDF/A or Factur-X can't be encrypted.
+A list takes one `remediate`, so a pair goes in one stage. It comes after the stages that change the content: only `encrypt`, `optimize`, `sign`, `timestamp` and `render` may follow it. A PDF/A or Factur-X can't be encrypted.
 
 <AsStage op="remediate" />

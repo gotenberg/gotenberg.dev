@@ -27,7 +27,7 @@ The routes read the request headers below, and their answers carry the response 
 | `Gotenberg-Trace`                   | Your identifier, or the one Gotenberg made up.                                                                                                                      |
 | `Gotenberg-Version`                 | The version of Gotenberg that answered.                                                                                                                             |
 | `Traceparent`                       | The trace the request's spans belong to.                                                                                                                            |
-| `Gotenberg-Remediation-Residual`    | After a `remediate` stage: the violations left, summed over the documents. `0` means every document conforms.                                                       |
+| `Gotenberg-Remediation-Residual`    | After a `remediate` stage: the violations left, summed over the documents and the profiles. `0` means every document conforms to every profile.                     |
 | `Gotenberg-Remediation-Rolled-Back` | After a `remediate` stage: the fixes Gotenberg undid because they changed how pages look. Allow them with `aggressive`.                                             |
 
 ## Webhook requests

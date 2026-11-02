@@ -288,9 +288,9 @@
         },
         {
           "name": "profile",
-          "type": "enum",
+          "type": "enum or list",
           "required": true,
-          "description": "The standard to check against: `PDF/A-1a`, `PDF/A-1b`, `PDF/A-2a`, `PDF/A-2b`, `PDF/A-2u`, `PDF/A-3a`, `PDF/A-3b`, `PDF/A-3u`, `PDF/A-4`, `PDF/A-4e`, `PDF/A-4f`, `PDF/UA-1`, `PDF/UA-2` or `Factur-X`."
+          "description": "The standard to check against: `PDF/A-1a`, `PDF/A-1b`, `PDF/A-2a`, `PDF/A-2b`, `PDF/A-2u`, `PDF/A-3a`, `PDF/A-3b`, `PDF/A-3u`, `PDF/A-4`, `PDF/A-4e`, `PDF/A-4f`, `PDF/UA-1`, `PDF/UA-2` or `Factur-X`. A JSON array, or the field repeated, checks a PDF/A profile and a PDF/UA one together, as `remediate` pairs them."
         }
       ],
       "response": "JSON, one entry per PDF under its file name.",
@@ -811,7 +811,7 @@
         "section": "conformance",
         "name": "nativePdfua",
         "type": "string",
-        "description": "Exports PDF/UA: `PDF/UA-1`."
+        "description": "Exports PDF/UA: `PDF/UA-1`. With `nativePdfa`, the document needs a title, and `PDF/A-4` answers 400: pair them in `remediate` instead."
       },
       {
         "section": "conformance",
