@@ -229,7 +229,7 @@ The OpenTelemetry names follow the [OpenTelemetry naming rules](https://opentele
 | `<method> Webhook`, `POST Webhook Event` spans                 | `webhook.send`, `webhook.send_event`                                                            |
 | `GET Download From` span                                       | `api.download`                                                                                  |
 
-Spans leave their status unset on a success. The server span also leaves it unset on a 4xx, and sets Error on a 5xx, with the status code as `error.type` and the error message as the description, in place of its `error` attribute. Each webhook and download attempt gets its own HTTP client span, `POST` or `GET`, under the span of the whole call. It carries the host as `server.address`, and `url.full` without the URL's credentials, query and fragment.
+Spans leave their status unset on a success. The server span also leaves it unset on a 4xx, and sets Error on a 5xx, with the status code as `error.type` and the error message as the description, in place of its `error` attribute. Each webhook and download attempt gets its own HTTP client span, `POST` or `GET`, under the span of the whole call. It carries the host as `server.address`, and `url.full` without the URL's credentials, query and fragment. The logs name a webhook or download URL the same way.
 
 ## Custom builds
 
