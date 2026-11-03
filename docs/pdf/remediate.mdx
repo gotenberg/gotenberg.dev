@@ -89,7 +89,13 @@ The PDF version sets the pairs. PDF/A-1, PDF/A-2, PDF/A-3 and `Factur-X` pair wi
   output="invoice.pdf"
 />
 
-The XML is a Cross Industry Invoice (CII), the syntax Factur-X uses. It declares its level, and `level` names the same one. `EN 16931` carries everything the European standard for e-invoices requires; `MINIMUM` and `BASIC WL` carry less, so check what your recipient accepts.
+The XML is a Cross Industry Invoice (CII), the syntax Factur-X uses. It declares its level, and `level` names the same one: another level, or an XML that isn't a CII invoice, answers 400 before anything changes. `EN 16931` carries everything the European standard for e-invoices requires; `MINIMUM` and `BASIC WL` carry less, so check what your recipient accepts.
+
+```text
+Stage 'remediate' failed on 'report.pdf': factur-x conformance level does not match the invoice XML: level "MINIMUM" given, but the invoice XML declares "EN 16931" (guideline ID "urn:cen.eu:en16931:2017")
+```
+
+The residual counts the fatal violations the invoice leaves, the ones [`/forms/pdf/validate`](/docs/pdf/validate#validate-a-factur-x) reports: `0` means the invoice validates.
 
 Without `xml`, the stage repairs a Factur-X invoice the PDF already carries. The [e-invoice recipe](/docs/cookbook/e-invoice) makes one from HTML.
 

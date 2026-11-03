@@ -31,7 +31,7 @@ With a webhook, the error reaches the events URL instead: see [Webhook requests]
 | 415    | The request isn't `multipart/form-data`.                                                                                                                                      |
 | 429    | The Chromium or LibreOffice queue is full: see [`--chromium-max-queue-size`](/docs/configuration#chromium-max-queue-size). Retry shortly.                                     |
 | 503    | The request took longer than [`--api-timeout`](/docs/configuration#api-timeout), 30 seconds by default, a Chromium wait included, or Chromium crashed. Retry.                 |
-| 500    | Something else failed. Look the request's `Gotenberg-Trace` up in Gotenberg's logs.                                                                                           |
+| 500    | Something else failed, such as an engine crash. Look the request's `Gotenberg-Trace` up in Gotenberg's logs.                                                                  |
 
 ## Messages
 
@@ -93,9 +93,10 @@ Invalid form data: form field 'stages' is invalid: stage 0: unknown operation "n
 Invalid form data: form field 'stages' is invalid: stage 0: render: "dpi" must be at least 1, got 0
 ```
 
-A stage that fails on a file names both:
+A stage that fails on a file names both. A file that isn't a PDF, or a truncated or corrupt one, fails the same way on every PDF route:
 
 ```text
 Stage 'select' failed on 'report.pdf': invalid page range: page 9 out of range [1, 3]
 Stage 'decrypt' failed on 'encrypted.pdf': the PDF is encrypted, and the 'password' is missing or wrong
+Stage 'info' failed on 'report.pdf': not a valid PDF document: trailer missing /Root
 ```
