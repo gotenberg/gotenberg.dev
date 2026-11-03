@@ -36,7 +36,7 @@ The PDF has two pages and no navigation. `emulatedMediaType=screen` prints the p
 
 ### Print backgrounds
 
-Chromium leaves background colors and images out, as a browser's print dialog does. Turn them on:
+Chromium prints the backgrounds of elements, such as table fills and colored boxes, whatever the field. `printBackground` decides the page's own background, the one set on `html` and `body`: Chromium leaves it out by default, as a browser's print dialog does. Turn it on:
 
 <Request
   route={props.route}

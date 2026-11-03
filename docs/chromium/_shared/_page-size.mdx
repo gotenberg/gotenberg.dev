@@ -52,7 +52,7 @@ Next to `paperSize`, each overrides one side.
   output={props.output}
 />
 
-Each margin is 0.39 inches by default. [Headers and footers](#add-a-header-and-a-footer) print inside the top and bottom ones.
+Each margin is 0.39 inches by default. A negative margin, `paperWidth` or `paperHeight` answers 400. [Headers and footers](#add-a-header-and-a-footer) print inside the top and bottom ones.
 
 ### Let the CSS decide
 
@@ -80,4 +80,4 @@ Without it, Chromium takes the size from the fields, but keeps the orientation o
   output={props.output}
 />
 
-`scale` shrinks or enlarges the content instead, from `0.1` to `2`.
+`scale` shrinks or enlarges the content instead, from `0.1` to `2`. A `scale` outside that range answers 400.

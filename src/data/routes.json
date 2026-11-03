@@ -439,19 +439,19 @@
         "name": "paperWidth",
         "type": "length",
         "default": "8.5in",
-        "description": "Overrides the width `paperSize` sets. A length is a number in inches, or a number with a unit: `210mm`, `21cm`, `595pt`, `794px`, `50pc`."
+        "description": "Overrides the width `paperSize` sets. A length is a number in inches, or a number with a unit: `210mm`, `21cm`, `595pt`, `794px`, `50pc`. A negative length answers 400."
       },
       {
         "name": "paperHeight",
         "type": "length",
         "default": "11in",
-        "description": "Overrides the height `paperSize` sets."
+        "description": "Overrides the height `paperSize` sets. A negative length answers 400."
       },
       {
         "name": "marginTop",
         "type": "length",
         "default": "0.39in",
-        "description": "The top margin. The header prints in it."
+        "description": "The top margin. The header prints in it. A negative margin answers 400, as for the other margins."
       },
       {
         "name": "marginBottom",
@@ -487,13 +487,13 @@
         "name": "scale",
         "type": "number",
         "default": "1",
-        "description": "Scales the rendering, from `0.1` to `2`."
+        "description": "Scales the rendering, from `0.1` to `2`. A value outside that range answers 400."
       },
       {
         "name": "printBackground",
         "type": "boolean",
         "default": "false",
-        "description": "Prints background colors and images."
+        "description": "Prints the page's own background, set on `html` and `body`. Chromium prints the backgrounds of elements, such as table fills and colored boxes, whatever this field says."
       },
       {
         "name": "singlePage",
