@@ -30,7 +30,7 @@ One image answers on its own, named after the PDF and the page: `report_1.png`. 
   output="report_1.jpeg"
 />
 
-`dpi` sets the resolution, 150 by default. At 72, a pixel stands for a point, so a Letter page gives a 612 by 792 image. `quality` applies to JPEG.
+`dpi` sets the resolution, 150 by default. At 72, a pixel stands for a point, so a Letter page gives a 612 by 792 image. `quality`, from 1 to 100, applies to JPEG: with `png`, it answers 400. A `dpi` under 1 answers 400.
 
 ## Render every page
 
@@ -42,7 +42,7 @@ The ZIP holds `report_1.png`, `report_2.png` and `report_3.png`.
 
 ## Render after other stages
 
-`render` comes last in a list of stages. The ZIP then holds the PDF and its images:
+`render` comes last in a list of stages. On its own, it answers the images only. After other stages, the ZIP holds the PDF too, next to its images:
 
 <Request
   route="/forms/pdf/pipe"

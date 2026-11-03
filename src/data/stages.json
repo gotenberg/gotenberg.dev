@@ -23,7 +23,7 @@
         {
           "name": "every",
           "type": "integer",
-          "description": "Cuts every this many pages. Set `every` or `ranges`, not both."
+          "description": "Cuts every this many pages, at least 1. Set `every` or `ranges`, not both."
         },
         {
           "name": "ranges",
@@ -179,13 +179,13 @@
           "name": "fontSize",
           "type": "number",
           "default": "12",
-          "description": "The size of the text, in points."
+          "description": "The size of the text, in points. Greater than 0."
         },
         {
           "name": "font",
           "type": "string",
           "default": "Helvetica",
-          "description": "One of the 14 standard PDF fonts: `Helvetica`, `Times-Roman`, `Courier`, their `-Bold`, `-Oblique` or `-Italic` variants, `Symbol` or `ZapfDingbats`."
+          "description": "One of the 14 standard PDF fonts, which draw Western European text (Windows-1252): `Helvetica`, `Times-Roman`, `Courier`, their `-Bold`, `-Oblique` or `-Italic` variants, `Symbol` or `ZapfDingbats`."
         },
         {
           "name": "color",
@@ -322,7 +322,7 @@
           "name": "scale",
           "type": "number",
           "default": "1",
-          "description": "The scale factor."
+          "description": "The scale factor. Greater than 0."
         },
         {
           "name": "opacity",
@@ -872,7 +872,7 @@
           "name": "dpi",
           "type": "integer",
           "default": "150",
-          "description": "The resolution."
+          "description": "The resolution, at least 1."
         },
         {
           "name": "format",
@@ -884,7 +884,7 @@
           "name": "quality",
           "type": "integer",
           "default": "100",
-          "description": "`jpeg` only, from 1 to 100."
+          "description": "`jpeg` only, from 1 to 100. With `png`, it answers 400."
         }
       ],
       "example": {

@@ -28,6 +28,13 @@ Replaces the bookmarks, the outline viewers show beside the pages.
 
 The list replaces the bookmarks the PDF had. `children` nests bookmarks under another, as deep as you need. [`/forms/pdf/bookmarks`](/docs/pdf/bookmarks) reads them in the same shape.
 
+A request without `bookmarks`, or with an empty list, answers 400, and so does a bookmark without a `title`. A `pageNumber` outside 1 to the page count answers 400 too:
+
+```text
+Invalid form data: form field 'stages' is invalid: stage 0: set-bookmarks: bookmarks[0].title is required
+Stage 'set-bookmarks' failed on 'report.pdf': bookmarks[0].pageNumber 9 is past the last page 3
+```
+
 ## Build them from headings
 
 Chromium builds bookmarks from the page's headings with [`nativeBookmarks`](/docs/chromium/convert-html#bookmarks). LibreOffice exports a document's headings as bookmarks without being asked: [`nativeBookmarks`](/docs/libreoffice/convert#nativeBookmarks) is on by default.

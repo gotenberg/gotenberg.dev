@@ -86,8 +86,16 @@ Invalid form data: form field 'stages' is invalid: stage 0: rotate: "angle" must
 Invalid form data: form field 'stages' is invalid: stage 1: "rotate" cannot follow "encrypt": only optimize and render may
 ```
 
+An unknown operation lists the ones Gotenberg runs, and an option out of range says what it takes:
+
+```text
+Invalid form data: form field 'stages' is invalid: stage 0: unknown operation "nope"; the operations are attach, autotag, convert-colors, decrypt, delete, detach, encrypt, flatten-form, flatten-transparency, insert, merge, optimize, redact, remediate, render, rotate, select, set-bookmarks, set-form, set-metadata, sign, split, stamp-image, stamp-pdf, stamp-text, timestamp
+Invalid form data: form field 'stages' is invalid: stage 0: render: "dpi" must be at least 1, got 0
+```
+
 A stage that fails on a file names both:
 
 ```text
 Stage 'select' failed on 'report.pdf': invalid page range: page 9 out of range [1, 3]
+Stage 'decrypt' failed on 'encrypted.pdf': the PDF is encrypted, and the 'password' is missing or wrong
 ```

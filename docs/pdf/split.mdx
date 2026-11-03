@@ -19,7 +19,7 @@ Cuts a PDF into several, which come back in a ZIP.
   output="report.zip"
 />
 
-The answer is a ZIP of `report_0.pdf`, `report_1.pdf` and `report_2.pdf`. `every: 2` cuts every two pages instead.
+The answer is a ZIP of `report_0.pdf`, `report_1.pdf` and `report_2.pdf`. `every: 2` cuts every two pages instead, and `every` is at least 1. A split that yields one part answers that PDF, not a ZIP: `every: 5` on this three-page report answers `report_0.pdf`.
 
 ## Split by ranges
 

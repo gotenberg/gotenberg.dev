@@ -26,7 +26,7 @@ Gotenberg-Remediation-Rolled-Back: 0`}
 Two headers report how it went:
 
 - `Gotenberg-Remediation-Residual` counts the violations left. `0` means the PDF conforms.
-- `Gotenberg-Remediation-Rolled-Back` counts the fixes Gotenberg undid because they changed how the pages look. `aggressive: true` keeps them, for better compliance.
+- `Gotenberg-Remediation-Rolled-Back` counts the fixes Gotenberg undid because they changed how the pages look. `aggressive: true` keeps them, for better compliance. It may delete embedded files on PDF/A-1 and PDF/A-2, which forbid them.
 
 Gotenberg answers 200 even when violations remain: check `Gotenberg-Remediation-Residual`, and list what's left with [`/forms/pdf/validate`](/docs/pdf/validate). With several PDFs, the headers sum their counts.
 
@@ -36,6 +36,8 @@ Gotenberg answers 200 even when violations remain: check `Gotenberg-Remediation-
 
 - The letter sets how much the PDF keeps: `b` its look, `u` its text as Unicode too, `a` its structure too, through tags.
 - The number sets the base: PDF/A-1 builds on PDF 1.4, PDF/A-2 adds transparency and layers, PDF/A-3 accepts embedded files of any type, and PDF/A-4 builds on PDF 2.0.
+
+`PDF/A-4f` needs an embedded file: [attach](/docs/pdf/attach) one first, or the residual stays above 0.
 
 Pick the level your archive or portal asks for. Without one, PDF/A-4 is the latest version.
 
