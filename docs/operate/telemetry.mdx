@@ -86,7 +86,6 @@ Each engine, `chromium` and `libreoffice`, reports the same set:
 | Metric                                   | Type      | What                                 |
 | :--------------------------------------- | :-------- | :----------------------------------- |
 | `gotenberg.<engine>.requests`            | counter   | Requests the engine handled.         |
-| `gotenberg.<engine>.errors`              | counter   | Requests that failed.                |
 | `gotenberg.<engine>.request.active`      | gauge     | Requests running now.                |
 | `gotenberg.<engine>.queue.size`          | gauge     | Requests waiting.                    |
 | `gotenberg.<engine>.queue.wait.duration` | histogram | Time spent in the queue, in seconds. |
@@ -94,7 +93,7 @@ Each engine, `chromium` and `libreoffice`, reports the same set:
 | `gotenberg.<engine>.process.restarts`    | counter   | Engine restarts.                     |
 | `gotenberg.<engine>.pdf.output.size`     | histogram | Size of the PDFs it made, in bytes.  |
 
-`gotenberg.conversion.status` splits the requests and durations into `success`, `error`, `timeout` and `canceled`. `error.type` splits the errors, and `_OTHER` marks an error Gotenberg doesn't classify.
+A failed request carries an `error.type` on the requests and durations, such as `timeout` or `invalid_input`, and `_OTHER` for an error Gotenberg doesn't classify. A success carries none, so the failures are the requests with an `error.type`.
 
 Chromium adds `gotenberg.chromium.image.output.size`, `gotenberg.chromium.network.requests` and `gotenberg.chromium.network.response.size`, and LibreOffice `gotenberg.libreoffice.conversion.retries`. The HTTP server reports the standard `http.server.request.duration`, `http.server.request.body.size` and `http.server.response.body.size`.
 
