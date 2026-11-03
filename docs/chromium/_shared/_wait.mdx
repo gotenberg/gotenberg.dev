@@ -106,3 +106,9 @@ Chromium waits for the page to load, then for `waitForWindowStatus`, `waitForExp
 ```text
 The selector '#never' (waitForSelector) did not become visible within the time limit. Increase it with --api-timeout (API_TIMEOUT), or check the selector.
 ```
+
+`waitDelay` must be shorter than `--api-timeout`. A longer one answers 400 right away, and names the flag:
+
+```text
+Invalid form data: form field 'waitDelay' is invalid (got '60s', must be shorter than the API timeout of 30s: raise --api-timeout (API_TIMEOUT) or lower the delay)
+```

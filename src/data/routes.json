@@ -334,7 +334,7 @@
       {
         "name": "waitDelay",
         "type": "duration",
-        "description": "Waits this long once the page loads, before printing: `2s`, `500ms`."
+        "description": "Waits this long once the page loads, before printing: `2s`, `500ms`. It must be shorter than `--api-timeout`, or the request answers 400."
       },
       {
         "name": "waitForSelector",
