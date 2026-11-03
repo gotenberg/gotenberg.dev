@@ -49,7 +49,7 @@ List URLs in `downloadFrom` and Gotenberg downloads them before it starts, as if
   run={false}
 />
 
-The server must answer with a `Content-Disposition` header that names the file. Operators can turn the feature off with [`--api-disable-download-from`](/docs/configuration#api-disable-download-from).
+The server must answer with a `Content-Disposition` header that names the file. A `url` that isn't an absolute `http` or `https` one answers 400, naming `downloadFrom` and the entry. Operators can turn the feature off with [`--api-disable-download-from`](/docs/configuration#api-disable-download-from).
 
 ## Add stages
 
@@ -85,7 +85,9 @@ Content-Disposition: attachment; filename="invoice.pdf"
 Content-Type: application/pdf`}
 />
 
-Without it, Gotenberg picks a name: `report.docx.pdf` for an uploaded `report.docx`, a random one for a web page.
+Gotenberg adds the extension even to a name that has one: `invoice.pdf` gives `invoice.pdf.pdf`. A name with characters outside ASCII, such as `facture-été`, goes out as `filename*=UTF-8''facture-%C3%A9t%C3%A9.pdf`, next to an ASCII `filename` fallback.
+
+Without the header, Gotenberg picks a name: `report.docx.pdf` for an uploaded `report.docx`, a random one for a web page.
 
 ## Read the answer
 
@@ -128,6 +130,8 @@ Every answer carries two headers:
 
 - `Gotenberg-Trace` identifies the request in Gotenberg's logs. Send your own value to correlate it with yours; otherwise Gotenberg makes one up.
 - `Gotenberg-Version` names the Gotenberg version that answered.
+
+The 404 and 405 answers carry both too. With [authentication](/docs/configuration#api-enable-basic-auth) on, a 401 carries `Gotenberg-Trace` only: a caller without credentials learns no version.
 
 [Headers](/docs/reference/headers) lists every header a request and an answer may carry.
 

@@ -24,9 +24,10 @@ With a webhook, the error reaches the events URL instead: see [Webhook requests]
 | 400    | A form field, a stage or a header is missing or invalid, or a stage failed on a file. The message names it.                                                                   |
 | 401    | The credentials are missing or wrong, with [authentication](/docs/configuration#api-enable-basic-auth) on.                                                                    |
 | 403    | The outbound URL filtering blocks a URL to load or download. The message stays generic; Gotenberg's logs say why. A host that doesn't resolve answers 400 instead, naming it. |
-| 404    | The route doesn't exist, or its engine isn't in this [image variant](/docs/getting-started/installation#image-variants).                                                      |
+| 404    | The route doesn't exist, or its engine isn't in this [image variant](/docs/getting-started/installation#image-variants). The message names the path.                          |
 | 409    | The page Chromium loaded answered an error status, 4xx or 5xx by default, or failed another [`failOn` check](/docs/chromium/convert-url#fail-on-errors).                      |
 | 413    | The request is larger than [`--api-body-limit`](/docs/configuration#api-body-limit) allows.                                                                                   |
+| 405    | The route doesn't take the method you sent. The message names it and lists the ones the route takes.                                                                          |
 | 415    | The request isn't `multipart/form-data`.                                                                                                                                      |
 | 429    | The Chromium or LibreOffice queue is full: see [`--chromium-max-queue-size`](/docs/configuration#chromium-max-queue-size). Retry shortly.                                     |
 | 503    | The request took longer than [`--api-timeout`](/docs/configuration#api-timeout), 30 seconds by default, a Chromium wait included, or Chromium crashed. Retry.                 |
@@ -53,6 +54,28 @@ A URL whose host doesn't resolve names the host:
 ```text
 Invalid form data: form field 'url' is invalid: the host 'nope.invalid' does not resolve
 Invalid 'Gotenberg-Webhook-Url' header: the host 'storage.example.invalid' does not resolve
+Invalid form data: form field 'downloadFrom' entry 0 is invalid (the host 'nonexistent.invalid' does not resolve)
+```
+
+A URL that isn't absolute, with an `http` or `https` scheme and a host, names the header or the entry, and shows one that works. Each webhook header needs the other:
+
+```text
+Invalid 'Gotenberg-Webhook-Url' header: want an absolute URL with an http or https scheme and a host, such as https://example.com/upload
+Invalid form data: form field 'downloadFrom' entry 1 is invalid (want an absolute URL with an http or https scheme and a host, such as https://example.com/file.pdf)
+The 'Gotenberg-Webhook-Url' header is required with 'Gotenberg-Webhook-Events-Url'
+```
+
+A download whose server sends no file name says what to send:
+
+```text
+Unable to download file from 'https://example.com/': the response has no 'Content-Disposition' header. Make the server send one with a filename, such as 'attachment; filename="file.pdf"'
+```
+
+A route or a method Gotenberg doesn't serve names it:
+
+```text
+The route '/nope' does not exist. Check the path, and that this image includes the module that serves it
+The route '/forms/pdf/merge' does not accept the GET method. Use one of: OPTIONS, POST
 ```
 
 A list of stages names the stage, counted from 0, and the rule it breaks:

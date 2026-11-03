@@ -7,28 +7,28 @@ The routes read the request headers below, and their answers carry the response 
 
 ## Request headers
 
-| Header                                 | Effect                                                                                                                                                  |
-| :------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `Gotenberg-Output-Filename`            | Names the result, without extension: Gotenberg adds the right one.                                                                                      |
-| `Gotenberg-Trace`                      | Your identifier for the request. Gotenberg logs it and sends it back; it makes one up when you don't. `--api-correlation-id-header` renames the header. |
-| `Gotenberg-Webhook-Url`                | Uploads the result to this URL instead of answering with it. Gotenberg answers `204 No Content` right away.                                             |
-| `Gotenberg-Webhook-Method`             | The method of the upload: `POST`, the default, `PUT` or `PATCH`.                                                                                        |
-| `Gotenberg-Webhook-Events-Url`         | Required with `Gotenberg-Webhook-Url`. Receives a `webhook.success` or `webhook.error` event once the work is done.                                     |
-| `Gotenberg-Webhook-Extra-Http-Headers` | A JSON object of headers to send with the upload and the event, such as `{"Authorization": "Bearer …"}`.                                                |
-| `Authorization`                        | Basic credentials or an OIDC bearer token, when `--api-enable-basic-auth` or `--api-enable-oidc-auth` is on.                                            |
-| `traceparent`, `baggage`               | W3C Trace Context and Baggage: Gotenberg continues your trace. `OTEL_PROPAGATORS` picks other formats.                                                  |
+| Header                                 | Effect                                                                                                                                                                                                             |
+| :------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Gotenberg-Output-Filename`            | Names the result, without extension: Gotenberg adds the right one, even to a name that has one, so `report.pdf` gives `report.pdf.pdf`.                                                                            |
+| `Gotenberg-Trace`                      | Your identifier for the request. Gotenberg logs it and sends it back; it makes one up when you don't. `--api-correlation-id-header` renames the header.                                                            |
+| `Gotenberg-Webhook-Url`                | Uploads the result to this URL, an absolute `http` or `https` one, instead of answering with it. Gotenberg answers `204 No Content` right away.                                                                    |
+| `Gotenberg-Webhook-Method`             | The method of the upload: `POST`, the default, `PUT` or `PATCH`.                                                                                                                                                   |
+| `Gotenberg-Webhook-Events-Url`         | An absolute `http` or `https` URL. Required with `Gotenberg-Webhook-Url`, and the other way round: one without the other answers 400. Receives a `webhook.success` or `webhook.error` event once the work is done. |
+| `Gotenberg-Webhook-Extra-Http-Headers` | A JSON object of headers to send with the upload and the event, such as `{"Authorization": "Bearer …"}`.                                                                                                           |
+| `Authorization`                        | Basic credentials or an OIDC bearer token, when `--api-enable-basic-auth` or `--api-enable-oidc-auth` is on.                                                                                                       |
+| `traceparent`, `baggage`               | W3C Trace Context and Baggage: Gotenberg continues your trace. `OTEL_PROPAGATORS` picks other formats.                                                                                                             |
 
 ## Response headers
 
-| Header                              | Content                                                                                                                                                             |
-| :---------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `Content-Type`                      | `application/pdf` for one PDF, an image type for one screenshot or rendered page, `application/zip` for several files, `application/json` for the routes that read. |
-| `Content-Disposition`               | `attachment` and the file name.                                                                                                                                     |
-| `Gotenberg-Trace`                   | Your identifier, or the one Gotenberg made up.                                                                                                                      |
-| `Gotenberg-Version`                 | The version of Gotenberg that answered.                                                                                                                             |
-| `Traceparent`                       | The trace the request's spans belong to.                                                                                                                            |
-| `Gotenberg-Remediation-Residual`    | After a `remediate` stage: the violations left, summed over the documents and the profiles. `0` means every document conforms to every profile.                     |
-| `Gotenberg-Remediation-Rolled-Back` | After a `remediate` stage: the fixes Gotenberg undid because they changed how pages look. Allow them with `aggressive`.                                             |
+| Header                              | Content                                                                                                                                                                          |
+| :---------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Content-Type`                      | `application/pdf` for one PDF, an image type for one screenshot or rendered page, `application/zip` for several files, `application/json` for the routes that read.              |
+| `Content-Disposition`               | `attachment` and the file name. A name with characters outside ASCII also carries `filename*=UTF-8''…`, and an ASCII `filename` as a fallback.                                   |
+| `Gotenberg-Trace`                   | Your identifier, or the one Gotenberg made up.                                                                                                                                   |
+| `Gotenberg-Version`                 | The version of Gotenberg that answered. A 401 from [authentication](/docs/configuration#api-enable-basic-auth) leaves it out, so a caller without credentials learns no version. |
+| `Traceparent`                       | The trace the request's spans belong to.                                                                                                                                         |
+| `Gotenberg-Remediation-Residual`    | After a `remediate` stage: the violations left, summed over the documents and the profiles. `0` means every document conforms to every profile.                                  |
+| `Gotenberg-Remediation-Rolled-Back` | After a `remediate` stage: the fixes Gotenberg undid because they changed how pages look. Allow them with `aggressive`.                                                          |
 
 ## Webhook requests
 

@@ -21,7 +21,7 @@ Two headers turn a request into a webhook:
   response={`HTTP/1.1 204 No Content`}
 />
 
-Gotenberg checks both URLs, then answers `204 No Content` right away. Once the work is done, it uploads the result to `Gotenberg-Webhook-Url`, then posts an event to `Gotenberg-Webhook-Events-Url`. Both headers are required. A URL whose host doesn't resolve answers 400, and one the [filters](#restrict-the-destinations) refuse answers 403.
+Gotenberg checks both URLs, then answers `204 No Content` right away. Once the work is done, it uploads the result to `Gotenberg-Webhook-Url`, then posts an event to `Gotenberg-Webhook-Events-Url`. Both headers are required: one alone answers 400, naming the other. Each takes an absolute `http` or `https` URL with a host. Any other URL, or a host that doesn't resolve, answers 400 and names the header. A URL the [filters](#restrict-the-destinations) refuse answers 403.
 
 ## The upload
 
@@ -90,7 +90,7 @@ With [`--webhook-enable-sync-mode`](/docs/configuration#webhook-enable-sync-mode
   run={false}
 />
 
-With webhooks, a request then carries no file at all. [How requests work](/docs/getting-started/requests#download-files) shows the headers each download can send.
+An entry without an absolute `http` or `https` URL answers 400, naming `downloadFrom` and the entry's index, counted from 0. With webhooks, a request then carries no file at all. [How requests work](/docs/getting-started/requests#download-files) shows the headers each download can send.
 
 ## Restrict the destinations
 
