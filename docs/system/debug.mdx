@@ -3,7 +3,7 @@ id: debug
 title: Debug
 ---
 
-Answers what Gotenberg runs: its modules, the versions of Chromium and LibreOffice, and the value of every flag.
+Answers what Gotenberg runs: its modules, the versions of Chromium, LibreOffice, lok and litho, and the value of every flag.
 
 <Endpoint path="/debug" />
 
@@ -29,7 +29,11 @@ The route is off until you set [`--api-enable-debug-route`](/docs/configuration#
       chromium: {
         version: "Chromium 156.0.8078.73 built on Debian GNU/Linux 13 (trixie)",
       },
-      "libreoffice-api": { version: "LibreOffice 26.8.1.1 680(Build:1)" },
+      "libreoffice-api": {
+        lok_version: "lok v0.0.4",
+        version: "LibreOffice 26.8.1.1 680(Build:1)",
+      },
+      pdf: { litho_version: "v0.0.3-0.20261102175005-70cfe4dc5982" },
     },
     flags: {
       "api-body-limit": "",
@@ -40,4 +44,4 @@ The route is off until you set [`--api-enable-debug-route`](/docs/configuration#
   }}
 />
 
-The answer lists every flag; the example shows four. It reveals your configuration, so keep the route away from the public: with [authentication](/docs/configuration#api-enable-basic-auth) on, it needs credentials like the other routes. Gotenberg doesn't log or trace it, unless [`--api-disable-debug-route-telemetry`](/docs/configuration#api-disable-debug-route-telemetry) is `false`.
+lok is the library that drives LibreOffice, litho the one that edits PDFs. The answer lists every flag; the example shows four. It reveals your configuration, so keep the route away from the public: with [authentication](/docs/configuration#api-enable-basic-auth) on, it needs credentials like the other routes. Gotenberg doesn't log or trace it, unless [`--api-disable-debug-route-telemetry`](/docs/configuration#api-disable-debug-route-telemetry) is `false`.
