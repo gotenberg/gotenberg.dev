@@ -116,7 +116,7 @@ Both PDFs pass Gotenberg's own PDF/A-2b [validation](/docs/pdf/validate). Nothin
   output="report.pdf"
 />
 
-The PDF passes Gotenberg's validation against both. With `nativePdfa: PDF/A-4`, LibreOffice claims PDF/UA-2 without meeting it, so Gotenberg answers 400: pair the profiles in [`remediate`](/docs/pdf/remediate#make-it-pdfa-and-pdfua) instead, which checks the result too.
+The PDF passes Gotenberg's validation against both. With `nativePdfa: PDF/A-4`, LibreOffice claims PDF/UA-2 without meeting it, so Gotenberg answers 400: pair the profiles in [`remediate`](/docs/pdf/remediate#make-it-pdfa-and-pdfua) instead, which checks the result too. PDF/UA also asks for alt text on images: a document with an image that lacks it makes a PDF that fails PDF/UA validation.
 
 ## Fill forms
 

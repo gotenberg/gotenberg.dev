@@ -17,6 +17,7 @@ Invalid form data: form field 'generateDocumentOutline' is unknown to this route
 - `gotenberg/gotenberg:9` is the new image. The `latest` tag moves to 9 with the release: pin `:8` until you upgrade.
 - litho takes over from pdfcpu, QPDF, pdftk and ExifTool, the tools behind Gotenberg 8's PDF engines. They leave the image, along with Java, Python and unoconverter. A custom image that calls them must install them itself.
 - LibreOffice now runs through lok: `LOK_BIN_PATH` replaces `UNOCONVERTER_BIN_PATH`. `PDFCPU_BIN_PATH`, `QPDF_BIN_PATH`, `PDFTK_BIN_PATH` and `EXIFTOOL_BIN_PATH` are gone.
+- The LibreOffice route no longer accepts `.epub`, which LibreOffice never converted.
 - The variants, architectures, user (UID 1001), port and command don't change.
 
 ## Routes

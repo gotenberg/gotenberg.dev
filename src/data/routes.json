@@ -663,7 +663,7 @@
         "name": "exportBookmarksToPdfDestination",
         "type": "boolean",
         "default": "false",
-        "description": "Also exports the bookmarks as named destinations, which links can target."
+        "description": "Also exports the document's own bookmarks, such as Writer bookmarks, as named destinations, which links can target. Headings that build the outline are not bookmarks."
       },
       {
         "section": "content",
@@ -733,7 +733,7 @@
         "name": "addOriginalDocumentAsStream",
         "type": "boolean",
         "default": "false",
-        "description": "Embeds the original document in the PDF, for archiving."
+        "description": "Embeds the document in the PDF, for archiving. LibreOffice re-saves it as ODF and names it `Original.odt`, whatever you uploaded."
       },
       {
         "section": "images",
@@ -747,7 +747,7 @@
         "name": "nativeLosslessImageCompression",
         "type": "boolean",
         "default": "false",
-        "description": "Compresses images losslessly, instead of as JPEG."
+        "description": "Compresses images losslessly, instead of as JPEG. Images the document stores as JPEG keep their data. Only images LibreOffice re-encodes, such as with `nativeReduceImageResolution`, become lossless."
       },
       {
         "section": "images",
@@ -888,7 +888,7 @@
         "name": "displayPDFDocumentTitle",
         "type": "boolean",
         "default": "true",
-        "description": "Shows the document title, not the file name, in the viewer's title bar."
+        "description": "Shows the document title, not the file name, in the viewer's title bar. Gotenberg writes it only when the document has a title. A PDF/UA output always shows the title."
       },
       {
         "section": "viewer",
@@ -954,7 +954,6 @@
     "dxf",
     "emf",
     "eps",
-    "epub",
     "fodg",
     "fodp",
     "fods",
