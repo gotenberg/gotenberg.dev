@@ -91,7 +91,7 @@ Without the header, Gotenberg picks a name: `report.docx.pdf` for an uploaded `r
 
 ## Read the answer
 
-One result comes back as is: `Content-Type: application/pdf`, for example. Several results come back in a ZIP, each named after its source. Splitting a three-page report in two gives:
+One result comes back as is: `Content-Type: application/pdf`, for example. Several results come back in a ZIP, each named after its source. The ZIP itself takes a random UUID as its name, unless `Gotenberg-Output-Filename` sets it. Splitting a three-page report in two gives:
 
 <Request
   route="/forms/pdf/pipe"
