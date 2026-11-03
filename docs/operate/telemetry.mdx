@@ -39,6 +39,7 @@ Each record is one line; it's spread here for reading.
 
 - [`--log-std-format`](/docs/configuration#log-std-format) takes `auto`, the default, `json` or `text`. `auto` writes text to a terminal, and JSON otherwise.
 - [`--log-level`](/docs/configuration#log-level) takes `error`, `warn`, `info`, the default, or `debug`.
+- [`--chromium-debug-protocol`](/docs/configuration#chromium-debug-protocol) adds, at `debug`, every message between Gotenberg and Chromium. They carry URLs, cookies and header values whole, credentials included: turn it on only to troubleshoot.
 - [`--log-std-enable-gcp-fields`](/docs/configuration#log-std-enable-gcp-fields) uses the field names Google Cloud Logging reads, and [`--log-fields-prefix`](/docs/configuration#log-fields-prefix) prefixes every field.
 
 ## Export to OpenTelemetry

@@ -306,6 +306,14 @@
       "description": "Clear Chromium local storage between each conversion - only applies with --chromium-shared-browser-context"
     },
     {
+      "name": "chromium-debug-protocol",
+      "module": "chromium",
+      "env": "CHROMIUM_DEBUG_PROTOCOL",
+      "type": "bool",
+      "default": null,
+      "description": "Log every DevTools Protocol message between Gotenberg and Chromium at the debug level of --log-level (LOG_LEVEL). The messages carry URLs, cookies and header values whole, credentials included: enable it only to troubleshoot"
+    },
+    {
       "name": "chromium-deny-list",
       "module": "chromium",
       "env": "CHROMIUM_DENY_LIST",

@@ -179,7 +179,7 @@ Some Gotenberg 8 options have no field of their own in Gotenberg 9:
 | `--chromium-incognito`                                    | Removed                                      |
 | `--webhook-error-allow-list`, `--webhook-error-deny-list` | Removed, with the error URL                  |
 
-New flags: `--pdf-max-stream-bytes`, `--pdf-max-embedded-file-bytes` and `--pdf-max-image-pixels` bound what litho reads. `--pdf-allow-list`, `--pdf-deny-list` and their siblings filter the timestamp authorities litho calls. `--api-archive-max-entries` and `--api-archive-max-ratio` bound the ZIPs sent under `archives`. `--libreoffice-enable-macros` lets documents run macros, which stay off by default.
+New flags: `--pdf-max-stream-bytes`, `--pdf-max-embedded-file-bytes` and `--pdf-max-image-pixels` bound what litho reads. `--pdf-allow-list`, `--pdf-deny-list` and their siblings filter the timestamp authorities litho calls. `--api-archive-max-entries` and `--api-archive-max-ratio` bound the ZIPs sent under `archives`. `--libreoffice-enable-macros` lets documents run macros, which stay off by default. `--log-level=debug` no longer logs the messages between Gotenberg and Chromium: `--chromium-debug-protocol` brings them back.
 
 The other flags keep their names and defaults.
 
