@@ -16,6 +16,7 @@ services:
       CHROMIUM_DISABLE_JAVASCRIPT: "true"
       API_DISABLE_DOWNLOAD_FROM: "true"
       WEBHOOK_DENY_PRIVATE_IPS: "true"
+      PDF_DENY_PRIVATE_IPS: "true"
       API_BODY_LIMIT: 20MB
       API_TIMEOUT: 30s
       CHROMIUM_MAX_QUEUE_SIZE: "20"
@@ -39,7 +40,7 @@ The PDF prints as before. An image or a style sheet the HTML points at an intern
 
 - `CHROMIUM_DENY_PRIVATE_IPS` keeps the HTML's images, style sheets, fonts and iframes off your private network, and a cloud's metadata service: see [Restrict outbound requests](/docs/operate/outbound).
 - `CHROMIUM_DISABLE_JAVASCRIPT` stops the user's scripts, which could call any URL or loop forever.
-- `API_DISABLE_DOWNLOAD_FROM` and `WEBHOOK_DENY_PRIVATE_IPS` close the other ways a request reaches a URL.
+- `API_DISABLE_DOWNLOAD_FROM`, `WEBHOOK_DENY_PRIVATE_IPS` and `PDF_DENY_PRIVATE_IPS` close the other ways a request reaches a URL: a download, a webhook, and the timestamp authority of a `sign` or `timestamp` stage.
 - The size limit, the timeout and the queue cap keep one request, or a burst, from exhausting the container: see [Limit resources](/docs/operate/limits).
 
 ## Variations

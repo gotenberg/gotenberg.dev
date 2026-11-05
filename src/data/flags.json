@@ -375,7 +375,7 @@
       "env": "CHROMIUM_HOST_RESOLVER_RULES",
       "type": "string",
       "default": null,
-      "description": "Set custom mappings to the host resolver. Setting it turns off the internal DNS-rebinding pinning proxy: Chromium resolves each host after Gotenberg checks it, so a DNS rebinding can slip past --chromium-deny-private-ips (CHROMIUM_DENY_PRIVATE_IPS) and --chromium-deny-public-ips (CHROMIUM_DENY_PUBLIC_IPS)"
+      "description": "Set custom mappings to the host resolver, such as MAP intranet.local 10.0.0.5. The internal DNS-rebinding pinning proxy applies them and checks the address a rule maps a host to, so --chromium-deny-private-ips (CHROMIUM_DENY_PRIVATE_IPS) and --chromium-deny-public-ips (CHROMIUM_DENY_PUBLIC_IPS) still hold"
     },
     {
       "name": "chromium-idle-shutdown-timeout",
@@ -591,7 +591,7 @@
       "env": "LOG_STD_FORMAT",
       "type": "string",
       "default": "auto",
-      "description": "Set the log format for standard output"
+      "description": "Set the format of the logs Gotenberg writes to standard error"
     },
     {
       "name": "log-std-level-case",
@@ -599,7 +599,7 @@
       "env": "LOG_STD_LEVEL_CASE",
       "type": "string",
       "default": "lower",
-      "description": "Set the case of the level field in the standard output, either lower or upper"
+      "description": "Set the case of the level field in the logs Gotenberg writes to standard error, either lower or upper"
     },
     {
       "name": "pdf-allow-list",

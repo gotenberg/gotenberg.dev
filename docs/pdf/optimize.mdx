@@ -60,6 +60,8 @@ A rewrite removes signatures, so a signed PDF answers 400: optimize first, then 
   output="report.pdf"
 />
 
+A list that encrypts the PDF, before or after `optimize`, keeps `subsetFonts` only: the other passes need the streams in clear, so Gotenberg skips them.
+
 A PDF/A-1 stays conformant: Gotenberg leaves out the object streams PDF/A-1 forbids.
 
 ## Lower the image quality

@@ -41,7 +41,7 @@
         ],
         "output": "report.zip"
       },
-      "response": "A ZIP of the parts."
+      "response": "A ZIP of the parts, or the one part as a PDF."
     },
     {
       "op": "select",
@@ -185,7 +185,7 @@
           "name": "font",
           "type": "string",
           "default": "Helvetica",
-          "description": "One of the 14 standard PDF fonts, which draw Western European text (Windows-1252): `Helvetica`, `Times-Roman`, `Courier`, their `-Bold`, `-Oblique` or `-Italic` variants, `Symbol` or `ZapfDingbats`."
+          "description": "One of the 14 standard PDF fonts, which take Western European text (Windows-1252): `Helvetica`, `Times-Roman`, `Courier`, their `-Bold`, `-Oblique` or `-Italic` variants, or `Symbol` and `ZapfDingbats`, which draw it as symbols."
         },
         {
           "name": "color",
@@ -621,7 +621,7 @@
     },
     {
       "op": "optimize",
-      "summary": "Rewrites the PDF to shrink it. Every option is on unless you turn it off. A signed PDF answers 400, and so does an encrypted one, unless the stages decrypt or encrypt it.",
+      "summary": "Rewrites the PDF to shrink it. Every option is on unless you turn it off; an output the stages encrypt takes `subsetFonts` only. A signed PDF answers 400, and so does an encrypted one, unless the stages decrypt or encrypt it.",
       "options": [
         {
           "name": "objectStreams",

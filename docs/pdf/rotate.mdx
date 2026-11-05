@@ -6,7 +6,7 @@ sidebar_label: Rotate
 
 import AsStage from "./_shared/_as-stage.mdx";
 
-Turns pages by a quarter, a half or three quarters.
+Sets the rotation of pages: a quarter, a half or three quarters of a turn.
 
 <Endpoint op="rotate" />
 
@@ -17,6 +17,6 @@ Turns pages by a quarter, a half or three quarters.
   output="report.pdf"
 />
 
-Viewers turn the page by the angle, clockwise. `-90` turns it the other way. Without `pages`, every page turns.
+Viewers turn the page by the angle, clockwise. `-90` turns it the other way. The angle replaces the rotation the page has, so `90` on a page already at `90` changes nothing, and `0` straightens it. Without `pages`, every page takes the angle.
 
 <AsStage op="rotate" />

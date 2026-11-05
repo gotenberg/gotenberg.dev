@@ -19,19 +19,19 @@ With a webhook, the error reaches the events URL instead: see [Webhook requests]
 
 ## Status codes
 
-| Status | Meaning                                                                                                                                                                       |
-| :----- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 400    | A form field, a stage or a header is missing or invalid, or a stage failed on a file. The message names it.                                                                   |
-| 401    | The credentials are missing or wrong, with [authentication](/docs/configuration#api-enable-basic-auth) on.                                                                    |
-| 403    | The outbound URL filtering blocks a URL to load or download. The message stays generic; Gotenberg's logs say why. A host that doesn't resolve answers 400 instead, naming it. |
-| 404    | The route doesn't exist, or its engine isn't in this [image variant](/docs/getting-started/installation#image-variants). The message names the path.                          |
-| 409    | The page Chromium loaded answered an error status, 4xx or 5xx by default, or failed another [`failOn` check](/docs/chromium/convert-url#fail-on-errors).                      |
-| 413    | The request is larger than [`--api-body-limit`](/docs/configuration#api-body-limit) allows.                                                                                   |
-| 405    | The route doesn't take the method you sent. The message names it and lists the ones the route takes.                                                                          |
-| 415    | The request isn't `multipart/form-data`.                                                                                                                                      |
-| 429    | The Chromium or LibreOffice queue is full: see [`--chromium-max-queue-size`](/docs/configuration#chromium-max-queue-size). Retry shortly.                                     |
-| 503    | The request took longer than [`--api-timeout`](/docs/configuration#api-timeout), 30 seconds by default, a Chromium wait included, or Chromium crashed. Retry.                 |
-| 500    | Something else failed, such as an engine crash. Look the request's `Gotenberg-Trace` up in Gotenberg's logs.                                                                  |
+| Status | Meaning                                                                                                                                                                                                                                                                       |
+| :----- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 400    | A form field, a stage or a header is missing or invalid, or a stage failed on a file. The message names it.                                                                                                                                                                   |
+| 401    | The credentials are missing or wrong, with [authentication](/docs/configuration#api-enable-basic-auth) on.                                                                                                                                                                    |
+| 403    | The outbound URL filtering blocks a URL: the page Chromium loads, a `downloadFrom` file, a webhook or a timestamp authority. The message stays generic; Gotenberg's logs say why. A host that doesn't resolve answers 400 instead, naming it, except a timestamp authority's. |
+| 404    | The route doesn't exist, or its engine isn't in this [image variant](/docs/getting-started/installation#image-variants). The message names the path.                                                                                                                          |
+| 409    | The page Chromium loaded answered an error status, 4xx or 5xx by default, or failed another [`failOn` check](/docs/chromium/convert-url#fail-on-errors).                                                                                                                      |
+| 413    | The request is larger than [`--api-body-limit`](/docs/configuration#api-body-limit) allows.                                                                                                                                                                                   |
+| 405    | The route doesn't take the method you sent. The message names it and lists the ones the route takes.                                                                                                                                                                          |
+| 415    | The request isn't `multipart/form-data`.                                                                                                                                                                                                                                      |
+| 429    | The Chromium or LibreOffice queue is full: see [`--chromium-max-queue-size`](/docs/configuration#chromium-max-queue-size). Retry shortly.                                                                                                                                     |
+| 503    | The request took longer than [`--api-timeout`](/docs/configuration#api-timeout), 30 seconds by default, a Chromium wait included, or Chromium crashed. Retry.                                                                                                                 |
+| 500    | Something else failed, such as an engine crash. Look the request's `Gotenberg-Trace` up in Gotenberg's logs.                                                                                                                                                                  |
 
 ## Messages
 

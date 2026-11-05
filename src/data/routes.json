@@ -169,7 +169,7 @@
         {
           "name": "password",
           "type": "string",
-          "description": "Opens encrypted PDFs. A wrong or missing one answers 400."
+          "description": "Opens encrypted PDFs. A wrong one answers 400, and so does a missing one when the PDF has a user password."
         }
       ],
       "response": "JSON, one entry per PDF under its file name.",
@@ -191,7 +191,7 @@
         {
           "name": "password",
           "type": "string",
-          "description": "Opens encrypted PDFs. A wrong or missing one answers 400."
+          "description": "Opens encrypted PDFs. A wrong one answers 400, and so does a missing one when the PDF has a user password."
         }
       ],
       "response": "JSON, one entry per PDF under its file name.",
@@ -213,7 +213,7 @@
         {
           "name": "password",
           "type": "string",
-          "description": "Opens encrypted PDFs. A wrong or missing one answers 400."
+          "description": "Opens encrypted PDFs. A wrong one answers 400, and so does a missing one when the PDF has a user password."
         }
       ],
       "response": "JSON, one entry per PDF under its file name.",
@@ -235,7 +235,7 @@
         {
           "name": "password",
           "type": "string",
-          "description": "Opens encrypted PDFs. A wrong or missing one answers 400."
+          "description": "Opens encrypted PDFs. A wrong one answers 400, and so does a missing one when the PDF has a user password."
         }
       ],
       "response": "JSON, one entry per PDF under its file name.",
@@ -257,7 +257,7 @@
         {
           "name": "password",
           "type": "string",
-          "description": "Opens encrypted PDFs. A wrong or missing one answers 400."
+          "description": "Opens encrypted PDFs. A wrong one answers 400, and so does a missing one when the PDF has a user password."
         },
         {
           "name": "pages",
@@ -284,7 +284,7 @@
         {
           "name": "password",
           "type": "string",
-          "description": "Opens encrypted PDFs. A wrong or missing one answers 400."
+          "description": "Opens encrypted PDFs. A wrong one answers 400, and so does a missing one when the PDF has a user password."
         },
         {
           "name": "profile",
@@ -383,7 +383,7 @@
         "name": "failOnResourceLoadingFailed",
         "type": "boolean",
         "default": "false",
-        "description": "Answers 409 when a resource fails to load."
+        "description": "Answers 409 when a resource's load fails on the network: a refused or dropped connection, a host that doesn't resolve, a blocked request. A timeout or a certificate error doesn't count."
       },
       {
         "name": "failOnConsoleExceptions",
@@ -540,7 +540,7 @@
         "name": "quality",
         "type": "integer",
         "default": "100",
-        "description": "The JPEG quality, from 1 to 100. Other formats ignore it."
+        "description": "The JPEG quality, from 1 to 100. Other formats ignore the value, which must still be in range."
       },
       {
         "name": "width",

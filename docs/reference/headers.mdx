@@ -20,15 +20,15 @@ The routes read the request headers below, and their answers carry the response 
 
 ## Response headers
 
-| Header                              | Content                                                                                                                                                                          |
-| :---------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Content-Type`                      | `application/pdf` for one PDF, an image type for one screenshot or rendered page, `application/zip` for several files, `application/json` for the routes that read.              |
-| `Content-Disposition`               | `attachment` and the file name. A name with characters outside ASCII also carries `filename*=UTF-8''…`, and an ASCII `filename` as a fallback.                                   |
-| `Gotenberg-Trace`                   | Your identifier, or the one Gotenberg made up.                                                                                                                                   |
-| `Gotenberg-Version`                 | The version of Gotenberg that answered. A 401 from [authentication](/docs/configuration#api-enable-basic-auth) leaves it out, so a caller without credentials learns no version. |
-| `Traceparent`                       | The trace the request's spans belong to.                                                                                                                                         |
-| `Gotenberg-Remediation-Residual`    | After a `remediate` stage: the violations left, summed over the documents and the profiles. `0` means every document conforms to every profile.                                  |
-| `Gotenberg-Remediation-Rolled-Back` | After a `remediate` stage: the fixes Gotenberg undid because they changed how pages look. Allow them with `aggressive`.                                                          |
+| Header                              | Content                                                                                                                                                                                                    |
+| :---------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Content-Type`                      | `application/pdf` for one PDF, an image type for one screenshot or rendered page, `application/zip` for several files, `application/json` for the routes that read.                                        |
+| `Content-Disposition`               | `attachment` and the file name. A name with characters outside ASCII also carries `filename*=UTF-8''…`, and an ASCII `filename` as a fallback.                                                             |
+| `Gotenberg-Trace`                   | Your identifier, or the one Gotenberg made up.                                                                                                                                                             |
+| `Gotenberg-Version`                 | The version of Gotenberg that answered. With [authentication](/docs/configuration#api-enable-basic-auth) on, the 401, 404 and 405 answers leave it out, so a caller without credentials learns no version. |
+| `Traceparent`                       | The trace the request's spans belong to.                                                                                                                                                                   |
+| `Gotenberg-Remediation-Residual`    | After a `remediate` stage: the violations left, summed over the documents and the profiles. `0` means every document conforms to every profile.                                                            |
+| `Gotenberg-Remediation-Rolled-Back` | After a `remediate` stage: the fixes Gotenberg undid because they lost pages, text or images. They stay undone with `aggressive` too.                                                                      |
 
 ## Webhook requests
 

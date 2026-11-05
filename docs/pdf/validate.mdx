@@ -49,7 +49,7 @@ A JSON array, or the field repeated, checks a PDF/A profile and a PDF/UA one tog
   }}
 />
 
-The check covers the Factur-X rules, the XML's included, and reports warnings for the softer ones of its Schematron, which don't make the invoice non-compliant. Validate against `PDF/A-3b` too for the archival side.
+The check covers the PDF/A-3b rules of the archival side and the Factur-X rules, the XML's included, and reports warnings for the softer ones of its Schematron, which don't make the invoice non-compliant.
 
 ## Read the violations
 
@@ -66,4 +66,4 @@ Each violation names the rule a PDF breaks, and where:
 }
 ```
 
-A `fatal` violation makes the PDF non-compliant. A `warning` or an `info` doesn't.
+A `fatal` violation makes the PDF non-compliant. A `warning`, which only the Factur-X Schematron rules raise, doesn't.

@@ -26,7 +26,7 @@ Gotenberg-Remediation-Rolled-Back: 0`}
 Two headers report how it went:
 
 - `Gotenberg-Remediation-Residual` counts the violations left. `0` means the PDF conforms.
-- `Gotenberg-Remediation-Rolled-Back` counts the fixes Gotenberg undid because they changed how the pages look. `aggressive: true` keeps them, for better compliance. It may delete embedded files on PDF/A-1 and PDF/A-2, which forbid them.
+- `Gotenberg-Remediation-Rolled-Back` counts the fixes Gotenberg undid because they lost pages, text or images. `aggressive: true` allows more fixes that may change how the pages look, for better compliance, under the same rollback. It deletes every embedded file on PDF/A-1, which forbids them, and the ones that aren't PDF/A themselves on PDF/A-2 and PDF/A-4, which forbid those.
 
 Gotenberg answers 200 even when violations remain: check `Gotenberg-Remediation-Residual`, and list what's left with [`/forms/pdf/validate`](/docs/pdf/validate). With several PDFs, the headers sum their counts.
 
@@ -89,7 +89,7 @@ The PDF version sets the pairs. PDF/A-1, PDF/A-2, PDF/A-3 and `Factur-X` pair wi
   output="invoice.pdf"
 />
 
-The XML is a Cross Industry Invoice (CII), the syntax Factur-X uses. It declares its level, and `level` names the same one: another level, or an XML that isn't a CII invoice, answers 400 before anything changes. `EN 16931` carries everything the European standard for e-invoices requires; `MINIMUM` and `BASIC WL` carry less, so check what your recipient accepts.
+The XML is a Cross Industry Invoice (CII), the syntax Factur-X uses. It declares its level, and `level` names the same one: another level, or an XML that isn't a CII invoice, answers 400 before anything changes. An `XRECHNUNG` invoice also passes as `BASIC`, `EN 16931` or `EXTENDED`. `EN 16931` carries everything the European standard for e-invoices requires; `MINIMUM` and `BASIC WL` carry less, so check what your recipient accepts.
 
 ```text
 Stage 'remediate' failed on 'report.pdf': factur-x conformance level does not match the invoice XML: level "MINIMUM" given, but the invoice XML declares "EN 16931" (guideline ID "urn:cen.eu:en16931:2017")

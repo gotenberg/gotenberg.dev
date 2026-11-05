@@ -17,7 +17,7 @@ The message names the field and what it wants, such as `form field 'paperSize' i
 
 ### 403 Forbidden
 
-An outbound filter refused a URL the request names: the page Chromium loads, a `downloadFrom` file or a webhook. The message stays generic, and Gotenberg's logs say which rule refused it, as `rule`: `deny-list`, `allow-list`, `private-ip` or `public-ip`. See [Secure Gotenberg](/docs/operate/outbound).
+An outbound filter refused a URL the request names: the page Chromium loads, a `downloadFrom` file, a webhook or a timestamp authority. The message stays generic, and Gotenberg's logs say which rule refused it, as `rule`: `deny-list`, `allow-list`, `private-ip`, `public-ip`, `unresolvable-host`, `invalid-url` or `pattern-error`, or `file-prefix` for a page reading a file outside its own directory. See [Secure Gotenberg](/docs/operate/outbound).
 
 ### 409 Conflict
 
@@ -81,7 +81,7 @@ LibreOffice lays the document out with the fonts installed in the image. A font 
 
 ### Linked images are missing
 
-LibreOffice doesn't load content an uploaded document links to, an image on a server for instance: it would let a document make Gotenberg fetch any URL. Embed the images in the document.
+LibreOffice drops the images and other content an uploaded document links to, since a document could make Gotenberg fetch any URL. Embed the images in the document. The style sheets an HTML file links are the exception: LibreOffice fetches them, under the [outbound filters](/docs/operate/outbound).
 
 ### 500 Internal Server Error
 
@@ -89,7 +89,7 @@ LibreOffice doesn't load content an uploaded document links to, an image on a se
 
 ### The document is password-protected
 
-Send its password in the `password` field. A missing or wrong one answers 400 and says which.
+Send its password in the `password` field. A missing or wrong one answers 400 and says which, except for a legacy `.doc`, `.xls` or `.ppt` sent without its password, which answers that LibreOffice couldn't read the document.
 
 ## Fonts
 

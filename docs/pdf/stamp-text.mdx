@@ -28,7 +28,7 @@ Draws a line of text over pages: a watermark, a label, a status.
   output="report.pdf"
 />
 
-`rotation` turns the text counter-clockwise around `x` and `y`. `font` takes one of the 14 standard PDF fonts, `Helvetica` by default, which draw Western European text only. For other scripts, stamp a page Chromium renders with [`stamp-pdf`](/docs/pdf/stamp-pdf), or use LibreOffice's [`nativeWatermarkText`](/docs/libreoffice/convert#nativeWatermarkText).
+`rotation` turns the text counter-clockwise around `x` and `y`. `font` takes one of the 14 standard PDF fonts, `Helvetica` by default, which take Western European text only; `Symbol` and `ZapfDingbats` draw it as symbols. For other scripts, stamp a page Chromium renders with [`stamp-pdf`](/docs/pdf/stamp-pdf), or use LibreOffice's [`nativeWatermarkText`](/docs/libreoffice/convert#nativeWatermarkText).
 
 <AsStage op="stamp-text" />
 

@@ -49,7 +49,7 @@ A page that answers a 4xx or 5xx status fails the request with `409 Conflict`, r
   output={props.output}
 />
 
-`499` stands for every status from 400 to 499, and `599` for 500 to 599.
+`499` stands for every status from 400 to 499, and `599` for 500 to 599. `failOnResourceLoadingFailed` fails the request when a resource's load fails on the network, with a refused connection or a host that doesn't resolve for instance; a timeout or a certificate error doesn't count.
 
 ## Reach private addresses
 

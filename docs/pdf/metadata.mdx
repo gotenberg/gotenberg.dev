@@ -14,4 +14,4 @@ Reads the title, author and dates a viewer shows.
   response={{ "report.pdf": { title: "Quarterly report", author: "Finance" } }}
 />
 
-The answer holds `title`, `author`, `subject`, `keywords`, `creator`, `producer`, `creationDate` and `modDate`, each when set. A PDF without metadata answers `{}`. The names are the ones [`set-metadata`](/docs/pdf/set-metadata) takes, so the answer feeds straight back into it.
+The answer holds `title`, `author`, `subject`, `keywords`, `creator`, `producer`, `creationDate` and `modDate`, each when set. A PDF without metadata answers `{}`. The names are the ones [`set-metadata`](/docs/pdf/set-metadata) takes. A date comes back as the PDF stores it: as a PDF date, `D:20260101120000Z`, which `set-metadata` takes, or as an XMP date, `2026-01-01T12:00:00Z`, when only the XMP metadata holds it.

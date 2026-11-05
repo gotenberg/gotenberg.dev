@@ -71,7 +71,7 @@ The webhook URL could not be reached after 5 attempts: the connection was refuse
 
 ## Retries
 
-An upload that fails is tried four more times, waiting 1, 2, 4, then 8 seconds. [`--webhook-max-retry`](/docs/configuration#webhook-max-retry), [`--webhook-retry-min-wait`](/docs/configuration#webhook-retry-min-wait) and [`--webhook-retry-max-wait`](/docs/configuration#webhook-retry-max-wait) tune it.
+An upload that can't connect, or that answers 429 or a 5xx, is tried four more times, waiting 1, 2, 4, then 8 seconds. Another 4xx isn't retried. [`--webhook-max-retry`](/docs/configuration#webhook-max-retry), [`--webhook-retry-min-wait`](/docs/configuration#webhook-retry-min-wait) and [`--webhook-retry-max-wait`](/docs/configuration#webhook-retry-max-wait) tune it.
 
 ## Wait for the delivery
 

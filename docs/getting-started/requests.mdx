@@ -131,7 +131,7 @@ Every answer carries two headers:
 - `Gotenberg-Trace` identifies the request in Gotenberg's logs. Send your own value to correlate it with yours; otherwise Gotenberg makes one up.
 - `Gotenberg-Version` names the Gotenberg version that answered.
 
-The 404 and 405 answers carry both too. With [authentication](/docs/configuration#api-enable-basic-auth) on, a 401 carries `Gotenberg-Trace` only: a caller without credentials learns no version.
+The 404 and 405 answers carry both too. With [authentication](/docs/configuration#api-enable-basic-auth) on, the 401, 404 and 405 answers carry `Gotenberg-Trace` only: a caller without credentials learns no version.
 
 [Headers](/docs/reference/headers) lists every header a request and an answer may carry.
 

@@ -27,7 +27,7 @@ Reads the page count, the PDF version, and whether a PDF is encrypted, tagged, l
 
 ## Read an encrypted PDF
 
-Every read route takes a `password` field to open encrypted PDFs. A wrong or missing one answers 400:
+Every read route takes a `password` field to open encrypted PDFs. A wrong one answers 400, and so does a missing one when the PDF has a user password; a PDF with an owner password only opens without it:
 
 <Request
   route="/forms/pdf/info"
