@@ -92,7 +92,7 @@ module.exports = {
     },
     announcementBar: {
       id: "gotenberg_9",
-      content: `Gotenberg 9 is out: one PDF engine, 26 stages, real conformance. <a href="/docs/getting-started/upgrade">Upgrade from 8.x</a>`,
+      content: `Gotenberg 9 is out: one PDF engine, 26 stages, real conformance. <a target="_blank" rel="noopener noreferrer" href="https://github.com/gotenberg/gotenberg/releases/tag/v9.0.0">Read the release note</a> or <a href="/docs/getting-started/upgrade">upgrade from 8.x</a>`,
     },
     // announcementBar: {
     //   id: "support_us",
