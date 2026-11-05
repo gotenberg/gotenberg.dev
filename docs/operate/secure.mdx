@@ -70,15 +70,14 @@ Gotenberg then serves HTTPS only, on the same port. Kubernetes probes need `sche
 
 Each of these flags trades a protection for a feature. Turn one on only when every caller is trusted:
 
-| Flag                                                                                                   | What it gives up                                                            |
-| :----------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------- |
-| [`--chromium-proxy-server`](/docs/configuration#chromium-proxy-server)                                 | The protection against DNS rebinding: a host can resolve differently later. |
-| [`--chromium-host-resolver-rules`](/docs/configuration#chromium-host-resolver-rules)                   | The same.                                                                   |
-| [`--chromium-shared-browser-context`](/docs/configuration#chromium-shared-browser-context)             | The isolation of cookies, cache and storage between conversions.            |
-| [`--chromium-disable-web-security`](/docs/configuration#chromium-disable-web-security)                 | The same-origin policy in the pages Chromium prints.                        |
-| [`--chromium-allow-file-access-from-files`](/docs/configuration#chromium-allow-file-access-from-files) | The barrier between local files a page may read.                            |
-| [`--chromium-ignore-certificate-errors`](/docs/configuration#chromium-ignore-certificate-errors)       | The TLS checks of the URLs Chromium loads.                                  |
-| [`--libreoffice-enable-macros`](/docs/configuration#libreoffice-enable-macros)                         | The barrier against code in documents: macros run inside the container.     |
+| Flag                                                                                                   | What it gives up                                                                              |
+| :----------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------- |
+| [`--chromium-proxy-server`](/docs/configuration#chromium-proxy-server)                                 | The protection against DNS rebinding, and the outbound checks on the WebSockets a page opens. |
+| [`--chromium-shared-browser-context`](/docs/configuration#chromium-shared-browser-context)             | The isolation of cookies, cache and storage between conversions.                              |
+| [`--chromium-disable-web-security`](/docs/configuration#chromium-disable-web-security)                 | The same-origin policy in the pages Chromium prints.                                          |
+| [`--chromium-allow-file-access-from-files`](/docs/configuration#chromium-allow-file-access-from-files) | The barrier between local files a page may read.                                              |
+| [`--chromium-ignore-certificate-errors`](/docs/configuration#chromium-ignore-certificate-errors)       | The TLS checks of the URLs Chromium loads.                                                    |
+| [`--libreoffice-enable-macros`](/docs/configuration#libreoffice-enable-macros)                         | The barrier against code in documents: macros run inside the container.                       |
 
 The image already runs as an unprivileged user, `gotenberg`, UID 1001.
 

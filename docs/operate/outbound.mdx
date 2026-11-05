@@ -39,7 +39,7 @@ services:
       LIBREOFFICE_DENY_PRIVATE_IPS: "true"
 ```
 
-Gotenberg resolves each host and refuses any address that isn't public: loopback, `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`, link-local `169.254.0.0/16`, carrier-grade NAT `100.64.0.0/10`, benchmarking `198.18.0.0/15`, IPv6 unique-local, and the IPv6 forms that embed one of them.
+Gotenberg resolves each host and refuses any address that isn't public: loopback, `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`, link-local `169.254.0.0/16`, carrier-grade NAT `100.64.0.0/10`, benchmarking `198.18.0.0/15` and `2001:2::/48`, IPv6 unique-local, and every other range the IANA special-purpose registries mark as not globally reachable. An IPv4-mapped IPv6 address counts as the IPv4 it carries, and 6to4, Teredo and NAT64 addresses count as non-public whatever they carry.
 
 `*_DENY_PUBLIC_IPS` does the reverse, for a network that must not reach the internet.
 
@@ -99,7 +99,7 @@ Gotenberg checks every allow list at startup, and logs a warning for a pattern t
 
 These protections need no setting:
 
-- Gotenberg resolves a host once, checks the address, and connects to that address, so a host can't resolve to a public address for the check and a private one for the connection. `--chromium-proxy-server` and `--chromium-host-resolver-rules` turn this off for Chromium.
+- Gotenberg resolves a host once, checks the address, and connects to that address, so a host can't resolve to a public address for the check and a private one for the connection. `--chromium-proxy-server` turns this off for Chromium, and a page's WebSockets then reach that proxy without the checks. `--chromium-host-resolver-rules` doesn't: Gotenberg applies the rules itself, and checks the address a rule maps a host to.
 - The URL routes take `http://` and `https://` URLs only.
 - A page loads local files from its own request's directory only.
 - LibreOffice never loads the images and other content a document links to.
