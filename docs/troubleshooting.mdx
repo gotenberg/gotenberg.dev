@@ -108,7 +108,7 @@ RUN fc-cache -f
 USER gotenberg
 ```
 
-Chromium and LibreOffice both read the fonts installed in the image. Web fonts work without this on Chromium routes: upload the font files with the page, and declare them with `@font-face`.
+Chromium and LibreOffice both read the fonts installed in the image, and so do the `stamp-text` and `flatten-form` stages for text outside Western European, which the standard PDF fonts can't draw. Web fonts work without this on Chromium routes: upload the font files with the page, and declare them with `@font-face`.
 
 ## Startup
 

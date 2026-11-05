@@ -38,15 +38,15 @@ The conversion routes and `/forms/pdf/pipe` take `stages`. A few rules keep a li
 
 Some results have two ways in. A field whose name starts with `native` asks Chromium or LibreOffice to do it while they make the PDF. A stage does it afterwards, with litho, on any route:
 
-| Result     | Native field                                                      | Stage                                                                | Pick the stage when                        |
-| :--------- | :---------------------------------------------------------------- | :------------------------------------------------------------------- | :----------------------------------------- |
-| PDF/A      | `nativePdfa`: LibreOffice, four levels, unchecked                 | `remediate`: any route, eleven levels, reports what's left           | Usually: it checks its result              |
-| PDF/UA     | `nativePdfua`: LibreOffice, PDF/UA-1, unchecked                   | `remediate`: PDF/UA-1 or PDF/UA-2, tags the PDF if needed            | Always, to claim conformance               |
-| Tags       | `nativeTaggedPdf`: from your source's structure                   | `autotag`: inferred from the page layout                             | The PDF comes from elsewhere               |
-| Bookmarks  | `nativeBookmarks`: from the headings                              | `set-bookmarks`: the list you give                                   | You want your own titles, or after a merge |
-| Pages      | `nativePages`: the engine skips the others, which is faster       | `select`: also `odd`, `even`, `last`, and a new order                | You reorder, or pick after a merge         |
-| Watermark  | `nativeWatermarkText`: LibreOffice, any script, sized to the page | `stamp-text`: any route, at an exact position, Western European text | The PDF comes from Chromium or elsewhere   |
-| Image size | `nativeQuality`: LibreOffice, lowers the quality                  | `optimize`: keeps the quality, packs the file                        | You can't lose quality                     |
+| Result     | Native field                                                      | Stage                                                                              | Pick the stage when                        |
+| :--------- | :---------------------------------------------------------------- | :--------------------------------------------------------------------------------- | :----------------------------------------- |
+| PDF/A      | `nativePdfa`: LibreOffice, four levels, unchecked                 | `remediate`: any route, eleven levels, reports what's left                         | Usually: it checks its result              |
+| PDF/UA     | `nativePdfua`: LibreOffice, PDF/UA-1, unchecked                   | `remediate`: PDF/UA-1 or PDF/UA-2, tags the PDF if needed                          | Always, to claim conformance               |
+| Tags       | `nativeTaggedPdf`: from your source's structure                   | `autotag`: inferred from the page layout                                           | The PDF comes from elsewhere               |
+| Bookmarks  | `nativeBookmarks`: from the headings                              | `set-bookmarks`: the list you give                                                 | You want your own titles, or after a merge |
+| Pages      | `nativePages`: the engine skips the others, which is faster       | `select`: also `odd`, `even`, `last`, and a new order                              | You reorder, or pick after a merge         |
+| Watermark  | `nativeWatermarkText`: LibreOffice, any script, sized to the page | `stamp-text`: any route, at an exact position, any script the image has a font for | The PDF comes from Chromium or elsewhere   |
+| Image size | `nativeQuality`: LibreOffice, lowers the quality                  | `optimize`: keeps the quality, packs the file                                      | You can't lose quality                     |
 
 ## What comes back
 

@@ -18,6 +18,8 @@ Burns the form fields into the pages, which can then no longer be edited.
 
 The values become part of the page. No reader can change them, and [`/forms/pdf/info`](/docs/pdf/info) answers `"formFields": false`.
 
+A field that stores no appearance, as a field [`set-form`](/docs/pdf/set-form) filled, is drawn from its value: one line in the form's font, over the background and the border the field declares. A value outside Western European text, Cyrillic or Chinese for instance, is drawn with a font installed in the image, embedded in the PDF. Letters that join or reorder, as Arabic and Devanagari do, come out one by one. A value no installed font has the characters of answers 400 and names the field: [install a font](/docs/troubleshooting#install-fonts) that does.
+
 ## Fill, then flatten
 
 <Request
