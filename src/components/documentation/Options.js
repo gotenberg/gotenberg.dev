@@ -11,6 +11,32 @@ export function inline(text) {
     .map((part, i) => (i % 2 === 1 ? <code key={i}>{part}</code> : part));
 }
 
+// Lets a long identifier wrap where a reader would split it, before the
+// capital of a camelCase word or after an underscore, never mid-word. A
+// <wbr> leaves the copied text untouched.
+export function breakable(name) {
+  const parts = [];
+  let part = "";
+  for (const ch of name) {
+    if (/[A-Z]/.test(ch) && /[a-z0-9]$/.test(part)) {
+      parts.push(part);
+      part = "";
+    }
+    part += ch;
+    if (ch === "_") {
+      parts.push(part);
+      part = "";
+    }
+  }
+  if (part) parts.push(part);
+  return parts.map((text, i) => (
+    <React.Fragment key={i}>
+      {i > 0 && <wbr />}
+      {text}
+    </React.Fragment>
+  ));
+}
+
 // Stage options or route form fields, one row each: name, type, whether it's
 // required, what it does, its default. Anchored rows take their name as id,
 // so other pages can link to a field. className restyles the panel, such as
@@ -31,10 +57,10 @@ export default function Options({ options, anchored = false, className }) {
           <div className={styles.head}>
             {anchored ? (
               <a className={styles.name} href={`#${option.name}`}>
-                {option.name}
+                {breakable(option.name)}
               </a>
             ) : (
-              <code className={styles.name}>{option.name}</code>
+              <code className={styles.name}>{breakable(option.name)}</code>
             )}
             <span className={styles.type}>
               {option.type === "pages" ? (

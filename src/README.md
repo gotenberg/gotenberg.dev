@@ -99,8 +99,9 @@ Full-width sponsors band shown below the content on every doc page. Mounted once
 
 ## Responsive design
 
-- A panel wider than its column scrolls sideways with one of two cues, picked by height: a thin scrollbar under a short panel (up to 200px), a shade at the edge that has more on a tall one. The cue is global CSS (`custom.css`, "Sideways scrolling") on docs tables, code blocks, tabs and any element with `data-scroller`; each names its own background as `--scroll-bg`, which the shade's covers repeat. `src/clientModules/scrollAffordances.js` picks the cue and makes a panel that scrolls a Tab stop, so the keyboard can scroll it.
-- Tables are as wide as their content, up to the column.
+- A panel wider than its column scrolls sideways, with a shade at the edge that has more and no scrollbar. The shade is global CSS (`custom.css`, "Sideways scrolling") on docs tables, code blocks, tabs and any element with `data-scroller`; each names its own background as `--scroll-bg`, which the shade's covers repeat. `src/clientModules/scrollAffordances.js` makes a panel that scrolls a Tab stop, so the keyboard can scroll it.
+- Tables are as wide as their content, up to the column. Under 640px a table that scrolls gives its last column 16em, so a description is not one word per line.
+- Identifiers wrap between their words on a phone: option names, form fields and environment variables render through `breakable()` (`Options.js`), which puts a `<wbr>` before each camelCase capital and after each underscore. Headings drop to 2.25rem under 640px, and the announcement bar keeps only its first link.
 - Content padding adjusts at 996px and 1400px breakpoints.
 - The homepage uses its own CSS grids, with breakpoints at 1100px and 640px. The delivery diagram turns into a numbered list of its steps when its panel is narrower than the diagram (a container query), and the run command wraps instead of scrolling.
 - Homepage code panels and the architecture matrix carry `data-scroller`, so they scroll with the site's cue. Under 640px the violation rows put the clause and its count above the text, the level table drops its file column, and the canvas bar drops its hint.

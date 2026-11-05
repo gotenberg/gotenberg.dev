@@ -4,6 +4,7 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import clsx from "clsx";
 import styles from "./ApiEndpoint.module.css";
+import { breakable } from "./Options";
 
 // Renders a description, turning `backtick`-wrapped literals into subtly
 // highlighted value spans (lighter than an inline code block).
@@ -71,7 +72,7 @@ const ParamsList = ({ title, items }) => {
         {items.map((item, idx) => (
           <div key={idx} className={styles.paramItem}>
             <div className={styles.paramHeader}>
-              <span className={styles.paramName}>{item.name}</span>
+              <span className={styles.paramName}>{breakable(item.name)}</span>
               <span className={styles.paramType}>{item.type}</span>
               {item.required && (
                 <span className={styles.requiredLabel}>required</span>

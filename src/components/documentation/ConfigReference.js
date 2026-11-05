@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import useBrokenLinks from "@docusaurus/useBrokenLinks";
 import data from "@site/src/data/flags.json";
 import styles from "./ConfigReference.module.css";
+import { breakable } from "./Options";
 
 const known = new Set(data.flags.map((flag) => flag.name));
 
@@ -72,7 +73,7 @@ export default function ConfigReference({ module }) {
             <a className={styles.name} href={`#${flag.name}`}>
               --{flag.name}
             </a>
-            <code className={styles.env}>{flag.env}</code>
+            <code className={styles.env}>{breakable(flag.env)}</code>
             <span className={styles.type}>{TYPES[flag.type] ?? flag.type}</span>
           </div>
           <p className={styles.description}>{describe(flag.description)}</p>

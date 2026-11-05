@@ -78,3 +78,9 @@
   color: var(--ifm-color-content-secondary);
   font-size: 0.9rem;
 }
+
+@media (max-width: 640px) {
+  .option {
+    padding: 10px 14px;
+  }
+}

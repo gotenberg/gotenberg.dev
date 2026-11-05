@@ -290,12 +290,12 @@ html[data-theme="dark"] .theme-code-block button[class*="copyButton"] {
 }
 
 /* --- SIDEWAYS SCROLLING --- */
-/* A panel wider than its column scrolls sideways. A short one shows a thin
-   scrollbar; a tall one shows a shade at the edge that has more, with covers
-   that move along the content and hide each shade once its edge is reached.
-   src/clientModules/scrollAffordances.js picks the cue by height and makes
-   the panel a Tab stop; until it runs, every panel shows the shade. Each
-   panel names its own background as --scroll-bg, which the covers repeat. */
+/* A panel wider than its column scrolls sideways, and a shade at an edge says
+   there is more that way: the covers move along the content and hide each
+   shade once its edge is reached, so a panel that fits shows nothing. The
+   scrollbar stays out of the way. Each panel names its own background as
+   --scroll-bg, which the covers repeat. src/clientModules/scrollAffordances.js
+   makes a panel that scrolls a Tab stop. */
 .theme-code-block pre {
   --scroll-bg: var(--code-bg);
 }
@@ -304,9 +304,7 @@ html[data-theme="dark"] .theme-code-block button[class*="copyButton"] {
   --scroll-bg: var(--panel-2);
 }
 
-:is(.markdown table, .theme-code-block pre, .tabs, [data-scroller]):not(
-  [data-scroll="bar"]
-) {
+:is(.markdown table, .theme-code-block pre, .tabs, [data-scroller]) {
   --scroll-edge: color-mix(
     in srgb,
     var(--ifm-color-content-secondary) 55%,
@@ -328,54 +326,13 @@ html[data-theme="dark"] .theme-code-block button[class*="copyButton"] {
   scrollbar-width: none;
 }
 
-:is(.markdown table, .theme-code-block pre, .tabs, [data-scroller]):not(
-    [data-scroll="bar"]
-  )::-webkit-scrollbar {
-  display: none;
-}
-
-/* The bar is drawn by the browser, never an overlay that hides until the
-   panel moves. Chromium and WebKit draw it from the pseudo-elements, and only
-   while scrollbar-width stays auto, which also undoes the thin bar Docusaurus
-   sets on code blocks. Firefox draws it from the standard properties. */
 :is(
   .markdown table,
   .theme-code-block pre,
   .tabs,
   [data-scroller]
-)[data-scroll="bar"] {
-  scrollbar-width: auto;
-  scrollbar-color: auto;
-}
-
-[data-scroll="bar"]::-webkit-scrollbar {
-  width: var(--ifm-scrollbar-size);
-  height: var(--ifm-scrollbar-size);
-}
-
-[data-scroll="bar"]::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-[data-scroll="bar"]::-webkit-scrollbar-thumb {
-  background: var(--ifm-scrollbar-thumb-background-color);
-  border-radius: 10px;
-}
-
-[data-scroll="bar"]::-webkit-scrollbar-thumb:hover {
-  background: var(--ifm-scrollbar-thumb-hover-background-color);
-}
-
-@supports not selector(::-webkit-scrollbar) {
-  :is(
-    .markdown table,
-    .theme-code-block pre,
-    .tabs,
-    [data-scroller]
-  )[data-scroll="bar"] {
-    scrollbar-width: thin;
-    scrollbar-color: var(--ifm-scrollbar-thumb-background-color) transparent;
-  }
+)::-webkit-scrollbar {
+  display: none;
 }
 
 /* --- PRINT --- */
@@ -1306,5 +1263,34 @@ html[data-theme="dark"] .footer--dark {
   main[class^="docMainContainer_"],
   div[class^="docMainContainer_"] {
     padding-left: 7rem !important;
+  }
+}
+
+/* --- PHONES --- */
+/* Last, so these rules win over the ones above at equal specificity. */
+@media (max-width: 640px) {
+  /* The headline keeps its longest word on one line. */
+  .markdown h1 {
+    font-size: 2.25rem;
+  }
+
+  /* One link is enough on a narrow bar. */
+  .announcement-more {
+    display: none;
+  }
+
+  /* A table that scrolls anyway gives its last column, usually the
+     description, room to read, rather than one word per line. */
+  .markdown table[data-scrolls] th:last-child,
+  .markdown table[data-scrolls] td:last-child {
+    min-width: 16em;
+  }
+
+  .markdown table th {
+    padding: 10px 12px;
+  }
+
+  .markdown table td {
+    padding: 9px 12px;
   }
 }

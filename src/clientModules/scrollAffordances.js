@@ -1,34 +1,30 @@
 import ExecutionEnvironment from "@docusaurus/ExecutionEnvironment";
 
-// A panel wider than its column scrolls sideways. A short one shows a thin
-// scrollbar, a tall one a shade at the edge that has more (see custom.css).
-// A panel that scrolls also becomes a Tab stop, so a keyboard user can
-// scroll it with the arrow keys.
+// A panel wider than its column scrolls sideways, with a shade at the edge
+// that has more (see custom.css). Such a panel also becomes a Tab stop, so a
+// keyboard user can scroll it with the arrow keys, and carries data-scrolls,
+// which the stylesheet reads to give a table's last column room on a phone.
 const PANELS = ".markdown table, .theme-code-block pre, .tabs, [data-scroller]";
-
-// Under this height a scrollbar sits close enough to the eye; above it, the
-// shade reads better.
-const TALL = 200;
 
 function markAll() {
   queued = false;
   const panels = Array.from(document.querySelectorAll(PANELS));
   // Read every measure before writing any attribute, so the browser lays the
-  // page out once. clientHeight leaves the scrollbar out, so the cue does not
-  // change the measure it depends on.
-  const marks = panels.map((panel) => ({
-    panel,
-    cue: panel.clientHeight > TALL ? "shade" : "bar",
-    scrolls: panel.scrollWidth > panel.clientWidth + 1,
-  }));
-  for (const { panel, cue, scrolls } of marks) {
-    if (panel.dataset.scroll !== cue) panel.dataset.scroll = cue;
+  // page out once.
+  const scrolling = panels.map(
+    (panel) => panel.scrollWidth > panel.clientWidth + 1,
+  );
+  panels.forEach((panel, i) => {
     // Docusaurus makes every code block a Tab stop on its own.
-    if (panel.tagName === "PRE") continue;
-    if (scrolls && panel.tabIndex !== 0) panel.tabIndex = 0;
-    else if (!scrolls && panel.hasAttribute("tabindex"))
+    if (panel.tagName === "PRE") return;
+    if (scrolling[i] && panel.tabIndex !== 0) {
+      panel.tabIndex = 0;
+      panel.dataset.scrolls = "";
+    } else if (!scrolling[i] && panel.hasAttribute("tabindex")) {
       panel.removeAttribute("tabindex");
-  }
+      delete panel.dataset.scrolls;
+    }
+  });
 }
 
 let queued = false;

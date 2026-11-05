@@ -206,3 +206,16 @@
   border: 1px solid var(--ifm-border-color);
   border-radius: 10px;
 }
+
+/* Tighter insets on a phone: the panel, its zones and the option rows nest
+   three paddings deep. */
+@media (max-width: 640px) {
+  .apiHeader {
+    padding: 10px 14px;
+  }
+
+  .sectionInput,
+  .sectionTechnical {
+    padding: 1rem 0.75rem;
+  }
+}
