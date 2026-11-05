@@ -52,6 +52,8 @@ Every variant processes PDFs with litho, Gotenberg's PDF engine: merge, split, s
 
 A route whose engine an image lacks answers 404.
 
+On 386, Docker 29.4 and later deny the `socketcall` system call in their default seccomp profile, to block the `AF_ALG` sockets of CVE-2026-31431. Gotenberg opens its sockets through `socketcall` on that architecture, so it fails to start with `listen tcp :3000: socket: function not implemented`. Run the image with `--security-opt seccomp=unconfined` (`security_opt: [seccomp=unconfined]` in Compose), or with a copy of [Docker's default profile](https://docs.docker.com/engine/security/seccomp/) that allows `socketcall`. Either way the container can open `AF_ALG` sockets again, so keep the host kernel patched against CVE-2026-31431.
+
 ## Docker Compose
 
 ```yaml title="compose.yaml"
