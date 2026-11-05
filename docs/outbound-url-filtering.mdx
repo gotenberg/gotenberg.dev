@@ -28,7 +28,7 @@ Operators exposing Gotenberg to untrusted callers opt into stricter checks via t
 
 Hardening for specific primitives. No setting turns them off.
 
-**DNS-rebind pinning proxy.** Chromium and LibreOffice route every outbound HTTP/HTTPS request through an in-process proxy. The proxy resolves DNS once and pins the dial to the validated IP. Setting `CHROMIUM_PROXY_SERVER` or `CHROMIUM_HOST_RESOLVER_RULES` skips it, as does a hop carried by the [environment proxy](#environment-proxy), which owns DNS for the hops it carries.
+**DNS-rebind pinning proxy.** Chromium and LibreOffice route every outbound HTTP/HTTPS request through an in-process proxy. The proxy resolves DNS once and pins the dial to the validated IP. Setting `CHROMIUM_PROXY_SERVER` skips it, as does a hop carried by the [environment proxy](#environment-proxy), which owns DNS for the hops it carries. Since _8.40.0_, `CHROMIUM_HOST_RESOLVER_RULES` no longer skips it: Gotenberg applies the rules itself, so the IP-class checks judge the address a rule maps a host to, and an invalid rule stops Gotenberg at startup.
 
 **Only `http://` and `https://` on URL routes.** `/forms/chromium/convert/url` and `/forms/chromium/screenshot/url` return `400 Bad Request` for any other scheme. Since _8.39.0_, that includes Chromium's internal schemes, such as `chrome://` and `devtools://`, which load privileged pages. Use the `html` or `markdown` variants to render local HTML.
 
@@ -51,7 +51,7 @@ Each module exposes the same two boolean variables. All default to `false`. Each
 | `LIBREOFFICE_DENY_PRIVATE_IPS`       | Rejects LibreOffice outbound fetches resolving to a non-public IP.           |
 | `LIBREOFFICE_DENY_PUBLIC_IPS`        | Rejects LibreOffice outbound fetches resolving to a public IP.               |
 
-Non-public means loopback, RFC1918, link-local, or IPv6 unique-local. Since _8.37.0_, it also covers carrier-grade NAT (`100.64.0.0/10`, where some clouds serve instance metadata) and benchmarking (`198.18.0.0/15`). The check also unwraps IPv6 forms that embed an IPv4 destination, IPv4-mapped (`::ffff:10.0.0.1`), IPv4-translated, 6to4 (`2002::/16`), and Teredo (`2001::/32`), and rejects them when the embedded IPv4 is non-public. Since _8.38.0_, it ignores IPv6 zone identifiers, so `http://[::%251]/` counts as loopback instead of public.
+Non-public means loopback, RFC1918, link-local, or IPv6 unique-local. Since _8.37.0_, it also covers carrier-grade NAT (`100.64.0.0/10`, where some clouds serve instance metadata) and benchmarking (`198.18.0.0/15`). An IPv4-mapped address (`::ffff:10.0.0.1`) counts as the IPv4 it carries, and the IPv6 prefixes that tunnel or translate to an IPv4 destination, 6to4 (`2002::/16`), Teredo (`2001::/32`), NAT64 (`64:ff9b::/96`) and IPv4-compatible (`::/96`), count as non-public whatever they carry. Since _8.38.0_, the check ignores IPv6 zone identifiers, so `http://[::%251]/` counts as loopback instead of public. Since _8.40.0_, it covers every range the IANA special-purpose registries mark as not globally reachable, among them `0.0.0.0/8`, where Docker Desktop answers its host gateway, the documentation ranges, `240.0.0.0/4`, and the IPv6 `2001::/23` block with its benchmarking range `2001:2::/48`, `3fff::/20` and `5f00::/16`.
 
 LibreOffice also exposes `LIBREOFFICE_ALLOW_LIST` and `LIBREOFFICE_DENY_LIST`, mirroring Chromium and webhook.
 
@@ -60,6 +60,8 @@ Rejected URLs return `403 Forbidden`. LibreOffice fetches are the exception: the
 Chromium WebSockets go through the same checks. Since _8.38.0_, a WebSocket to a loopback or link-local address, such as `ws://127.0.0.1` or `ws://169.254.169.254`, traverses the pinning proxy whenever `CHROMIUM_ALLOW_LIST`, a non-default `CHROMIUM_DENY_LIST`, or an IP-class variable is set. Before, only the IP-class variables routed it there, and Chromium opened it directly, past the lists.
 
 Since _8.39.0_, WebSocket handshakes also honor deny rules that anchor on a path or on the `ws://` and `wss://` schemes, such as `^https?://internal\.example/` or `^wss://`. The pinning proxy refuses the tunnel when a rule matches the scheme's root URL. When only the full handshake URL matches, as with a path rule, the conversion fails with a generic `403 Forbidden`.
+
+Since _8.40.0_, WebSockets stay covered when `CHROMIUM_HOST_RESOLVER_RULES` is set. Before, any rule took the pinning proxy out, and a WebSocket reached its destination with only a warning in the logs. `CHROMIUM_PROXY_SERVER` still hands WebSockets to that proxy unchecked, so enforce the outbound policy there. Gotenberg logs a warning at startup when it is combined with one.
 
 ## Precedence
 
@@ -110,7 +112,7 @@ Gotenberg reads `HTTP_PROXY`, `HTTPS_PROXY` and `NO_PROXY`, plus their lowercase
 
 Enabling a variable relaxes no filter. The allow-list, the deny-list and the IP-class checks run against the destination URL before the request reaches the proxy, on every redirect hop. Only DNS pinning changes: a hop the proxy carries is dialed against the proxy, which owns DNS from there, while a hop the proxy declines, such as a `NO_PROXY` host, stays pinned to the IPs resolved during validation.
 
-`CHROMIUM_ENABLE_ENVIRONMENT_PROXY` needs `CHROMIUM_PROXY_SERVER` and `CHROMIUM_HOST_RESOLVER_RULES` unset. Both skip the pinning proxy that performs the upstream handshake.
+`CHROMIUM_ENABLE_ENVIRONMENT_PROXY` needs `CHROMIUM_PROXY_SERVER` unset, as it skips the pinning proxy that performs the upstream handshake. `CHROMIUM_HOST_RESOLVER_RULES` doesn't apply to the hops the environment proxy carries: the proxy resolves the original host.
 
 Gotenberg refuses to start when a module has its variable on and a proxy variable that is not a usable proxy URL. The error names the variable and never prints its value.
 
