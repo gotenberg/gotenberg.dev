@@ -44,7 +44,7 @@ The owner password guards the permissions: printing, copying text, editing, fill
 
 ## Encrypt last
 
-Encryption comes last in a list of stages: only `optimize` and `render` may follow it, and `optimize` then subsets the fonts only, since its other passes need the streams in clear. A PDF/A or Factur-X can't be encrypted, and an encrypted PDF can't be signed: the [order rules](/docs/pdf/pipe#order-rules) answer 400 first.
+Encryption comes last in a list of stages: only `optimize` and `render` may follow it. A PDF/A or Factur-X can't be encrypted, and an encrypted PDF can't be signed: the [order rules](/docs/pdf/pipe#order-rules) answer 400 first.
 
 <AsStage op="encrypt" />
 
