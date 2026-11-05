@@ -123,6 +123,7 @@
 /* --- Terminal (ink plate, shared code palette) --- */
 
 .g9-code {
+  --scroll-bg: var(--code-bg);
   padding: 18px 22px 20px;
   overflow-x: auto;
   font: 13.5px/1.8 var(--mono);
@@ -169,9 +170,17 @@
 
 /* --- Architecture matrix --- */
 
+/* The matrix scrolls sideways in its tile once the columns no longer fit,
+   with the site's scroll cue. */
+.g9-scroll {
+  --scroll-bg: var(--panel);
+  overflow-x: auto;
+}
+
 .g9-matrix {
   display: table;
   width: 100%;
+  min-width: max-content;
   margin: 0;
   overflow: visible;
   border-collapse: collapse;
@@ -642,6 +651,15 @@
   .cb-end__box {
     padding: 32px 22px;
   }
+
+  .cb-tile {
+    padding: 22px 18px;
+  }
+
+  .g9-matrix th,
+  .g9-matrix td {
+    padding: 10px 12px;
+  }
 }
 /* The conformance instrument: a validator that scans a real PDF, then
    remediates it to compliant. */
@@ -928,6 +946,22 @@
   .cc-page {
     transform: scale(0.85);
   }
+
+  /* The clause and its count on one row, the text under them: three columns
+     leave the text too little room. */
+  .cc-rows li {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 6px 14px;
+  }
+
+  .cc-rows li > span {
+    grid-column: 1 / -1;
+  }
+
+  .cc-rows em {
+    grid-row: 1;
+    grid-column: 2;
+  }
 }
 /* The delivery diagram. */
 
@@ -1206,8 +1240,8 @@
   font-size: 13px;
 }
 
-/* A shade at an edge says the code scrolls that way. The covers move with
-   the code and hide each shade once its edge is reached. */
+/* The code panels' background, which the sideways scroll cue of custom.css
+   repeats in its covers. */
 .xb-code,
 .xb-press .cb-col--out {
   --code-bg: var(--panel);
@@ -1216,21 +1250,6 @@
 :global([data-theme="dark"]) .xb .xb-code,
 :global([data-theme="dark"]) .xb .xb-press .cb-col--out {
   --code-bg: var(--plate);
-}
-
-.xb-code .g9-code,
-.xb-press .cb-col--out .g9-code {
-  --edge: color-mix(in srgb, var(--muted) 55%, transparent);
-  background:
-    linear-gradient(90deg, var(--code-bg) 40%, transparent) left / 32px 100%
-      no-repeat local,
-    linear-gradient(270deg, var(--code-bg) 40%, transparent) right / 32px 100%
-      no-repeat local,
-    radial-gradient(farthest-side at 0 50%, var(--edge), transparent) left /
-      14px 100% no-repeat scroll,
-    radial-gradient(farthest-side at 100% 50%, var(--edge), transparent) right /
-      14px 100% no-repeat scroll,
-    var(--code-bg);
 }
 
 .xb-sep {
@@ -3158,6 +3177,10 @@
     font-size: 34px;
   }
 
+  .xb-canvas-bar__hint {
+    display: none;
+  }
+
   .xb-canvas {
     height: 520px;
   }
@@ -3190,7 +3213,7 @@
   }
 
   .xb-lv {
-    grid-template-columns: 22px minmax(0, 1fr) 104px;
+    grid-template-columns: 22px minmax(0, 1fr) auto;
   }
 
   .xb-lv__file,

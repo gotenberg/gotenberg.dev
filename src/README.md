@@ -99,8 +99,9 @@ Full-width sponsors band shown below the content on every doc page. Mounted once
 
 ## Responsive design
 
-- Tables are as wide as their content, up to the column; one that cannot fit scrolls sideways inside its panel, with a shade at the edge that has more. `src/clientModules/scrollableTables.js` makes such a table a Tab stop, so the keyboard can scroll it.
+- A panel wider than its column scrolls sideways with one of two cues, picked by height: a thin scrollbar under a short panel (up to 200px), a shade at the edge that has more on a tall one. The cue is global CSS (`custom.css`, "Sideways scrolling") on docs tables, code blocks, tabs and any element with `data-scroller`; each names its own background as `--scroll-bg`, which the shade's covers repeat. `src/clientModules/scrollAffordances.js` picks the cue and makes a panel that scrolls a Tab stop, so the keyboard can scroll it.
+- Tables are as wide as their content, up to the column.
 - Content padding adjusts at 996px and 1400px breakpoints.
 - The homepage uses its own CSS grids, with breakpoints at 1100px and 640px. The delivery diagram turns into a numbered list of its steps when its panel is narrower than the diagram (a container query), and the run command wraps instead of scrolling.
-- Homepage code panels that scroll sideways show a shade at the edge that has more code.
+- Homepage code panels and the architecture matrix carry `data-scroller`, so they scroll with the site's cue. Under 640px the violation rows put the clause and its count above the text, the level table drops its file column, and the canvas bar drops its hint.
 - Above 1100px, the control column and its code panel are both sticky, so the shorter one stays in view. This needs `overflow-x: clip` on `.g9`: `hidden` makes it a scroll container and breaks sticky.

@@ -289,9 +289,93 @@ html[data-theme="dark"] .theme-code-block button[class*="copyButton"] {
   }
 }
 
+/* --- SIDEWAYS SCROLLING --- */
+/* A panel wider than its column scrolls sideways. A short one shows a thin
+   scrollbar; a tall one shows a shade at the edge that has more, with covers
+   that move along the content and hide each shade once its edge is reached.
+   src/clientModules/scrollAffordances.js picks the cue by height and makes
+   the panel a Tab stop; until it runs, every panel shows the shade. Each
+   panel names its own background as --scroll-bg, which the covers repeat. */
 .theme-code-block pre {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(148, 163, 184, 0.5) transparent;
+  --scroll-bg: var(--code-bg);
+}
+
+.tabs {
+  --scroll-bg: var(--panel-2);
+}
+
+:is(.markdown table, .theme-code-block pre, .tabs, [data-scroller]):not(
+  [data-scroll="bar"]
+) {
+  --scroll-edge: color-mix(
+    in srgb,
+    var(--ifm-color-content-secondary) 55%,
+    transparent
+  );
+  background-image:
+    linear-gradient(90deg, var(--scroll-bg, var(--panel)) 40%, transparent),
+    linear-gradient(270deg, var(--scroll-bg, var(--panel)) 40%, transparent),
+    radial-gradient(farthest-side at 0 50%, var(--scroll-edge), transparent),
+    radial-gradient(farthest-side at 100% 50%, var(--scroll-edge), transparent);
+  background-position: left, right, left, right;
+  background-size:
+    32px 100%,
+    32px 100%,
+    14px 100%,
+    14px 100%;
+  background-repeat: no-repeat;
+  background-attachment: local, local, scroll, scroll;
+  scrollbar-width: none;
+}
+
+:is(.markdown table, .theme-code-block pre, .tabs, [data-scroller]):not(
+    [data-scroll="bar"]
+  )::-webkit-scrollbar {
+  display: none;
+}
+
+/* The bar is drawn by the browser, never an overlay that hides until the
+   panel moves. Chromium and WebKit draw it from the pseudo-elements, and only
+   while scrollbar-width stays auto, which also undoes the thin bar Docusaurus
+   sets on code blocks. Firefox draws it from the standard properties. */
+:is(
+  .markdown table,
+  .theme-code-block pre,
+  .tabs,
+  [data-scroller]
+)[data-scroll="bar"] {
+  scrollbar-width: auto;
+  scrollbar-color: auto;
+}
+
+[data-scroll="bar"]::-webkit-scrollbar {
+  width: var(--ifm-scrollbar-size);
+  height: var(--ifm-scrollbar-size);
+}
+
+[data-scroll="bar"]::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+[data-scroll="bar"]::-webkit-scrollbar-thumb {
+  background: var(--ifm-scrollbar-thumb-background-color);
+  border-radius: 10px;
+}
+
+[data-scroll="bar"]::-webkit-scrollbar-thumb:hover {
+  background: var(--ifm-scrollbar-thumb-hover-background-color);
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  :is(
+    .markdown table,
+    .theme-code-block pre,
+    .tabs,
+    [data-scroller]
+  )[data-scroll="bar"] {
+    scrollbar-width: thin;
+    scrollbar-color: var(--ifm-scrollbar-thumb-background-color) transparent;
+  }
 }
 
 /* --- PRINT --- */
@@ -493,24 +577,7 @@ html[data-theme="dark"] .theme-code-block button[class*="copyButton"] {
   border-spacing: 0;
   margin-bottom: 2.5rem;
   font-size: 0.875rem;
-  /* A shade at an edge says the table scrolls that way, as on the homepage's
-     code panels: the covers move with the table and hide each shade once its
-     edge is reached. */
-  --edge: color-mix(
-    in srgb,
-    var(--ifm-color-content-secondary) 55%,
-    transparent
-  );
-  background:
-    linear-gradient(90deg, var(--panel) 40%, transparent) left / 32px 100%
-      no-repeat local,
-    linear-gradient(270deg, var(--panel) 40%, transparent) right / 32px 100%
-      no-repeat local,
-    radial-gradient(farthest-side at 0 50%, var(--edge), transparent) left /
-      14px 100% no-repeat scroll,
-    radial-gradient(farthest-side at 100% 50%, var(--edge), transparent) right /
-      14px 100% no-repeat scroll,
-    var(--panel);
+  background-color: var(--panel);
   border: 1px solid var(--ifm-border-color);
   border-radius: var(--radius);
 }

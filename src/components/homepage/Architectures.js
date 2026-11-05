@@ -18,36 +18,35 @@ export default function Architectures() {
         their own images.
       </SectionHead>
       <div className={cx("cb-bento")}>
-        <article
-          className={cx("cb-tile cb-tile--6")}
-          style={{ overflowX: "auto" }}
-        >
-          <table className={cx("g9-matrix")}>
-            <thead>
-              <tr>
-                <th style={{ textAlign: "left" }}>gotenberg/gotenberg</th>
-                {ARCHITECTURES.map((arch) => (
-                  <th key={arch}>{arch}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {IMAGES.map(([tag, count]) => (
-                <tr key={tag}>
-                  <th>{tag}</th>
-                  {ARCHITECTURES.map((arch, i) => (
-                    <td key={arch}>
-                      <span
-                        className={cx(i < count ? "g9-yes" : "g9-no")}
-                        role="img"
-                        aria-label={i < count ? "Available" : "Not available"}
-                      />
-                    </td>
+        <article className={cx("cb-tile cb-tile--6")}>
+          <div className={cx("g9-scroll")} data-scroller="">
+            <table className={cx("g9-matrix")}>
+              <thead>
+                <tr>
+                  <th style={{ textAlign: "left" }}>gotenberg/gotenberg</th>
+                  {ARCHITECTURES.map((arch) => (
+                    <th key={arch}>{arch}</th>
                   ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {IMAGES.map(([tag, count]) => (
+                  <tr key={tag}>
+                    <th>{tag}</th>
+                    {ARCHITECTURES.map((arch, i) => (
+                      <td key={arch}>
+                        <span
+                          className={cx(i < count ? "g9-yes" : "g9-no")}
+                          role="img"
+                          aria-label={i < count ? "Available" : "Not available"}
+                        />
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </article>
       </div>
     </Section>

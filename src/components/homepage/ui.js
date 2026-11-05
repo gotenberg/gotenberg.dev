@@ -265,7 +265,7 @@ export function RunCommand() {
 // Highlighted lines from requests.js.
 export function CodeLines({ lines }) {
   return (
-    <div className={cx("g9-code")}>
+    <div className={cx("g9-code")} data-scroller="">
       {lines.map((line, i) => (
         <div key={i} className={cx(line.cls)}>
           {line.parts.map((p, j) => (

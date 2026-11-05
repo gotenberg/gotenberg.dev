@@ -327,5 +327,5 @@ module.exports = {
       },
     ],
   ],
-  clientModules: [require.resolve("./src/clientModules/scrollableTables.js")],
+  clientModules: [require.resolve("./src/clientModules/scrollAffordances.js")],
 };

@@ -189,8 +189,11 @@ export default function Hero() {
           <div className={cx("cb-col cb-col--rail")}>
             <div className={cx("xb-canvas-bar")}>
               <span>
-                <b className={cx("xb-canvas-bar__t")}>Canvas</b> · every
-                paperSize, to scale
+                <b className={cx("xb-canvas-bar__t")}>Canvas</b>
+                <span className={cx("xb-canvas-bar__hint")}>
+                  {" "}
+                  · every paperSize, to scale
+                </span>
               </span>
               <span>{`${paper} ${landscape ? "landscape" : "portrait"}`}</span>
             </div>
