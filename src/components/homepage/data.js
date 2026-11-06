@@ -102,7 +102,7 @@ export const STAGE_GROUP = Object.fromEntries(
     ["g-files", ["attach", "detach", "extract-attachments"]],
     ["g-security", ["encrypt", "decrypt", "sign", "timestamp"]],
     ["g-conform", ["remediate"]],
-    ["g-output", ["render"]],
+    ["g-output", ["render", "extract-text"]],
   ].flatMap(([cls, ops]) => ops.map((op) => [op, cls])),
 );
 
@@ -217,6 +217,27 @@ export const READ_ROUTES = [
         name: "factur-x.xml",
         mimeType: "text/xml",
         relationship: "Alternative",
+      },
+    ],
+  },
+  {
+    name: "form",
+    desc: "The form fields, with their values, in the shape set-form fills.",
+    file: "fields.pdf",
+    answer: [
+      {
+        name: "agree",
+        type: "checkbox",
+        value: "Off",
+        pages: [1],
+        states: ["Yes"],
+      },
+      {
+        name: "color",
+        type: "combo",
+        value: "Red",
+        pages: [1],
+        options: ["Red", "Green"],
       },
     ],
   },

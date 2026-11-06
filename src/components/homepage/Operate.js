@@ -52,7 +52,7 @@ function Write({ recipeKey, setRecipeKey }) {
           ))}
         </RadioGroup>
         <Link className={cx("xb-more")} to="/docs/pdf/pipe">
-          All 27 stages, in the documentation
+          All 28 stages, in the documentation
           <svg
             className={cx("xb-more__icon")}
             width="18"
@@ -132,12 +132,12 @@ export default function Operate() {
       <SectionHead
         n="04"
         kicker="Operate"
-        title="27 stages write."
-        accent="5 routes read."
-        lede="Write stages change the PDF and send it back. Read routes leave it as it is and answer JSON."
+        title="25 stages write."
+        accent="6 routes read."
+        lede="Write stages change the PDF and send it back. Read routes leave it as it is and answer JSON. Three more stages, render, extract-attachments and extract-text, return images, files or text."
       >
         Gotenberg checks the order of the stages before it runs them: decrypt
-        comes first, render or extract-attachments last, and nothing rewrites a
+        comes first, render or an extraction last, and nothing rewrites a
         signature.
       </SectionHead>
       <RadioGroup
@@ -148,7 +148,7 @@ export default function Operate() {
       >
         <Radio value={false} className="xb-mode">
           <span className={cx("xb-mode__k")}>Write · returns a PDF</span>
-          <span className={cx("xb-mode__n")}>27 stages</span>
+          <span className={cx("xb-mode__n")}>25 stages</span>
           <span className={cx("xb-mode__d")}>
             Chain them in the <code>stages</code> field of{" "}
             <code>/forms/pdf/pipe</code> or of any conversion route. Each one
@@ -157,10 +157,10 @@ export default function Operate() {
         </Radio>
         <Radio value={true} className="xb-mode">
           <span className={cx("xb-mode__k")}>Read · returns JSON</span>
-          <span className={cx("xb-mode__n")}>5 routes</span>
+          <span className={cx("xb-mode__n")}>6 routes</span>
           <span className={cx("xb-mode__d")}>
-            info, metadata, bookmarks, attachments and validate. One answer per
-            request, keyed by file name.
+            info, metadata, bookmarks, attachments, form and validate. One
+            answer per request, keyed by file name.
           </span>
         </Radio>
       </RadioGroup>

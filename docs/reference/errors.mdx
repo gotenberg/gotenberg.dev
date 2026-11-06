@@ -83,13 +83,13 @@ A list of stages names the stage, counted from 0, and the rule it breaks:
 ```text
 Invalid form data: form field 'stages' is invalid: stage 0: rotate: "angle" is invalid (got "x", want an integer)
 Invalid form data: form field 'stages' is invalid: stage 0: rotate: "angle" must be a multiple of 90, got 45
-Invalid form data: form field 'stages' is invalid: stage 1: "rotate" cannot follow "encrypt": only optimize, render and extract-attachments may
+Invalid form data: form field 'stages' is invalid: stage 1: "rotate" cannot follow "encrypt": only optimize, render, extract-attachments and extract-text may
 ```
 
 An unknown operation lists the ones Gotenberg runs, and an option out of range says what it takes:
 
 ```text
-Invalid form data: form field 'stages' is invalid: stage 0: unknown operation "nope"; the operations are attach, autotag, convert-colors, decrypt, delete, detach, encrypt, extract-attachments, flatten-form, flatten-transparency, insert, merge, optimize, redact, remediate, render, rotate, select, set-bookmarks, set-form, set-metadata, sign, split, stamp-image, stamp-pdf, stamp-text, timestamp
+Invalid form data: form field 'stages' is invalid: stage 0: unknown operation "nope"; the operations are attach, autotag, convert-colors, decrypt, delete, detach, encrypt, extract-attachments, extract-text, flatten-form, flatten-transparency, insert, merge, optimize, redact, remediate, render, rotate, select, set-bookmarks, set-form, set-metadata, sign, split, stamp-image, stamp-pdf, stamp-text, timestamp
 Invalid form data: form field 'stages' is invalid: stage 0: render: "dpi" must be at least 1, got 0
 ```
 

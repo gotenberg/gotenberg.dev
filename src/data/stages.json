@@ -643,6 +643,47 @@
       "response": "The file, or a ZIP of the files when there are several."
     },
     {
+      "op": "extract-text",
+      "summary": "Returns the text the pages show as a `.txt` file, its pages separated by a form feed, which comes back in a ZIP next to the PDF: `report.txt`. `/forms/pdf/extract-text` returns the text alone. Comes last.",
+      "options": [
+        {
+          "name": "pages",
+          "type": "pages",
+          "default": "all",
+          "description": "The pages to read, in the order given."
+        },
+        {
+          "name": "invisible",
+          "type": "boolean",
+          "default": "false",
+          "description": "Adds the text layer a searchable scan carries under its image. Gotenberg recognizes no text in an image."
+        },
+        {
+          "name": "artifacts",
+          "type": "boolean",
+          "default": "false",
+          "description": "Adds the headers, footers, page numbers and stamps the PDF marks as artifacts."
+        },
+        {
+          "name": "annotations",
+          "type": "boolean",
+          "default": "false",
+          "description": "Adds the text of annotations, such as comments and free-text boxes."
+        }
+      ],
+      "example": {
+        "files": ["report.pdf"],
+        "stages": [
+          {
+            "op": "extract-text",
+            "pages": "1"
+          }
+        ],
+        "output": "report.txt"
+      },
+      "response": "The text file, or a ZIP of the text files when there are several."
+    },
+    {
       "op": "optimize",
       "summary": "Rewrites the PDF to shrink it. Every option is on unless you turn it off. A signed PDF answers 400, and so does an encrypted one, unless the stages decrypt or encrypt it.",
       "options": [

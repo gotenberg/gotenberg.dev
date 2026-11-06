@@ -300,7 +300,7 @@ export default function Deliver() {
                 via lok, LibreOfficeKit
               </div>
               <div className={cx("cd-mod cd-mod--li")}>
-                <b>LITHO</b>27 stages · validate
+                <b>LITHO</b>28 stages · validate
                 <br />
                 remediate · pure Go
               </div>

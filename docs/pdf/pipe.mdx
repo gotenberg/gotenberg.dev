@@ -37,11 +37,11 @@ Runs a list of stages on the PDFs you upload, in order.
 
 Gotenberg checks the order of the stages before it runs any, and answers 400 with the rule a list breaks:
 
-- `decrypt` comes first, and `render` or `extract-attachments` last.
+- `decrypt` comes first, and `render`, `extract-attachments` or `extract-text` last.
 - A list has at most one `remediate`, one `encrypt`, one `sign` and one `timestamp`. One `remediate` takes a PDF/A profile and a PDF/UA one together.
-- After `remediate`, only `encrypt`, `optimize`, `sign`, `timestamp`, `render` and `extract-attachments` may follow.
-- After `encrypt`, only `optimize`, `render` and `extract-attachments` may follow.
-- After `sign` or `timestamp`, only `sign`, `timestamp`, `render` and `extract-attachments` may follow.
+- After `remediate`, only `encrypt`, `optimize`, `sign`, `timestamp`, `render`, `extract-attachments` and `extract-text` may follow.
+- After `encrypt`, only `optimize`, `render`, `extract-attachments` and `extract-text` may follow.
+- After `sign` or `timestamp`, only `sign`, `timestamp`, `render`, `extract-attachments` and `extract-text` may follow.
 - `encrypt` doesn't combine with `sign`, `timestamp`, or a PDF/A or Factur-X `remediate`.
 - `decrypt` doesn't combine with `sign` or `timestamp`: sign the decrypted PDF in a request of its own.
 
@@ -53,7 +53,7 @@ A stage either rewrites the PDF whole or appends an update to it. A rewrite drop
 | :---------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Rewritten, signatures refused | `select`, `delete`, `insert`, `merge`, `split`, `encrypt`, `decrypt`, `flatten-form`, `redact`, `remediate`, `convert-colors`, `flatten-transparency`, `optimize` |
 | Updated, signatures kept      | `rotate`, `stamp-text`, `stamp-image`, `stamp-pdf`, `set-form`, `set-metadata`, `set-bookmarks`, `attach`, `detach`, `autotag`, `sign`, `timestamp`               |
-| Unchanged                     | `render`, which makes images, and `extract-attachments`, which returns the embedded files                                                                         |
+| Unchanged                     | `render`, which makes images, `extract-attachments`, which returns the embedded files, and `extract-text`, which returns the text                                 |
 
 ## Page selections
 

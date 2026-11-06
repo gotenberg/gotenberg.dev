@@ -1,0 +1,53 @@
+---
+id: extract-text
+title: Extract the text
+sidebar_label: Extract text
+---
+
+import AsStage from "./_shared/_as-stage.mdx";
+
+Returns the text a PDF shows, as a UTF-8 `.txt` file: for search indexes, language models, or a diff between two versions.
+
+<Endpoint op="extract-text" />
+
+## Extract every page
+
+<Request
+  route="/forms/pdf/extract-text"
+  files={["report.pdf"]}
+  output="report.txt"
+/>
+
+The file takes the name of the PDF: `report.txt`. A form feed separates the pages, as with `pdftotext`, so you can split it back into pages. Several PDFs come back in a ZIP.
+
+## Extract some pages
+
+<Request
+  route="/forms/pdf/extract-text"
+  files={["report.pdf"]}
+  fields={{ pages: "1" }}
+  output="report.txt"
+/>
+
+`pages` takes a page selection, read in the order it gives.
+
+## Choose what counts as text
+
+Gotenberg reads what the page shows. It leaves out:
+
+- The text layer a searchable scan carries under its image. `invisible` adds it. Gotenberg recognizes no text in an image: a scanned page without that layer reads as empty.
+- Headers, footers, page numbers and stamps the PDF marks as artifacts. `artifacts` adds them.
+- The text of annotations, such as comments and free-text boxes. `annotations` adds it.
+
+<Request
+  route="/forms/pdf/extract-text"
+  files={["report.pdf"]}
+  fields={{ invisible: true, artifacts: true, annotations: true }}
+  output="report.txt"
+/>
+
+## Extract after other stages
+
+`extract-text` comes last in a list of stages. On its own, it answers the text only. After other stages, the ZIP holds the PDF too. A conversion takes the stage too: a [LibreOffice](/docs/libreoffice/convert#add-stages) conversion with `extract-text` returns a Word document as a PDF and its text, in a ZIP.
+
+<AsStage op="extract-text" />

@@ -87,6 +87,7 @@ module.exports = {
           "convert-colors",
           "flatten-transparency",
           "render",
+          "extract-text",
         ]),
         group("Read", [
           "info",
