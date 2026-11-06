@@ -99,7 +99,7 @@ export const STAGE_GROUP = Object.fromEntries(
       ],
     ],
     ["g-access", ["autotag", "redact"]],
-    ["g-files", ["attach", "detach"]],
+    ["g-files", ["attach", "detach", "extract-attachments"]],
     ["g-security", ["encrypt", "decrypt", "sign", "timestamp"]],
     ["g-conform", ["remediate"]],
     ["g-output", ["render"]],

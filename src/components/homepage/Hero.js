@@ -28,7 +28,7 @@ function Facts() {
       </p>
       <ul className={cx("xb-facts")}>
         <li className={cx("xb-fact")}>Pure-Go PDF engine</li>
-        <li className={cx("xb-fact")}>26 PDF stages</li>
+        <li className={cx("xb-fact")}>27 PDF stages</li>
         <li className={cx("xb-fact")}>PDF/A · PDF/UA · Factur-X</li>
       </ul>
       <div className={cx("xb-btns")}>

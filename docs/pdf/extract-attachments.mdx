@@ -1,0 +1,40 @@
+---
+id: extract-attachments
+title: Extract the attachments
+sidebar_label: Extract attachments
+---
+
+import AsStage from "./_shared/_as-stage.mdx";
+
+Returns the files embedded in a PDF, such as the `factur-x.xml` of an electronic invoice.
+
+<Endpoint op="extract-attachments" />
+
+## Extract one file
+
+<Request
+  route="/forms/pdf/extract-attachments"
+  files={["invoice.pdf"]}
+  fields={{ name: "factur-x.xml" }}
+  output="invoice_factur-x.xml"
+/>
+
+Each file comes back named after the PDF, then after itself: `invoice_factur-x.xml`. One file answers on its own, several in a ZIP. `name` is the name [`/forms/pdf/attachments`](/docs/pdf/attachments) lists. A name the PDF doesn't list answers 400, with the names it does list.
+
+## Extract every file
+
+Without `name`, Gotenberg returns them all, from every PDF you send:
+
+<Request
+  route="/forms/pdf/extract-attachments"
+  files={["invoice.pdf"]}
+  output="invoice_factur-x.xml"
+/>
+
+Send `invoice_1.pdf` and `invoice_2.pdf`, and the ZIP holds `invoice_1_factur-x.xml` and `invoice_2_factur-x.xml`: the PDF's name keeps them apart. A PDF without attachments answers 400.
+
+## Extract after other stages
+
+`extract-attachments` comes last in a list of stages, and can't follow `render`. On its own, it answers the files only. After other stages, the ZIP holds the PDF too, next to its files.
+
+<AsStage op="extract-attachments" />

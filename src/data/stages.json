@@ -620,6 +620,29 @@
       }
     },
     {
+      "op": "extract-attachments",
+      "summary": "Returns the embedded files, which come back in a ZIP next to the PDF: `invoice_factur-x.xml`. `/forms/pdf/extract-attachments` returns the files alone. Comes last.",
+      "options": [
+        {
+          "name": "name",
+          "type": "string",
+          "default": "all",
+          "description": "The name the PDF lists the file under. `/forms/pdf/attachments` lists them; a name it doesn't list answers 400."
+        }
+      ],
+      "example": {
+        "files": ["invoice.pdf"],
+        "stages": [
+          {
+            "op": "extract-attachments",
+            "name": "factur-x.xml"
+          }
+        ],
+        "output": "invoice_factur-x.xml"
+      },
+      "response": "The file, or a ZIP of the files when there are several."
+    },
+    {
       "op": "optimize",
       "summary": "Rewrites the PDF to shrink it. Every option is on unless you turn it off. A signed PDF answers 400, and so does an encrypted one, unless the stages decrypt or encrypt it.",
       "options": [

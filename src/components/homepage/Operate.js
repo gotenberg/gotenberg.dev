@@ -52,7 +52,7 @@ function Write({ recipeKey, setRecipeKey }) {
           ))}
         </RadioGroup>
         <Link className={cx("xb-more")} to="/docs/pdf/pipe">
-          All 26 stages, in the documentation
+          All 27 stages, in the documentation
           <svg
             className={cx("xb-more__icon")}
             width="18"
@@ -132,12 +132,13 @@ export default function Operate() {
       <SectionHead
         n="04"
         kicker="Operate"
-        title="26 stages write."
+        title="27 stages write."
         accent="5 routes read."
         lede="Write stages change the PDF and send it back. Read routes leave it as it is and answer JSON."
       >
         Gotenberg checks the order of the stages before it runs them: decrypt
-        comes first, render last, and nothing rewrites a signature.
+        comes first, render or extract-attachments last, and nothing rewrites a
+        signature.
       </SectionHead>
       <RadioGroup
         label="Write or read"
@@ -147,7 +148,7 @@ export default function Operate() {
       >
         <Radio value={false} className="xb-mode">
           <span className={cx("xb-mode__k")}>Write · returns a PDF</span>
-          <span className={cx("xb-mode__n")}>26 stages</span>
+          <span className={cx("xb-mode__n")}>27 stages</span>
           <span className={cx("xb-mode__d")}>
             Chain them in the <code>stages</code> field of{" "}
             <code>/forms/pdf/pipe</code> or of any conversion route. Each one

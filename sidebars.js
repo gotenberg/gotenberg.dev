@@ -75,6 +75,7 @@ module.exports = {
           "set-bookmarks",
           "attach",
           "detach",
+          "extract-attachments",
           "set-form",
           "flatten-form",
           "redact",
