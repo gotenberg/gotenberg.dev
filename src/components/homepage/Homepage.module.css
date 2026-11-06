@@ -481,16 +481,42 @@
 
 .cb-hero__top {
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-  gap: 48px;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 40px;
   align-items: end;
   margin-bottom: 44px;
+}
+
+/* The press animates beside the title, as tall as its two lines, and the
+   title column is sized to that row so the first line never wraps. The
+   press is a 40 px pixel grid, so it only takes whole multiples: 160 beside
+   the 84 px title, 120 where the column gets narrow and on phones. Its art
+   starts three grid cells in, hence the negative margin that puts the bed
+   on the column's edge. */
+.cb-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 28px;
+  margin: 24px 0 var(--ifm-heading-margin-bottom);
+}
+
+.cb-title-row .cb-title {
+  margin: 0;
+}
+
+.cb-title-row__press {
+  flex: none;
+  width: 160px;
+  height: 160px;
+  margin-left: -12px;
+  image-rendering: pixelated;
 }
 
 .cb-title {
   color: var(--ink);
   font-family: var(--font-display);
-  font-size: clamp(56px, 7vw, 100px);
+  font-size: clamp(56px, 6.5vw, 84px);
   font-weight: 800;
   line-height: 0.92;
   letter-spacing: -0.035em;
@@ -645,7 +671,34 @@
   }
 }
 
+@media (max-width: 1250px) {
+  .cb-title-row {
+    gap: 22px;
+  }
+
+  .cb-title-row__press {
+    width: 120px;
+    height: 120px;
+    margin-left: -9px;
+  }
+}
+
 @media (max-width: 640px) {
+  /* On phones the press stands centred above the title. */
+  .cb-title-row {
+    gap: 14px;
+  }
+
+  .cb-title-row .cb-title {
+    flex-basis: 100%;
+  }
+
+  .cb-title-row__press {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+  }
+
   .cb-end__box {
     padding: 32px 22px;
   }
@@ -1526,10 +1579,6 @@
 
 :global([data-theme="dark"]) .g9 .xb-pill__tag {
   color: #0b1215;
-}
-
-.xb .cb-title {
-  margin-top: 24px;
 }
 
 .g9 .xb-lede {

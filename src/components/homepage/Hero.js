@@ -120,11 +120,20 @@ export default function Hero() {
               <b className={cx("xb-pill__tag")}>Gotenberg 9</b>A Docker-based
               API for PDF
             </span>
-            <h1 className={cx("cb-title")}>
-              The PDF press,
-              <br />
-              <span>rebuilt.</span>
-            </h1>
+            <div className={cx("cb-title-row")}>
+              <img
+                className={cx("cb-title-row__press")}
+                src="/img/press-animated.svg"
+                alt=""
+                width="160"
+                height="160"
+              />
+              <h1 className={cx("cb-title")}>
+                The PDF press,
+                <br />
+                <span>rebuilt.</span>
+              </h1>
+            </div>
             <RunCommand />
           </div>
           <div>
