@@ -4,25 +4,31 @@ import cx from "./cx";
 import { GitHubIcon, RunCommand, StartButton } from "./ui";
 
 function Stat({ href, n, label }) {
+  // The arrow travels with the last word: a narrow column wraps the label
+  // between its words, never before the arrow.
+  const cut = label.lastIndexOf(" ") + 1;
   return (
     <Link className={cx("xb-stat")} href={href}>
       <span className={cx("xb-stat__n")}>{n}</span>
       <span className={cx("xb-stat__l")}>
-        {label}
-        <svg
-          className={cx("xb-stat__icon")}
-          width="13"
-          height="13"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.6"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M7 17L17 7M8 7h9v9" />
-        </svg>
+        {label.slice(0, cut)}
+        <span className={cx("xb-stat__end")}>
+          {label.slice(cut)}
+          <svg
+            className={cx("xb-stat__icon")}
+            width="13"
+            height="13"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M7 17L17 7M8 7h9v9" />
+          </svg>
+        </span>
       </span>
     </Link>
   );

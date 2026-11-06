@@ -123,7 +123,6 @@
 /* --- Terminal (ink plate, shared code palette) --- */
 
 .g9-code {
-  --scroll-bg: var(--code-bg);
   padding: 18px 22px 20px;
   overflow-x: auto;
   font: 13.5px/1.8 var(--mono);
@@ -173,7 +172,6 @@
 /* The matrix scrolls sideways in its tile once the columns no longer fit,
    with the site's scroll cue. */
 .g9-scroll {
-  --scroll-bg: var(--panel);
   overflow-x: auto;
 }
 
@@ -1485,6 +1483,19 @@
 
 .g9 .xb-btn--ghost:hover .xb-btn__star {
   transform: rotate(-18deg) scale(1.25);
+}
+
+/* A phone stacks the buttons at full width: the label on the left, the
+   arrow or the star count on the right. */
+@media (max-width: 640px) {
+  .xb-btns .xb-btn {
+    flex: 1 1 100%;
+  }
+
+  .xb-btn__icon,
+  .xb-btn__count {
+    margin-left: auto;
+  }
 }
 
 /* --- Hero head --- */
@@ -3067,8 +3078,11 @@
   border-left: 1px solid var(--rule);
 }
 
+/* Top-aligned: a stat with a one-line label stays level with one whose
+   label wraps. */
 .g9 .xb-stat {
   display: grid;
+  align-content: start;
   gap: 8px;
   color: var(--ink);
   text-decoration: none;
@@ -3094,7 +3108,11 @@
   color: var(--blue);
 }
 
-/* Inline, so a wrapped label keeps the arrow after its last word. */
+/* The last word and its arrow wrap together. */
+.xb-stat__end {
+  white-space: nowrap;
+}
+
 .xb-stat__icon {
   margin-left: 5px;
   vertical-align: -1px;
@@ -3198,7 +3216,11 @@
     font-size: 44px;
   }
 
+  /* Columns as wide as their labels, spread across the row, so each label
+     fits on one line. */
   .xb-endbox__stats {
+    grid-template-columns: repeat(3, auto);
+    justify-content: space-between;
     gap: 16px;
     padding: 28px 22px;
   }

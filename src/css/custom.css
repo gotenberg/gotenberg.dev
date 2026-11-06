@@ -291,39 +291,47 @@ html[data-theme="dark"] .theme-code-block button[class*="copyButton"] {
 
 /* --- SIDEWAYS SCROLLING --- */
 /* A panel wider than its column scrolls sideways, and a shade at an edge says
-   there is more that way: the covers move along the content and hide each
-   shade once its edge is reached, so a panel that fits shows nothing. The
-   scrollbar stays out of the way. Each panel names its own background as
-   --scroll-bg, which the covers repeat. src/clientModules/scrollAffordances.js
-   makes a panel that scrolls a Tab stop. */
-.theme-code-block pre {
-  --scroll-bg: var(--code-bg);
-}
-
-.tabs {
-  --scroll-bg: var(--panel-2);
-}
-
+   there is more that way. src/clientModules/scrollAffordances.js marks those
+   edges with data-more-left and data-more-right as the panel scrolls, and
+   makes a panel that scrolls a Tab stop. The shades stay put while the
+   content moves: iOS Safari keeps a background with attachment local still
+   on a panel scrolled by touch, so no cover can move along the content to
+   hide them. The scrollbar stays out of the way. */
 :is(.markdown table, .theme-code-block pre, .tabs, [data-scroller]) {
   --scroll-edge: color-mix(
     in srgb,
     var(--ifm-color-content-secondary) 55%,
     transparent
   );
+  --shade-left: 0px;
+  --shade-right: 0px;
   background-image:
-    linear-gradient(90deg, var(--scroll-bg, var(--panel)) 40%, transparent),
-    linear-gradient(270deg, var(--scroll-bg, var(--panel)) 40%, transparent),
     radial-gradient(farthest-side at 0 50%, var(--scroll-edge), transparent),
     radial-gradient(farthest-side at 100% 50%, var(--scroll-edge), transparent);
-  background-position: left, right, left, right;
+  background-position: left, right;
   background-size:
-    32px 100%,
-    32px 100%,
-    14px 100%,
-    14px 100%;
+    var(--shade-left) 100%,
+    var(--shade-right) 100%;
   background-repeat: no-repeat;
-  background-attachment: local, local, scroll, scroll;
   scrollbar-width: none;
+}
+
+:is(
+  .markdown table,
+  .theme-code-block pre,
+  .tabs,
+  [data-scroller]
+)[data-more-left] {
+  --shade-left: 14px;
+}
+
+:is(
+  .markdown table,
+  .theme-code-block pre,
+  .tabs,
+  [data-scroller]
+)[data-more-right] {
+  --shade-right: 14px;
 }
 
 :is(
@@ -1003,8 +1011,9 @@ a[class*="sidebarLogo"] b {
   background-color: transparent;
 }
 
-/* Category headers: the homepage's small uppercase labels. */
-.menu__list-item-collapsible > .menu__link {
+/* Category headers: the homepage's small uppercase labels. Only in the doc
+   sidebar: the phone menu's version dropdown is a navbar link. */
+.theme-doc-sidebar-menu .menu__list-item-collapsible > .menu__link {
   color: var(--ifm-color-content-secondary);
   font-weight: 700;
   font-size: 0.72rem;
@@ -1015,7 +1024,7 @@ a[class*="sidebarLogo"] b {
   padding-bottom: 12px;
 }
 
-.menu__list-item-collapsible > .menu__link:hover {
+.theme-doc-sidebar-menu .menu__list-item-collapsible > .menu__link:hover {
   background-color: transparent;
   color: var(--ifm-heading-color);
 }
@@ -1277,6 +1286,12 @@ html[data-theme="dark"] .footer--dark {
   /* One link is enough on a narrow bar. */
   .announcement-more {
     display: none;
+  }
+
+  /* Previous and next sit side by side: a smaller title keeps a short one on
+     one line. */
+  .pagination-nav__label {
+    font-size: 1rem;
   }
 
   /* A table that scrolls anyway gives its last column, usually the
