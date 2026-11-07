@@ -14,10 +14,7 @@
   border: 1px solid var(--ifm-border-color);
   border-radius: var(--radius);
   background: var(--panel);
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    border-color 0.2s ease;
+  transition: border-color 0.2s ease;
 }
 
 /* Inside a page, the cards are not prose links: no underline, no link color.
@@ -35,9 +32,7 @@
     var(--ifm-color-primary) 45%,
     var(--ifm-border-color)
   );
-  box-shadow: var(--lift);
   text-decoration: none;
-  transform: translateY(-2px);
 }
 
 .title {

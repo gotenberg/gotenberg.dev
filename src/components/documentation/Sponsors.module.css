@@ -43,16 +43,13 @@
   height: 64px;
   padding: 12px 18px;
   border: 1px solid var(--ifm-border-color);
-  border-radius: 12px;
+  border-radius: var(--radius);
   background: #ffffff;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+  transition: border-color 0.2s ease;
 }
 
 .card:hover {
-  box-shadow: var(--lift);
-  transform: translateY(-2px);
+  border-color: var(--ifm-color-primary);
 }
 
 .logo {
@@ -88,7 +85,7 @@
   height: 64px;
   padding: 0 20px;
   border: 1.5px dashed var(--ifm-border-color);
-  border-radius: 12px;
+  border-radius: var(--radius);
   color: var(--ifm-heading-color);
   font-size: 0.9rem;
   font-weight: 600;

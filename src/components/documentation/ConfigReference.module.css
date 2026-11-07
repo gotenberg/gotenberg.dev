@@ -100,7 +100,7 @@
   margin-bottom: 1.5rem;
   padding: 0 16px;
   border: 1px solid var(--ifm-border-color);
-  border-radius: 12px;
+  border-radius: var(--radius-sm);
   background: var(--panel);
   color: var(--ifm-font-color-base);
   font: inherit;

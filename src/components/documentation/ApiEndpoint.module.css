@@ -24,7 +24,7 @@
   font-weight: 700;
   font-size: 0.8rem;
   padding: 3px 9px;
-  border-radius: 6px;
+  border-radius: 4px;
   min-width: 56px;
   text-align: center;
   white-space: nowrap;
@@ -134,7 +134,7 @@
   font-family: var(--ifm-font-family-monospace);
   background-color: var(--panel-2);
   padding: 2px 7px;
-  border-radius: 6px;
+  border-radius: 4px;
   font-weight: 500;
 }
 
@@ -147,7 +147,7 @@
   margin-left: auto;
   background-color: rgba(180, 35, 24, 0.07);
   padding: 2px 7px;
-  border-radius: 6px;
+  border-radius: 4px;
 }
 
 /* --- PARAMETER BODY STYLING --- */
@@ -204,7 +204,7 @@
   color: var(--ifm-color-content);
   background-color: var(--panel);
   border: 1px solid var(--ifm-border-color);
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
 }
 
 /* Tighter insets on a phone: the panel, its zones and the option rows nest

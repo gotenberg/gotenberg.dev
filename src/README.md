@@ -12,7 +12,7 @@ Guidelines for modifying site design, React components, styles, or layout.
 
 ## Design system
 
-Ink on warm paper, set like a product. The homepage and the docs share one look: Bricolage display headings, system sans text, rounded panels with a soft lift, a single indigo for interaction, and rubric red strictly rationed to printer's marks. The homepage adds its interactive sections on top (see Homepage below).
+Ink on warm paper, set like a product. The homepage and the docs share one look: Bricolage display headings, system sans text, rounded panels, a single indigo for interaction, and rubric red strictly rationed to printer's marks. The homepage adds its interactive sections on top (see Homepage below).
 
 ### Colors
 
@@ -40,7 +40,7 @@ HTTP method badges: tinted background with dark text (WCAG AA), e.g. POST `rgba(
 
 - Headings (h1-h4), the brand wordmark, footer titles and prev/next titles: `--font-display` (Bricolage), weight 700 (h1 800), tight negative letter-spacing
 - Prose and UI (body text, sidebar, TOC, footer links, buttons, badges, param lists): system sans
-- Navbar links: system sans, sentence case, a rounded tint on hover. The version, theme and search controls share the homepage's control look: 36px tall, 10px corners, on a panel
+- Navbar links: system sans, sentence case, a rounded tint on hover. The version, theme and search controls share the homepage's control look: 36px tall, `--radius-sm` corners, on a panel
 - Sidebar: system sans, an indigo tint on the current page, category headers as small uppercase labels, HTTP method badges in mono
 - Brand mark: the Gutenberg caricature (`static/img/logo.png`) as the navbar and footer logo, with the "Gotenberg" wordmark in the display type
 - Headings carry no rule or underline
@@ -49,7 +49,8 @@ HTTP method badges: tinted background with dark text (WCAG AA), e.g. POST `rgba(
 - Code: JetBrains Mono Variable, ligatures disabled. Code panels are white in light mode and the ink plate in dark mode, with a title bar and a square copy button. One palette (`--code-*` in `custom.css`) colors Prism and the homepage; every color clears 4.5:1 on its panel
 - Tables, admonitions, API endpoints and prev/next links are panels too; tabs are a segmented control, as on the homepage
 - Links: `--accent-text` underline with muted decoration color, full color on hover
-- Panels: `--radius` (14px) corners, a 1px `--ifm-border-color` border, `--lift` on hover
+- Panels: `--radius` (14px) corners, a 1px `--ifm-border-color` border; a stronger border on hover when the panel is a link
+- Corners: `--radius` (14px) for containers, `--radius-sm` (8px) for controls inside them, 4px for inline code and small badges, fully round for pills. Illustrations keep their own
 
 ### Spacing
 
@@ -92,7 +93,7 @@ Full-width sponsors band shown below the content on every doc page. Mounted once
 - Name a custom property that holds a font family with "font" in it (`--font-serif`, `--font-display`). The production CSS minifier drops any `@font-face` whose family only appears in properties without "font" in their name, and `npm start` doesn't minify, so check fonts on `npm run build`.
 - Use CSS Modules for component-scoped styles.
 - Use `src/css/custom.css` only for global overrides (admonitions, sidebar, footer, typography).
-- Transitions: `0.2s ease`. Cards may lift on hover (`--lift` and a 2–3px rise); never glows. Keyframe animations only on the homepage, as listed above.
+- Transitions: `0.2s ease`. Panels and buttons change color or border on hover: they never rise, glow or carry a corner wash. Only small marks move, such as a button's arrow or the homepage's tilting profile cards. Keyframe animations only on the homepage, as listed above.
 - Use `clsx` for conditional class composition in React components.
 - Respect Docusaurus's Infima CSS framework. Override with specificity, not `!important`.
 - Use `@docusaurus/Link` for internal navigation. Use `useBaseUrl` for static asset paths.
