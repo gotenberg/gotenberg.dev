@@ -67,6 +67,7 @@ module.exports = {
           "select",
           "delete",
           "insert",
+          "compose",
           "rotate",
         ]),
         group("Stamps", ["stamp-text", "stamp-image", "stamp-pdf"]),

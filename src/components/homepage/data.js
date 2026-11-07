@@ -84,7 +84,10 @@ export const LEVELS = [
 // The colour class of each stage, by group.
 export const STAGE_GROUP = Object.fromEntries(
   [
-    ["g-pages", ["merge", "split", "select", "delete", "insert", "rotate"]],
+    [
+      "g-pages",
+      ["merge", "split", "select", "delete", "insert", "compose", "rotate"],
+    ],
     ["g-stamps", ["stamp-text", "stamp-image", "stamp-pdf"]],
     [
       "g-doc",

@@ -120,6 +120,59 @@
       }
     },
     {
+      "op": "compose",
+      "summary": "Draws pages of the PDFs on new pages of the size you choose: a label, a packing slip, a sheet of several pages. The result is one new PDF, named after the first.",
+      "options": [
+        {
+          "name": "paperSize",
+          "type": "string",
+          "description": "`A3`, `A4`, `A5`, `B4`, `B5`, `Letter`, `Legal` or `Tabloid`, in any case. Sets the width and the height. Set `paperSize`, or `paperWidth` and `paperHeight`."
+        },
+        {
+          "name": "paperWidth",
+          "type": "string",
+          "description": "Overrides the width `paperSize` sets. A length is a number in inches, or a number with a unit: `6in`, `15cm`, `152mm`, `432pt`, `576px`, `36pc`."
+        },
+        {
+          "name": "paperHeight",
+          "type": "string",
+          "description": "Overrides the height `paperSize` sets."
+        },
+        {
+          "name": "placements",
+          "type": "list",
+          "required": true,
+          "description": "Items with a `source`, the uploaded PDF to draw from, which may be left out with one PDF; a `sourcePage`, `1` by default; a `page`, the new page to draw on, `1` by default; `x` and `y`, in points from the bottom-left corner, `0` by default; a `scale`, `1` by default; and a `rotation`, in degrees counter-clockwise around `x` and `y`, `0` by default. Every uploaded PDF must be placed."
+        }
+      ],
+      "example": {
+        "files": ["report.pdf", "annex.pdf"],
+        "stages": [
+          {
+            "op": "compose",
+            "paperWidth": "6in",
+            "paperHeight": "5in",
+            "placements": [
+              {
+                "source": "report.pdf",
+                "x": 0,
+                "y": 180,
+                "scale": 0.25
+              },
+              {
+                "source": "annex.pdf",
+                "x": 0,
+                "y": 0,
+                "scale": 0.25
+              }
+            ]
+          }
+        ],
+        "output": "label.pdf"
+      },
+      "response": "One PDF."
+    },
+    {
       "op": "rotate",
       "summary": "Sets the rotation of pages. Viewers turn them clockwise.",
       "options": [

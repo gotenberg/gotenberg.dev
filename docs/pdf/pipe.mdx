@@ -49,11 +49,11 @@ Gotenberg checks the order of the stages before it runs any, and answers 400 wit
 
 A stage either rewrites the PDF whole or appends an update to it. A rewrite drops signatures, so on a signed PDF those stages answer 400:
 
-| The file                      | Stages                                                                                                                                                            |
-| :---------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Rewritten, signatures refused | `select`, `delete`, `insert`, `merge`, `split`, `encrypt`, `decrypt`, `flatten-form`, `redact`, `remediate`, `convert-colors`, `flatten-transparency`, `optimize` |
-| Updated, signatures kept      | `rotate`, `stamp-text`, `stamp-image`, `stamp-pdf`, `set-form`, `set-metadata`, `set-bookmarks`, `attach`, `detach`, `autotag`, `sign`, `timestamp`               |
-| Unchanged                     | `render`, which makes images, `extract-attachments`, which returns the embedded files, and `extract-text`, which returns the text                                 |
+| The file                      | Stages                                                                                                                                                                       |
+| :---------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Rewritten, signatures refused | `select`, `delete`, `insert`, `merge`, `split`, `compose`, `encrypt`, `decrypt`, `flatten-form`, `redact`, `remediate`, `convert-colors`, `flatten-transparency`, `optimize` |
+| Updated, signatures kept      | `rotate`, `stamp-text`, `stamp-image`, `stamp-pdf`, `set-form`, `set-metadata`, `set-bookmarks`, `attach`, `detach`, `autotag`, `sign`, `timestamp`                          |
+| Unchanged                     | `render`, which makes images, `extract-attachments`, which returns the embedded files, and `extract-text`, which returns the text                                            |
 
 ## Page selections
 

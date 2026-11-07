@@ -1,0 +1,91 @@
+---
+id: compose
+title: Compose pages
+sidebar_label: Compose
+---
+
+import AsStage from "./_shared/_as-stage.mdx";
+
+Draws pages of the uploaded PDFs on new pages of the size you choose: a label, a packing slip, a sheet of several pages.
+
+<Endpoint op="compose" />
+
+<Request
+  route="/forms/pdf/compose"
+  files={["report.pdf", "annex.pdf"]}
+  fields={{
+    paperWidth: "6in",
+    paperHeight: "5in",
+    placements: [
+      { source: "report.pdf", x: 0, y: 180, scale: 0.25 },
+      { source: "annex.pdf", x: 0, y: 0, scale: 0.25 },
+    ],
+  }}
+  output="label.pdf"
+/>
+
+The answer is one 6 by 5 inch page: the first page of `report.pdf` on the top half, the page of `annex.pdf` on the bottom half, each at a quarter of its size.
+
+## Size the page
+
+`paperSize` takes `A3`, `A4`, `A5`, `B4`, `B5`, `Letter`, `Legal` or `Tabloid`, in any case. `paperWidth` and `paperHeight` take a length: a number with a unit, `pt`, `px`, `in`, `mm`, `cm` or `pc`, such as `432pt` or `15cm`. A bare number is in inches. `paperWidth` or `paperHeight` overrides the side `paperSize` sets, so `paperSize: "A4"` with `paperHeight: "5in"` gives an A4-wide page 5 inches tall.
+
+<Request
+  route="/forms/pdf/compose"
+  files={["report.pdf"]}
+  fields={{
+    paperSize: "A4",
+    placements: [
+      { x: 20, y: 231, scale: 0.6 },
+      { sourcePage: 2, x: 307, y: 231, scale: 0.6 },
+    ],
+  }}
+  output="report.pdf"
+/>
+
+A request without `paperSize`, or without `paperWidth` and `paperHeight`, answers 400. So does a side outside 3 to 14,400 points, the sizes a PDF page allows.
+
+## Place pages
+
+Each placement draws one page. Its `x` and `y` count in points from the bottom-left corner of the new page, 72 points to the inch, like a [stamp's](/docs/pdf/stamp-pdf). They set where the bottom-left corner of the drawn page goes.
+
+- `source` names the uploaded PDF to draw from. Leave it out when you upload one PDF.
+- `sourcePage` picks the page of `source`, `1` by default.
+- `scale` resizes the page, `1` by default, and must be greater than 0.
+- `rotation` turns the page, in degrees counter-clockwise around `x` and `y`.
+
+Gotenberg draws the page as a viewer shows it: its crop box, turned by its rotation. Placements draw in order, so a later placement paints over an earlier one where they overlap.
+
+Every uploaded PDF must be placed, at least one of its pages. A PDF no placement names, or a `source` that names no uploaded PDF, answers 400:
+
+```text
+Stage 'compose' failed on 'annex.pdf': "placements" must place every uploaded PDF: "report.pdf" is not placed
+Stage 'compose' failed on 'annex.pdf': "source" must name an uploaded PDF, got "nope.pdf"; the uploaded PDFs are annex.pdf, report.pdf
+```
+
+The PDFs come in the alphanumeric order of their names, as for a [merge](/docs/pdf/merge). The result takes the name of the first PDF: `annex.pdf` in the first example.
+
+## Several pages
+
+`page` picks the new page a placement draws on, `1` by default. The PDF has as many pages as the highest `page` names:
+
+<Request
+  route="/forms/pdf/compose"
+  files={["report.pdf"]}
+  fields={{
+    paperSize: "A5",
+    placements: [
+      { sourcePage: 1, page: 1, scale: 0.9 },
+      { sourcePage: 3, page: 2, scale: 0.9 },
+    ],
+  }}
+  output="report.pdf"
+/>
+
+A page no placement names comes out blank: a placement with `page: 3` and none with `page: 2` leaves the second page empty.
+
+## What is not drawn
+
+The annotations and form fields of the source pages are not drawn: links, comments and field values stay behind. The sources' bookmarks, tags and metadata stay behind too. The result is a new, untagged PDF. Add [`set-metadata`](/docs/pdf/set-metadata), [`set-bookmarks`](/docs/pdf/set-bookmarks) or [`autotag`](/docs/pdf/autotag) stages after `compose` to give it its own.
+
+<AsStage op="compose" />
