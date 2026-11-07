@@ -19,7 +19,7 @@ Keeps the pages you list, in the order you list them.
   output="report.pdf"
 />
 
-`pages` takes a [page selection](/docs/pdf/pipe#page-selections): a page, a range, a list of both, or `all`, `odd`, `even` or `last`.
+`pages` takes a [page selection](/docs/pdf/pipe#page-selections): pages, ranges such as `2-5` or `3-`, `odd`, `even` or `last`, and exclusions such as `!1`. `all`, on its own, keeps every page.
 
 ## Reorder pages
 
@@ -29,6 +29,17 @@ Keeps the pages you list, in the order you list them.
   route="/forms/pdf/select"
   files={["report.pdf"]}
   fields={{ pages: "3,1,2" }}
+  output="report.pdf"
+/>
+
+## Exclude pages
+
+A `!` drops the pages of the part it precedes. `!1` keeps every page but the first:
+
+<Request
+  route="/forms/pdf/select"
+  files={["report.pdf"]}
+  fields={{ pages: "!1" }}
   output="report.pdf"
 />
 

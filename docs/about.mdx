@@ -44,7 +44,7 @@ Some results have two ways in. A field whose name starts with `native` asks Chro
 | PDF/UA     | `nativePdfua`: LibreOffice, PDF/UA-1, unchecked                   | `remediate`: PDF/UA-1 or PDF/UA-2, tags the PDF if needed                          | Always, to claim conformance               |
 | Tags       | `nativeTaggedPdf`: from your source's structure                   | `autotag`: inferred from the page layout                                           | The PDF comes from elsewhere               |
 | Bookmarks  | `nativeBookmarks`: from the headings                              | `set-bookmarks`: the list you give                                                 | You want your own titles, or after a merge |
-| Pages      | `nativePages`: the engine skips the others, which is faster       | `select`: also `odd`, `even`, `last`, and a new order                              | You reorder, or pick after a merge         |
+| Pages      | `nativePages`: the engine skips the others, which is faster       | `select`: also `odd`, `even`, `last`, exclusions such as `!1`, and a new order     | You reorder, or pick after a merge         |
 | Watermark  | `nativeWatermarkText`: LibreOffice, any script, sized to the page | `stamp-text`: any route, at an exact position, any script the image has a font for | The PDF comes from Chromium or elsewhere   |
 | Image size | `nativeQuality`: LibreOffice, lowers the quality                  | `optimize`: keeps the quality, packs the file                                      | You can't lose quality                     |
 

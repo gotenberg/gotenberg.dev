@@ -57,4 +57,4 @@ A stage either rewrites the PDF whole or appends an update to it. A rewrite drop
 
 ## Page selections
 
-An option of type `pages` takes a page (`3`), a range (`2-5`), a list of both (`1,3,5-7`), or `all`, `odd`, `even` or `last` on their own. Pages count from 1, and a page past the end answers 400.
+An option of type `pages` takes a comma-separated list of parts: a page (`3`), a range (`2-5`), a range open to the last page (`3-`) or from the first (`-3`), or `odd`, `even` or `last`. A `!` in front of a part excludes its pages: `!1` keeps every page but the first, `odd,!1` the odd pages after it, and `!last` every page but the last. Without an inclusion, the selection starts from every page. Pages count from 1. A page past the end, or a selection that leaves no page, answers 400. `all`, on its own, names every page.
