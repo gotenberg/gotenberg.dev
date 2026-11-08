@@ -139,7 +139,7 @@ Some Gotenberg 8 options have no field of their own in Gotenberg 9:
 - **Lower image quality on a PDF.** `optimize` keeps the quality of every image. Lower it where the PDF is made instead: LibreOffice's `nativeQuality` and `nativeReduceImageResolution`, or smaller images in the HTML you send Chromium.
 - **Merge bookmark options** (`bookmarks`, `autoIndexBookmarks`, `titleBookmarks`). `merge` keeps the bookmarks of each PDF and points them at the merged pages. For a bookmark per file, add a `set-bookmarks` stage after `merge`.
 - **Stamp anchors, relative sizes, page numbers and fonts.** A stamp takes a position in points from the bottom-left corner, one of the 14 standard PDF fonts, and draws over the page. Number pages with a Chromium [footer](/docs/chromium/convert-html#add-a-header-and-a-footer).
-- **Embed a downloaded file** (`downloadFrom[].embedded`). Name it in an [`attach`](/docs/pdf/attach) stage, by the name its server's `Content-Disposition` header gives.
+- **Embed a downloaded file** (`downloadFrom[].embedded`). Name it in an [`attach`](/docs/pdf/attach) stage, by its [name](/docs/getting-started/requests#download-files).
 
 ## Metadata and bookmarks
 

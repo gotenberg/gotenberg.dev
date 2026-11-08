@@ -921,7 +921,7 @@
       {
         "name": "downloadFrom",
         "type": "json",
-        "description": "URLs Gotenberg downloads first, as if you had uploaded the files. Each entry takes a `url`, and optionally `extraHttpHeaders`."
+        "description": "URLs Gotenberg downloads first, as if you had uploaded the files. Each entry takes a `url`, and optionally `extraHttpHeaders` and `filename`."
       }
     ],
     "stages": [

@@ -65,10 +65,10 @@ Invalid form data: form field 'downloadFrom' entry 1 is invalid (want an absolut
 The 'Gotenberg-Webhook-Url' header is required with 'Gotenberg-Webhook-Events-Url'
 ```
 
-A download whose server sends no file name says what to send:
+A download that nothing names, neither its entry, nor its server, nor its URL path, says how to name it:
 
 ```text
-Unable to download file from 'https://example.com/': the response has no 'Content-Disposition' header. Make the server send one with a filename, such as 'attachment; filename="file.pdf"'
+Unable to download file from 'https://example.com/': nothing names the file. Set 'filename' on the entry, such as [{"url":"https://example.com/file","filename":"file.pdf"}], or make the server send a 'Content-Disposition' header with a filename
 ```
 
 A route or a method Gotenberg doesn't serve names it:

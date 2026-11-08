@@ -33,7 +33,7 @@ You can mix `archives` and `files` in the same request. A ZIP uploaded under `fi
 
 ## Download files
 
-List URLs in `downloadFrom` and Gotenberg downloads them before it starts, as if you had uploaded them. Each entry takes a `url` and, optionally, `extraHttpHeaders` to send along:
+List URLs in `downloadFrom` and Gotenberg downloads them before it starts, as if you had uploaded them. Each entry takes a `url` and, optionally, `extraHttpHeaders` to send along and a `filename`:
 
 <Request
   route="/forms/libreoffice/convert"
@@ -43,13 +43,17 @@ List URLs in `downloadFrom` and Gotenberg downloads them before it starts, as if
         url: "https://files.example.com/report.docx",
         extraHttpHeaders: { Authorization: "Bearer …" },
       },
+      {
+        url: "https://files.example.com/download?id=42",
+        filename: "appendix.docx",
+      },
     ],
   }}
   output="report.pdf"
   run={false}
 />
 
-The server must answer with a `Content-Disposition` header that names the file. A `url` that isn't an absolute `http` or `https` one answers 400, naming `downloadFrom` and the entry. Operators can turn the feature off with [`--api-disable-download-from`](/docs/configuration#api-disable-download-from).
+Gotenberg names each file by its `filename`, else by the server's `Content-Disposition` header, else by the end of the URL path when it has an extension, as object stores such as S3 serve it. Nothing naming the file answers 400. A `url` that isn't an absolute `http` or `https` one answers 400, naming `downloadFrom` and the entry. Operators can turn the feature off with [`--api-disable-download-from`](/docs/configuration#api-disable-download-from).
 
 ## Add stages
 
