@@ -1,5 +1,6 @@
 // The 9.x docs, organised around the API: one page per route, with a badge
-// for its method, then guides, operations and reference. The 8.x sidebar
+// for its method, then guides, operations and reference. PDF routes group by
+// subject: the read route, then the changes, then the extract. The 8.x sidebar
 // lives in versioned_sidebars/version-8.x-sidebars.json.
 
 // A route page, badged with its HTTP method.
@@ -61,43 +62,39 @@ module.exports = {
       collapsed: true,
       items: [
         post("pdf/pipe"),
+        post("pdf/info"),
         group("Pages", [
           "merge",
           "split",
           "select",
           "delete",
           "insert",
-          "compose",
           "rotate",
+          "compose",
+          "render",
         ]),
         group("Stamps", ["stamp-text", "stamp-image", "stamp-pdf"]),
-        group("Content", [
+        group("Metadata", [
+          "metadata",
           "set-metadata",
+          "bookmarks",
           "set-bookmarks",
+        ]),
+        group("Attachments", [
+          "attachments",
           "attach",
           "detach",
           "extract-attachments",
-          "set-form",
-          "flatten-form",
-          "redact",
         ]),
-        group("Conformance", ["remediate", "autotag"]),
-        group("Security", ["encrypt", "decrypt", "sign", "timestamp"]),
-        group("Output", [
+        group("Forms", ["form", "set-form", "flatten-form"]),
+        group("Text", ["extract-text", "redact"]),
+        group("Print & size", [
           "optimize",
           "convert-colors",
           "flatten-transparency",
-          "render",
-          "extract-text",
         ]),
-        group("Read", [
-          "info",
-          "metadata",
-          "bookmarks",
-          "attachments",
-          "form",
-          "validate",
-        ]),
+        group("Conformance", ["validate", "remediate", "autotag"]),
+        group("Security", ["decrypt", "encrypt", "sign", "timestamp"]),
       ],
     },
     {
