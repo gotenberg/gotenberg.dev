@@ -15,7 +15,7 @@
 
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <meta name="theme-color" content="#4338ca"><link rel="stylesheet" href="/assets/css/styles.229f675d.css">
-<script src="/assets/js/runtime~main.8a8cccd7.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.d7152017.js" defer="defer"></script>
 <script src="/assets/js/main.46471352.js" defer="defer"></script>
 </head>
 <body>
@@ -45,6 +45,7 @@
 <h2 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="turn-off-what-you-dont-use">Turn off what you don&#x27;t use<a href="#turn-off-what-you-dont-use" class="hash-link" aria-label="Direct link to Turn off what you don&#x27;t use" title="Direct link to Turn off what you don&#x27;t use" translate="no">​</a></h2>
 <ul>
 <li class=""><code>CHROMIUM_DISABLE_ROUTES</code>, <code>LIBREOFFICE_DISABLE_ROUTES</code> and <code>PDF_DISABLE_ROUTES</code> remove a module&#x27;s routes.</li>
+<li class=""><a class="" href="/docs/configuration#pdf-disable-stages"><code>PDF_DISABLE_STAGES</code></a> refuses <code>stages</code> on the Chromium and LibreOffice routes, which then only convert. With <code>PDF_DISABLE_ROUTES</code>, no request runs PDF processing.</li>
 <li class=""><code>API_DISABLE_DOWNLOAD_FROM</code> turns off <code>downloadFrom</code>, and <code>WEBHOOK_DISABLE</code> turns off webhooks. A webhook sends a request, with headers the caller picks, to any URL the caller names.</li>
 <li class=""><code>CHROMIUM_DISABLE_JAVASCRIPT</code> stops the scripts of the pages Chromium prints.</li>
 </ul>
