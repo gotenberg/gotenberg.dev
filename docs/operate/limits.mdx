@@ -32,9 +32,14 @@ litho, Gotenberg's PDF engine, bounds what one PDF may make it decode:
 | :--------------------------------------------------------------------------------- | :------------------------------------------- |
 | [`--pdf-max-stream-bytes`](/docs/configuration#pdf-max-stream-bytes)               | 256 MiB per stream                           |
 | [`--pdf-max-image-pixels`](/docs/configuration#pdf-max-image-pixels)               | 100 million pixels                           |
+| [`--pdf-max-render-pixels`](/docs/configuration#pdf-max-render-pixels)             | 50 million pixels per page drawn             |
 | [`--pdf-max-embedded-file-bytes`](/docs/configuration#pdf-max-embedded-file-bytes) | 50 MiB per embedded file read for validation |
 
-A stream or an image past its limit fails the stage with 400. An embedded file past its limit is left out of validation. [`--pdf-max-concurrency`](/docs/configuration#pdf-max-concurrency) sets how many of a request's documents litho processes at once, one by default.
+A stream, an image or a rendered page past its limit fails the stage with 400. An embedded file past its limit is left out of validation. [`--pdf-max-concurrency`](/docs/configuration#pdf-max-concurrency) sets how many of a request's documents litho processes at once, one by default.
+
+`render` draws one page at a time, at 16 bytes of memory per pixel. A Letter or A4 page at 600 dpi holds 35 million pixels, about 560 MB, and the default allows it. Lower `--pdf-max-render-pixels` to cap that cost: 10 million allows a Letter or A4 page up to about 320 dpi. `flatten-transparency` draws within the same limit, at a lower resolution when a page does not fit.
+
+Go keeps freed memory for a few minutes before it returns it to the system. On a container with a memory limit, set the `GOMEMLIMIT` environment variable below it, such as `GOMEMLIMIT=1500MiB` for 2 GB, so the process collects before it reaches the limit.
 
 ## Next
 

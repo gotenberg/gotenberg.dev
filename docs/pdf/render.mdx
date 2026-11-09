@@ -30,7 +30,7 @@ One image answers on its own, named after the PDF and the page: `report_1.png`. 
   output="report_1.jpeg"
 />
 
-`dpi` sets the resolution, 150 by default. At 72, a pixel stands for a point, so a Letter page gives a 612 by 792 image. `quality`, from 1 to 100, applies to JPEG: with `png`, it answers 400. A `dpi` under 1 answers 400.
+`dpi` sets the resolution, 150 by default. At 72, a pixel stands for a point, so a Letter page gives a 612 by 792 image. `quality`, from 1 to 100, applies to JPEG: with `png`, it answers 400. A `dpi` under 1 answers 400. So does a page too large to draw at that resolution, past [`--pdf-max-render-pixels`](/docs/configuration#pdf-max-render-pixels).
 
 ## Render every page
 

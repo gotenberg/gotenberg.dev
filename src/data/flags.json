@@ -674,6 +674,14 @@
       "description": "Set the maximum number of pixels an image may hold - 0 keeps litho's default, 100000000 (100 million)"
     },
     {
+      "name": "pdf-max-render-pixels",
+      "module": "pdf",
+      "env": "PDF_MAX_RENDER_PIXELS",
+      "type": "int",
+      "default": null,
+      "description": "Set the maximum number of pixels a page drawn as an image may hold, at 16 bytes of memory each - 0 keeps litho's default, 50000000 (50 million), a Letter or A4 page at 600 dpi. The render stage refuses a larger page; flatten-transparency composites at a lower resolution to fit"
+    },
+    {
       "name": "pdf-max-stream-bytes",
       "module": "pdf",
       "env": "PDF_MAX_STREAM_BYTES",
