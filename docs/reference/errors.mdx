@@ -86,6 +86,12 @@ Invalid form data: form field 'stages' is invalid: stage 0: rotate: "angle" must
 Invalid form data: form field 'stages' is invalid: stage 1: "rotate" cannot follow "encrypt": only optimize, render, extract-attachments and extract-text may
 ```
 
+On an instance started with [`--pdf-disable-stages`](/docs/configuration#pdf-disable-stages), the Chromium and LibreOffice routes refuse `stages`:
+
+```text
+Invalid form data: form field 'stages' is disabled on this instance; send the request without it
+```
+
 An unknown operation lists the ones Gotenberg runs, and an option out of range says what it takes:
 
 ```text

@@ -63,6 +63,7 @@ Gotenberg then serves HTTPS only, on the same port. Kubernetes probes need `sche
 ## Turn off what you don't use
 
 - `CHROMIUM_DISABLE_ROUTES`, `LIBREOFFICE_DISABLE_ROUTES` and `PDF_DISABLE_ROUTES` remove a module's routes.
+- [`PDF_DISABLE_STAGES`](/docs/configuration#pdf-disable-stages) refuses `stages` on the Chromium and LibreOffice routes, which then only convert. With `PDF_DISABLE_ROUTES`, no request runs PDF processing.
 - `API_DISABLE_DOWNLOAD_FROM` turns off `downloadFrom`, and `WEBHOOK_DISABLE` turns off webhooks. A webhook sends a request, with headers the caller picks, to any URL the caller names.
 - `CHROMIUM_DISABLE_JAVASCRIPT` stops the scripts of the pages Chromium prints.
 

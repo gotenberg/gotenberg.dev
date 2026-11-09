@@ -642,6 +642,14 @@
       "description": "Disable the routes"
     },
     {
+      "name": "pdf-disable-stages",
+      "module": "pdf",
+      "env": "PDF_DISABLE_STAGES",
+      "type": "bool",
+      "default": null,
+      "description": "Refuse the stages field of the Chromium and LibreOffice conversion routes, so that they only convert - with --pdf-disable-routes (PDF_DISABLE_ROUTES), no request runs PDF processing"
+    },
+    {
       "name": "pdf-enable-environment-proxy",
       "module": "pdf",
       "env": "PDF_ENABLE_ENVIRONMENT_PROXY",
