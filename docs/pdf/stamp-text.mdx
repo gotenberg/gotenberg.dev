@@ -30,6 +30,24 @@ Draws a line of text over pages: a watermark, a label, a status.
 
 `rotation` turns the text counter-clockwise around `x` and `y`. `font` takes one of the 14 standard PDF fonts, `Helvetica` by default, which draw Western European text; `Symbol` and `ZapfDingbats` draw it as symbols. Other text, Cyrillic or Chinese for instance, is drawn with a font installed in the image, one of the family of `font` when it has the characters, embedded in the PDF. Letters that join or reorder, as Arabic and Devanagari do, come out one by one. Text no installed font has the characters of answers 400: [install a font](/docs/troubleshooting#install-fonts) that does.
 
+## Center a watermark
+
+<Request
+  route="/forms/pdf/stamp-text"
+  files={["report.pdf"]}
+  fields={{
+    text: "DRAFT",
+    position: "center",
+    fontSize: 96,
+    color: "#b42318",
+    opacity: 0.2,
+    rotation: 45,
+  }}
+  output="report.pdf"
+/>
+
+`position` centers the turned text on each page, whatever its size or orientation, and `rotation` turns it around its center.
+
 <AsStage op="stamp-text" />
 
 A stamp only covers what's under it: [redact](/docs/pdf/redact) to remove content for good.

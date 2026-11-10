@@ -220,13 +220,18 @@
           "name": "x",
           "type": "number",
           "default": "0",
-          "description": "The position, in points from the left edge."
+          "description": "The position, in points from the left edge. With `position`, moves the text right from it."
         },
         {
           "name": "y",
           "type": "number",
           "default": "0",
-          "description": "The position, in points from the bottom edge."
+          "description": "The position, in points from the bottom edge. With `position`, moves the text up from it."
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "description": "Places the text against the page as a viewer shows it: `center`, `top-left`, `top`, `top-right`, `left`, `right`, `bottom-left`, `bottom` or `bottom-right`. Unset, `x` and `y` place it."
         },
         {
           "name": "fontSize",
@@ -255,7 +260,7 @@
           "name": "rotation",
           "type": "number",
           "default": "0",
-          "description": "Degrees, counter-clockwise, around `x` and `y`."
+          "description": "Degrees, counter-clockwise, around `x` and `y`. With `position`, the turned text stays against it."
         }
       ],
       "example": {
@@ -294,13 +299,18 @@
           "name": "x",
           "type": "number",
           "default": "0",
-          "description": "The left edge of the image, in points from the left of the page."
+          "description": "The left edge of the image, in points from the left of the page. With `position`, moves the image right from it."
         },
         {
           "name": "y",
           "type": "number",
           "default": "0",
-          "description": "The bottom edge of the image, in points from the bottom of the page."
+          "description": "The bottom edge of the image, in points from the bottom of the page. With `position`, moves the image up from it."
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "description": "Places the image against the page as a viewer shows it: `center`, `top-left`, `top`, `top-right`, `left`, `right`, `bottom-left`, `bottom` or `bottom-right`. Unset, `x` and `y` place it."
         },
         {
           "name": "width",
@@ -321,7 +331,7 @@
           "name": "rotation",
           "type": "number",
           "default": "0",
-          "description": "Degrees, counter-clockwise, around `x` and `y`."
+          "description": "Degrees, counter-clockwise, around `x` and `y`. With `position`, the turned image stays against it."
         }
       ],
       "example": {
@@ -363,13 +373,18 @@
           "name": "x",
           "type": "number",
           "default": "0",
-          "description": "The left edge, in points from the left of the page."
+          "description": "The left edge, in points from the left of the page. With `position`, moves the page right from it."
         },
         {
           "name": "y",
           "type": "number",
           "default": "0",
-          "description": "The bottom edge, in points from the bottom of the page."
+          "description": "The bottom edge, in points from the bottom of the page. With `position`, moves the page up from it."
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "description": "Places the page against the page as a viewer shows it: `center`, `top-left`, `top`, `top-right`, `left`, `right`, `bottom-left`, `bottom` or `bottom-right`. Unset, `x` and `y` place it."
         },
         {
           "name": "scale",
@@ -386,7 +401,7 @@
           "name": "rotation",
           "type": "number",
           "default": "0",
-          "description": "Degrees, counter-clockwise, around `x` and `y`."
+          "description": "Degrees, counter-clockwise, around `x` and `y`. With `position`, the turned page stays against it."
         }
       ],
       "example": {

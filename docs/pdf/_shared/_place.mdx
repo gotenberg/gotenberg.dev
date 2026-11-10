@@ -1,3 +1,7 @@
 ## Place a stamp
 
 A stamp's `x` and `y` count in points from the bottom-left corner of the page, 72 points to the inch. A Letter page measures 612 by 792 points, an A4 page 595 by 842. Without `pages`, a stamp goes on every page.
+
+`position` places the stamp against the page instead: `center`, `top-left`, `top`, `top-right`, `left`, `right`, `bottom-left`, `bottom` or `bottom-right`. Each page takes its own, so a document that mixes page sizes and orientations gets the stamp in the same place on each. `x` and `y` then move it from there, right and up: `position` `top-right` with `x` `-36` and `y` `-36` keeps half an inch from both edges.
+
+Gotenberg places the box around the stamp once `rotation` turned it, so a turned stamp stays on the page in a corner. Text counts by its letters, not its line height: `DRAFT` centers on its capitals. The page counts as a viewer shows it, turned by its rotation, so the stamp reads the same way up on every page.

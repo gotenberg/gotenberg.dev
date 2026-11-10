@@ -14,8 +14,7 @@ You have a Word document under review. You want its PDF to say DRAFT across ever
     {
       op: "stamp-text",
       text: "DRAFT",
-      x: 200,
-      y: 290,
+      position: "center",
       fontSize: 96,
       color: "#b42318",
       opacity: 0.2,
@@ -27,12 +26,12 @@ You have a Word document under review. You want its PDF to say DRAFT across ever
 
 ## Result
 
-A Letter PDF with a faint red DRAFT across the middle of each page, over the content.
+A PDF with a faint red DRAFT across the middle of each page, over the content.
 
 ## How it works
 
 - LibreOffice converts the document, then `stamp-text` draws on every page: see [Stamp text](/docs/pdf/stamp-text).
-- `x` and `y` count in points from the bottom-left corner, and `rotation` turns the text around that point. On a Letter page, 612 by 792 points, these values center it.
+- `position` centers the text on each page, whatever its size or orientation, and `rotation` turns it around its center. See [Place a stamp](/docs/pdf/stamp-text#place-a-stamp).
 - `opacity` keeps the content readable under it.
 
 ## Variations
