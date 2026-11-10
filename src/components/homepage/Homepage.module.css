@@ -239,6 +239,57 @@
   background: var(--muted);
 }
 
+/* On a phone, each tag lists its architectures instead. */
+.g9-tags {
+  display: none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.g9-tags li {
+  display: grid;
+  gap: 8px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.g9-tags li:last-child {
+  border-bottom: 2px solid var(--ink);
+}
+
+.g9-tags code {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font: 500 14px var(--mono);
+}
+
+.g9-archs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.g9-archs span {
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--blue-soft);
+  color: var(--blue);
+  font: 600 12px var(--mono);
+}
+
+@media (max-width: 640px) {
+  .g9-scroll {
+    display: none;
+  }
+
+  .g9-tags {
+    display: block;
+  }
+}
+
 /* --- Responsive and motion --- */
 
 @media (max-width: 960px) {
@@ -578,6 +629,7 @@
 
 .cb-h2 {
   max-width: 820px;
+  text-wrap: balance;
   margin-bottom: 44px;
   color: var(--ink);
   font-family: var(--font-display);
@@ -880,8 +932,19 @@
   opacity: 0;
 }
 
+/* Both states of the run share one cell, so switching keeps the height. */
 .cc-readout {
+  display: grid;
   padding: 32px 36px;
+}
+
+.cc-state {
+  grid-area: 1 / 1;
+  min-width: 0;
+}
+
+.cc-state[aria-hidden="true"] {
+  visibility: hidden;
 }
 
 .cc-gauge {
@@ -1706,7 +1769,7 @@
 
 .xb-eng__k {
   opacity: 0.7;
-  font: 600 10.5px var(--sans);
+  font: 600 11.5px var(--sans);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -1855,51 +1918,40 @@
   background: var(--print);
 }
 
+/* The invoice types itself once, then holds. Hero.js remounts it, and so
+   replays it, when the source, paperSize or landscape changes. */
 .xb .xb-t {
-  animation: xb-type 9s ease infinite both;
+  animation: xb-type 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: calc(var(--d) * 0.2s);
 }
 
 @keyframes xb-type {
-  0% {
+  from {
     opacity: 0;
     transform: translateY(8px);
   }
-  6% {
+  to {
     opacity: 1;
     transform: none;
-  }
-  84% {
-    opacity: 1;
-  }
-  92%,
-  100% {
-    opacity: 0;
   }
 }
 
 .xb .ca-stamp {
-  animation: xb-stamp 9s ease-out infinite;
+  animation: xb-stamp 3.4s ease-out both;
 }
 
 @keyframes xb-stamp {
   0%,
-  30% {
+  79% {
     opacity: 0;
     transform: rotate(-8deg) scale(1.9);
   }
-  34% {
+  90% {
     opacity: 1;
     transform: rotate(-8deg) scale(0.94);
   }
-  37%,
-  84% {
-    opacity: 1;
-    transform: rotate(-8deg) scale(1);
-  }
-  92%,
   100% {
-    opacity: 0;
+    opacity: 1;
     transform: rotate(-8deg) scale(1);
   }
 }
@@ -1951,6 +2003,33 @@
   color: var(--ink);
   font: 500 24px/1.38 var(--font-display);
   letter-spacing: -0.012em;
+  text-wrap: pretty;
+}
+
+/* The section's documentation, under its lede. */
+.g9 .xb-head__more {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+  color: var(--blue);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+.g9 .xb-head__more:hover {
+  text-decoration-thickness: 2px;
+}
+
+.xb-head__more svg {
+  flex: none;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.g9 .xb-head__more:hover svg {
+  transform: translateX(3px);
 }
 
 .g9 .xb-head__lede + .xb-head__p {
@@ -2716,9 +2795,8 @@
 
 .xb .cd-mod {
   --m: var(--blue);
-  padding: 10px 12px 10px 14px;
-  border: 0;
-  border-left: 3px solid var(--m);
+  padding: 10px 12px;
+  border: 1px solid color-mix(in srgb, var(--m) 40%, var(--rule));
   border-radius: var(--radius-sm);
   background: var(--panel-2);
   color: var(--text);
@@ -2796,7 +2874,7 @@
 }
 
 .xb .cd-wire small span {
-  font-size: 10.5px;
+  font-size: 11.5px;
 }
 
 .xb-step {

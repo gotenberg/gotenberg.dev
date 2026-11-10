@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import cx from "./cx";
 import { PROFILES } from "./data";
 import { curl, json, response } from "@site/src/lib/requests";
@@ -57,12 +57,17 @@ const OPTIONS = [
   ["figureAltText", "Your alternate text for figures that lack one."],
 ];
 
-// The validate then remediate run, replayed in a loop. It holds while the
-// pointer or the focus is in it. Picking a step or pausing stops the loop;
-// with reduced motion it never starts.
-function Instrument({ step, onStep, playing, onPlay, onHold }) {
+// The validate then remediate run, replayed in a loop while it is in view on
+// a device that hovers. It holds while the pointer or the focus is in it.
+// Picking a step below or pausing stops the loop; with reduced motion or on
+// touch it never starts.
+const Instrument = React.forwardRef(function Instrument(
+  { step, playing, onPlay, onHold },
+  ref,
+) {
   return (
     <div
+      ref={ref}
       className={cx("cc-inst", !playing && "cc-still")}
       onMouseEnter={() => onHold(true)}
       onMouseLeave={() => onHold(false)}
@@ -79,16 +84,6 @@ function Instrument({ step, onStep, playing, onPlay, onHold }) {
           <i className={cx("xb-req__k")}> · profile=</i>PDF/A-4
         </span>
         <span className={cx("cc-ctl")}>
-          <span className={cx("xb-label")}>Example run</span>
-          <Segmented
-            label="Example run"
-            options={[
-              ["validate", "validate"],
-              ["remediate", "remediate"],
-            ]}
-            value={step}
-            onChange={onStep}
-          />
           <button
             type="button"
             className={cx("cc-play")}
@@ -155,7 +150,7 @@ function Instrument({ step, onStep, playing, onPlay, onHold }) {
             </span>
             <span
               className={cx("cc-callout")}
-              style={{ left: "-14%", top: "70%" }}
+              style={{ left: "4%", top: "70%" }}
             >
               6.1.2 · Header
             </span>
@@ -169,87 +164,92 @@ function Instrument({ step, onStep, playing, onPlay, onHold }) {
           </div>
         </div>
         <div className={cx("cc-readout")}>
-          {step === "validate" ? (
-            <>
-              <div className={cx("cc-gauge")}>
-                <b>11</b>
+          <div
+            className={cx("cc-state")}
+            aria-hidden={step !== "validate" || undefined}
+            inert={step !== "validate"}
+          >
+            <div className={cx("cc-gauge")}>
+              <b>11</b>
+              <span>
+                <strong>fatal violations</strong>PDF/A-4 · ISO 19005-4
+              </span>
+            </div>
+            <ol className={cx("cc-rows")}>
+              <li>
+                <code>6.1.2</code>
                 <span>
-                  <strong>fatal violations</strong>PDF/A-4 · ISO 19005-4
+                  The file header shall begin at byte zero and shall consist of
+                  "%PDF-2.n" followed by a single EOL marker.
+                  <small>
+                    test 1 · header "%PDF-1.7" does not match required pattern
+                  </small>
                 </span>
-              </div>
-              <ol className={cx("cc-rows")}>
-                <li>
-                  <code>6.1.2</code>
-                  <span>
-                    The file header shall begin at byte zero and shall consist
-                    of "%PDF-2.n" followed by a single EOL marker.
-                    <small>
-                      test 1 · header "%PDF-1.7" does not match required pattern
-                    </small>
-                  </span>
-                  <em>×1</em>
-                </li>
-                <li>
-                  <code>6.2.4.3</code>
-                  <span>
-                    DeviceRGB shall only be used if a device independent
-                    DefaultRGB colour space has been set.
-                    <small>
-                      test 2 · page 1: DeviceRGB used without DefaultRGB or RGB
-                      OutputIntent
-                    </small>
-                  </span>
-                  <em>×9</em>
-                </li>
-                <li>
-                  <code>6.7.2.1</code>
-                  <span>
-                    The document catalog dictionary of a conforming file shall
-                    contain the Metadata key.
-                    <small>
-                      test 1 · catalog missing or invalid /Metadata stream
-                    </small>
-                  </span>
-                  <em>×1</em>
-                </li>
-              </ol>
-              <p className={cx("cc-foot")}>
-                The JSON answer says <code>"compliant": false</code>, with the
-                specification, clause, test number, context and severity of each
-                violation.
-              </p>
-            </>
-          ) : (
-            <>
-              <div className={cx("cc-gauge")}>
-                <b>0</b>
+                <em>×1</em>
+              </li>
+              <li>
+                <code>6.2.4.3</code>
                 <span>
-                  <strong>violations left</strong>PDF/A-4 · compliant
+                  DeviceRGB shall only be used if a device independent
+                  DefaultRGB colour space has been set.
+                  <small>
+                    test 2 · page 1: DeviceRGB used without DefaultRGB or RGB
+                    OutputIntent
+                  </small>
                 </span>
+                <em>×9</em>
+              </li>
+              <li>
+                <code>6.7.2.1</code>
+                <span>
+                  The document catalog dictionary of a conforming file shall
+                  contain the Metadata key.
+                  <small>
+                    test 1 · catalog missing or invalid /Metadata stream
+                  </small>
+                </span>
+                <em>×1</em>
+              </li>
+            </ol>
+            <p className={cx("cc-foot")}>
+              The JSON answer says <code>"compliant": false</code>, with the
+              specification, clause, test number, context and severity of each
+              violation.
+            </p>
+          </div>
+          <div
+            className={cx("cc-state")}
+            aria-hidden={step !== "remediate" || undefined}
+            inert={step !== "remediate"}
+          >
+            <div className={cx("cc-gauge")}>
+              <b>0</b>
+              <span>
+                <strong>violations left</strong>PDF/A-4 · compliant
+              </span>
+            </div>
+            <div className={cx("cc-headers")}>
+              <div>
+                <span>HTTP/1.1</span> 200 OK
               </div>
-              <div className={cx("cc-headers")}>
-                <div>
-                  <span>HTTP/1.1</span> 200 OK
-                </div>
-                <div>
-                  <span>Content-Type:</span> application/pdf
-                </div>
-                <div>
-                  <span>Gotenberg-Remediation-Residual:</span> <b>0</b>
-                </div>
+              <div>
+                <span>Content-Type:</span> application/pdf
               </div>
-              <p className={cx("cc-foot")}>
-                Validated again: <code>"compliant": true</code>, and the file is
-                now PDF 2.0. A real litho run on a three-page PDF from
-                Gotenberg's integration tests.
-              </p>
-            </>
-          )}
+              <div>
+                <span>Gotenberg-Remediation-Residual:</span> <b>0</b>
+              </div>
+            </div>
+            <p className={cx("cc-foot")}>
+              Validated again: <code>"compliant": true</code>, and the file is
+              now PDF 2.0. A real litho run on a three-page PDF from Gotenberg's
+              integration tests.
+            </p>
+          </div>
         </div>
       </div>
     </div>
   );
-}
+});
 
 function Builder({ profile, mode, setMode, options, toggle }) {
   const fx = profile === "Factur-X";
@@ -300,7 +300,7 @@ function Builder({ profile, mode, setMode, options, toggle }) {
       "{",
       `  "${file}": {`,
       `    "profile": "${profile}",`,
-      '    "compliant": …,',
+      '    "compliant": true | false,',
       '    "violations": [ … ]',
       "  }",
       "}",
@@ -310,8 +310,8 @@ function Builder({ profile, mode, setMode, options, toggle }) {
     rows = [
       "HTTP/1.1 200 OK",
       "Content-Type: application/pdf",
-      "Gotenberg-Remediation-Residual: " + (real ? "0" : "…"),
-      "Gotenberg-Remediation-Rolled-Back: …",
+      "Gotenberg-Remediation-Residual: " + (real ? "0" : "<count>"),
+      "Gotenberg-Remediation-Rolled-Back: <count>",
       "# Residual counts the violations left: above 0, the output does not conform. Rolled-Back counts fixes undone for changing the content.",
     ];
   }
@@ -349,9 +349,14 @@ function Builder({ profile, mode, setMode, options, toggle }) {
               ))}
             </div>
             <p className={cx("xb-note")}>
-              {fx
-                ? "Factur-X also takes the invoice XML and its level: see 02."
-                : "Remediation runs as a stage too, in a pipe or after any conversion."}
+              {fx ? (
+                <>
+                  Factur-X also takes the invoice XML and its level: see{" "}
+                  <a href="#invoice">E-invoicing</a>.
+                </>
+              ) : (
+                "Remediation runs as a stage too, in a pipe or after any conversion."
+              )}
             </p>
           </>
         ) : (
@@ -372,30 +377,47 @@ function Builder({ profile, mode, setMode, options, toggle }) {
 
 export default function Conformance() {
   const [step, setStep] = useState("validate");
-  const [playing, setPlaying] = useState(true);
+  const [playing, setPlaying] = useState(false);
   const [hold, setHold] = useState(false);
+  const [inView, setInView] = useState(false);
   const [profile, setProfile] = useState("PDF/A-4");
   const [mode, setMode] = useState("validate");
+  const inst = useRef(null);
   const [options, setOptions] = useState({
     language: false,
     aggressive: false,
     figureAltText: false,
   });
 
+  // Autoplay only where the pointer can hold the run and motion is welcome.
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setPlaying(false);
-    }
+    const ok = window.matchMedia(
+      "(hover: hover) and (prefers-reduced-motion: no-preference)",
+    ).matches;
+    if (ok) setPlaying(true);
   }, []);
 
   useEffect(() => {
-    if (!playing || hold) return undefined;
+    if (!inst.current || !("IntersectionObserver" in window)) {
+      setInView(true);
+      return undefined;
+    }
+    const io = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0.4 },
+    );
+    io.observe(inst.current);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!playing || hold || !inView) return undefined;
     const timer = setInterval(
       () => setStep((s) => (s === "validate" ? "remediate" : "validate")),
       4800,
     );
     return () => clearInterval(timer);
-  }, [playing, hold]);
+  }, [playing, hold, inView]);
 
   return (
     <Section id="conform">
@@ -405,6 +427,7 @@ export default function Conformance() {
         title="Print anything."
         accent="Prove it."
         lede="Validates any PDF against PDF/A, PDF/UA and Factur-X, clause by clause, and remediates what fails."
+        more={{ to: "/docs/pdf/validate", label: "Validate a PDF" }}
       >
         litho, a pure-Go PDF processor, takes over from QPDF, pdfcpu, pdftk and
         ExifTool, the tools behind Gotenberg 8's PDF engines. PDF/A and PDF/UA
@@ -412,11 +435,8 @@ export default function Conformance() {
       </SectionHead>
       <div className={cx("xb-stack", step === "remediate" && "cc-fixed")}>
         <Instrument
+          ref={inst}
           step={step}
-          onStep={(s) => {
-            setStep(s);
-            setPlaying(false);
-          }}
           playing={playing}
           onPlay={setPlaying}
           onHold={setHold}
@@ -453,7 +473,11 @@ export default function Conformance() {
         <Builder
           profile={profile}
           mode={mode}
-          setMode={setMode}
+          setMode={(m) => {
+            setMode(m);
+            setStep(m);
+            setPlaying(false);
+          }}
           options={options}
           toggle={(name) => setOptions((o) => ({ ...o, [name]: !o[name] }))}
         />

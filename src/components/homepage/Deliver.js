@@ -222,6 +222,7 @@ export default function Deliver() {
         title="Asynchronous,"
         accent="straight to S3."
         lede="One request in. The PDF lands in your bucket, an event tells you. Your server never touches the bytes."
+        more={{ to: "/docs/cookbook/s3-upload", label: "Upload results to S3" }}
       >
         Gotenberg fetches the source from a presigned GET URL and answers 204.
         It then uploads the PDF to a presigned PUT URL and sends an event to
@@ -297,7 +298,7 @@ export default function Deliver() {
               <div className={cx("cd-mod cd-mod--lo")}>
                 <b>LIBREOFFICE</b>100+ formats
                 <br />
-                via lok, LibreOfficeKit
+                via LibreOfficeKit
               </div>
               <div className={cx("cd-mod cd-mod--li")}>
                 <b>LITHO</b>28 stages · validate

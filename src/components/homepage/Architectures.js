@@ -12,6 +12,10 @@ export default function Architectures() {
         title="Runs where"
         accent="you run."
         lede="Nine images on five architectures."
+        more={{
+          to: "/docs/getting-started/installation",
+          label: "Install Gotenberg",
+        }}
       >
         The full image carries Chromium and LibreOffice; the -chromium and
         -libreoffice images carry one of them. AWS Lambda and Cloud Run get
@@ -47,6 +51,18 @@ export default function Architectures() {
               </tbody>
             </table>
           </div>
+          <ul className={cx("g9-tags")}>
+            {IMAGES.map(([tag, count]) => (
+              <li key={tag}>
+                <code>gotenberg/gotenberg{tag}</code>
+                <span className={cx("g9-archs")}>
+                  {ARCHITECTURES.slice(0, count).map((arch) => (
+                    <span key={arch}>{arch}</span>
+                  ))}
+                </span>
+              </li>
+            ))}
+          </ul>
         </article>
       </div>
     </Section>

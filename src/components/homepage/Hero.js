@@ -96,6 +96,8 @@ export default function Hero() {
   const [, pw, ph] = SIZES.find(([name]) => name === paper);
   const [cw, ch] = orient(pw, ph);
   const dims = `${cw} × ${ch} mm`;
+  // A new key replays the typeset.
+  const replay = `${engineKey}-${paper}-${landscape}`;
 
   const args = engine.form.map(([name, value, kind]) => [
     "form",
@@ -227,8 +229,8 @@ export default function Hero() {
                   height: Math.round(ch * SCALE),
                 }}
               >
-                <Ink />
-                <div className={cx("ca-stamp")}>
+                <Ink key={replay} />
+                <div key={replay} className={cx("ca-stamp")}>
                   {paper}
                   <br />
                   {dims}

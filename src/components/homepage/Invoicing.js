@@ -62,6 +62,10 @@ export default function Invoicing() {
         title="Factur-X, ZUGFeRD."
         accent="XRechnung too."
         lede="Send the invoice with its Cross-Industry Invoice XML: one remediate stage returns a PDF/A-3 hybrid invoice."
+        more={{
+          to: "/docs/cookbook/e-invoice",
+          label: "E-invoice from an HTML template",
+        }}
       >
         Embedded per Factur-X 1.07.2 and ZUGFeRD 2.3.2. Already hybrid? Leave
         out the XML: the same stage repairs the existing Factur-X. Validation

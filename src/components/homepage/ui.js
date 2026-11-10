@@ -16,7 +16,15 @@ export function Section({ id, children }) {
   );
 }
 
-export function SectionHead({ n, kicker, title, accent, lede, children }) {
+export function SectionHead({
+  n,
+  kicker,
+  title,
+  accent,
+  lede,
+  more,
+  children,
+}) {
   return (
     <div className={cx("xb-head")}>
       <div>
@@ -31,6 +39,24 @@ export function SectionHead({ n, kicker, title, accent, lede, children }) {
       <div>
         <p className={cx("xb-head__lede")}>{lede}</p>
         <p className={cx("xb-head__p")}>{children}</p>
+        {more && (
+          <Link className={cx("xb-head__more")} to={more.to}>
+            {more.label}
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </Link>
+        )}
       </div>
     </div>
   );
