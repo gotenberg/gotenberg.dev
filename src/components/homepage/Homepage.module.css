@@ -1473,7 +1473,7 @@
 }
 
 /* --- Under 640px: one column. The headline, the lede, then the press at
-   full width, the buttons and the command --- */
+   full width with its key, the buttons and the command --- */
 
 @media (max-width: 640px) {
   .hp {
@@ -1529,34 +1529,27 @@
     margin: 0 0 0 -22.5vw;
   }
 
-  /* Nothing of the drawing reaches the buttons: the sheets past the slab's
-     edge go, and the buttons start under the slab's front corner, which
-     hangs 3% of the drawing's height below its box. */
+  /* The drawing's key comes right under it, where the numbers are: it
+     starts under the slab's front corner, which hangs 3% of the drawing's
+     height below its box. The sheets past the slab's edge would land on
+     it, so they go. */
   .scene__off {
     display: none;
   }
 
-  /* The drawing comes later in the page's order: the controls stay over
-     whatever of it passes near them. */
-  .hero .btns,
-  .hero__txt > .run {
-    position: relative;
-    z-index: 2;
+  .hp .steps {
+    order: 4;
+    margin: calc(3.5vw + 0.75rem) 0 0;
   }
 
   .hero .btns {
-    order: 4;
-    margin-top: calc(3.5vw + 1rem);
+    order: 5;
+    margin-top: 1.75rem;
   }
 
   .hero__txt > .run {
-    order: 5;
-    margin-top: 0.875rem;
-  }
-
-  .hp .steps {
     order: 6;
-    margin: 1.75rem 0 0;
+    margin-top: 0.875rem;
   }
 
   .run .code__lines {

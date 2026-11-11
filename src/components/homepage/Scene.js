@@ -175,7 +175,7 @@ export default function Scene() {
           ))}
           <Sheet P={P} at={[-20, 240, 0]} />
           {/* Past the edge, on their way down the page. On phones the
-              buttons come right under the slab, so these two go. */}
+              callouts come right under the slab, so these two go. */}
           <g className={cx("scene__off")}>
             <Sheet P={P} at={[34, 266, -26]} />
             <Sheet P={P} at={[78, 250, -58]} turn />
