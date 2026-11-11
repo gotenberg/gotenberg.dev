@@ -1,25 +1,26 @@
 import React from "react";
+import "@fontsource/barlow-condensed/700.css";
+import "@fontsource/barlow/500.css";
+import "@fontsource/barlow/700.css";
 import cx from "./cx";
 import Hero from "./Hero";
-import Conformance from "./Conformance";
-import Invoicing from "./Invoicing";
-import Deliver from "./Deliver";
-import Operate from "./Operate";
-import Architectures from "./Architectures";
+import Drop from "./Drop";
 import Sponsors from "./Sponsors";
+import Parts from "./Parts";
 import Closing from "./Closing";
 
+// The page reads as one drawing: the press at the top, its sheets dropping
+// behind the sections, the stacks they land on at the bottom.
 export default function Homepage() {
   return (
-    <main className={cx("g9 cb xb")}>
+    <main className={cx("hp")}>
       <Hero />
-      <Sponsors />
-      <Conformance />
-      <Invoicing />
-      <Deliver />
-      <Operate />
-      <Architectures />
-      <Closing />
+      <div className={cx("rest")}>
+        <Drop />
+        <Sponsors />
+        <Parts />
+        <Closing />
+      </div>
     </main>
   );
 }

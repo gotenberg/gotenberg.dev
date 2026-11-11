@@ -1,6 +1,5 @@
 /* Self-hosted variable fonts: same-origin, latin-subset, font-display swap.
-   Newsreader is kept for one italic word on the homepage's hero sheet. */
-@import "@fontsource-variable/newsreader/opsz-italic.css";
+   The homepage loads its own faces (Barlow) from its component. */
 @import "@fontsource-variable/jetbrains-mono";
 @import "@fontsource-variable/bricolage-grotesque/opsz.css";
 
@@ -35,7 +34,6 @@
   --font-display:
     "Bricolage Grotesque Variable", system-ui, -apple-system, "Segoe UI",
     Roboto, sans-serif;
-  --font-serif: "Newsreader Variable", Georgia, "Times New Roman", serif;
   --ifm-font-family-base:
     system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --ifm-font-family-monospace:
@@ -1219,24 +1217,20 @@ html[data-theme="dark"] .footer--dark {
   width: 25%;
 }
 
-.footer__bottom > div {
-  text-align: left;
-}
-
-.footer__logo {
-  width: 6.125rem;
-  height: 6.125rem;
-  opacity: 0.9;
-  transition: opacity 0.2s;
-}
-
-.footer__logo:hover {
+/* The press and the copyright under it, centred in their column. The
+   theme dims the logo's link to half; the press shows at full strength. */
+.footer__bottom a[class*="footerLogoLink"] {
   opacity: 1;
+}
+
+/* The pixel press: three times its 40px grid, so every pixel stays whole. */
+.footer__logo {
+  width: 120px;
+  height: 120px;
 }
 
 .footer__copyright {
   font-size: 0.85em;
-  text-align: left;
   color: #a8a29e;
 }
 

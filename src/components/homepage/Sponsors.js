@@ -5,7 +5,7 @@ import cx from "./cx";
 
 function Card({ href, src, alt, className, style }) {
   return (
-    <Link className={cx("xb-sp-card", className)} href={href}>
+    <Link className={cx("sp__card", className)} href={href}>
       <img src={useBaseUrl(src)} alt={alt} style={style} />
     </Link>
   );
@@ -13,10 +13,10 @@ function Card({ href, src, alt, className, style }) {
 
 export default function Sponsors() {
   return (
-    <section className={cx("xb-sponsors")}>
-      <div className={cx("g9-wrap")}>
-        <h2 className={cx("xb-sp-label")}>Sponsors</h2>
-        <div className={cx("xb-sp-grid")}>
+    <section className={cx("sp")}>
+      <div className={cx("col")}>
+        <h2 className={cx("sp__h")}>Sponsors</h2>
+        <div className={cx("sp__grid")}>
           <Card
             href="https://thecodingmachine.com"
             src="/img/thecodingmachine-logo.png"
@@ -26,7 +26,7 @@ export default function Sponsors() {
             href="https://pdfme.com"
             src="/img/pdfme-logo.png"
             alt="pdfme"
-            className="xb-sp-card--banner"
+            className="sp__card--banner"
           />
           <Card
             href="https://pdfbolt.com"
@@ -40,27 +40,26 @@ export default function Sponsors() {
             style={{ maxHeight: 40 }}
           />
         </div>
-        <h2 className={cx("xb-sp-label")}>Powered by</h2>
-        <div className={cx("xb-sp-grid")}>
+        <h2 className={cx("sp__h")}>Powered by</h2>
+        <div className={cx("sp__grid")}>
           <Card
             href="https://docs.docker.com/docker-hub/repos/manage/trusted-content/dsos-program/"
             src="/img/docker-logo-blue.svg"
             alt="Docker"
-            className="xb-sp-card--small"
+            className="sp__card--small"
           />
           <Card
             href="https://jb.gg/OpenSourceSupport"
             src="/img/jetbrains-logo.svg"
             alt="JetBrains"
-            className="xb-sp-card--small"
+            className="sp__card--small"
           />
           <Link
-            className={cx("xb-sp-cta")}
+            className={cx("sp__cta")}
             href="https://github.com/sponsors/gulien"
-            style={{ gridColumn: "span 2" }}
           >
             <svg
-              className={cx("xb-sp-heart")}
+              className={cx("sp__heart")}
               width="18"
               height="18"
               viewBox="0 0 24 24"

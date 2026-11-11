@@ -136,7 +136,7 @@ module.exports = {
       style: "dark",
       logo: {
         alt: "Gotenberg",
-        src: "img/logo.png",
+        src: "img/press-animated.svg",
         href: "/",
       },
       links: [

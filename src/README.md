@@ -6,13 +6,13 @@ Guidelines for modifying site design, React components, styles, or layout.
 
 - Docusaurus 3.10 (React 19)
 - CSS Modules (`.module.css`) for components, global CSS (`src/css/custom.css`) for theme overrides
-- Fonts: Bricolage Grotesque Variable (display: headings, wordmark), system sans (text and UI), JetBrains Mono Variable (code, small labels); self-hosted via Fontsource. Newsreader Variable italic is kept for one word on the homepage's hero sheet
+- Fonts: Bricolage Grotesque Variable (display: headings, wordmark), system sans (text and UI), JetBrains Mono Variable (code, small labels); self-hosted via Fontsource. The homepage sets its own pair, Barlow Condensed 700 (capitals) and Barlow 500/700 (text), imported in `src/components/homepage/index.js`
 - Icons: inline SVGs in React components (no icon library)
 - Images: `@docusaurus/plugin-ideal-image` for optimization
 
 ## Design system
 
-Ink on warm paper, set like a product. The homepage and the docs share one look: Bricolage display headings, system sans text, rounded panels, a single indigo for interaction, and rubric red strictly rationed to printer's marks. The homepage adds its interactive sections on top (see Homepage below).
+Ink on warm paper, set like a product. The docs' look: Bricolage display headings, system sans text, rounded panels, a single indigo for interaction, and rubric red strictly rationed to printer's marks. The homepage shares the paper, the indigo, the mono and the code palette, and draws the rest like an assembly manual (see Homepage below).
 
 ### Colors
 
@@ -42,7 +42,7 @@ HTTP method badges: tinted background with dark text (WCAG AA), e.g. POST `rgba(
 - Prose and UI (body text, sidebar, TOC, footer links, buttons, badges, param lists): system sans
 - Navbar links: system sans, sentence case, a rounded tint on hover. The version, theme and search controls share the homepage's control look: 36px tall, `--radius-sm` corners, on a panel
 - Sidebar: system sans, an indigo tint on the current page, category headers as small uppercase labels, HTTP method badges in mono
-- Brand mark: the Gutenberg caricature (`static/img/logo.png`) as the navbar and footer logo, with the "Gotenberg" wordmark in the display type
+- Brand mark: the Gutenberg caricature (`static/img/logo.png`) as the navbar logo, with the "Gotenberg" wordmark in the display type. The footer shows the animated pixel-art press (`static/img/press-animated.svg`, generated in the art repository) at 120px, three times its 40px grid, at full strength (the theme's dimmed logo link is overridden) and centred over the copyright in its column
 - Headings carry no rule or underline
 - Lede: the paragraph after h1 renders larger (1.2rem) in heading ink
 - Stats and tables: lining tabular numerals
@@ -63,16 +63,20 @@ HTTP method badges: tinted background with dark text (WCAG AA), e.g. POST `rgba(
 
 ### Homepage (`src/components/homepage/`)
 
-One file per section (`Hero`, `Sponsors`, `Conformance`, `Invoicing`, `Deliver`, `Operate`, `Architectures`, `Closing`), composed in `index.js` inside the page's `<main>`. Product look: rounded panels, Bricolage display type, light code panels in light mode and dark ones in dark mode.
+Drawn like an assembly manual: one isometric drawing runs down the page. The press prints in the hero, its sheets stack on an indigo slab, drop behind the sections, and land on a second slab above the closing call to action. Navy line work (`--w`, 2.25px, for what is built and for the page's borders; thinner for paper), white sheets, Barlow Condensed capitals, numbered callouts, dashed lines for what moves.
 
-- Sponsors sit right under the hero, as on the 8.x homepage: they matter to the project, so keep them high on the page.
-- The conformance example run and the builder's PDF/A-4 answer come from a real litho run on `test/integration/testdata/pages_3.pdf` in the Gotenberg repository (11 violations, then 0 after remediation). Rerun it when litho changes.
-- Every control rewrites the curl request next to it. `requests.js` builds the requests and responses; `data.js` holds the facts they use (paper sizes, profiles, Factur-X levels, recipes, read routes, images). Both must match the Gotenberg API.
-- `ui.js` holds the shared pieces: section head, radio group, segmented control, switch, copy button, code panels, and the `docker run` command shown in the hero and the closing.
-- A set of options where exactly one is on is a `RadioGroup` of `Radio`s: one Tab stop per set, the arrow keys move the choice. Keep `aria-pressed` for on/off switches.
+`index.js` composes `Hero` (text and `Scene`), then `Drop`, `Sponsors`, `Parts` and `Closing`.
+
+- Sponsors sit right under the hero: they matter to the project, so keep them high on the page. Their cards stay white, logos in color, in both themes. They hover like the docs' sponsors band: the primary on a card's border, the rubric red on the call to sponsor.
+- `iso.js` is the drawing kit: `projector()` turns isometric units into screen points, `Box`, `Cylinder`, `Sheet` and `Stack` draw with it, `SheetGlyph` is one loose sheet as its own SVG. Tones (`wood`, `iron`, `flat`, `hot`) pick a part's three fills from the tokens on `.hp`, so both themes come from the stylesheet. Sheets keep a navy line in dark mode: they are paper.
+- `Scene.js` stacks SVG layers on one view box, one per moving part, so nothing else is redrawn. The press works like a hand press, on one cycle (`--cycle`): the carriage rolls the blank sheet under the platen, the bar swings 65 degrees round the screw and the platen comes down, the bar returns, the carriage rolls out with the printed sheet, and that sheet flies to a stack. The bar's swing is a turn level with the ground, so on the isometric page it is a matrix per step (`pull`), with the knob following the same angles (`pull-knob`). The screw is threaded and runs up into the head, so its top never shows; its collar holds the bar, and the bar's layer comes down with the screw. A part is drawn after what it stands on and before what rests on it (the leg before the rails, the platen before the screw). A sheet in flight is its own element: one animation carries it across, another down, and that one's timing function is the dashed curve itself (`ease()`), so the sheet stays on its line. The drawing takes no clicks (`pointer-events: none`): it overlaps the hero's text column. The callouts are an `<ol>` placed over the drawing, on the paper above the slab, clear of the falling sheets; under 1100px it becomes a list under the hero and the drawing shows the numbers.
+- `Drop.js` is the layer of sheets falling behind the sections: eleven of them, in three lanes the layout keeps free (the page's two margins and the gap between a part's text and its request). No two alike: each has its own pace (`--time`), its own place in the lane and one of five ways of moving (`sway`, `rock`, `glide`, `flip`, `turn`). The middle lane's sheets slide out from under the slab's edge (`drift`) and stop behind the closing slab (`--stop-b`). Under 1100px the middle and right lanes share one lane along the right edge, which `.parts .col` keeps free with `--lane`. Distances use container units (`cqw`, `cqh`), so nothing is measured in JavaScript.
+- `Parts.js` renders `PARTS` from `data.js`: six parts of the API, each with a small drawing (`Figures.js`), a title, two sentences, two to four docs links and one static request. The image tags are a table, one tag and its architectures per line; in a panel too narrow for it (a container query on `.code`), each family's architectures head its three tags instead. No interactive demos, and the request panel is the only box: the text sits on the paper. `data.js` builds the requests with `src/lib/requests.js` and takes the number of stages from `src/data/stages.json`; every route, field and figure must match the Gotenberg API.
+- `Closing.js` is centred on the middle lane, not on the page, so the sheets land on its slab.
+- `ui.js` holds the shared pieces: the buttons, the copy button, the code panel and the `docker run` command shown in the hero and the closing.
 - External links use `@docusaurus/Link`, which opens them in a new tab like the navbar and footer.
-- One CSS Module, `Homepage.module.css`, keeps the page's own class names; `cx.js` maps them to the module's names. Dark rules sit under `:global([data-theme="dark"])`.
-- Motion: the hero sheet sets in line by line, the conformance example run loops validate then remediate, the delivery diagram's wires march. All of it stops under `prefers-reduced-motion`. The example run holds while the pointer or the focus is in it, and has its own step switch and pause button; under reduced motion it starts paused.
+- One CSS Module, `Homepage.module.css`, keeps the page's own class names; `cx.js` maps them to the module's names. Dark rules sit under `:global([data-theme="dark"])`. A font family is also named in a plain `font-family` declaration, not only in a custom property, so the production minifier keeps its `@font-face`.
+- Motion: the press prints, sheets fly to the stacks, sheets drop down the page. There is no pause control, by the maintainer's choice. Under `prefers-reduced-motion` nothing moves: the carriage rests rolled out with its printed sheet, the flying sheets hold on their curves and the falling ones rest where `--rest` puts them.
 
 ### ApiEndpoint (`src/components/documentation/ApiEndpoint.js`)
 
@@ -90,10 +94,10 @@ Full-width sponsors band shown below the content on every doc page. Mounted once
 ## CSS conventions
 
 - Use CSS custom properties (`--ifm-*`) for Docusaurus theme values.
-- Name a custom property that holds a font family with "font" in it (`--font-serif`, `--font-display`). The production CSS minifier drops any `@font-face` whose family only appears in properties without "font" in their name, and `npm start` doesn't minify, so check fonts on `npm run build`.
+- Name a custom property that holds a font family with "font" in it (`--font-display`, `--font-caps`). The production CSS minifier drops any `@font-face` whose family only appears in properties without "font" in their name, and `npm start` doesn't minify, so check fonts on `npm run build`.
 - Use CSS Modules for component-scoped styles.
 - Use `src/css/custom.css` only for global overrides (admonitions, sidebar, footer, typography).
-- Transitions: `0.2s ease`. Panels and buttons change color or border on hover: they never rise, glow or carry a corner wash. Only small marks move, such as a button's arrow or the homepage's tilting profile cards. Keyframe animations only on the homepage, as listed above.
+- Transitions: `0.2s ease`. Panels and buttons change color or border on hover: they never rise, glow or carry a corner wash. Only small marks move, such as a button's arrow. Keyframe animations only on the homepage, as listed above.
 - Use `clsx` for conditional class composition in React components.
 - Respect Docusaurus's Infima CSS framework. Override with specificity, not `!important`.
 - Use `@docusaurus/Link` for internal navigation. Use `useBaseUrl` for static asset paths.
@@ -104,6 +108,6 @@ Full-width sponsors band shown below the content on every doc page. Mounted once
 - Tables are as wide as their content, up to the column. Under 640px a table that scrolls gives its last column 16em, so a description is not one word per line.
 - Identifiers wrap between their words on a phone: option names, form fields and environment variables render through `breakable()` (`Options.js`), which puts a `<wbr>` before each camelCase capital and after each underscore. Headings drop to 2.25rem under 640px, and the announcement bar keeps only its first link.
 - Content padding adjusts at 996px and 1400px breakpoints.
-- The homepage uses its own CSS grids, with breakpoints at 1100px and 640px. The delivery diagram turns into a numbered list of its steps when its panel is narrower than the diagram (a container query), and the run command wraps instead of scrolling.
-- Homepage code panels and the architecture matrix carry `data-scroller`, so they scroll with the site's cue. Under 640px the violation rows put the clause and its count above the text, the level table drops its file column, the canvas bar drops its hint, the buttons stack at full width, and the closing stats size their columns to their labels.
-- Above 1100px, the control column and its code panel are both sticky, so the shorter one stays in view. This needs `overflow-x: clip` on `.g9`: `hidden` makes it a scroll container and breaks sticky.
+- The homepage has breakpoints at 1100px and 640px. Above 1100px the drawing sits beside the hero's text, flush with the page's right edge up to 1440px, and each part is text, lane, request; the buttons come before the run command, which stops short of the slab's left corner. Under 1100px the drawing shrinks to the hero's right, the callouts become a list, a part's request goes under its text and the parts leave a lane on the right. Under 820px the buttons and the command sit below the slab's corner and take the width it leaves. Under 640px the hero is one column (headline, lede, the drawing at full width, buttons, command): `.hero__txt` and `.scene` use `display: contents` so the drawing can sit between the lede and the buttons. The buttons sit side by side without the arrow, down to 360px, and start under the slab's front corner: nothing of the drawing reaches them, and the two sheets drawn past the slab's edge (`.scene__off`) are hidden. The run command wraps instead of scrolling. A rule that sets a hero item's `max-width` in a wider breakpoint needs its match in the narrower ones (`.hero__txt > .btns`, `.hero__txt > .run`): `.hero__txt > *` alone does not override it.
+- Homepage code panels carry `data-scroller`, so they scroll with the site's cue. Their lines wrap between words only: a URL stays whole.
+- `.hp` uses `overflow-x: clip`, not `hidden`: the slabs bleed off the page's edge, and `hidden` would make it a scroll container.

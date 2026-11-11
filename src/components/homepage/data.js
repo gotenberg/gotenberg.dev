@@ -2,267 +2,190 @@
 // fields in pkg/modules, stage options in pkg/modules/pdf, Factur-X embedding
 // in litho.
 
-// paperSize values, in mm.
-export const SIZES = [
-  ["A3", 297, 420],
-  ["A4", 210, 297],
-  ["A5", 148, 210],
-  ["B4", 250, 353],
-  ["B5", 176, 250],
-  ["Letter", 215.9, 279.4],
-  ["Legal", 215.9, 355.6],
-  ["Tabloid", 279.4, 431.8],
-];
-
-export const ENGINES = [
-  {
-    key: "url",
-    engine: "Chromium",
-    label: "URL",
-    route: "/forms/chromium/convert/url",
-    form: [["url", "https://example.com", "url"]],
-    out: "example.pdf",
-  },
-  {
-    key: "html",
-    engine: "Chromium",
-    label: "HTML",
-    route: "/forms/chromium/convert/html",
-    form: [["files", "index.html", "file"]],
-    out: "index.pdf",
-  },
-  {
-    key: "markdown",
-    engine: "Chromium",
-    label: "Markdown",
-    route: "/forms/chromium/convert/markdown",
-    form: [
-      ["files", "index.html", "file"],
-      ["files", "notes.md", "file"],
-    ],
-    out: "notes.pdf",
-  },
-  {
-    key: "office",
-    engine: "LibreOffice",
-    label: "Office",
-    route: "/forms/libreoffice/convert",
-    form: [["files", "report.docx", "file"]],
-    out: "report.pdf",
-  },
-];
-
-// [profile, family, symbol, standard, family class].
-export const PROFILES = [
-  ["PDF/A-1a", "PDF/A", "1a", "ISO 19005-1", ""],
-  ["PDF/A-1b", "PDF/A", "1b", "ISO 19005-1", ""],
-  ["PDF/A-2a", "PDF/A", "2a", "ISO 19005-2", ""],
-  ["PDF/A-2b", "PDF/A", "2b", "ISO 19005-2", ""],
-  ["PDF/A-2u", "PDF/A", "2u", "ISO 19005-2", ""],
-  ["PDF/A-3a", "PDF/A", "3a", "ISO 19005-3", ""],
-  ["PDF/A-3b", "PDF/A", "3b", "ISO 19005-3", ""],
-  ["PDF/A-3u", "PDF/A", "3u", "ISO 19005-3", ""],
-  ["PDF/A-4", "PDF/A", "4", "ISO 19005-4", ""],
-  ["PDF/A-4e", "PDF/A", "4e", "ISO 19005-4", ""],
-  ["PDF/A-4f", "PDF/A", "4f", "ISO 19005-4", ""],
-  ["PDF/UA-1", "PDF/UA", "1", "ISO 14289-1", "xb-el--ua"],
-  ["PDF/UA-2", "PDF/UA", "2", "ISO 14289-2", "xb-el--ua"],
-  ["Factur-X", "Factur-X", "FX", "and ZUGFeRD", "xb-el--fx"],
-];
-
-// [level, embedded file, AFRelationship], per Factur-X 1.07.2 and
-// ZUGFeRD 2.3.2.
-export const LEVELS = [
-  ["MINIMUM", "factur-x.xml", "Data"],
-  ["BASIC WL", "factur-x.xml", "Data"],
-  ["BASIC", "factur-x.xml", "Alternative"],
-  ["EN 16931", "factur-x.xml", "Alternative"],
-  ["EXTENDED", "factur-x.xml", "Alternative"],
-  ["XRECHNUNG", "xrechnung.xml", "Alternative"],
-];
-
-// The colour class of each stage, by group.
-export const STAGE_GROUP = Object.fromEntries(
-  [
-    [
-      "g-pages",
-      ["merge", "split", "select", "delete", "insert", "compose", "rotate"],
-    ],
-    ["g-stamps", ["stamp-text", "stamp-image", "stamp-pdf"]],
-    [
-      "g-doc",
-      [
-        "set-metadata",
-        "set-bookmarks",
-        "set-form",
-        "flatten-form",
-        "flatten-transparency",
-        "convert-colors",
-        "optimize",
-      ],
-    ],
-    ["g-access", ["autotag", "redact"]],
-    ["g-files", ["attach", "detach", "extract-attachments"]],
-    ["g-security", ["encrypt", "decrypt", "sign", "timestamp"]],
-    ["g-conform", ["remediate"]],
-    ["g-output", ["render", "extract-text"]],
-  ].flatMap(([cls, ops]) => ops.map((op) => [op, cls])),
-);
-
-// Each recipe passes Stages.validateOrder in pkg/modules/pdf/stages.go.
-export const RECIPES = [
-  {
-    key: "archive",
-    title: "Archive",
-    desc: "Merge two PDFs, title the result, make it PDF/A-4 and shrink it.",
-    files: ["report.pdf", "annex.pdf"],
-    stages: [
-      { op: "merge" },
-      { op: "set-metadata", title: "Q3 report" },
-      { op: "remediate", profile: "PDF/A-4" },
-      { op: "optimize" },
-    ],
-    out: "archive.pdf",
-  },
-  {
-    key: "accessible",
-    title: "Accessible",
-    desc: "Tag the structure of an untagged PDF, then repair it to PDF/UA-1.",
-    files: ["report.pdf"],
-    stages: [
-      { op: "autotag" },
-      { op: "remediate", profile: "PDF/UA-1", language: "en-US" },
-    ],
-    out: "accessible.pdf",
-  },
-  {
-    key: "signed",
-    title: "Signed",
-    desc: "Stamp it approved, sign it with PAdES, add an RFC 3161 timestamp.",
-    files: ["contract.pdf", "cert.pem", "key.pem"],
-    stages: [
-      { op: "stamp-text", text: "APPROVED", fontSize: 48, opacity: 0.4 },
-      { op: "sign", certificate: "cert.pem", key: "key.pem", pades: true },
-      { op: "timestamp", timestampUrl: "https://tsa.example.com" },
-    ],
-    out: "signed.pdf",
-  },
-  {
-    key: "confidential",
-    title: "Confidential",
-    desc: "Remove what sits under a region, stamp every page, lock it with a password.",
-    files: ["report.pdf"],
-    stages: [
-      {
-        op: "redact",
-        regions: [{ page: 1, x: 72, y: 700, width: 200, height: 20 }],
-      },
-      { op: "stamp-text", text: "CONFIDENTIAL", opacity: 0.3, rotation: 45 },
-      { op: "encrypt", userPassword: "secret" },
-    ],
-    out: "confidential.pdf",
-  },
-  {
-    key: "thumbnail",
-    title: "Thumbnail",
-    desc: "Keep the first page and draw it as a 150 dpi PNG.",
-    files: ["report.pdf"],
-    stages: [
-      { op: "select", pages: "1" },
-      { op: "render", format: "png", dpi: 150 },
-    ],
-    out: "thumbnail.zip",
-    zip: "A zip: the one-page report.pdf and report_1.png.",
-  },
-];
-
-// Read routes, with an example answer each.
-export const READ_ROUTES = [
-  {
-    name: "info",
-    desc: "Pages, PDF version, and whether it is encrypted, tagged, linearized or has form fields.",
-    answer: {
-      pages: 12,
-      version: "1.7",
-      encrypted: false,
-      tagged: true,
-      linearized: false,
-      formFields: false,
-    },
-  },
-  {
-    name: "metadata",
-    desc: "The document information: Title, Author, Subject and the rest.",
-    answer: {
-      Title: "Q3 report",
-      Author: "Finance",
-      Subject: "Quarterly results",
-    },
-  },
-  {
-    name: "bookmarks",
-    desc: "The outline, as a tree of titles and page numbers.",
-    answer: [
-      { title: "Summary", pageNumber: 1 },
-      {
-        title: "Results",
-        pageNumber: 4,
-        children: [{ title: "Revenue", pageNumber: 5 }],
-      },
-    ],
-  },
-  {
-    name: "attachments",
-    desc: "The embedded files, with their MIME type and AFRelationship.",
-    file: "invoice.pdf",
-    answer: [
-      {
-        name: "factur-x.xml",
-        mimeType: "text/xml",
-        relationship: "Alternative",
-      },
-    ],
-  },
-  {
-    name: "form",
-    desc: "The form fields, with their values, in the shape set-form fills.",
-    file: "fields.pdf",
-    answer: [
-      {
-        name: "agree",
-        type: "checkbox",
-        value: "Off",
-        pages: [1],
-        states: ["Yes"],
-      },
-      {
-        name: "color",
-        type: "combo",
-        value: "Red",
-        pages: [1],
-        options: ["Red", "Green"],
-      },
-    ],
-  },
-  {
-    name: "validate",
-    desc: "A conformance report against one of the 14 profiles.",
-    form: [["profile", "PDF/A-4"]],
-    answer: { profile: "PDF/A-4", compliant: true, violations: [] },
-  },
-];
+import { curl } from "@site/src/lib/requests";
+import STAGES from "@site/src/data/stages.json";
 
 export const ARCHITECTURES = ["amd64", "arm64", "arm/v7", "386", "ppc64le"];
 
-// Image tags and the architectures each one ships for.
+// Image tags by family: how many of the architectures a family ships for,
+// then its tags.
 export const IMAGES = [
-  [":9", 5],
-  [":9-chromium", 5],
-  [":9-libreoffice", 5],
-  [":9-aws-lambda", 2],
-  [":9-chromium-aws-lambda", 2],
-  [":9-libreoffice-aws-lambda", 2],
-  [":9-cloudrun", 1],
-  [":9-chromium-cloudrun", 1],
-  [":9-libreoffice-cloudrun", 1],
+  [5, [":9", ":9-chromium", ":9-libreoffice"]],
+  [2, [":9-aws-lambda", ":9-chromium-aws-lambda", ":9-libreoffice-aws-lambda"]],
+  [1, [":9-cloudrun", ":9-chromium-cloudrun", ":9-libreoffice-cloudrun"]],
+];
+
+const TAGS = IMAGES.flatMap(([, tags]) => tags);
+
+// The tags as lines for a code panel: the tag, then its architectures. A
+// family's first line is marked: on a narrow panel its architectures head
+// the family instead (.tag in the stylesheet).
+const width = Math.max(...TAGS.map((tag) => tag.length));
+const images = IMAGES.flatMap(([count, tags]) =>
+  tags.map((tag, i) => ({
+    cls: i ? "ln tag" : "ln tag tag--head",
+    parts: [
+      { t: tag.padEnd(width + 2), c: "t-c" },
+      { t: ARCHITECTURES.slice(0, count).join(" "), c: "t-m" },
+    ],
+  })),
+);
+
+// What Gotenberg does, part by part: its drawing (Figures.js), a title, two
+// sentences, the docs pages behind them and one request. The stages pass
+// Stages.validateOrder in pkg/modules/pdf/stages.go; their count comes from
+// the reference data, which `npm run check:api` compares with Gotenberg.
+export const PARTS = [
+  {
+    figure: "Convert",
+    title: "Convert to PDF.",
+    text: "Chromium prints a URL, HTML or Markdown. LibreOffice converts Word, Excel, PowerPoint and over a hundred other formats.",
+    links: [
+      ["URL", "/docs/chromium/convert-url"],
+      ["HTML", "/docs/chromium/convert-html"],
+      ["Markdown", "/docs/chromium/convert-markdown"],
+      ["Office documents", "/docs/libreoffice/convert"],
+    ],
+    bar: "Chromium · /forms/chromium/convert/url",
+    request: curl(
+      "/forms/chromium/convert/url",
+      [["form", "url", "https://example.com", "url"]],
+      "example.pdf",
+    ),
+  },
+  {
+    figure: "Stages",
+    count: STAGES.stages.length,
+    title: `${STAGES.stages.length} stages on any PDF.`,
+    text: "Merge, split, stamp, sign, encrypt, redact. List them in the stages field: Gotenberg runs them in order, on a PDF or right after a conversion.",
+    links: [
+      ["Pipe stages", "/docs/pdf/pipe"],
+      ["Every route", "/docs/getting-started/routes"],
+      ["Sign a contract", "/docs/cookbook/sign-contract"],
+    ],
+    bar: "litho · /forms/pdf/pipe",
+    request: curl(
+      "/forms/pdf/pipe",
+      [
+        ["form", "files", "report.pdf", "file"],
+        ["form", "files", "annex.pdf", "file"],
+        [
+          "form",
+          "stages",
+          [
+            { op: "merge" },
+            { op: "set-metadata", title: "Q3 report" },
+            { op: "remediate", profile: "PDF/A-4" },
+            { op: "optimize" },
+          ],
+          "list",
+        ],
+      ],
+      "archive.pdf",
+    ),
+  },
+  {
+    figure: "Conform",
+    title: "Validate, then remediate.",
+    text: "Checks a PDF against PDF/A, PDF/UA and Factur-X, clause by clause. Remediation repairs it until it conforms and reports what it couldn't fix.",
+    links: [
+      ["Validate", "/docs/pdf/validate"],
+      ["Remediate", "/docs/pdf/remediate"],
+      ["Autotag", "/docs/pdf/autotag"],
+      ["Archive documents", "/docs/cookbook/archive-documents"],
+    ],
+    bar: "litho · /forms/pdf/validate",
+    request: curl(
+      "/forms/pdf/validate",
+      [
+        ["form", "files", "report.pdf", "file"],
+        ["form", "profile", "PDF/UA-1"],
+      ],
+      null,
+    ),
+  },
+  {
+    figure: "Invoice",
+    title: "Factur-X, ZUGFeRD, XRechnung.",
+    text: "Send the invoice with its Cross-Industry Invoice XML. One remediate stage returns a PDF/A-3 hybrid invoice.",
+    links: [
+      ["E-invoice from HTML", "/docs/cookbook/e-invoice"],
+      ["Remediate", "/docs/pdf/remediate"],
+      ["Attachments", "/docs/pdf/attachments"],
+    ],
+    bar: "LibreOffice · /forms/libreoffice/convert",
+    request: curl(
+      "/forms/libreoffice/convert",
+      [
+        ["form", "files", "invoice.docx", "file"],
+        ["form", "files", "invoice.xml", "file"],
+        [
+          "form",
+          "stages",
+          [
+            {
+              op: "remediate",
+              profile: "Factur-X",
+              xml: "invoice.xml",
+              level: "EN 16931",
+            },
+          ],
+          "list",
+        ],
+      ],
+      "invoice.pdf",
+    ),
+  },
+  {
+    figure: "Deliver",
+    title: "Straight to your bucket.",
+    text: "Gotenberg fetches the source from a presigned URL and answers 204. Once the work is done, it uploads the PDF to your bucket, then posts an event.",
+    links: [
+      ["Webhooks", "/docs/webhook-download"],
+      ["Upload results to S3", "/docs/cookbook/s3-upload"],
+      ["Headers", "/docs/reference/headers"],
+    ],
+    bar: "LibreOffice · /forms/libreoffice/convert",
+    request: curl(
+      "/forms/libreoffice/convert",
+      [
+        [
+          "form",
+          "downloadFrom",
+          [
+            {
+              url: "https://bucket.s3.amazonaws.com/in.docx?X-Amz-Signature=…",
+            },
+          ],
+          "list",
+        ],
+        [
+          "header",
+          "Gotenberg-Webhook-Url",
+          "https://bucket.s3.amazonaws.com/out.pdf?X-Amz-Signature=…",
+        ],
+        ["header", "Gotenberg-Webhook-Method", "PUT"],
+        [
+          "header",
+          "Gotenberg-Webhook-Events-Url",
+          "https://api.example.com/events",
+        ],
+      ],
+      null,
+    ),
+  },
+  {
+    figure: "Images",
+    count: TAGS.length,
+    title: "Nine images, five architectures.",
+    text: "The full image carries Chromium and LibreOffice. The -chromium and -libreoffice images carry one of them. AWS Lambda and Cloud Run get their own.",
+    links: [
+      ["Install", "/docs/getting-started/installation"],
+      ["Production", "/docs/operate/production"],
+      ["Configuration", "/docs/configuration"],
+      ["Clients", "/docs/getting-started/clients"],
+    ],
+    bar: "gotenberg/gotenberg",
+    request: { lines: images },
+  },
 ];

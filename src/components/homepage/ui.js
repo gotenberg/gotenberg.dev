@@ -1,173 +1,12 @@
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "@docusaurus/Link";
 import cx from "./cx";
 
-export function Section({ id, children }) {
-  return (
-    <section className={cx("cb-sec")} id={id}>
-      <div className={cx("g9-wrap")}>{children}</div>
-    </section>
-  );
-}
-
-export function SectionHead({
-  n,
-  kicker,
-  title,
-  accent,
-  lede,
-  more,
-  children,
-}) {
-  return (
-    <div className={cx("xb-head")}>
-      <div>
-        <span className={cx("xb-kicker")}>
-          <b className={cx("xb-kicker__n")}>{n}</b>
-          {kicker}
-        </span>
-        <h2 className={cx("cb-h2")}>
-          {title} <span>{accent}</span>
-        </h2>
-      </div>
-      <div>
-        <p className={cx("xb-head__lede")}>{lede}</p>
-        <p className={cx("xb-head__p")}>{children}</p>
-        {more && (
-          <Link className={cx("xb-head__more")} to={more.to}>
-            {more.label}
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M5 12h14M13 6l6 6-6 6" />
-            </svg>
-          </Link>
-        )}
-      </div>
-    </div>
-  );
-}
-
-const RadioContext = createContext(null);
-
-const KEYS = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
-
-// Options where exactly one is on, as a radio group: Tab stops on the
-// checked option, the arrow keys move the choice. A disabled group checks
-// nothing.
-export function RadioGroup({
-  label,
-  value,
-  onChange,
-  disabled,
-  className,
-  children,
-}) {
-  const onKeyDown = (event) => {
-    const radios = [
-      ...event.currentTarget.querySelectorAll('[role="radio"]:not(:disabled)'),
-    ];
-    const i = radios.indexOf(document.activeElement);
-    if (i < 0) return;
-    let to;
-    if (event.key === "Home") to = 0;
-    else if (event.key === "End") to = radios.length - 1;
-    else if (KEYS[event.key]) {
-      to = (i + KEYS[event.key] + radios.length) % radios.length;
-    } else return;
-    event.preventDefault();
-    radios[to].focus();
-    radios[to].click();
-  };
-
-  return (
-    <div
-      className={cx(className) || undefined}
-      role="radiogroup"
-      aria-label={label}
-      aria-disabled={disabled || undefined}
-      onKeyDown={onKeyDown}
-    >
-      <RadioContext.Provider value={{ value, onChange, disabled }}>
-        {children}
-      </RadioContext.Provider>
-    </div>
-  );
-}
-
-export function Radio({ value, label, className, children }) {
-  const group = useContext(RadioContext);
-  const on = !group.disabled && value === group.value;
-  return (
-    <button
-      type="button"
-      role="radio"
-      aria-checked={on}
-      aria-label={label}
-      tabIndex={on ? 0 : -1}
-      disabled={group.disabled}
-      className={cx(className, on && "is-on") || undefined}
-      onClick={() => group.onChange(value)}
-    >
-      {children}
-    </button>
-  );
-}
-
-// A row of buttons where exactly one is on. Options are [value, label].
-export function Segmented({ label, options, value, onChange, className }) {
-  return (
-    <RadioGroup
-      label={label}
-      value={value}
-      onChange={onChange}
-      className={["xb-seg", className]}
-    >
-      {options.map(([v, text]) => (
-        <Radio key={String(v)} value={v}>
-          {text}
-        </Radio>
-      ))}
-    </RadioGroup>
-  );
-}
-
-export function Switch({ on, onToggle, className, children }) {
-  return (
-    <button
-      type="button"
-      className={cx(className, on && "is-on")}
-      aria-pressed={on}
-      onClick={onToggle}
-    >
-      <span className={cx("xb-switch")} aria-hidden="true" />
-      {children}
-    </button>
-  );
-}
-
 export function StartButton() {
   return (
-    <Link
-      className={cx("xb-btn xb-btn--primary")}
-      to="/docs/getting-started/first-pdf"
-    >
+    <Link className={cx("btn btn--go")} to="/docs/getting-started/first-pdf">
       Getting started
-      <span className={cx("xb-btn__icon")}>
+      <span className={cx("btn__icon")}>
         <svg
           width="18"
           height="18"
@@ -203,7 +42,7 @@ export function GitHubIcon() {
 export function StarIcon({ size }) {
   return (
     <svg
-      className={cx("xb-btn__star")}
+      className={cx("btn__star")}
       width={size}
       height={size}
       viewBox="0 0 24 24"
@@ -230,12 +69,12 @@ export function CopyButton({ text }) {
   return (
     <button
       type="button"
-      className={cx("xb-copy", done && "is-done")}
+      className={cx("copy", done && "is-done")}
       onClick={copy}
       aria-label={done ? "Copied" : "Copy the command"}
     >
       <svg
-        className={cx("xb-copy__i")}
+        className={cx("copy__i")}
         width="16"
         height="16"
         viewBox="0 0 24 24"
@@ -250,7 +89,7 @@ export function CopyButton({ text }) {
         <path d="M5 15V6.5A1.5 1.5 0 0 1 6.5 5H15" />
       </svg>
       <svg
-        className={cx("xb-copy__ok")}
+        className={cx("copy__ok")}
         width="16"
         height="16"
         viewBox="0 0 24 24"
@@ -263,7 +102,7 @@ export function CopyButton({ text }) {
       >
         <path d="M5 12.5l4.5 4.5L19 7.5" />
       </svg>
-      <span className={cx("xb-copy__tip")} aria-hidden="true">
+      <span className={cx("copy__tip")} aria-hidden="true">
         Copied
       </span>
     </button>
@@ -275,8 +114,8 @@ const RUN = 'docker run --rm -p "3000:3000" gotenberg/gotenberg:9';
 // The command that starts Gotenberg, with its copy button.
 export function RunCommand() {
   return (
-    <div className={cx("xb-run")}>
-      <div className={cx("g9-code")}>
+    <div className={cx("run")}>
+      <div className={cx("code__lines")}>
         <div className={cx("ln pr wrap")}>
           <span className={cx("t-c")}>docker run</span>{" "}
           <span className={cx("t-f")}>--rm -p</span>{" "}
@@ -288,15 +127,33 @@ export function RunCommand() {
   );
 }
 
+// A line that may wrap does so between its words only: each word is kept
+// whole, so a URL or a header name never breaks in two. The backslash that
+// continues a line stays with the word before it.
+const words = (text) =>
+  text === " \\" ? (
+    <span className={cx("word")}>{text}</span>
+  ) : (
+    text.split(/(\s+)/).map((word, i) =>
+      word.trim() ? (
+        <span key={i} className={cx("word")}>
+          {word}
+        </span>
+      ) : (
+        word
+      ),
+    )
+  );
+
 // Highlighted lines from requests.js.
 export function CodeLines({ lines }) {
   return (
-    <div className={cx("g9-code")} data-scroller="">
+    <div className={cx("code__lines")} data-scroller="">
       {lines.map((line, i) => (
         <div key={i} className={cx(line.cls)}>
           {line.parts.map((p, j) => (
             <span key={j} className={cx(p.c) || undefined}>
-              {p.t}
+              {/\bwrap\b/.test(line.cls) ? words(p.t) : p.t}
             </span>
           ))}
         </div>
@@ -307,25 +164,20 @@ export function CodeLines({ lines }) {
 
 export function CodeBar({ title, copy }) {
   return (
-    <div className={cx("xb-code__bar")}>
+    <div className={cx("code__bar")}>
       <span>{title}</span>
       {copy && <CopyButton text={copy} />}
     </div>
   );
 }
 
-// A request, with its copy button, and its response when given.
-export function CodePanel({ title, request, res }) {
+// A request with its copy button, or lines to read when there is no text
+// to copy.
+export function CodePanel({ title, request }) {
   return (
-    <div className={cx("xb-code")}>
+    <div className={cx("code")}>
       <CodeBar title={title} copy={request.text} />
       <CodeLines lines={request.lines} />
-      {res && (
-        <>
-          <div className={cx("xb-sep")}>Response</div>
-          <CodeLines lines={res} />
-        </>
-      )}
     </div>
   );
 }
