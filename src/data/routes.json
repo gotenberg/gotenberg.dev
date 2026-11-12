@@ -157,7 +157,7 @@
       "group": "pdf",
       "method": "POST",
       "path": "/forms/pdf/info",
-      "summary": "Reads the page count, the PDF version, and whether a PDF is encrypted, tagged, linearized or holds form fields.",
+      "summary": "Reads the page count, the PDF version, and whether a PDF is encrypted, tagged, linearized, signed or holds form fields.",
       "to": "/docs/pdf/info",
       "input": [
         {

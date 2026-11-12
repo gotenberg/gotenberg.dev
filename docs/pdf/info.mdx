@@ -4,7 +4,7 @@ title: Read the info
 sidebar_label: Info
 ---
 
-Reads the page count, the PDF version, and whether a PDF is encrypted, tagged, linearized or holds form fields.
+Reads the page count, the PDF version, and whether a PDF is encrypted, tagged, linearized, signed or holds form fields.
 
 <Endpoint path="/forms/pdf/info" />
 
@@ -19,11 +19,12 @@ Reads the page count, the PDF version, and whether a PDF is encrypted, tagged, l
       tagged: false,
       linearized: false,
       formFields: false,
+      signed: false,
     },
   }}
 />
 
-`tagged` says whether the PDF carries a structure for screen readers, and `linearized` whether it's built for fast web view. Each PDF answers under its name.
+`tagged` says whether the PDF carries a structure for screen readers, and `linearized` whether it's built for fast web view. `signed` says whether it carries a digital signature, without checking it: an empty signature field doesn't count. Each PDF answers under its name.
 
 ## Read an encrypted PDF
 
@@ -41,6 +42,7 @@ Every read route takes a `password` field to open encrypted PDFs. A wrong one an
       tagged: false,
       linearized: false,
       formFields: false,
+      signed: false,
     },
   }}
 />
