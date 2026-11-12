@@ -230,20 +230,12 @@ export default function Scene() {
           </g>
           <g className={cx("scene__pins")}>
             {STEPS.map(({ label, to, pin = to }, i) => (
-              <g key={label}>
-                {pin !== to && (
-                  <path
-                    className={cx("lead")}
-                    d={`M${pin.join(" ")}L${to.join(" ")}`}
-                  />
-                )}
-                <g transform={`translate(${pin[0]} ${pin[1]})`}>
-                  <g className={cx("pin")}>
-                    <circle r="26" />
-                    <text y="12" textAnchor="middle">
-                      {i + 1}
-                    </text>
-                  </g>
+              <g key={label} transform={`translate(${pin[0]} ${pin[1]})`}>
+                <g className={cx("pin")}>
+                  <circle r="26" />
+                  <text y="12" textAnchor="middle">
+                    {i + 1}
+                  </text>
                 </g>
               </g>
             ))}
