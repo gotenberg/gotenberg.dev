@@ -821,6 +821,11 @@ button[class*="closeButton_"] {
   color: rgba(255, 255, 255, 0.8);
 }
 
+/* On the bar's indigo the indigo ring would not show. */
+div[class*="announcementBar_"] :focus-visible {
+  outline-color: #ffffff;
+}
+
 button[class*="closeButton_"]:hover {
   color: white;
   background: rgba(255, 255, 255, 0.1);
@@ -884,6 +889,13 @@ a[class*="sidebarLogo"] b {
   background: var(--panel);
   box-shadow: none;
   color: var(--ifm-heading-color);
+}
+
+/* DocSearch removes its button's outline and the rule above its shadow:
+   the site's ring comes back. */
+.navbar .DocSearch-Button:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
 }
 
 /* Navbar menus (the version dropdown) match the theme menu. */
