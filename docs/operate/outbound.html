@@ -15,7 +15,7 @@
 
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <meta name="theme-color" content="#4338ca"><link rel="stylesheet" href="/assets/css/styles.93d7f997.css">
-<script src="/assets/js/runtime~main.fd5552e2.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.8eaf70ef.js" defer="defer"></script>
 <script src="/assets/js/main.06993840.js" defer="defer"></script>
 </head>
 <body>
@@ -66,7 +66,7 @@
 <h2 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="always-on">Always on<a href="#always-on" class="hash-link" aria-label="Direct link to Always on" title="Direct link to Always on" translate="no">​</a></h2>
 <p>These protections need no setting:</p>
 <ul>
-<li class="">Gotenberg resolves a host once, checks the address, and connects to that address, so a host can&#x27;t resolve to a public address for the check and a private one for the connection. <code>--chromium-proxy-server</code> turns this off for Chromium, and a page&#x27;s WebSockets then reach that proxy without the checks. <code>--chromium-host-resolver-rules</code> doesn&#x27;t: Gotenberg applies the rules itself, and checks the address a rule maps a host to.</li>
+<li class="">Gotenberg resolves a host once, checks the address, and connects to that address, so a host can&#x27;t resolve to a public address for the check and a private one for the connection. <code>--chromium-proxy-server</code> turns this off for Chromium. A WebSocket the checks refuse then fails the conversion with <code>403</code>, since Gotenberg can&#x27;t cut it off, and a Web Worker&#x27;s WebSockets reach that proxy without the checks: enforce the policy there too. <code>--chromium-host-resolver-rules</code> doesn&#x27;t: Gotenberg applies the rules itself, and checks the address a rule maps a host to.</li>
 <li class="">The URL routes take <code>http://</code> and <code>https://</code> URLs only.</li>
 <li class="">A page loads local files from its own request&#x27;s directory only.</li>
 <li class="">LibreOffice never loads the images and other content a document links to.</li>
