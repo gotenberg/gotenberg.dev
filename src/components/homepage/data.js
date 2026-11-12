@@ -2,7 +2,7 @@
 // fields in pkg/modules, stage options in pkg/modules/pdf, Factur-X embedding
 // in litho.
 
-import { curl } from "@site/src/lib/requests";
+import { curl, response } from "@site/src/lib/requests";
 import STAGES from "@site/src/data/stages.json";
 
 export const ARCHITECTURES = ["amd64", "arm64", "arm/v7", "386", "ppc64le"];
@@ -30,6 +30,19 @@ const images = IMAGES.flatMap(([count, tags]) =>
     ],
   })),
 );
+
+// An answer as lines for a code panel: its status, then its body, each row
+// hanging from its own indentation. A row starting with "#" is a comment.
+const reply = (status, rows) => ({
+  status,
+  lines: response(rows.map((row) => row.trimStart())).map((line, i) => ({
+    ...line,
+    cls: /\bwrap\b/.test(line.cls)
+      ? `${line.cls} hang`
+      : `${line.cls} wrap hang`,
+    indent: rows[i].length - rows[i].trimStart().length,
+  })),
+});
 
 // What Gotenberg does, part by part: its drawing (Figures.js), a title, two
 // sentences, the docs pages behind them and one request. The stages pass
@@ -103,6 +116,27 @@ export const PARTS = [
       ],
       null,
     ),
+    // What Gotenberg 9.4.1 answers for examples/report.pdf: 13 violations,
+    // the first one shown whole.
+    reply: reply("200 application/json", [
+      "{",
+      '  "report.pdf": {',
+      '    "profile": "PDF/UA-1",',
+      '    "compliant": false,',
+      '    "violations": [',
+      "      {",
+      '        "specification": "ISO_14289_1",',
+      '        "clause": "6.2",',
+      '        "testNumber": 1,',
+      '        "description": "The document catalog dictionary shall include a MarkInfo dictionary containing an entry, Marked, whose value shall be true",',
+      '        "context": "catalog missing /MarkInfo",',
+      '        "severity": "fatal"',
+      "      },",
+      "      # 12 more violations",
+      "    ]",
+      "  }",
+      "}",
+    ]),
   },
   {
     figure: "Invoice",

@@ -6,7 +6,8 @@ import Figures from "./Figures";
 import { CodePanel } from "./ui";
 
 // What Gotenberg does, part by part: a small drawing, two sentences, the
-// docs pages that go further and one request. The gap between the text and
+// docs pages that go further and one request, with its answer where the
+// answer is the point. The gap between the text and
 // the request is a lane: the sheets drop through it.
 export default function Parts() {
   return (
@@ -28,7 +29,11 @@ export default function Parts() {
                   ))}
                 </ul>
               </div>
-              <CodePanel title={part.bar} request={part.request} />
+              <CodePanel
+                title={part.bar}
+                request={part.request}
+                reply={part.reply}
+              />
             </article>
           );
         })}

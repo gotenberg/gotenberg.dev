@@ -2,7 +2,7 @@ import React from "react";
 import Link from "@docusaurus/Link";
 import cx from "./cx";
 import { Box, Sheet, Stack, projector, stackTop } from "./iso";
-import { GitHubIcon, RunCommand, StartButton } from "./ui";
+import { Facts, GitHubIcon, RunCommand, StartButton } from "./ui";
 
 // Where the sheets land: a second slab, under the lane they drop through,
 // with the stacks they made.
@@ -57,9 +57,6 @@ function Landing() {
   );
 }
 
-// "More than 100 million": Docker Hub reported 105,406,813 pulls of
-// gotenberg/gotenberg on 2026-11-11 (hub.docker.com/v2/repositories/
-// gotenberg/gotenberg, pull_count).
 export default function Closing() {
   return (
     <section className={cx("end")}>
@@ -80,17 +77,7 @@ export default function Closing() {
               Star on GitHub
             </Link>
           </div>
-          <p className={cx("end__facts")}>
-            Open source under the{" "}
-            <Link href="https://github.com/gotenberg/gotenberg/blob/main/LICENSE">
-              MIT license
-            </Link>
-            . Pulled from{" "}
-            <Link href="https://hub.docker.com/r/gotenberg/gotenberg">
-              Docker Hub
-            </Link>{" "}
-            more than 100 million times.
-          </p>
+          <Facts className="end__facts" />
         </div>
       </div>
     </section>

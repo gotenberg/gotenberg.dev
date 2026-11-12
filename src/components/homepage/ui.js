@@ -54,13 +54,18 @@ export function StarIcon({ size }) {
   );
 }
 
-export function CopyButton({ text }) {
+// Says "Copied" only once the clipboard took the text.
+export function CopyButton({ text, label = "Copy the command" }) {
   const [done, setDone] = useState(false);
   const timer = useRef();
   useEffect(() => () => clearTimeout(timer.current), []);
 
-  const copy = () => {
-    navigator.clipboard?.writeText(text).catch(() => {});
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      return;
+    }
     setDone(true);
     clearTimeout(timer.current);
     timer.current = setTimeout(() => setDone(false), 1400);
@@ -71,7 +76,7 @@ export function CopyButton({ text }) {
       type="button"
       className={cx("copy", done && "is-done")}
       onClick={copy}
-      aria-label={done ? "Copied" : "Copy the command"}
+      aria-label={done ? "Copied" : label}
     >
       <svg
         className={cx("copy__i")}
@@ -106,6 +111,31 @@ export function CopyButton({ text }) {
         Copied
       </span>
     </button>
+  );
+}
+
+// "More than 100 million": Docker Hub reported 105,406,813 pulls of
+// gotenberg/gotenberg on 2026-11-11 (hub.docker.com/v2/repositories/
+// gotenberg/gotenberg, pull_count). Each sentence holds together: where
+// both don't fit one line, the line breaks between them.
+export function Facts({ className }) {
+  return (
+    <p className={cx("facts", className)}>
+      <span>
+        Open source under the{" "}
+        <Link href="https://github.com/gotenberg/gotenberg/blob/main/LICENSE">
+          MIT license
+        </Link>
+        .
+      </span>{" "}
+      <span>
+        Pulled from{" "}
+        <Link href="https://hub.docker.com/r/gotenberg/gotenberg">
+          Docker Hub
+        </Link>{" "}
+        more than 100 million times.
+      </span>
+    </p>
   );
 }
 
@@ -145,15 +175,38 @@ const words = (text) =>
     )
   );
 
-// Highlighted lines from requests.js.
+// A URL may break between its origin and its path, where a narrow panel
+// lets its lines wrap: the route then starts its own row, whole.
+const url = (text) => {
+  const [, origin, path] = text.match(/^(\w+:\/\/[^/]+)(\/.+)$/) || [];
+  return path ? (
+    <>
+      {origin}
+      <wbr />
+      {path}
+    </>
+  ) : (
+    text
+  );
+};
+
+const text = (line, p) =>
+  /\bwrap\b/.test(line.cls) ? words(p.t) : p.c === "t-u" ? url(p.t) : p.t;
+
+// Highlighted lines from requests.js. A line with an `indent` hangs: its
+// next rows start under its first one (.hang).
 export function CodeLines({ lines }) {
   return (
     <div className={cx("code__lines")} data-scroller="">
       {lines.map((line, i) => (
-        <div key={i} className={cx(line.cls)}>
+        <div
+          key={i}
+          className={cx(line.cls)}
+          style={line.indent == null ? undefined : { "--indent": line.indent }}
+        >
           {line.parts.map((p, j) => (
             <span key={j} className={cx(p.c) || undefined}>
-              {/\bwrap\b/.test(line.cls) ? words(p.t) : p.t}
+              {text(line, p)}
             </span>
           ))}
         </div>
@@ -162,22 +215,24 @@ export function CodeLines({ lines }) {
   );
 }
 
-export function CodeBar({ title, copy }) {
-  return (
-    <div className={cx("code__bar")}>
-      <span>{title}</span>
-      {copy && <CopyButton text={copy} />}
-    </div>
-  );
-}
-
 // A request with its copy button, or lines to read when there is no text
-// to copy.
-export function CodePanel({ title, request }) {
+// to copy, then what Gotenberg answers when the part shows it.
+export function CodePanel({ title, request, reply }) {
   return (
     <div className={cx("code")}>
-      <CodeBar title={title} copy={request.text} />
+      <div className={cx("code__bar")}>
+        <span>{title}</span>
+        {request.text && (
+          <CopyButton text={request.text} label="Copy the request" />
+        )}
+      </div>
       <CodeLines lines={request.lines} />
+      {reply && (
+        <>
+          <div className={cx("code__bar code__bar--res")}>{reply.status}</div>
+          <CodeLines lines={reply.lines} />
+        </>
+      )}
     </div>
   );
 }

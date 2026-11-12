@@ -2,7 +2,7 @@ import React from "react";
 import Link from "@docusaurus/Link";
 import cx from "./cx";
 import Scene from "./Scene";
-import { GitHubIcon, RunCommand, StarIcon, StartButton } from "./ui";
+import { Facts, GitHubIcon, RunCommand, StarIcon, StartButton } from "./ui";
 
 export default function Hero() {
   return (
@@ -34,6 +34,7 @@ export default function Hero() {
           </Link>
         </div>
         <RunCommand />
+        <Facts />
       </div>
       <Scene />
     </section>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import cx from "./cx";
 import {
   Box,
@@ -119,9 +119,20 @@ function Layer({ name, children }) {
 }
 
 export default function Scene() {
+  // Scrolled out of sight, the press stops: nothing is drawn for no one.
+  const art = useRef(null);
+  useEffect(() => {
+    const away = cx("is-away");
+    const watch = new IntersectionObserver(([entry]) =>
+      entry.target.classList.toggle(away, !entry.isIntersecting),
+    );
+    watch.observe(art.current);
+    return () => watch.disconnect();
+  }, []);
+
   return (
     <div className={cx("scene")}>
-      <div className={cx("scene__art")}>
+      <div ref={art} className={cx("scene__art")}>
         <Layer>
           <Box P={P} at={[-66, 22, -8]} size={[170, 234, 8]} tone="flat" />
           <Sheet P={P} at={[-52, 96, 0]} turn />
