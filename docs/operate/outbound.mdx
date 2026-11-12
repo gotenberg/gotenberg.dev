@@ -99,7 +99,7 @@ Gotenberg checks every allow list at startup, and logs a warning for a pattern t
 
 These protections need no setting:
 
-- Gotenberg resolves a host once, checks the address, and connects to that address, so a host can't resolve to a public address for the check and a private one for the connection. `--chromium-proxy-server` turns this off for Chromium, and a page's WebSockets then reach that proxy without the checks. `--chromium-host-resolver-rules` doesn't: Gotenberg applies the rules itself, and checks the address a rule maps a host to.
+- Gotenberg resolves a host once, checks the address, and connects to that address, so a host can't resolve to a public address for the check and a private one for the connection. `--chromium-proxy-server` turns this off for Chromium. A WebSocket the checks refuse then fails the conversion with `403`, since Gotenberg can't cut it off, and a Web Worker's WebSockets reach that proxy without the checks: enforce the policy there too. `--chromium-host-resolver-rules` doesn't: Gotenberg applies the rules itself, and checks the address a rule maps a host to.
 - The URL routes take `http://` and `https://` URLs only.
 - A page loads local files from its own request's directory only.
 - LibreOffice never loads the images and other content a document links to.
