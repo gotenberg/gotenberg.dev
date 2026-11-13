@@ -67,6 +67,8 @@ export function CopyButton({ text, label = "Copy the command" }) {
       return;
     }
     setDone(true);
+    // The pressman answers it (index.js).
+    window.dispatchEvent(new Event("hp:copied"));
     clearTimeout(timer.current);
     timer.current = setTimeout(() => setDone(false), 1400);
   };

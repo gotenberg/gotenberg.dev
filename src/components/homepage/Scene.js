@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import cx from "./cx";
+import Pressman from "./Pressman";
 import {
   Box,
   Cylinder,
@@ -27,11 +28,12 @@ const pct = ([x, y]) => ({
 // A length of the view box, in the scene's own width unit.
 const cqw = (n) => `${((n / W) * 100).toFixed(2)}cqw`;
 
-// The stacks at the slab's front edge, back to front: [x, y, sheets, seed].
+// The stacks at the slab's front edge, back to front: [x, y, sheets, seed,
+// what the press prints for it]. The press prints for each in turn.
 const STACKS = [
-  [-52, 150, 12, 57],
-  [62, 152, 21, 12],
-  [14, 208, 44, 31],
+  [-52, 150, 12, 57, "invoice"],
+  [62, 152, 21, 12, "chart"],
+  [14, 208, 44, 31, "contract"],
 ];
 
 // The screw stands on the platen and runs up into the head, where its top
@@ -50,9 +52,10 @@ const KNOB = reach(70);
 // A printed sheet leaves the carriage, rolled out, and lands on each stack
 // in turn, along a curve that rises above its start.
 const FROM = P(50, 113, 71);
-const FLIGHTS = STACKS.map(([x, y, n], i) => {
+const FLIGHTS = STACKS.map(([x, y, n, , kind], i) => {
   const to = P(x + 20, y + 15, stackTop(n) + 2);
   return {
+    kind,
     to,
     mid: [(FROM[0] + to[0]) / 2, FROM[1] - [150, 120, 170][i]],
     turn: i,
@@ -130,13 +133,27 @@ export default function Scene() {
     return () => watch.disconnect();
   }, []);
 
+  // The visitor's own pull: the press runs three times as fast for two
+  // impressions, the pressman with it.
+  const rush = useRef();
+  useEffect(() => () => clearTimeout(rush.current), []);
+  const pull = () => {
+    const pace = (rate) =>
+      art.current
+        .getAnimations({ subtree: true })
+        .forEach((animation) => animation.updatePlaybackRate(rate));
+    pace(3);
+    clearTimeout(rush.current);
+    rush.current = setTimeout(() => pace(1), 1600);
+  };
+
   return (
     <div className={cx("scene")}>
       <div ref={art} className={cx("scene__art")}>
         <Layer>
           <Box P={P} at={[-66, 22, -8]} size={[170, 234, 8]} tone="flat" />
-          <Sheet P={P} at={[-52, 96, 0]} turn />
-          <Sheet P={P} at={[-30, 150, 0]} />
+          <Sheet P={P} at={[-52, 96, 0]} turn kind="grid" />
+          <Sheet P={P} at={[-30, 150, 0]} kind="slide" />
           <Sheet P={P} at={[-58, 32, 0]} />
           <Box P={P} at={[0, 30, 0]} size={[14, 102, 8]} />
           <Box P={P} at={[0, 40, 8]} size={[14, 20, 152]} />
@@ -147,15 +164,21 @@ export default function Scene() {
         </Layer>
 
         {/* The carriage: the bed and its sheet, blank going in, printed
-            coming out. */}
+            coming out: a different document at each impression. */}
         <Layer name="scene__l--roll">
           <Box P={P} at={[28, 96, 63]} size={[44, 34, 7]} tone="iron" />
           <g className={cx("roll__blank")}>
             <Sheet P={P} at={[30, 98, 70]} blank />
           </g>
-          <g className={cx("roll__print")}>
-            <Sheet P={P} at={[30, 98, 70]} />
-          </g>
+          {FLIGHTS.map(({ kind, turn }) => (
+            <g
+              key={kind}
+              className={cx("roll__print")}
+              style={{ "--turn": turn }}
+            >
+              <Sheet P={P} at={[30, 98, 70]} kind={kind} />
+            </g>
+          ))}
         </Layer>
 
         {/* What the pull brings down: the platen, the screw on it and the
@@ -180,25 +203,32 @@ export default function Scene() {
           <Box P={P} at={[86, 40, 8]} size={[14, 20, 152]} />
           <Box P={P} at={[-5, 36, 160]} size={[110, 28, 12]} />
           <Box P={P} at={[2, 39, 172]} size={[96, 22, 5]} />
-          <Sheet P={P} at={[60, 196, 0]} turn />
-          {STACKS.map(([x, y, n, seed]) => (
-            <Stack key={seed} P={P} at={[x, y, 0]} n={n} seed={seed} />
+          <Sheet P={P} at={[60, 196, 0]} turn kind="stamped" />
+          {STACKS.map(([x, y, n, seed, kind]) => (
+            <Stack
+              key={seed}
+              P={P}
+              at={[x, y, 0]}
+              n={n}
+              seed={seed}
+              kind={kind}
+            />
           ))}
-          <Sheet P={P} at={[-20, 240, 0]} />
+          <Sheet P={P} at={[-20, 240, 0]} kind="grid" />
           {/* Past the edge, on their way down the page. On phones the
               callouts come right under the slab, so these two go. */}
           <g className={cx("scene__off")}>
-            <Sheet P={P} at={[34, 266, -26]} />
-            <Sheet P={P} at={[78, 250, -58]} turn />
+            <Sheet P={P} at={[34, 266, -26]} kind="slide" />
+            <Sheet P={P} at={[78, 250, -58]} turn kind="invoice" />
           </g>
           {FLIGHTS.map((flight, i) => (
             <path key={i} className={cx("dash")} d={arc(flight)} />
           ))}
         </Layer>
 
-        {/* The bar, over everything it swings in front of. It comes down
-            with the screw it turns. */}
-        <Layer name="scene__l--press">
+        {/* The bar, over everything it swings in front of, the sheets in
+            flight included. It comes down with the screw it turns. */}
+        <Layer name="scene__l--press scene__l--bar">
           <g
             className={cx("bar__rod")}
             style={{ transformOrigin: `${PIVOT[0]}px ${PIVOT[1]}px` }}
@@ -218,11 +248,19 @@ export default function Scene() {
               className={cx("knob__shine")}
               d={`M${KNOB[0] - 5} ${KNOB[1] - 2}a6 6 0 0 1 5 -5`}
             />
+            {/* The pressman works the bar with his whole weight: he hangs
+                from its knob and swings with it. */}
+            <g
+              className={cx("hang")}
+              style={{ transformOrigin: `${KNOB[0]}px ${KNOB[1]}px` }}
+            >
+              <Pressman at={[KNOB[0], KNOB[1] + 116]} pose="hang" scale={1.2} />
+            </g>
           </g>
         </Layer>
 
         {/* Over everything: what names the drawing. */}
-        <Layer>
+        <Layer name="scene__l--names">
           <g className={cx("scene__leads")}>
             {STEPS.map(({ label, at, to }) => (
               <g key={label}>
@@ -266,7 +304,7 @@ export default function Scene() {
             }}
           >
             <span className={cx("fly__y")}>
-              <SheetGlyph className={cx("fly__g")} />
+              <SheetGlyph className={cx("fly__g")} kind={flight.kind} />
             </span>
           </span>
         ))}
@@ -277,9 +315,17 @@ export default function Scene() {
             className={cx("fly fly--still")}
             style={pct(along(flight, [0.42, 0.7, 0.55][i]))}
           >
-            <SheetGlyph className={cx("fly__g")} />
+            <SheetGlyph className={cx("fly__g")} kind={flight.kind} />
           </span>
         ))}
+        {/* Over the press's frame, clear of the hero's text: the one part of
+            the drawing that takes a click. */}
+        <button
+          type="button"
+          className={cx("scene__pull")}
+          aria-label="Pull the bar: the press prints faster for a moment"
+          onClick={pull}
+        />
       </div>
 
       <ol className={cx("steps")}>

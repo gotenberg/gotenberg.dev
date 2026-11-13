@@ -1,6 +1,6 @@
 import React from "react";
 import cx from "./cx";
-import { SheetGlyph, random } from "./iso";
+import { KINDS, SheetGlyph, random } from "./iso";
 
 // The sheets that leave the hero's slab and drop behind the sections. A
 // few, in three lanes the layout keeps free: the page's two margins and the
@@ -18,8 +18,8 @@ const LANES = [
   ["c", 4, 96],
 ];
 
-// No two sheets alike: each has its own pace, its own way of moving and
-// its own place in its lane.
+// No two sheets alike: each has its own pace, its own way of moving, its
+// own place in its lane and its own print.
 const SHEETS = LANES.flatMap(([lane, count, width], l) =>
   Array.from({ length: count }, (_, i) => {
     const time = 22 + rand() * 26;
@@ -34,6 +34,7 @@ const SHEETS = LANES.flatMap(([lane, count, width], l) =>
       offset: rand() * 2 - 1,
       width: width + Math.round(rand() * 26),
       turn: rand() < 0.4,
+      kind: KINDS[(i * 3 + l * 2) % KINDS.length],
       rest: (i + 0.5) / count,
     };
   }),
@@ -59,6 +60,7 @@ export default function Drop() {
           <SheetGlyph
             className={cx("drop__g", `drop__g--${s.move}`)}
             turn={s.turn}
+            kind={s.kind}
             trail={s.move !== "flip" && s.move !== "turn"}
           />
         </span>

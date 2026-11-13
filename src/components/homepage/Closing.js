@@ -1,21 +1,27 @@
 import React from "react";
 import Link from "@docusaurus/Link";
+import Aside from "./Aside";
 import cx from "./cx";
 import { Box, Sheet, Stack, projector, stackTop } from "./iso";
+import Pressman from "./Pressman";
 import { Facts, GitHubIcon, RunCommand, StartButton } from "./ui";
 
 // Where the sheets land: a second slab, under the lane they drop through,
 // with the stacks they made.
 const P = projector(2.3, 300, 230);
 
-// [x, y, sheets, seed], back to front.
+// [x, y, sheets, seed, what the top sheet is], back to front.
 const STACKS = [
-  [16, 14, 30, 3],
-  [72, 6, 13, 8],
-  [10, 78, 52, 21],
-  [104, 44, 8, 34],
-  [70, 84, 24, 55],
+  [16, 14, 30, 3, "chart"],
+  [72, 6, 13, 8, "text"],
+  [10, 78, 52, 21, "grid"],
+  [104, 44, 8, 34, "invoice"],
+  [70, 84, 24, 55, "contract"],
 ];
+
+// The pressman stands on the tallest stack, hands on his hips: the work is
+// done.
+const TOP = P(30, 95, stackTop(52));
 
 // The last sheets of the fall, above the stacks they are about to join.
 const LANDING = [
@@ -33,13 +39,14 @@ function Landing() {
       focusable="false"
     >
       <Box P={P} at={[-10, -10, -8]} size={[160, 160, 8]} tone="flat" />
-      <Sheet P={P} at={[112, 4, 0]} turn />
-      <Sheet P={P} at={[52, 46, 0]} />
-      {STACKS.map(([x, y, n, seed]) => (
-        <Stack key={seed} P={P} at={[x, y, 0]} n={n} seed={seed} />
+      <Sheet P={P} at={[112, 4, 0]} turn kind="grid" />
+      <Sheet P={P} at={[52, 46, 0]} kind="invoice" />
+      {STACKS.map(([x, y, n, seed, kind]) => (
+        <Stack key={seed} P={P} at={[x, y, 0]} n={n} seed={seed} kind={kind} />
       ))}
-      <Sheet P={P} at={[104, 110, 0]} />
-      <Sheet P={P} at={[38, 122, 0]} turn />
+      <Pressman at={TOP} pose="proud" scale={1.2} />
+      <Sheet P={P} at={[104, 110, 0]} kind="slide" />
+      <Sheet P={P} at={[38, 122, 0]} turn kind="stamped" />
       {LANDING.map(([x, y, n, lift]) => {
         const z = stackTop(n) + lift;
         const [cx0, cy0] = P(x + 20, y + 15, z);
@@ -78,6 +85,7 @@ export default function Closing() {
             </Link>
           </div>
           <Facts className="end__facts" />
+          <Aside id="end" className="end__note" />
         </div>
       </div>
     </section>

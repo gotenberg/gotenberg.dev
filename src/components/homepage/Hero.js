@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "@docusaurus/Link";
+import Aside from "./Aside";
 import cx from "./cx";
 import Scene from "./Scene";
 import { Facts, GitHubIcon, RunCommand, StarIcon, StartButton } from "./ui";
@@ -35,6 +36,7 @@ export default function Hero() {
         </div>
         <RunCommand />
         <Facts />
+        <Aside id="hero" />
       </div>
       <Scene />
     </section>

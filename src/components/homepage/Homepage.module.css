@@ -32,6 +32,11 @@
   --sheet-line: #1e1b4b;
   --sheet-ink: #8f93c9;
   --ok: #047857;
+  /* The ink of a halftone's dots. */
+  --dot: #4338ca;
+  /* The paper's grain: a sparse speckle of the line's ink, only where the
+     noise is high, so the paper keeps its white. */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .12 0 0 0 0 .11 0 0 0 0 .29 0 0 0 .6 -.36'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
   /* The one line weight, shared by the drawing and the page's borders. */
   --w: 2.25px;
   --pad: 2rem;
@@ -54,7 +59,7 @@
   /* Clip, not hidden: the slabs bleed off the page's edge, and hidden would
      make this a scroll container. */
   overflow-x: clip;
-  background: var(--paper);
+  background: var(--paper) var(--grain);
   color: var(--text);
   font-family:
     "Barlow",
@@ -88,6 +93,8 @@
   --thread: #3730a3;
   --sheet: #f3f4ff;
   --ok: #6ee7b7;
+  --dot: #0d1012;
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .78 0 0 0 0 .82 0 0 0 0 1 0 0 0 .4 -.24'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
   color-scheme: dark;
 }
 
@@ -588,6 +595,12 @@
   overflow: visible;
 }
 
+/* The bar and the names stand over the sheets in flight. */
+.scene__l--bar,
+.scene__l--names {
+  z-index: 4;
+}
+
 /* The carriage rolls the sheet under the platen, waits for the pull, and
    rolls back out. */
 .scene__l--roll {
@@ -620,7 +633,9 @@
 }
 
 .roll__print {
-  animation: printed var(--cycle) step-end infinite;
+  --period: calc(var(--cycle) * 3);
+  animation: printed var(--period) step-end
+    calc(var(--cycle) * var(--turn) - var(--period)) infinite;
 }
 
 @keyframes blank {
@@ -637,16 +652,17 @@
   }
 }
 
+/* Each document shows for its own impression, one in three. */
 @keyframes printed {
   0% {
     opacity: 0;
   }
 
-  38% {
+  12.67% {
     opacity: 1;
   }
 
-  84% {
+  28% {
     opacity: 0;
   }
 }
@@ -812,8 +828,24 @@
   fill: var(--wood);
 }
 
+/* A shaded face is printed as a halftone: dots of ink on the part's own
+   colour (index.js), the flat tone where a pattern cannot be read. */
 .iso__r {
-  fill: var(--wood-right);
+  fill: url("#hp-halftone") var(--wood-right);
+}
+
+.inks {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.inks__ground {
+  fill: var(--wood);
+}
+
+.inks__dot {
+  fill: var(--dot);
 }
 
 .iso--iron .iso__t {
@@ -852,6 +884,149 @@
   fill: var(--hot-right);
 }
 
+/* The pressman, in the drawing's line: white like the wood, his apron in
+   the first ink, his cap in the second. His limbs are hoses: the line, then
+   the white over it. */
+.pm__f {
+  fill: var(--wood);
+  stroke: var(--line);
+  stroke-width: var(--w);
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.pm__f--one {
+  fill: var(--flat);
+}
+
+.pm__f--two {
+  fill: var(--hot);
+}
+
+.pm__f--two-dark {
+  fill: var(--hot-left);
+}
+
+/* His beard is white in both themes, like the sheets. */
+.pm__f--beard {
+  fill: var(--sheet);
+}
+
+.pm__f--thin {
+  stroke-width: 1.75px;
+}
+
+.pm__hose {
+  fill: none;
+  stroke: var(--wood);
+  stroke-width: 3.6px;
+  stroke-linecap: round;
+}
+
+.pm__hose--edge {
+  stroke: var(--line);
+  stroke-width: 8.1px;
+}
+
+.pm__shoe,
+.pm__dot {
+  fill: var(--line);
+}
+
+.pm__lash {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 1.75px;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Hanging from the knob, he is dragged behind the bar as it swings, then
+   swings on when it stops. */
+.hang {
+  animation: hang var(--cycle) ease-in-out infinite;
+}
+
+@keyframes hang {
+  0%,
+  21% {
+    transform: rotate(0deg);
+  }
+
+  30% {
+    transform: rotate(17deg);
+  }
+
+  38% {
+    transform: rotate(-13deg);
+  }
+
+  42% {
+    transform: rotate(6deg);
+  }
+
+  46% {
+    transform: rotate(-2deg);
+  }
+
+  53% {
+    transform: rotate(-16deg);
+  }
+
+  60% {
+    transform: rotate(11deg);
+  }
+
+  66% {
+    transform: rotate(-6deg);
+  }
+
+  72% {
+    transform: rotate(3deg);
+  }
+
+  79%,
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+/* His cap jumps off his head and lands back. */
+.is-cheer .pm__hat {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: hat 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes hat {
+  35% {
+    transform: translateY(-16px) rotate(-14deg);
+  }
+
+  70% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  82% {
+    transform: translateY(-3px);
+  }
+}
+
+/* What he holds: a loupe on its handle. */
+.pm__loupe {
+  fill: color-mix(in srgb, var(--flat-soft) 40%, transparent);
+  stroke: var(--line);
+  stroke-width: var(--w);
+  vector-effect: non-scaling-stroke;
+}
+
+.pm__rod {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 4.5px;
+  stroke-linecap: round;
+}
+
 /* A round part: its shaded side has no line of its own, so the outline is
    drawn again over it. A screw's turns are a lighter line on the iron. */
 .iso .cyl__shade {
@@ -881,6 +1056,20 @@
   stroke: var(--sheet-ink);
   stroke-width: 1.5px;
   stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.sheet__fill {
+  fill: var(--sheet-ink);
+}
+
+/* What the second ink prints: a signature, a stamp. */
+.sheet__hot {
+  fill: none;
+  stroke: var(--hot);
+  stroke-width: 1.75px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
   vector-effect: non-scaling-stroke;
 }
 
@@ -988,6 +1177,41 @@
   }
 }
 
+/* The visitor's pull: the press's frame is a button (Scene.js). */
+.scene__pull {
+  position: absolute;
+  top: 2%;
+  left: 24%;
+  z-index: 4;
+  width: 32%;
+  height: 62%;
+  padding: 0;
+  border: 0;
+  border-radius: 1rem;
+  background: none;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+/* Under the pointer or the keyboard's focus, the knob he hangs from
+   swells: that is what a click pulls. */
+.knob,
+.knob__shine {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.2s ease;
+}
+
+.scene__art:has(.scene__pull:hover) .knob,
+.scene__art:has(.scene__pull:focus-visible) .knob {
+  transform: scale(1.35);
+}
+
+.scene__art:has(.scene__pull:hover) .knob__shine,
+.scene__art:has(.scene__pull:focus-visible) .knob__shine {
+  transform: scale(1.35);
+}
+
 /* The callouts: a numbered bubble on the end of its leader line. */
 .hp .steps {
   position: absolute;
@@ -1009,7 +1233,7 @@
   align-items: center;
   padding-right: 0.75rem;
   border-radius: 1.25rem;
-  background: var(--paper);
+  background: var(--paper) var(--grain);
   transform: translate(-1.1875rem, -1.1875rem);
   counter-increment: step;
 }
@@ -1366,9 +1590,16 @@
 /* A part's drawing, at the scale of the others. */
 .fig {
   display: block;
-  width: calc(10rem * var(--fig));
+  width: calc(12rem * var(--fig));
   margin-left: -0.25rem;
   overflow: visible;
+}
+
+/* The drawing, and beside it what the page says about it (Aside.js). */
+.part__fig {
+  display: grid;
+  justify-items: start;
+  gap: 1rem;
 }
 
 .fig__n {
@@ -1420,6 +1651,76 @@
 :global([data-theme="dark"]) .hp .part__links a:hover,
 :global([data-theme="dark"]) .hp .facts a:hover {
   text-decoration-color: #a5b4fc;
+}
+
+/* --- What the page says beside its facts: a printer's note, in italics,
+   after a registration mark --- */
+
+.note {
+  display: flex;
+  flex: 0 1 auto;
+  align-items: flex-start;
+  gap: 0.5rem;
+  min-width: 10.5rem;
+  max-width: 17rem;
+  margin-bottom: 0.25rem;
+  color: var(--text);
+  font-size: 1.0625rem;
+  font-style: italic;
+  line-height: 1.35;
+  text-wrap: balance;
+}
+
+.register {
+  flex: none;
+  width: 1.125rem;
+  height: 1.125rem;
+  margin-top: 0.1875rem;
+  fill: none;
+  stroke: var(--hot);
+  stroke-width: 1.5;
+}
+
+.hero__txt > .note {
+  margin-top: 1.5rem;
+}
+
+.end__note {
+  width: fit-content;
+  max-width: 32rem;
+  margin-top: 2rem;
+  text-align: left;
+}
+
+/* The colophon's colour bar: indigo, its halftone, vermilion and navy. */
+.bar {
+  display: flex;
+  flex: none;
+  align-self: center;
+  margin-left: 0.5rem;
+}
+
+.bar i {
+  width: 1rem;
+  height: 1rem;
+  margin-left: -1.5px;
+  border: 1.5px solid var(--line);
+}
+
+.bar__one {
+  background: var(--flat);
+}
+
+.bar__tint {
+  background: radial-gradient(var(--dot) 28%, var(--wood) 30%) 0 0 / 4px 4px;
+}
+
+.bar__two {
+  background: var(--hot);
+}
+
+.bar__line {
+  background: var(--line);
 }
 
 /* --- Closing: where the sheets land --- */
@@ -1715,6 +2016,24 @@
     order: 7;
   }
 
+  .hero__txt > .note {
+    order: 8;
+  }
+
+  /* The colophon's colour bar goes under its text. */
+  .end__note {
+    flex-wrap: wrap;
+  }
+
+  .end__note > span:first-of-type {
+    flex: 1;
+  }
+
+  .end__note .bar {
+    flex-basis: 100%;
+    margin: 0.25rem 0 0 1.625rem;
+  }
+
   .run .code__lines {
     font-size: 0.8125rem;
   }
@@ -1766,8 +2085,15 @@
   .roll__print,
   .bar__rod,
   .bar__knob,
+  .hang,
+  .is-cheer .pm__hat,
   .drop__g {
     animation: none;
+  }
+
+  /* Nothing to speed up. */
+  .scene__pull {
+    display: none;
   }
 
   .fly {

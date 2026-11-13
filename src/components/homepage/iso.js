@@ -96,22 +96,119 @@ export function Cylinder({ P, at: [x, y, z = 0], r: radius, h, tone, thread }) {
   );
 }
 
-// A printed sheet lying flat: its outline, a title, three lines and a seal.
-// `turn` lays it the other way round; `blank` leaves it unprinted, for what
-// goes into the press.
-export function Sheet({ P, at: [x, y, z = 0], turn, blank }) {
+// What a sheet carries, in the sheet's own units (40 along its lines, 30
+// across them): `ink` is drawn as lines, `fill` as solid shapes, `hot` in
+// the second ink. Each one is a document Gotenberg prints.
+const row = (u, v, len) => [
+  [u, v],
+  [u + len, v],
+];
+const box = (u, v, w, h) => [
+  [u, v],
+  [u + w, v],
+  [u + w, v + h],
+  [u, v + h],
+];
+const ring = (u, v, radius, n = 14) =>
+  Array.from({ length: n }, (_, i) => [
+    u + radius * Math.cos((i / n) * 2 * Math.PI),
+    v + radius * Math.sin((i / n) * 2 * Math.PI),
+  ]);
+
+export const PRINTS = {
+  // A page of text: a title, three lines and a seal.
+  text: {
+    ink: [row(5, 6, 12), row(5, 11.2, 28), row(5, 16.4, 22), row(5, 21.6, 26)],
+    seal: [33, 23],
+  },
+  // An invoice: its lines and their amounts, a rule, the total.
+  invoice: {
+    ink: [
+      row(5, 6, 10),
+      row(5, 11.5, 14),
+      row(28, 11.5, 7),
+      row(5, 15.5, 11),
+      row(28, 15.5, 7),
+      row(5, 19.5, 16),
+      row(28, 19.5, 7),
+    ],
+    fill: [box(5, 22.2, 30, 0.9), box(26, 24.6, 9, 2)],
+    seal: [8, 25.5],
+  },
+  // A report: a title over a bar chart.
+  chart: {
+    ink: [row(5, 6, 14), row(5, 25, 30)],
+    fill: [
+      box(8, 19, 4, 6),
+      box(14.5, 15, 4, 10),
+      box(21, 17, 4, 8),
+      box(27.5, 11, 4, 14),
+    ],
+    seal: [33, 6],
+  },
+  // A contract: its clauses, then a signature.
+  contract: {
+    ink: [row(5, 6, 12), row(5, 10.5, 30), row(5, 14.5, 27), row(5, 18.5, 30)],
+    hot: [
+      [
+        [20, 25.5],
+        [22, 22.5],
+        [23.5, 26],
+        [25.5, 22],
+        [27, 25.5],
+        [29.5, 23.5],
+        [34, 24.5],
+      ],
+    ],
+    fill: [box(19, 27, 16, 0.6)],
+  },
+  // A spreadsheet: a header row over a grid.
+  grid: {
+    ink: [
+      [...box(5, 5, 30, 20), [5, 5]],
+      row(5, 15, 30),
+      row(5, 20, 30),
+      [
+        [15, 5],
+        [15, 25],
+      ],
+      [
+        [25, 5],
+        [25, 25],
+      ],
+    ],
+    fill: [box(5, 5, 30, 5)],
+  },
+  // A slide: a headline, two points and a picture.
+  slide: {
+    ink: [row(5, 15, 11), row(5, 19.5, 9), [...box(21, 13, 14, 11), [21, 13]]],
+    fill: [box(5, 6, 22, 3.2)],
+  },
+  // A page that passed: its text, and the stamp that says so.
+  stamped: {
+    ink: [row(5, 6, 12), row(5, 11.2, 28), row(5, 16.4, 12), row(5, 21.6, 10)],
+    hot: [
+      [...ring(27, 19.5, 6.2), ring(27, 19.5, 6.2)[0]],
+      [
+        [24, 19.5],
+        [26.3, 22],
+        [30.2, 17],
+      ],
+    ],
+  },
+};
+
+export const KINDS = Object.keys(PRINTS);
+
+// A sheet lying flat: its outline and what is printed on it (`kind`, one
+// of PRINTS). `turn` lays it the other way round; `blank` leaves it
+// unprinted, for what goes into the press.
+export function Sheet({ P, at: [x, y, z = 0], turn, blank, kind = "text" }) {
   const [w, d] = turn ? [30, 40] : [40, 30];
-  const ink = [];
-  if (!blank) {
-    [12, 28, 22, 26].forEach((len, i) => {
-      const o = 6 + i * 5.2;
-      const [a, b] = turn
-        ? [P(x + o, y + 5, z), P(x + o, y + 5 + len, z)]
-        : [P(x + 5, y + o, z), P(x + 5 + len, y + o, z)];
-      ink.push(`M${a.join(" ")}L${b.join(" ")}`);
-    });
-  }
-  const seal = P(x + w - 7, y + d - 7, z);
+  const at = ([u, v]) => (turn ? P(x + v, y + u, z) : P(x + u, y + v, z));
+  const line = (points) => "M" + points.map((p) => at(p).join(" ")).join("L");
+  const print = PRINTS[kind];
+  const seal = print.seal && at(print.seal);
   return (
     <g className={cx("sheet")}>
       <path
@@ -125,13 +222,27 @@ export function Sheet({ P, at: [x, y, z = 0], turn, blank }) {
       />
       {!blank && (
         <>
-          <path className={cx("sheet__ink")} d={ink.join("")} />
-          <circle
-            className={cx("sheet__seal")}
-            cx={seal[0]}
-            cy={seal[1]}
-            r="3.4"
-          />
+          {print.fill && (
+            <path
+              className={cx("sheet__fill")}
+              d={print.fill.map((points) => line(points) + "Z").join("")}
+            />
+          )}
+          <path className={cx("sheet__ink")} d={print.ink.map(line).join("")} />
+          {print.hot && (
+            <path
+              className={cx("sheet__hot")}
+              d={print.hot.map(line).join("")}
+            />
+          )}
+          {seal && (
+            <circle
+              className={cx("sheet__seal")}
+              cx={seal[0]}
+              cy={seal[1]}
+              r="3.4"
+            />
+          )}
         </>
       )}
     </g>
@@ -139,8 +250,8 @@ export function Sheet({ P, at: [x, y, z = 0], turn, blank }) {
 }
 
 // A stack of sheets, each one slightly off the one below, the top one
-// printed. `h` is a sheet's thickness.
-export function Stack({ P, at: [x, y, z = 0], n, seed, h = 1.3 }) {
+// printed (`kind`). `h` is a sheet's thickness.
+export function Stack({ P, at: [x, y, z = 0], n, seed, kind, h = 1.3 }) {
   const rand = random(seed);
   const layers = [];
   let top = [x, y, z];
@@ -155,7 +266,7 @@ export function Stack({ P, at: [x, y, z = 0], n, seed, h = 1.3 }) {
       {layers.map((d, i) => (
         <path key={i} className={cx("stack__ream")} d={d} />
       ))}
-      <Sheet P={P} at={top} />
+      <Sheet P={P} at={top} kind={kind} />
     </g>
   );
 }
@@ -169,7 +280,7 @@ const G = projector(2.3, 84, 4);
 const G_TURNED = projector(2.3, 64, 4);
 export const GLYPH = { w: 148, h: 88 };
 
-export function SheetGlyph({ className, turn, trail }) {
+export function SheetGlyph({ className, turn, trail, kind }) {
   const lift = trail ? 54 : 0;
   return (
     <svg
@@ -184,7 +295,7 @@ export function SheetGlyph({ className, turn, trail }) {
           d={`M${GLYPH.w / 2} ${-lift + 4}V${GLYPH.h / 2 - 22}`}
         />
       )}
-      <Sheet P={turn ? G_TURNED : G} at={[0, 0, 0]} turn={turn} />
+      <Sheet P={turn ? G_TURNED : G} at={[0, 0, 0]} turn={turn} kind={kind} />
     </svg>
   );
 }
