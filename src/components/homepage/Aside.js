@@ -10,25 +10,13 @@ const Register = () => (
   </svg>
 );
 
-// The colophon's colour bar: indigo, its halftone, vermilion and navy.
-const Inks = () => (
-  <span className={cx("bar")} aria-hidden="true">
-    <i className={cx("bar__one")} />
-    <i className={cx("bar__tint")} />
-    <i className={cx("bar__two")} />
-    <i className={cx("bar__line")} />
-  </span>
-);
-
 // What the page says beside its facts (voice.js): a printer's note, in
-// italics, after a registration mark in the vermilion. The last one is the
-// colophon.
-export default function Aside({ id, className }) {
+// italics, after a registration mark in the vermilion.
+export default function Aside({ id }) {
   return (
-    <p className={cx("note", className)}>
+    <p className={cx("note")}>
       <Register />
       <span>{VOICE[id]}</span>
-      {id === "end" && <Inks />}
     </p>
   );
 }

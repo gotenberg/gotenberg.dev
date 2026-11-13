@@ -1,6 +1,5 @@
 import React from "react";
 import Link from "@docusaurus/Link";
-import Aside from "./Aside";
 import cx from "./cx";
 import { Box, Sheet, Stack, projector, stackTop } from "./iso";
 import Pressman from "./Pressman";
@@ -85,7 +84,6 @@ export default function Closing() {
             </Link>
           </div>
           <Facts className="end__facts" />
-          <Aside id="end" className="end__note" />
         </div>
       </div>
     </section>

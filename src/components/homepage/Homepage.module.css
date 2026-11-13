@@ -1685,44 +1685,6 @@
   margin-top: 1.5rem;
 }
 
-.end__note {
-  width: fit-content;
-  max-width: 32rem;
-  margin-top: 2rem;
-  text-align: left;
-}
-
-/* The colophon's colour bar: indigo, its halftone, vermilion and navy. */
-.bar {
-  display: flex;
-  flex: none;
-  align-self: center;
-  margin-left: 0.5rem;
-}
-
-.bar i {
-  width: 1rem;
-  height: 1rem;
-  margin-left: -1.5px;
-  border: 1.5px solid var(--line);
-}
-
-.bar__one {
-  background: var(--flat);
-}
-
-.bar__tint {
-  background: radial-gradient(var(--dot) 28%, var(--wood) 30%) 0 0 / 4px 4px;
-}
-
-.bar__two {
-  background: var(--hot);
-}
-
-.bar__line {
-  background: var(--line);
-}
-
 /* --- Closing: where the sheets land --- */
 
 .end {
@@ -2018,20 +1980,6 @@
 
   .hero__txt > .note {
     order: 8;
-  }
-
-  /* The colophon's colour bar goes under its text. */
-  .end__note {
-    flex-wrap: wrap;
-  }
-
-  .end__note > span:first-of-type {
-    flex: 1;
-  }
-
-  .end__note .bar {
-    flex-basis: 100%;
-    margin: 0.25rem 0 0 1.625rem;
   }
 
   .run .code__lines {

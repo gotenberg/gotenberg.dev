@@ -8,5 +8,4 @@ export const VOICE = {
   Invoice: "The XML rides inside the PDF, like a letter in its envelope.",
   Deliver: "Off the press, straight to the shelf it belongs on.",
   Images: "The same press, cut for five architectures.",
-  end: "Headlines in Barlow\u00a0Condensed, text in Barlow, requests in JetBrains\u00a0Mono. Drawn in three inks: navy, indigo and vermilion.",
 };
