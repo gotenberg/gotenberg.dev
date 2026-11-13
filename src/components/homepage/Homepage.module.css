@@ -1693,10 +1693,9 @@
   padding: 5rem 0 8.5rem;
 }
 
-/* Centred on the lane the sheets drop through, not on the page. */
+/* Centred on the page. The lane the sheets drop through runs a little left
+   of that: they land on the slab's left half. */
 .end__in {
-  position: relative;
-  left: -4%;
   display: grid;
   justify-items: center;
   text-align: center;
@@ -1875,10 +1874,6 @@
 
   .part + .part {
     margin-top: 4.5rem;
-  }
-
-  .end__in {
-    left: 0;
   }
 }
 

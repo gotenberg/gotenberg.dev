@@ -139,7 +139,7 @@ function Images({ count }) {
   const P = projector(u, 70, 26);
   const seat = P(36, 36, 28);
   return (
-    <Figure box={[0, -44, 190, 130]}>
+    <Figure box={[0, -44, 190, 150]}>
       <Box P={P} at={[0, 0, 0]} size={[24, 24, 14]} />
       <Box P={P} at={[28, 0, 0]} size={[24, 24, 14]} tone="flat" />
       <Box P={P} at={[0, 28, 0]} size={[24, 24, 14]} tone="flat" />
