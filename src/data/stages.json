@@ -126,7 +126,7 @@
         {
           "name": "paperSize",
           "type": "string",
-          "description": "`A3`, `A4`, `A5`, `B4`, `B5`, `Letter`, `Legal` or `Tabloid`, in any case. Sets the width and the height. Set `paperSize`, or `paperWidth` and `paperHeight`."
+          "description": "`A0`, `A1`, `A2`, `A3`, `A4`, `A5`, `B4`, `B5`, `Letter`, `Legal` or `Tabloid`, in any case. Sets the width and the height. Set `paperSize`, or `paperWidth` and `paperHeight`."
         },
         {
           "name": "paperWidth",

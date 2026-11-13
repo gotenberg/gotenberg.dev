@@ -12,7 +12,7 @@ An error answers with a status and a plain-text message that says what failed an
   response={`HTTP/1.1 400 Bad Request
 Content-Type: text/plain; charset=UTF-8
 
-Invalid form data: form field 'paperSize' is invalid (got 'A9', want A3, A4, A5, B4, B5, Letter, Legal or Tabloid)`}
+Invalid form data: form field 'paperSize' is invalid (got 'A9', want A0, A1, A2, A3, A4, A5, B4, B5, Letter, Legal or Tabloid)`}
 />
 
 With a webhook, the error reaches the events URL instead: see [Webhook requests](/docs/reference/headers#webhook-requests).
@@ -39,7 +39,7 @@ A form field names itself, the value you sent, and what it wants:
 
 ```text
 Invalid form data: form field 'url' is required
-Invalid form data: form field 'paperSize' is invalid (got 'A9', want A3, A4, A5, B4, B5, Letter, Legal or Tabloid)
+Invalid form data: form field 'paperSize' is invalid (got 'A9', want A0, A1, A2, A3, A4, A5, B4, B5, Letter, Legal or Tabloid)
 Invalid form data: form field 'landscape' is invalid (got 'foo', want true or false)
 ```
 

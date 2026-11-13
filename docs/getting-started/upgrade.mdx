@@ -101,34 +101,34 @@ Gotenberg 8 converted to PDF/A again after its other steps. Gotenberg 9 doesn't:
 
 A field that has a twin among the stages now starts with `native`. Some values change format too.
 
-| Route       | Gotenberg 8                  | Gotenberg 9                                                               |
-| :---------- | :--------------------------- | :------------------------------------------------------------------------ |
-| Chromium    | `waitWindowStatus`           | `waitForWindowStatus`, which now waits as documented                      |
-| Chromium    | `nativePageRanges`           | `nativePages`                                                             |
-| Chromium    | `generateDocumentOutline`    | `nativeBookmarks`                                                         |
-| Chromium    | `generateTaggedPdf`          | `nativeTaggedPdf`                                                         |
-| Screenshots | `quality`, 0 to 100          | `quality`, 1 to 100                                                       |
-| LibreOffice | `nativePageRanges`           | `nativePages`                                                             |
-| LibreOffice | `exportBookmarks`            | `nativeBookmarks`                                                         |
-| LibreOffice | `generateTaggedPdf`          | `nativeTaggedPdf`                                                         |
-| LibreOffice | `singlePageSheets`           | `singlePage`                                                              |
-| LibreOffice | `pdfa`                       | `nativePdfa`: `PDF/A-1b`, `PDF/A-2b`, `PDF/A-3b` or `PDF/A-4`             |
-| LibreOffice | `pdfua`, a boolean           | `nativePdfua`, the string `PDF/UA-1`                                      |
-| LibreOffice | `quality`                    | `nativeQuality`                                                           |
-| LibreOffice | `losslessImageCompression`   | `nativeLosslessImageCompression`                                          |
-| LibreOffice | `reduceImageResolution`      | `nativeReduceImageResolution`                                             |
-| LibreOffice | `maxImageResolution`         | `nativeMaxImageResolution`                                                |
-| LibreOffice | `nativeWatermarkColor`       | `#rrggbb`, no longer a decimal number                                     |
-| LibreOffice | `nativeWatermarkFontHeight`  | `nativeWatermarkFontSize`                                                 |
-| LibreOffice | `nativeWatermarkFontName`    | `nativeWatermarkFont`                                                     |
-| LibreOffice | `nativeWatermarkRotateAngle` | `nativeWatermarkRotation`, in degrees, counter-clockwise                  |
-| LibreOffice | `initialView`, a number      | `default`, `outline` or `thumbnails`                                      |
-| LibreOffice | `magnification`, a number    | `default`, `fitWindow`, `fitWidth`, `fitVisible` or `zoom`                |
-| LibreOffice | `pageLayout`, a number       | `default`, `singlePage`, `oneColumn` or `twoColumnRight`                  |
-| LibreOffice | `firstPageOnLeft`            | Removed: LibreOffice ignores it                                           |
-| LibreOffice | `nativePdfFormats`           | Removed: `nativePdfa` and `nativePdfua` always apply natively             |
-| Both        | none                         | `paperSize`: `A3`, `A4`, `A5`, `B4`, `B5`, `Letter`, `Legal` or `Tabloid` |
-| All         | `downloadFrom[].embedded`    | Removed: downloaded files are inputs; see [below](#no-direct-equivalent)  |
+| Route       | Gotenberg 8                  | Gotenberg 9                                                                                 |
+| :---------- | :--------------------------- | :------------------------------------------------------------------------------------------ |
+| Chromium    | `waitWindowStatus`           | `waitForWindowStatus`, which now waits as documented                                        |
+| Chromium    | `nativePageRanges`           | `nativePages`                                                                               |
+| Chromium    | `generateDocumentOutline`    | `nativeBookmarks`                                                                           |
+| Chromium    | `generateTaggedPdf`          | `nativeTaggedPdf`                                                                           |
+| Screenshots | `quality`, 0 to 100          | `quality`, 1 to 100                                                                         |
+| LibreOffice | `nativePageRanges`           | `nativePages`                                                                               |
+| LibreOffice | `exportBookmarks`            | `nativeBookmarks`                                                                           |
+| LibreOffice | `generateTaggedPdf`          | `nativeTaggedPdf`                                                                           |
+| LibreOffice | `singlePageSheets`           | `singlePage`                                                                                |
+| LibreOffice | `pdfa`                       | `nativePdfa`: `PDF/A-1b`, `PDF/A-2b`, `PDF/A-3b` or `PDF/A-4`                               |
+| LibreOffice | `pdfua`, a boolean           | `nativePdfua`, the string `PDF/UA-1`                                                        |
+| LibreOffice | `quality`                    | `nativeQuality`                                                                             |
+| LibreOffice | `losslessImageCompression`   | `nativeLosslessImageCompression`                                                            |
+| LibreOffice | `reduceImageResolution`      | `nativeReduceImageResolution`                                                               |
+| LibreOffice | `maxImageResolution`         | `nativeMaxImageResolution`                                                                  |
+| LibreOffice | `nativeWatermarkColor`       | `#rrggbb`, no longer a decimal number                                                       |
+| LibreOffice | `nativeWatermarkFontHeight`  | `nativeWatermarkFontSize`                                                                   |
+| LibreOffice | `nativeWatermarkFontName`    | `nativeWatermarkFont`                                                                       |
+| LibreOffice | `nativeWatermarkRotateAngle` | `nativeWatermarkRotation`, in degrees, counter-clockwise                                    |
+| LibreOffice | `initialView`, a number      | `default`, `outline` or `thumbnails`                                                        |
+| LibreOffice | `magnification`, a number    | `default`, `fitWindow`, `fitWidth`, `fitVisible` or `zoom`                                  |
+| LibreOffice | `pageLayout`, a number       | `default`, `singlePage`, `oneColumn` or `twoColumnRight`                                    |
+| LibreOffice | `firstPageOnLeft`            | Removed: LibreOffice ignores it                                                             |
+| LibreOffice | `nativePdfFormats`           | Removed: `nativePdfa` and `nativePdfua` always apply natively                               |
+| Both        | none                         | `paperSize`: `A0`, `A1`, `A2`, `A3`, `A4`, `A5`, `B4`, `B5`, `Letter`, `Legal` or `Tabloid` |
+| All         | `downloadFrom[].embedded`    | Removed: downloaded files are inputs; see [below](#no-direct-equivalent)                    |
 
 Chromium no longer makes PDF/A on its own: add a `remediate` stage.
 

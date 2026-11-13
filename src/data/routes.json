@@ -433,7 +433,7 @@
         "name": "paperSize",
         "type": "string",
         "default": "Letter",
-        "description": "`A3`, `A4`, `A5`, `B4`, `B5`, `Letter`, `Legal` or `Tabloid`, in any case. Sets the width and the height."
+        "description": "`A0`, `A1`, `A2`, `A3`, `A4`, `A5`, `B4`, `B5`, `Letter`, `Legal` or `Tabloid`, in any case. Sets the width and the height."
       },
       {
         "name": "paperWidth",
@@ -589,7 +589,7 @@
         "section": "page",
         "name": "paperSize",
         "type": "string",
-        "description": "`A3`, `A4`, `A5`, `B4`, `B5`, `Letter`, `Legal` or `Tabloid`, in any case, for every page. Without it, each document keeps its own page size."
+        "description": "`A0`, `A1`, `A2`, `A3`, `A4`, `A5`, `B4`, `B5`, `Letter`, `Legal` or `Tabloid`, in any case, for every page. Without it, each document keeps its own page size."
       },
       {
         "section": "page",
