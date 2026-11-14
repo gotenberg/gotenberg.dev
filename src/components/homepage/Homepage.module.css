@@ -1310,6 +1310,82 @@
   pointer-events: none;
 }
 
+/* The paper plane (Plane.js): out of sight at the page's left edge until
+   thrown, then across at a steady pace, bobbing on a slow swell, its nose
+   following the swell a quarter turn behind. Behind the sections, like the
+   sheets. Script places it, and only without reduced motion. */
+.plane {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.plane__x {
+  transform: translateX(-14rem);
+}
+
+.plane.is-flying .plane__x {
+  animation: plane-x 8s linear;
+}
+
+.plane.is-flying .plane__y {
+  animation: plane-y 2.4s ease-in-out infinite alternate;
+}
+
+.plane__g {
+  display: block;
+  width: clamp(7.5rem, 14vw, 12.5rem);
+  overflow: visible;
+}
+
+.plane.is-flying .plane__g {
+  animation: plane-tilt 2.4s ease-in-out -1.2s infinite alternate;
+}
+
+.plane__g path {
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+/* The sheet's own white in shade: paper in both themes, like the sheets. */
+.plane__far {
+  fill: color-mix(in srgb, var(--sheet) 78%, var(--sheet-ink));
+  stroke: var(--sheet-line);
+  stroke-width: 1.75px;
+}
+
+@keyframes plane-x {
+  from {
+    transform: translateX(-14rem);
+  }
+
+  to {
+    transform: translateX(calc(100vw + 2rem));
+  }
+}
+
+@keyframes plane-y {
+  from {
+    transform: translateY(-0.375rem);
+  }
+
+  to {
+    transform: translateY(0.375rem);
+  }
+}
+
+@keyframes plane-tilt {
+  from {
+    transform: rotate(-3deg);
+  }
+
+  to {
+    transform: rotate(4deg);
+  }
+}
+
 /* Each sheet falls at its own pace (--time), from its own place in the
    lane (--o). */
 .drop__s {

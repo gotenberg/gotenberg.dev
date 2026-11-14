@@ -6,6 +6,7 @@ import "@fontsource/barlow/700.css";
 import cx from "./cx";
 import Hero from "./Hero";
 import Drop from "./Drop";
+import Plane from "./Plane";
 import Sponsors from "./Sponsors";
 import Parts from "./Parts";
 import Closing from "./Closing";
@@ -32,7 +33,8 @@ function Inks() {
 }
 
 // The page reads as one drawing: the press at the top, its sheets dropping
-// behind the sections, the stacks they land on at the bottom.
+// behind the sections (one now and then folded into a plane), the stacks
+// they land on at the bottom.
 export default function Homepage() {
   // A copied command is the visitor's first pull: every pressman's cap
   // jumps, once.
@@ -61,6 +63,7 @@ export default function Homepage() {
       <Hero />
       <div className={cx("rest")}>
         <Drop />
+        <Plane />
         <Sponsors />
         <Parts />
         <Closing />
