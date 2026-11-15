@@ -532,29 +532,31 @@
 }
 
 .hero__lede {
-  margin-top: 2rem;
+  margin-top: 2.5rem;
   color: var(--text);
   font-size: 1.1875rem;
-  line-height: 1.45;
+  line-height: 1.5;
   text-wrap: pretty;
 }
 
 .hero__txt > .btns {
-  margin-top: 2rem;
+  margin-top: 2.75rem;
 }
 
 /* Under the buttons, the command stops short of the slab's left corner,
    which sits at 50.6% of the page's width while the drawing follows it. */
 .hero__txt > .run {
   max-width: min(34rem, calc(50.6vw - 3rem));
-  margin-top: 1rem;
+  margin-top: 1.25rem;
 }
 
-/* What makes it safe to pick: the licence and the pulls, in small type. */
+/* What makes it safe to pick: the licence and the pulls, in small type,
+   apart from the action above them. */
 .hero__txt > .facts {
-  margin-top: 1rem;
+  margin-top: 2rem;
   color: var(--muted);
   font-size: 0.9375rem;
+  line-height: 1.7;
 }
 
 .facts > span {
@@ -1758,7 +1760,7 @@
 }
 
 .hero__txt > .note {
-  margin-top: 1.5rem;
+  margin-top: 2rem;
 }
 
 /* --- Closing: where the sheets land --- */
