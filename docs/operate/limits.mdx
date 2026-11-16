@@ -19,6 +19,15 @@ Bound what one request may cost Gotenberg: its size, its time, its fan-out and i
 
 [`--chromium-max-queue-size`](/docs/configuration#chromium-max-queue-size) and [`--libreoffice-max-queue-size`](/docs/configuration#libreoffice-max-queue-size) cap the requests waiting for an engine, unlimited by default. The next one answers 429, so a busy container sheds load instead of piling up timeouts.
 
+## Memory
+
+A conversion that never stops allocating fills the container until the kernel kills it. On cgroup v2, Kubernetes kills every process of the container together, Gotenberg included, so every request in flight fails. A memory limit per engine fails the runaway conversion first:
+
+- [`--libreoffice-max-memory`](/docs/configuration#libreoffice-max-memory) bounds the memory LibreOffice allocates during a conversion, such as `900MB`. Past it, Gotenberg kills LibreOffice, answers that conversion with 422, and restarts LibreOffice for the next one.
+- [`--chromium-max-memory`](/docs/configuration#chromium-max-memory) bounds the memory of Chromium, all its processes together, while it converts. Up to six conversions share the browser, and Gotenberg can't tell which page holds the memory: past the limit, it restarts Chromium, and every conversion in flight answers 503.
+
+Gotenberg reads the memory every 100 milliseconds, and only while an engine converts, so a limit below an idle engine's memory fails conversions rather than restarting the engine in a loop. There is no limit by default. Keep both, together, under the container's limit, with room for Gotenberg itself: on a 2 GB container, `900MB` for LibreOffice and `800MB` for Chromium.
+
 ## Downloads
 
 - [`--api-download-from-max-entries`](/docs/configuration#api-download-from-max-entries) caps the URLs one `downloadFrom` lists, unlimited by default.

@@ -402,6 +402,14 @@
       "description": "Maximum number of concurrent conversions. Chromium supports up to 6"
     },
     {
+      "name": "chromium-max-memory",
+      "module": "chromium",
+      "env": "CHROMIUM_MAX_MEMORY",
+      "type": "string",
+      "default": null,
+      "description": "Set the anonymous resident memory Chromium, all its processes together, may hold while it converts - it accepts values like 1500MB, 2GB, etc. Over it, Gotenberg kills Chromium, which fails every conversion in flight with a 503, and restarts it. Keep it under the container's memory limit, so that a runaway page does not get the container OOM-killed. Empty disables this feature"
+    },
+    {
       "name": "chromium-max-queue-size",
       "module": "chromium",
       "env": "CHROMIUM_MAX_QUEUE_SIZE",
@@ -536,6 +544,14 @@
       "type": "duration",
       "default": null,
       "description": "Shutdown LibreOffice after being idle for the given duration. Set to 0 to disable this feature"
+    },
+    {
+      "name": "libreoffice-max-memory",
+      "module": "libreoffice",
+      "env": "LIBREOFFICE_MAX_MEMORY",
+      "type": "string",
+      "default": null,
+      "description": "Set the anonymous resident memory LibreOffice may hold during a conversion - it accepts values like 900MB, 1GB, etc. Over it, Gotenberg kills LibreOffice, answers 422 and restarts it. Keep it under the container's memory limit, so that a runaway conversion fails alone rather than getting the container OOM-killed. Empty disables this feature"
     },
     {
       "name": "libreoffice-max-queue-size",

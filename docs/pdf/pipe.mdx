@@ -47,11 +47,11 @@ Gotenberg checks the order of the stages before it runs any, and answers 400 wit
 
 ## What each stage does to the file
 
-A stage either rewrites the PDF whole or appends an update to it. A rewrite drops signatures, so on a signed PDF those stages answer 400:
+A stage either rewrites the PDF whole or appends an update to it. A signature covers the bytes of the file it was made in, so a rewrite can't keep it: on a signed PDF, those stages answer 400 unless they set `dropSignatures`, which removes the signatures and keeps their visible appearance on the page. Gotenberg decides on the file it writes: a `remediate` that only appends its repairs keeps the signatures and needs no option.
 
 | The file                      | Stages                                                                                                                                                                       |
 | :---------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Rewritten, signatures refused | `select`, `delete`, `insert`, `merge`, `split`, `compose`, `encrypt`, `decrypt`, `flatten-form`, `redact`, `remediate`, `convert-colors`, `flatten-transparency`, `optimize` |
+| Rewritten, signatures dropped | `select`, `delete`, `insert`, `merge`, `split`, `compose`, `encrypt`, `decrypt`, `flatten-form`, `redact`, `remediate`, `convert-colors`, `flatten-transparency`, `optimize` |
 | Updated, signatures kept      | `rotate`, `stamp-text`, `stamp-image`, `stamp-pdf`, `set-form`, `set-metadata`, `set-bookmarks`, `attach`, `detach`, `autotag`, `sign`, `timestamp`                          |
 | Unchanged                     | `render`, which makes images, `extract-attachments`, which returns the embedded files, and `extract-text`, which returns the text                                            |
 

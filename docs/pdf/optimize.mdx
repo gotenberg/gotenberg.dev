@@ -51,7 +51,7 @@ Each pass runs unless you turn it off: `objectStreams`, `dedup`, `recompressImag
 
 ## Signed and encrypted PDFs
 
-A rewrite removes signatures, so a signed PDF answers 400: optimize first, then sign. A rewrite also writes an encrypted PDF decrypted, so an encrypted PDF answers 400 unless the stages decrypt or encrypt it as well:
+A rewrite removes signatures, so a signed PDF answers 400: optimize first, then sign, or set `dropSignatures` to remove them. A rewrite also writes an encrypted PDF decrypted, so an encrypted PDF answers 400 unless the stages decrypt or encrypt it as well:
 
 <Request
   route="/forms/pdf/pipe"

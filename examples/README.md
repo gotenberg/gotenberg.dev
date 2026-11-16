@@ -23,4 +23,5 @@ The files the docs' `<Request>` examples upload. `npm run check:examples` copies
 - `encrypted.pdf`: `report.pdf` encrypted with the user password `secret`, made by Gotenberg.
 - `archive.pdf`: `report.pdf` remediated to PDF/A-2b and PDF/UA-1 together, made by Gotenberg. veraPDF passes it on both.
 - `cert.pem`, `key.pem`: a self-signed test certificate and its key, from Gotenberg's tests. Never sign anything real with them.
+- `signed.pdf`: `report.pdf` signed with `cert.pem` and `key.pem`, made by Gotenberg.
 - `cert.p12`: the same certificate and key as a PKCS#12 file, with the password `secret`, made with OpenSSL. Test only, like them.

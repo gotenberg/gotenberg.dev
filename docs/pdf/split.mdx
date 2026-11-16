@@ -46,6 +46,17 @@ The stages after a split run on each part. This one stamps both parts:
   output="report.zip"
 />
 
+## Split a signed PDF
+
+Each part is a new file, which a signature can't cover, so a signed PDF answers 400. `dropSignatures` removes the signatures and keeps their visible appearance on the page:
+
+<Request
+  route="/forms/pdf/split"
+  files={["signed.pdf"]}
+  fields={{ every: 1, dropSignatures: true }}
+  output="signed.zip"
+/>
+
 <AsStage op="split" />
 
 To keep some pages in one PDF rather than cut it, [select them](/docs/pdf/select).
