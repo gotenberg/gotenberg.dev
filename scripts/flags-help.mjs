@@ -17,8 +17,11 @@ export function flagsFromHelp(image) {
   const flags = [];
   for (const line of (run.stdout + run.stderr).split("\n")) {
     // "      --api-port int      Set the port ... (default 3000)". A boolean
-    // flag has no type; the description sits two or more spaces away.
-    const m = line.match(/^\s+--([a-z0-9-]+)(?: ([a-zA-Z0-9]+))?\s{2,}(.*)$/);
+    // flag has no type, and newer releases of the flag library print it as
+    // "--name[=true|false]"; the description sits two or more spaces away.
+    const m = line.match(
+      /^\s+--([a-z0-9-]+)(?:\[=true\|false\])?(?: ([a-zA-Z0-9]+))?\s{2,}(.*)$/,
+    );
     if (!m) continue;
     const [, name, type = "bool", text] = m;
     const d = text.match(/^(.*?)\s*\(default (.*)\)$/);

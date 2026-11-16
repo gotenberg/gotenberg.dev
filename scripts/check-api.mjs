@@ -47,14 +47,24 @@ const opOf = new Map(
     ),
   ].map((m) => [m[1], m[2]]),
 );
+// A struct takes the options of the structs it embeds, such as dropSignatures.
+const structs = new Map(
+  [...go.matchAll(/type (\w+) struct\s*\{([^]*?)\n?\}/g)].map((m) => [
+    m[1],
+    m[2],
+  ]),
+);
+const optionsOf = (body) => [
+  ...[...body.matchAll(/json:"([A-Za-z]+)/g)].map((t) => t[1]),
+  ...[...body.matchAll(/^\s*(\w+)\s*$/gm)].flatMap((e) =>
+    structs.has(e[1]) ? optionsOf(structs.get(e[1])) : [],
+  ),
+];
 const sourceStages = new Map();
-for (const m of go.matchAll(/type (\w+) struct\s*\{([^]*?)\n?\}/g)) {
-  const op = opOf.get(m[1]);
+for (const [name, body] of structs) {
+  const op = opOf.get(name);
   if (!op) continue;
-  sourceStages.set(
-    op,
-    new Set([...m[2].matchAll(/json:"([A-Za-z]+)/g)].map((t) => t[1])),
-  );
+  sourceStages.set(op, new Set(optionsOf(body)));
 }
 const stages = json("src/data/stages.json").stages;
 compare(
