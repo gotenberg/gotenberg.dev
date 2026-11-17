@@ -18,7 +18,31 @@ Combines PDFs into one.
 
 Gotenberg merges the files in the alphanumeric order of their names, not in the order you upload them: `annex.pdf` comes first here. Name them `1-report.pdf` and `2-annex.pdf` to pick the order. The result takes the name of the first file.
 
-Each PDF keeps its bookmarks, pointed at the merged pages. For one bookmark per file, add a [`set-bookmarks`](/docs/pdf/set-bookmarks) stage after `merge`.
+Each PDF keeps its bookmarks, pointed at the merged pages.
+
+## Add a bookmark per file
+
+`fileBookmarks` adds one bookmark per PDF, at its first page, with the PDF's own bookmarks nested under it. `{}` labels each by its title, or by its filename without the extension when it has none:
+
+<Request
+  route="/forms/pdf/merge"
+  files={["report.pdf", "annex.pdf"]}
+  fields={{ fileBookmarks: {} }}
+  output="merged.pdf"
+/>
+
+`label` lists the sources to try, in order, among `title` and `filename`, which always comes last. `labels` sets the label of the PDFs it names:
+
+<Request
+  route="/forms/pdf/merge"
+  files={["report.pdf", "annex.pdf"]}
+  fields={{
+    fileBookmarks: { label: ["filename"], labels: { "annex.pdf": "Annex" } },
+  }}
+  output="merged.pdf"
+/>
+
+A name in `labels` that matches no uploaded PDF answers 400. A single PDF gets its bookmark too.
 
 <AsStage op="merge" />
 

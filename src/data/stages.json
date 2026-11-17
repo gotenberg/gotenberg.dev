@@ -6,6 +6,11 @@
       "summary": "Appends the PDFs into one, in the alphanumeric order of their names. The result takes the name of the first.",
       "options": [
         {
+          "name": "fileBookmarks",
+          "type": "object",
+          "description": "Adds one bookmark per PDF, at its first page, with the PDF's own bookmarks nested under it. `{}` labels each by its title, or by its filename without the extension when it has none. `label` lists the sources to try, in order, among `title` and `filename`, which always comes last. `labels` gives the label of the PDFs it names by filename, such as `{\"annex.pdf\": \"Annex\"}`."
+        },
+        {
           "name": "dropSignatures",
           "type": "boolean",
           "default": "false",
