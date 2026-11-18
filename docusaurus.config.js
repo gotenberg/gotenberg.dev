@@ -177,6 +177,10 @@ module.exports = {
               href: "https://github.com/gotenberg/gotenberg-php",
             },
             {
+              label: "OpenAPI",
+              href: "pathname:///openapi.yaml",
+            },
+            {
               label: "Upgrade from 8.x",
               to: "/docs/getting-started/upgrade",
             },

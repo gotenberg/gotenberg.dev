@@ -4,11 +4,28 @@ import clsx from "clsx";
 import useBrokenLinks from "@docusaurus/useBrokenLinks";
 import styles from "./Options.module.css";
 
-// Turns `backtick` spans of the data's text into code.
+// Turns [text](/docs/…) of the data's text into links, and `backtick` spans
+// into code, link text included.
 export function inline(text) {
+  return text.split(/(\[[^\]]+\]\([^)]+\))/).flatMap((piece, i) => {
+    const link = piece.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+    return link
+      ? [
+          <Link key={i} to={link[2]}>
+            {code(link[1], i)}
+          </Link>,
+        ]
+      : code(piece, i);
+  });
+}
+
+// Turns the `backtick` spans of text into code.
+function code(text, key) {
   return text
     .split("`")
-    .map((part, i) => (i % 2 === 1 ? <code key={i}>{part}</code> : part));
+    .map((part, i) =>
+      i % 2 === 1 ? <code key={`${key}-${i}`}>{part}</code> : part,
+    );
 }
 
 // Lets a long identifier wrap where a reader would split it, before the

@@ -5,10 +5,13 @@ import stages from "@site/src/data/stages.json";
 import Options, { inline, NoOptions } from "./Options";
 import { MethodBadge, wrappablePath } from "./ApiEndpoint";
 import card from "./ApiEndpoint.module.css";
+import { formInput, routeEndpoint, stageEndpoint } from "./endpoints.mjs";
 import styles from "./Endpoint.module.css";
 
-// The labels of the field groups and LibreOffice sections in routes.json.
+// The labels of the field groups and LibreOffice sections in routes.json,
+// and of a stage's options.
 const LABELS = {
+  options: "Options",
   chromium: "Page",
   "chromium-pdf": "PDF",
   "chromium-screenshot": "Image",
@@ -20,53 +23,14 @@ const LABELS = {
   viewer: "Viewer",
 };
 
-// A stage's own route: /forms/pdf/<op>, its options as form fields.
-function stageRoute(op) {
-  const stage = stages.stages.find((s) => s.op === op);
-  if (!stage) throw new Error(`no stage "${op}" in src/data/stages.json`);
-  const files = stage.options.some((o) => o.type === "file")
-    ? "The PDFs, and the files the options name."
-    : "The PDFs.";
-  return {
-    method: "POST",
-    path: `/forms/pdf/${op}`,
-    input: [
-      { name: "files", type: "file[]", required: true, description: files },
-    ],
-    sections: [{ label: "Options", fields: stage.options }],
-    response:
-      stage.response ?? "The PDF, or a ZIP of the PDFs when you send several.",
-  };
-}
-
-// A route of routes.json, its field groups split into sections.
-function route(path) {
-  const r = routes.routes.find((x) => x.path === path);
-  if (!r) throw new Error(`no route "${path}" in src/data/routes.json`);
-  const sections = (r.groups ?? []).flatMap((group) => {
-    const fields = routes.fields[group];
-    if (!fields) throw new Error(`no fields "${group}" in routes.json`);
-    const bySection = [...new Set(fields.map((f) => f.section))];
-    return bySection.map((section) => ({
-      label: LABELS[section ?? group],
-      fields: fields.filter((f) => f.section === section),
-    }));
-  });
-  return {
-    ...r,
-    input: [...(r.input ?? []), ...(r.stages ? routes.fields.stages : [])],
-    sections,
-  };
-}
-
 // The card a route page opens with, under the page's own intro: method,
 // path, what the route takes and what it answers, from src/data/routes.json, or from src/data/stages.json
 // for a stage's own route. Each field is an anchor, such as
 // /docs/chromium/convert-html#waitDelay.
 export default function Endpoint({ path, op }) {
-  const r = op ? stageRoute(op) : route(path);
+  const r = op ? stageEndpoint(stages, op) : routeEndpoint(routes, path);
   const multipart = r.method === "POST";
-  const input = [...r.input, ...(multipart ? routes.fields.common : [])];
+  const input = formInput(routes, r);
 
   return (
     <div className={card.apiContainer}>
@@ -81,8 +45,8 @@ export default function Endpoint({ path, op }) {
           <Section label="Form data">
             <Options options={input} anchored className={styles.fields} />
           </Section>
-          {r.sections.map(({ label, fields }) => (
-            <Section key={label} label={label}>
+          {r.sections.map(({ key, fields }) => (
+            <Section key={key} label={LABELS[key]}>
               {fields.length > 0 ? (
                 <Options options={fields} anchored className={styles.fields} />
               ) : (

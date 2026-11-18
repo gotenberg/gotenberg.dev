@@ -17,6 +17,7 @@ npm run clear    # Clear the Docusaurus cache
 npm run check:examples  # Run the docs' examples against Gotenberg (docs/README.md)
 npm run check:api       # Compare the reference data with Gotenberg (docs/README.md)
 npm run sync:flags      # Regenerate src/data/flags.json from Gotenberg's --help
+npm run sync:openapi    # Regenerate static/openapi.yaml from the reference data
 ```
 
 ## Project layout

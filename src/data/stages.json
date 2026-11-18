@@ -776,7 +776,8 @@
         ],
         "output": "invoice_factur-x.xml"
       },
-      "response": "The file, or a ZIP of the files when there are several."
+      "response": "The file, or a ZIP of the files when there are several.",
+      "produces": ["application/octet-stream", "application/zip"]
     },
     {
       "op": "extract-text",
@@ -823,7 +824,8 @@
         ],
         "output": "report.txt"
       },
-      "response": "The text file, or a ZIP of the text files when there are several."
+      "response": "The text file, or a ZIP of the text files when there are several.",
+      "produces": ["text/plain", "text/markdown", "application/zip"]
     },
     {
       "op": "optimize",
@@ -1128,7 +1130,8 @@
         ],
         "output": "report.zip"
       },
-      "response": "The image, or a ZIP of the images when there are several."
+      "response": "The image, or a ZIP of the images when there are several.",
+      "produces": ["image/png", "image/jpeg", "application/zip"]
     }
   ]
 }

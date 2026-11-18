@@ -8,12 +8,15 @@
 //   LibreOffice converts.
 // - src/data/flags.json against the --help of a Gotenberg image
 //   (GOTENBERG_IMAGE, default gotenberg/gotenberg:9).
+// - static/openapi.yaml, the OpenAPI description the site serves, against
+//   the one the reference data builds now.
 //
 //   npm run check:api
 
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { flagsFromHelp } from "./flags-help.mjs";
+import { openapi } from "./openapi.mjs";
 
 const root = path.resolve(
   path.dirname(new URL(import.meta.url).pathname),
@@ -203,11 +206,23 @@ for (const flag of help) {
   }
 }
 
+// The OpenAPI description: what the data builds, as the site serves it.
+const served = path.join(root, "static/openapi.yaml");
+let written = "";
+try {
+  written = readFileSync(served, "utf8");
+} catch {
+  // Missing reads as stale.
+}
+if (written !== (await openapi(served))) {
+  problems.push("static/openapi.yaml: stale, run npm run sync:openapi");
+}
+
 if (problems.length) {
   console.log(problems.join("\n"));
   process.exit(1);
 }
 const fields = Object.values(routes.fields).flat().length;
 console.log(
-  `${stages.length} stages, ${routes.routes.length} routes, ${fields} fields, ${routes.libreofficeExtensions.length} extensions and ${data.length} flags match Gotenberg.`,
+  `${stages.length} stages, ${routes.routes.length} routes, ${fields} fields, ${routes.libreofficeExtensions.length} extensions and ${data.length} flags match Gotenberg, and so does the OpenAPI description.`,
 );

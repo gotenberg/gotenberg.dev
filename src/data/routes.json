@@ -17,7 +17,8 @@
       ],
       "stages": true,
       "groups": ["chromium", "chromium-pdf"],
-      "response": "The PDF. A stage that makes several files, such as `split`, answers a ZIP."
+      "response": "The PDF. A stage that makes several files, such as `split`, answers a ZIP.",
+      "produces": ["application/pdf", "application/zip"]
     },
     {
       "group": "chromium",
@@ -35,7 +36,8 @@
       ],
       "stages": true,
       "groups": ["chromium", "chromium-pdf"],
-      "response": "The PDF. A stage that makes several files, such as `split`, answers a ZIP."
+      "response": "The PDF. A stage that makes several files, such as `split`, answers a ZIP.",
+      "produces": ["application/pdf", "application/zip"]
     },
     {
       "group": "chromium",
@@ -53,7 +55,8 @@
       ],
       "stages": true,
       "groups": ["chromium", "chromium-pdf"],
-      "response": "The PDF. A stage that makes several files, such as `split`, answers a ZIP."
+      "response": "The PDF. A stage that makes several files, such as `split`, answers a ZIP.",
+      "produces": ["application/pdf", "application/zip"]
     },
     {
       "group": "chromium",
@@ -70,7 +73,8 @@
         }
       ],
       "groups": ["chromium", "chromium-screenshot"],
-      "response": "The image, as PNG unless `format` picks another."
+      "response": "The image, as PNG unless `format` picks another.",
+      "produces": ["image/png", "image/jpeg", "image/webp"]
     },
     {
       "group": "chromium",
@@ -87,7 +91,8 @@
         }
       ],
       "groups": ["chromium", "chromium-screenshot"],
-      "response": "The image, as PNG unless `format` picks another."
+      "response": "The image, as PNG unless `format` picks another.",
+      "produces": ["image/png", "image/jpeg", "image/webp"]
     },
     {
       "group": "chromium",
@@ -104,7 +109,8 @@
         }
       ],
       "groups": ["chromium", "chromium-screenshot"],
-      "response": "The image, as PNG unless `format` picks another."
+      "response": "The image, as PNG unless `format` picks another.",
+      "produces": ["image/png", "image/jpeg", "image/webp"]
     },
     {
       "group": "libreoffice",
@@ -122,7 +128,8 @@
       ],
       "stages": true,
       "groups": ["libreoffice"],
-      "response": "One PDF per document, named after it: `report.docx` gives `report.docx.pdf`. Several documents answer a ZIP, unless a `merge` stage joins them."
+      "response": "One PDF per document, named after it: `report.docx` gives `report.docx.pdf`. Several documents answer a ZIP, unless a `merge` stage joins them.",
+      "produces": ["application/pdf", "application/zip"]
     },
     {
       "group": "pdf",
@@ -144,7 +151,16 @@
           "description": "The stages to run, in order, such as `[{\"op\":\"merge\"},{\"op\":\"optimize\"}]`."
         }
       ],
-      "response": "The PDF, or a ZIP when several PDFs come out: several uploads without a `merge`, or a `split`."
+      "response": "The PDF, or a ZIP when several PDFs come out: several uploads without a `merge`, or a `split`.",
+      "produces": [
+        "application/pdf",
+        "application/zip",
+        "image/png",
+        "image/jpeg",
+        "text/plain",
+        "text/markdown",
+        "application/octet-stream"
+      ]
     },
     {
       "group": "pdf",
@@ -173,6 +189,7 @@
         }
       ],
       "response": "JSON, one entry per PDF under its file name.",
+      "produces": ["application/json"],
       "read": true
     },
     {
@@ -195,6 +212,7 @@
         }
       ],
       "response": "JSON, one entry per PDF under its file name.",
+      "produces": ["application/json"],
       "read": true
     },
     {
@@ -217,6 +235,7 @@
         }
       ],
       "response": "JSON, one entry per PDF under its file name.",
+      "produces": ["application/json"],
       "read": true
     },
     {
@@ -239,6 +258,7 @@
         }
       ],
       "response": "JSON, one entry per PDF under its file name.",
+      "produces": ["application/json"],
       "read": true
     },
     {
@@ -266,6 +286,7 @@
         }
       ],
       "response": "JSON, one entry per PDF under its file name.",
+      "produces": ["application/json"],
       "read": true
     },
     {
@@ -294,6 +315,7 @@
         }
       ],
       "response": "JSON, one entry per PDF under its file name.",
+      "produces": ["application/json"],
       "read": true
     },
     {
@@ -302,7 +324,8 @@
       "path": "/",
       "summary": "Answers a short note: Gotenberg has no UI.",
       "to": "/docs/system/root",
-      "response": "A short HTML note: Gotenberg has no UI."
+      "response": "A short HTML note: Gotenberg has no UI.",
+      "produces": ["text/html"]
     },
     {
       "group": "system",
@@ -310,7 +333,8 @@
       "path": "/health",
       "summary": "Reports whether Gotenberg and its engines are up.",
       "to": "/docs/system/health",
-      "response": "JSON, whose `status` is `up`, or `down` with a 503 when an engine is down. `HEAD` answers the status alone."
+      "response": "JSON, whose `status` is `up`, or `down` with a 503 when an engine is down. `HEAD` answers the status alone.",
+      "produces": ["application/json"]
     },
     {
       "group": "system",
@@ -318,7 +342,8 @@
       "path": "/version",
       "summary": "Answers the version of Gotenberg.",
       "to": "/docs/system/version",
-      "response": "The version of Gotenberg, as plain text."
+      "response": "The version of Gotenberg, as plain text.",
+      "produces": ["text/plain"]
     },
     {
       "group": "system",
@@ -326,7 +351,8 @@
       "path": "/debug",
       "summary": "Answers the modules, engine versions and flags, once `--api-enable-debug-route` is on.",
       "to": "/docs/system/debug",
-      "response": "JSON: the modules, the engine versions and every flag. It answers 404 until `--api-enable-debug-route` is on."
+      "response": "JSON: the modules, the engine versions and every flag. It answers 404 until `--api-enable-debug-route` is on.",
+      "produces": ["application/json"]
     }
   ],
   "fields": {
@@ -1064,5 +1090,127 @@
     "xml",
     "xpm",
     "zabw"
+  ],
+  "headers": {
+    "request": [
+      {
+        "name": "Gotenberg-Output-Filename",
+        "description": "Names the result, without extension: Gotenberg adds the right one, even to a name that has one, so `report.pdf` gives `report.pdf.pdf`."
+      },
+      {
+        "name": "Gotenberg-Trace",
+        "description": "Your identifier for the request. Gotenberg logs it and sends it back; it makes one up when you don't. `--api-correlation-id-header` renames the header."
+      },
+      {
+        "name": "Gotenberg-Webhook-Url",
+        "description": "Uploads the result to this URL, an absolute `http` or `https` one, instead of answering with it. Gotenberg answers `204 No Content` right away."
+      },
+      {
+        "name": "Gotenberg-Webhook-Method",
+        "description": "The method of the upload: `POST`, the default, `PUT` or `PATCH`."
+      },
+      {
+        "name": "Gotenberg-Webhook-Events-Url",
+        "description": "An absolute `http` or `https` URL. Required with `Gotenberg-Webhook-Url`, and the other way round: one without the other answers 400. Receives a `webhook.success` or `webhook.error` event once the work is done."
+      },
+      {
+        "name": "Gotenberg-Webhook-Extra-Http-Headers",
+        "description": "A JSON object of headers to send with the upload and the event, such as `{\"Authorization\": \"Bearer …\"}`."
+      },
+      {
+        "name": "Authorization",
+        "description": "Basic credentials or an OIDC bearer token, when `--api-enable-basic-auth` or `--api-enable-oidc-auth` is on."
+      },
+      {
+        "names": ["traceparent", "baggage"],
+        "description": "W3C Trace Context and Baggage: Gotenberg continues your trace. `OTEL_PROPAGATORS` picks other formats."
+      }
+    ],
+    "response": [
+      {
+        "name": "Content-Type",
+        "description": "`application/pdf` for one PDF, an image type for one screenshot or rendered page, `text/plain` or `text/markdown` for one extracted text, `application/zip` for several files, `application/json` for the routes that read."
+      },
+      {
+        "name": "Content-Disposition",
+        "description": "`attachment` and the file name. A name with characters outside ASCII also carries `filename*=UTF-8''…`, and an ASCII `filename` as a fallback."
+      },
+      {
+        "name": "Gotenberg-Trace",
+        "description": "Your identifier, or the one Gotenberg made up."
+      },
+      {
+        "name": "Gotenberg-Version",
+        "description": "The version of Gotenberg that answered. With [authentication](/docs/configuration#api-enable-basic-auth) on, the 401, 404 and 405 answers leave it out, so a caller without credentials learns no version."
+      },
+      {
+        "name": "Traceparent",
+        "description": "The trace the request's spans belong to."
+      },
+      {
+        "name": "Gotenberg-Remediation-Residual",
+        "description": "After a `remediate` stage: the violations left, summed over the documents and the profiles. `0` means every document conforms to every profile."
+      },
+      {
+        "name": "Gotenberg-Remediation-Rolled-Back",
+        "description": "After a `remediate` stage: the fixes Gotenberg undid because they lost pages, text or images. They stay undone with `aggressive` too."
+      }
+    ]
+  },
+  "statuses": [
+    {
+      "status": 400,
+      "description": "A form field, a stage or a header is missing or invalid, or a stage failed on a file. The message names it."
+    },
+    {
+      "status": 401,
+      "auth": true,
+      "description": "The credentials are missing or wrong, with [authentication](/docs/configuration#api-enable-basic-auth) on."
+    },
+    {
+      "status": 403,
+      "description": "The outbound URL filtering blocks a URL: the page Chromium loads, a `downloadFrom` file, a webhook or a timestamp authority. The message stays generic; Gotenberg's logs say why. A host that doesn't resolve answers 400 instead, naming it, except a timestamp authority's."
+    },
+    {
+      "status": 404,
+      "generic": true,
+      "description": "The route doesn't exist, or its engine isn't in this [image variant](/docs/getting-started/installation#image-variants). The message names the path."
+    },
+    {
+      "status": 409,
+      "groups": ["chromium"],
+      "description": "The page Chromium loaded answered an error status, 4xx or 5xx by default, or failed another [`failOn` check](/docs/chromium/convert-url#fail-on-errors)."
+    },
+    {
+      "status": 413,
+      "description": "The request is larger than [`--api-body-limit`](/docs/configuration#api-body-limit) allows."
+    },
+    {
+      "status": 405,
+      "generic": true,
+      "description": "The route doesn't take the method you sent. The message names it and lists the ones the route takes."
+    },
+    {
+      "status": 415,
+      "description": "The request isn't `multipart/form-data`."
+    },
+    {
+      "status": 422,
+      "groups": ["libreoffice"],
+      "description": "LibreOffice went past [`--libreoffice-max-memory`](/docs/configuration#libreoffice-max-memory) converting the document. The same document goes past it again: reduce it, or raise the limit."
+    },
+    {
+      "status": 429,
+      "groups": ["chromium", "libreoffice"],
+      "description": "The Chromium or LibreOffice queue is full: see [`--chromium-max-queue-size`](/docs/configuration#chromium-max-queue-size). Retry shortly."
+    },
+    {
+      "status": 503,
+      "description": "The request took longer than [`--api-timeout`](/docs/configuration#api-timeout), 30 seconds by default, a Chromium wait included, or Chromium crashed or went past [`--chromium-max-memory`](/docs/configuration#chromium-max-memory). Retry."
+    },
+    {
+      "status": 500,
+      "description": "Something else failed, such as an engine crash. Look the request's `Gotenberg-Trace` up in Gotenberg's logs."
+    }
   ]
 }
