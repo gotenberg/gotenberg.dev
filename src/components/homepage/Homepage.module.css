@@ -669,8 +669,8 @@
   }
 }
 
-/* The platen comes down as the bar ends its swing, with the screw and the
-   bar it carries. */
+/* The platen comes down as the bar ends its swing, with the screw it
+   hangs from. The bar and its collar stay put. */
 .scene__l--press {
   animation: press var(--cycle) cubic-bezier(0.4, 0, 0.2, 1) infinite;
   will-change: transform;

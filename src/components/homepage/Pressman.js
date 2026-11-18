@@ -6,7 +6,9 @@ import cx from "./cx";
 // the drawing's line, with his feet at the origin: the body stays the same
 // and a pose says where the elbows, hands, knees and feet go.
 
-const SHOULDER = 10;
+// The shoulders sit on the torso's edges, under the beard's sides. A pose
+// with its arms behind him may set its own.
+const SHOULDER = [11.5, -46];
 const HIP = 6;
 
 // A limb bends once, at `via`.
@@ -66,6 +68,7 @@ export const POSES = {
         [4.5, -99],
       ],
     ],
+    shoulder: [10, -49],
     legs: [
       [
         [-11, -15],
@@ -96,8 +99,8 @@ export const POSES = {
   show: {
     arms: [
       [
-        [-22, -50],
-        [-31, -56],
+        [-20, -50],
+        [-27, -55],
       ],
       [
         [19, -42],
@@ -135,12 +138,12 @@ export const POSES = {
   toss: {
     arms: [
       [
-        [-24, -58],
-        [-26, -76],
+        [-21, -56],
+        [-23, -70],
       ],
       [
-        [24, -58],
-        [26, -76],
+        [21, -56],
+        [23, -70],
       ],
     ],
   },
@@ -207,12 +210,18 @@ export default function Pressman({
   turn = 0,
   children,
 }) {
-  const { arms, legs = LEGS, toes = [-1, 1], behind } = POSES[pose];
+  const {
+    arms,
+    legs = LEGS,
+    toes = [-1, 1],
+    behind,
+    shoulder: [sx, sy] = SHOULDER,
+  } = POSES[pose];
   const eye = EYES[mood];
   const limbs = arms.map((arm, i) => (
     <Limb
       key={i}
-      from={[i ? SHOULDER : -SHOULDER, -49]}
+      from={[i ? sx : -sx, sy]}
       pose={arm}
       end={<Hand at={arm[1]} />}
     />
@@ -255,6 +264,8 @@ export default function Pressman({
           rx="3.25"
         />
       </g>
+      {/* Arms in front go under the beard, which falls over them. */}
+      {!behind && limbs}
       <g transform={`translate(${gaze * 2.4} 0)`}>
         {eye(-4.8)}
         {eye(4.8)}
@@ -264,7 +275,6 @@ export default function Pressman({
         />
         <circle className={cx("pm__f pm__f--thin")} cx="0" cy="-57.2" r="3" />
       </g>
-      {!behind && limbs}
       {children}
     </g>
   );

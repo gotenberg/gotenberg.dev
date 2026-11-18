@@ -36,12 +36,14 @@ const STACKS = [
   [14, 208, 44, 31, "contract"],
 ];
 
-// The screw stands on the platen and runs up into the head, where its top
-// stays hidden through the whole stroke. Its collar holds the bar, which
-// rests REST degrees round from the frame, clear of the cheek, and ends in
-// the knob. The swing itself is in the stylesheet (`pull` and `pull-knob`).
+// The screw stands on the platen and runs up into the collar, a nut set
+// under the head, where its top stays hidden through the whole stroke. The
+// bar turns the collar in place and the collar drives the screw down: the
+// bar keeps its height, the screw alone goes down. The bar rests REST degrees round from the frame, clear of the
+// cheek, and ends in the knob. The swing itself is in the stylesheet
+// (`pull` and `pull-knob`).
 const AXIS = [50, 57];
-const BAR = 100;
+const BAR = 115;
 const REST = (12 * Math.PI) / 180;
 const reach = (n) =>
   P(AXIS[0] + n * Math.cos(REST), AXIS[1] + n * Math.sin(REST), BAR);
@@ -97,7 +99,7 @@ const STEPS = [
     at: [196, 304],
     to: KNOB,
     side: "left",
-    pin: [288, 300],
+    pin: [288, 266],
   },
   {
     label: "Collect the PDF",
@@ -181,20 +183,24 @@ export default function Scene() {
           ))}
         </Layer>
 
-        {/* What the pull brings down: the platen, the screw on it and the
-            collar the bar goes into. */}
+        {/* What the pull brings down: the platen and the screw on it. */}
         <Layer name="scene__l--press">
           <Box P={P} at={[30, 42, 78]} size={[40, 30, 7]} tone="iron" />
-          <Cylinder P={P} at={[...AXIS, 85]} r={4} h={9} tone="iron" />
-          <Cylinder P={P} at={[...AXIS, 94]} r={7} h={12} tone="iron" />
           <Cylinder
             P={P}
-            at={[...AXIS, 106]}
+            at={[...AXIS, 85]}
             r={4}
-            h={32}
+            h={53}
             tone="iron"
             thread={3.2}
           />
+        </Layer>
+
+        {/* The collar the bar goes into, set under the head: it turns in
+            place while the screw runs down out of it. Its top goes up into
+            the head. */}
+        <Layer>
+          <Cylinder P={P} at={[...AXIS, 107]} r={7} h={21} tone="iron" />
         </Layer>
 
         <Layer>
@@ -227,8 +233,9 @@ export default function Scene() {
         </Layer>
 
         {/* The bar, over everything it swings in front of, the sheets in
-            flight included. It comes down with the screw it turns. */}
-        <Layer name="scene__l--press scene__l--bar">
+            flight included. It stays at its height, in the collar, while
+            the screw it turns runs down through it. */}
+        <Layer name="scene__l--bar">
           <g
             className={cx("bar__rod")}
             style={{ transformOrigin: `${PIVOT[0]}px ${PIVOT[1]}px` }}
