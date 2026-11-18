@@ -6,7 +6,7 @@ sidebar_label: Extract text
 
 import AsStage from "./_shared/_as-stage.mdx";
 
-Returns the text a PDF shows, as a UTF-8 `.txt` file: for search indexes, language models, or a diff between two versions.
+Returns the text a PDF shows, as a UTF-8 `.txt` file or as Markdown: for search indexes, language models, or a diff between two versions.
 
 <Endpoint op="extract-text" />
 
@@ -30,6 +30,30 @@ The file takes the name of the PDF: `report.txt`. A form feed separates the page
 />
 
 `pages` takes a page selection, read in the order it gives.
+
+## Extract as Markdown
+
+`format` set to `markdown` returns a `.md` file that keeps the structure: headings, paragraphs, lists, tables, block quotes, bold and italic text, code, and links.
+
+<Request
+  route="/forms/pdf/extract-text"
+  files={["report.pdf"]}
+  fields={{ format: "markdown" }}
+  output="report.md"
+/>
+
+A tagged PDF gives the structure it carries. An untagged one gives its layout alone, which Gotenberg reads as auto-tagging does: larger text becomes a heading, and the rest paragraphs. Markdown reads the pages in document order, without a form feed between them. An image comes as its alternative text, and a scanned page reads as empty.
+
+For a web page or an office document, convert and extract in one request: the Chromium and LibreOffice routes print a tagged PDF when a stage asks for Markdown, whatever `nativeTaggedPdf` says. Turning a URL into Markdown for a language model takes one request:
+
+<Request
+  route="/forms/chromium/convert/url"
+  fields={{ url: "https://example.com" }}
+  stages={[{ op: "extract-text", format: "markdown" }]}
+  output="example.zip"
+/>
+
+The ZIP holds the tagged PDF and its Markdown. The [wait options](/docs/chromium/convert-url#wait-for-the-page) let a page finish rendering first.
 
 ## Choose what counts as text
 

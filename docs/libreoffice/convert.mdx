@@ -178,6 +178,8 @@ A PDF/A or Factur-X can't be encrypted, and an encrypted PDF can't be signed: th
 
 The ZIP holds `report.docx.pdf` and `report.docx_1.png`. [Stages](/docs/pdf/pipe) lists every stage.
 
+[`extract-text`](/docs/pdf/extract-text#extract-as-markdown) with `format` set to `markdown` makes LibreOffice export a tagged PDF, whatever `nativeTaggedPdf` says, so the Markdown keeps the document's headings, lists and tables.
+
 ## Formats
 
 LibreOffice converts the files with these extensions, and skips the others. A request with none answers 400.

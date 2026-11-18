@@ -780,13 +780,19 @@
     },
     {
       "op": "extract-text",
-      "summary": "Returns the text the pages show as a `.txt` file, its pages separated by a form feed, which comes back in a ZIP next to the PDF: `report.txt`. `/forms/pdf/extract-text` returns the text alone. Comes last.",
+      "summary": "Returns the text the pages show as a `.txt` file, its pages separated by a form feed, or as a Markdown `.md` file, which comes back in a ZIP next to the PDF: `report.txt`. `/forms/pdf/extract-text` returns the text alone. Comes last.",
       "options": [
         {
           "name": "pages",
           "type": "pages",
           "default": "all",
-          "description": "The pages to read, in the order given."
+          "description": "The pages to read, in the order given. Markdown reads them in document order."
+        },
+        {
+          "name": "format",
+          "type": "string",
+          "default": "text",
+          "description": "`text`, or `markdown` for a `.md` file with the headings, lists, tables and links the PDF's structure gives. The Chromium and LibreOffice routes print a tagged PDF for Markdown."
         },
         {
           "name": "invisible",

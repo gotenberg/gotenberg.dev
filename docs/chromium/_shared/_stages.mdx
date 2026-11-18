@@ -15,3 +15,5 @@ Stages run on the PDF Chromium prints, in order, before Gotenberg answers. List 
 />
 
 Every stage works here: merge, stamp, redact, sign, make PDF/A, and so on. A stage that names a file, such as an image to stamp, takes it from the files you upload. [Stages](/docs/pdf/pipe) lists them all.
+
+[`extract-text`](/docs/pdf/extract-text#extract-as-markdown) with `format` set to `markdown` makes Chromium print a tagged PDF, whatever `nativeTaggedPdf` says, so the Markdown keeps the page's headings, lists and tables.
