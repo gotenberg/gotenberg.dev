@@ -1610,6 +1610,9 @@ paths:
                 password:
                   type: string
                   description: Opens a password-protected document.
+                locale:
+                  type: string
+                  description: A BCP 47 language tag, such as `en-AU` or `de-DE`, for the dates, numbers and currencies that follow the reader's locale, such as Excel's short date, and for the page size of a document that sets none. Content with its own language keeps it. Without it, the image's locale applies. A tag with more than a language, script and region answers 400.
                 paperSize:
                   type: string
                   description: "`A0`, `A1`, `A2`, `A3`, `A4`, `A5`, `B4`, `B5`, `Letter`, `Legal` or `Tabloid`, in any case, for every page. Without it, each document keeps its own page size."
@@ -3627,6 +3630,13 @@ paths:
 
                     Default: `true`.
                   default: true
+                compressStreams:
+                  type: boolean
+                  description: |-
+                    Compresses the streams a producer left uncompressed, such as page content or fonts. XMP metadata stays readable.
+
+                    Default: `true`.
+                  default: true
                 subsetFonts:
                   type: boolean
                   description: |-
@@ -3948,7 +3958,7 @@ paths:
                 dropSignatures:
                   type: boolean
                   description: |-
-                    Removes the signatures of a signed PDF, which this stage rewrites, and keeps their visible appearance on the page. Without it, a signed PDF answers 400.
+                    Removes the signatures of a signed PDF whose repairs need a rewrite, and keeps their visible appearance on the page. Without it, such a PDF answers 400. Repairs that only append to the PDF keep its signatures.
 
                     Default: `false`.
                   default: false
