@@ -16,7 +16,7 @@ Rewrites a PDF to make it smaller, without losing quality.
   output="report.pdf"
 />
 
-Gotenberg rewrites the whole file. It packs objects into compressed streams, stores identical streams once, recompresses images without losing quality, and keeps only the glyphs the document shows. This report goes from 23 to 20 KB. A page with large images shrinks more: a Chromium page with a few loses a third.
+Gotenberg rewrites the whole file. It packs objects into compressed streams, stores identical streams once, recompresses images without losing quality, compresses the streams a producer left uncompressed, and keeps only the glyphs the document shows. This report goes from 23 to 20 KB. A page with large images shrinks more: a Chromium page with a few loses a third.
 
 ## Optimize what you make
 
@@ -40,7 +40,7 @@ A conversion takes it too:
 
 ## Turn a pass off
 
-Each pass runs unless you turn it off: `objectStreams`, `dedup`, `recompressImages` and `subsetFonts`. Recompressing large images takes time, for instance:
+Each pass runs unless you turn it off: `objectStreams`, `dedup`, `recompressImages`, `compressStreams` and `subsetFonts`. Recompressing large images takes time, for instance:
 
 <Request
   route="/forms/pdf/optimize"

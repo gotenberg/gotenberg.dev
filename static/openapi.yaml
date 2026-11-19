@@ -3630,6 +3630,13 @@ paths:
 
                     Default: `true`.
                   default: true
+                compressStreams:
+                  type: boolean
+                  description: |-
+                    Compresses the streams a producer left uncompressed, such as page content or fonts. XMP metadata stays readable.
+
+                    Default: `true`.
+                  default: true
                 subsetFonts:
                   type: boolean
                   description: |-

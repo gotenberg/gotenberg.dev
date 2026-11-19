@@ -850,6 +850,12 @@
           "description": "Recompresses images without losing quality."
         },
         {
+          "name": "compressStreams",
+          "type": "boolean",
+          "default": "true",
+          "description": "Compresses the streams a producer left uncompressed, such as page content or fonts. XMP metadata stays readable."
+        },
+        {
           "name": "subsetFonts",
           "type": "boolean",
           "default": "true",
