@@ -996,7 +996,7 @@
           "name": "dropSignatures",
           "type": "boolean",
           "default": "false",
-          "description": "Removes the signatures of a signed PDF, which this stage rewrites, and keeps their visible appearance on the page. Without it, a signed PDF answers 400."
+          "description": "Removes the signatures of a signed PDF whose repairs need a rewrite, and keeps their visible appearance on the page. Without it, such a PDF answers 400. Repairs that only append to the PDF keep its signatures."
         }
       ],
       "example": {
