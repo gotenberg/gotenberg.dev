@@ -613,6 +613,12 @@
       },
       {
         "section": "page",
+        "name": "locale",
+        "type": "string",
+        "description": "A BCP 47 language tag, such as `en-AU` or `de-DE`, for the dates, numbers and currencies that follow the reader's locale, such as Excel's short date, and for the page size of a document that sets none. Content with its own language keeps it. Without it, the image's locale applies. A tag with more than a language, script and region answers 400."
+      },
+      {
+        "section": "page",
         "name": "paperSize",
         "type": "string",
         "description": "`A0`, `A1`, `A2`, `A3`, `A4`, `A5`, `B4`, `B5`, `Letter`, `Legal` or `Tabloid`, in any case, for every page. Without it, each document keeps its own page size."

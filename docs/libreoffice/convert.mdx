@@ -67,6 +67,19 @@ LibreOffice takes the `paperSize`, `paperWidth`, `paperHeight` and `landscape` f
 
 Without them, each document keeps the page size it defines, and a spreadsheet, CSV or text file that defines none comes out A4. Without `paperSize`, set both `paperWidth` and `paperHeight`, or neither. The margins, headers and footers come from the document.
 
+## Format for a locale
+
+Some formats follow the reader's locale: Excel's short and long dates, its thousands and decimal separators and its currency, and date fields in text documents and presentations. Without `locale`, they come out as in the US, `1/8/2026` and `$1,234,567.89`. `locale` takes a BCP 47 language tag:
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["sales.xlsx"]}
+  fields={{ locale: "de-DE" }}
+  output="sales.pdf"
+/>
+
+The dates read `08.01.2026` and the amounts `1.234.567,89 €`. Content that carries its own language, such as a Word document written in French, keeps it. The locale also sets the page size of a document that defines none: Letter for `en-US`, A4 for most others.
+
 ## Fit a spreadsheet on one page
 
 A spreadsheet spreads over as many pages as its print settings ask. `sales.csv` gives three. `singlePage` puts each sheet on one page:
