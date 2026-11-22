@@ -195,6 +195,6 @@ The ZIP holds `report.docx.pdf` and `report.docx_1.png`. [Stages](/docs/pdf/pipe
 
 ## Formats
 
-LibreOffice converts the files with these extensions, and skips the others. A request with none answers 400.
+LibreOffice converts the files with these extensions, and skips the others. A request with none answers 400. The extension only decides whether Gotenberg takes a file: LibreOffice reads the format from the content, so a `.rtf` file that holds HTML converts as HTML, and requests the style sheets it links. See [Restrict outbound requests](/docs/operate/outbound) for what those requests may reach.
 
 <Extensions />
