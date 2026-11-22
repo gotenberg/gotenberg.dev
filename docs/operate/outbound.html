@@ -15,7 +15,7 @@
 
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <meta name="theme-color" content="#4338ca"><link rel="stylesheet" href="/assets/css/styles.f37f3023.css">
-<script src="/assets/js/runtime~main.de420839.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.e940091d.js" defer="defer"></script>
 <script src="/assets/js/main.a765c248.js" defer="defer"></script>
 </head>
 <body>
@@ -48,6 +48,7 @@
 <li class="">The allow list is exclusive: once set, the family reaches only the URLs it matches.</li>
 <li class="">A URL the allow list matches skips the private and public address checks.</li>
 <li class="">A list you set replaces its default. Chromium&#x27;s deny list defaults to <code>^file:(?!//\/tmp/).*</code>, which keeps pages from reading files outside Gotenberg&#x27;s working directory: keep it in yours.</li>
+<li class="">An HTTPS request LibreOffice or a Chromium Web Worker sends reaches Gotenberg as a tunnel, which shows its host and port only. The lists see its root URL, <code>https://trusted.example.com/</code>, or <code>https://trusted.example.com:8443/</code> on another port. A rule that names a path can&#x27;t match it, so write the rules that must hold there for the host.</li>
 <li class="">On the HTML and Markdown routes, the page Gotenberg writes from your upload skips both lists. The files uploaded with it, such as its style sheets and images, load from <code>file:///tmp/</code>: an allow list must match them, with <code>^file:///tmp/</code>, and a deny list matching <code>file:</code> blocks them.</li>
 </ul>
 <p>So an allow list can&#x27;t add one internal host on top of the internet: it admits that host, and nothing else.</p>
