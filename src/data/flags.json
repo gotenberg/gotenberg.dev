@@ -1,5 +1,5 @@
 {
-  "image": "gotenberg/gotenberg:snapshot",
+  "image": "gotenberg/gotenberg:9",
   "flags": [
     {
       "name": "api-archive-max-entries",
@@ -127,7 +127,7 @@
       "env": "API_DOWNLOAD_FROM_MAX_CONCURRENCY",
       "type": "int",
       "default": "10",
-      "description": "Set the maximum number of downloadFrom entries fetched concurrently per request - bounds the outbound fan-out. Set to 0 to disable this feature"
+      "description": "Set the maximum number of downloadFrom entries fetched concurrently per request - bounds the outbound fan-out. 0 means no limit; --api-disable-download-from (API_DISABLE_DOWNLOAD_FROM) turns downloadFrom off"
     },
     {
       "name": "api-download-from-max-entries",
@@ -135,7 +135,7 @@
       "env": "API_DOWNLOAD_FROM_MAX_ENTRIES",
       "type": "int",
       "default": null,
-      "description": "Set the maximum number of downloadFrom entries allowed per request. Set to 0 to disable this feature"
+      "description": "Set the maximum number of downloadFrom entries allowed per request. 0 means no limit; --api-disable-download-from (API_DISABLE_DOWNLOAD_FROM) turns downloadFrom off"
     },
     {
       "name": "api-download-from-max-retry",
@@ -319,7 +319,7 @@
       "env": "CHROMIUM_DENY_LIST",
       "type": "strings",
       "default": "[^file:(?!//\\/tmp/).*]",
-      "description": "Set the denied URLs for Chromium using regular expressions - supports multiple values"
+      "description": "Set the denied URLs for Chromium using regular expressions - supports multiple values. A Web Worker's HTTPS request shows its host only: the list sees https://host/, so a rule that names a path cannot refuse it"
     },
     {
       "name": "chromium-deny-private-ips",
@@ -383,7 +383,7 @@
       "env": "CHROMIUM_IDLE_SHUTDOWN_TIMEOUT",
       "type": "duration",
       "default": null,
-      "description": "Shutdown Chromium after being idle for the given duration. Set to 0 to disable this feature"
+      "description": "Shutdown Chromium after being idle for the given duration. 0 keeps it running"
     },
     {
       "name": "chromium-ignore-certificate-errors",
@@ -415,7 +415,7 @@
       "env": "CHROMIUM_MAX_QUEUE_SIZE",
       "type": "int",
       "default": null,
-      "description": "Maximum request queue size for Chromium. Set to 0 to disable this feature"
+      "description": "Maximum request queue size for Chromium. 0 means no limit"
     },
     {
       "name": "chromium-proxy-server",
@@ -431,7 +431,7 @@
       "env": "CHROMIUM_RESTART_AFTER",
       "type": "int",
       "default": "100",
-      "description": "Number of conversions after which Chromium will automatically restart. Set to 0 to disable this feature"
+      "description": "Number of conversions after which Chromium will automatically restart. 0 never restarts it"
     },
     {
       "name": "chromium-shared-browser-context",
@@ -495,7 +495,7 @@
       "env": "LIBREOFFICE_DENY_LIST",
       "type": "strings",
       "default": null,
-      "description": "Set the denied URLs for the requests LibreOffice sends, using regular expressions - supports multiple values. LibreOffice requests only the style sheets an HTML document links, and the URLs a document's macros open once --libreoffice-enable-macros (LIBREOFFICE_ENABLE_MACROS) runs them; the images and other content an uploaded document links to never load"
+      "description": "Set the denied URLs for the requests LibreOffice sends, using regular expressions - supports multiple values. LibreOffice requests only the style sheets an HTML document links, and the URLs a document's macros open once --libreoffice-enable-macros (LIBREOFFICE_ENABLE_MACROS) runs them; the images and other content an uploaded document links to never load. An HTTPS request shows its host only: the list sees https://host/, so a rule that names a path cannot refuse it"
     },
     {
       "name": "libreoffice-deny-private-ips",
@@ -543,7 +543,7 @@
       "env": "LIBREOFFICE_IDLE_SHUTDOWN_TIMEOUT",
       "type": "duration",
       "default": null,
-      "description": "Shutdown LibreOffice after being idle for the given duration. Set to 0 to disable this feature"
+      "description": "Shutdown LibreOffice after being idle for the given duration. 0 keeps it running"
     },
     {
       "name": "libreoffice-max-memory",
@@ -559,7 +559,7 @@
       "env": "LIBREOFFICE_MAX_QUEUE_SIZE",
       "type": "int",
       "default": null,
-      "description": "Maximum request queue size for LibreOffice. Set to 0 to disable this feature"
+      "description": "Maximum request queue size for LibreOffice. 0 means no limit"
     },
     {
       "name": "libreoffice-restart-after",
@@ -567,7 +567,7 @@
       "env": "LIBREOFFICE_RESTART_AFTER",
       "type": "int",
       "default": "10",
-      "description": "Number of conversions after which LibreOffice will automatically restart. Set to 0 to disable this feature"
+      "description": "Number of conversions after which LibreOffice will automatically restart. 0 never restarts it"
     },
     {
       "name": "libreoffice-start-timeout",
