@@ -19,7 +19,7 @@ Returns the files embedded in a PDF, such as the `factur-x.xml` of an electronic
   output="invoice_factur-x.xml"
 />
 
-Each file comes back named after the PDF, then after itself: `invoice_factur-x.xml`. One file answers on its own, several in a ZIP. `name` is the name [`/forms/pdf/attachments`](/docs/pdf/attachments) lists. A name the PDF doesn't list answers 400, with the names it does list.
+Each file comes back named after the PDF, then after itself: `invoice_factur-x.xml`. Characters a file name can't hold on every system, such as `/`, `\`, `:` or `*`, become `_`. One file answers on its own, several in a ZIP. `name` is the name [`/forms/pdf/attachments`](/docs/pdf/attachments) lists. A name the PDF doesn't list answers 400, with the names it does list.
 
 ## Extract every file
 

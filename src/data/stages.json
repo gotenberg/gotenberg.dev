@@ -709,7 +709,7 @@
           "name": "name",
           "type": "string",
           "default": "The file's name",
-          "description": "The name the PDF lists it under."
+          "description": "The name the PDF lists it under. Characters a file name can't hold on every system, such as `/`, `\\`, `:` or `*`, become `_`."
         },
         {
           "name": "mimeType",

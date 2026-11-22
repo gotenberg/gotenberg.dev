@@ -1996,7 +1996,7 @@ paths:
                 name:
                   type: string
                   description: |-
-                    The name the PDF lists it under.
+                    The name the PDF lists it under. Characters a file name can't hold on every system, such as `/`, `\`, `:` or `*`, become `_`.
 
                     Default: `The file's name`.
                 mimeType:
@@ -5380,7 +5380,7 @@ components:
       required: false
       schema:
         type: string
-      description: "Names the result, without extension: Gotenberg adds the right one, even to a name that has one, so `report.pdf` gives `report.pdf.pdf`."
+      description: 'Names the result, without extension: Gotenberg adds the right one, even to a name that has one, so `report.pdf` gives `report.pdf.pdf`. Characters a file name can''t hold on every system, such as `/`, `\`, `:` or `*`, become `_`.'
     Gotenberg-Trace:
       name: Gotenberg-Trace
       in: header

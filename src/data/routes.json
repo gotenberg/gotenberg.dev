@@ -1101,7 +1101,7 @@
     "request": [
       {
         "name": "Gotenberg-Output-Filename",
-        "description": "Names the result, without extension: Gotenberg adds the right one, even to a name that has one, so `report.pdf` gives `report.pdf.pdf`."
+        "description": "Names the result, without extension: Gotenberg adds the right one, even to a name that has one, so `report.pdf` gives `report.pdf.pdf`. Characters a file name can't hold on every system, such as `/`, `\\`, `:` or `*`, become `_`."
       },
       {
         "name": "Gotenberg-Trace",

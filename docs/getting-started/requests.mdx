@@ -91,6 +91,8 @@ Content-Type: application/pdf`}
 
 Gotenberg adds the extension even to a name that has one: `invoice.pdf` gives `invoice.pdf.pdf`. A name with characters outside ASCII, such as `facture-été`, goes out as `filename*=UTF-8''facture-%C3%A9t%C3%A9.pdf`, next to an ASCII `filename` fallback.
 
+A name keeps its letters, digits, spaces and common punctuation. Characters a file name can't hold on every system, such as `/`, `\`, `:` or `*`, become `_`, and a Windows device name such as `CON` becomes `_CON`. The files in a ZIP follow the same rule, and two names that differ only by case become `report.pdf` and `report (2).pdf`.
+
 Without the header, Gotenberg picks a name: `report.docx.pdf` for an uploaded `report.docx`, a random one for a web page.
 
 ## Read the answer
