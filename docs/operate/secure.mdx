@@ -103,7 +103,7 @@ services:
     shm_size: 256m
 ```
 
-Size `/tmp` for your largest conversions: each request's files live there until it finishes. Chromium needs shared memory, which `shm_size` sets; a heavy page may want more.
+`/tmp` is the mount that must stay writable: every conversion's working files live there, LibreOffice's user profile included. Size it for your largest conversions. The home mount only covers what the engines cache in the home directory. Chromium needs shared memory, which `shm_size` sets; a heavy page may want more.
 
 Filter egress as well. [Refusing private addresses](/docs/operate/outbound) keeps Gotenberg off your internal network. A firewall or Kubernetes NetworkPolicy that allows only the destinations your conversions need backs that up at the network layer.
 

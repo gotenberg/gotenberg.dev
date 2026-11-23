@@ -124,7 +124,7 @@ volumes:
       sizeLimit: 128Mi
 ```
 
-The `securityContext` locks the container down: a read-only root file system, no capabilities, no privilege escalation, and the runtime's default seccomp profile. Gotenberg writes under `/tmp` and its home directory, so two in-memory `emptyDir` volumes keep those writable. Kubernetes mounts an `emptyDir` with execution allowed and offers no `noexec` for it, so the read-only root carries the weight here; Docker adds [`noexec` temp mounts](/docs/operate/secure#harden-the-container) on top. The 386 image needs `socketcall`: drop `seccompProfile` there, or set a profile that allows it, as the Docker note above describes.
+The `securityContext` locks the container down: a read-only root file system, no capabilities, no privilege escalation, and the runtime's default seccomp profile. Gotenberg writes its working files under `/tmp`, so an in-memory `emptyDir` keeps it writable; a second one covers the home directory, where the engines may cache. Kubernetes mounts an `emptyDir` with execution allowed and offers no `noexec` for it, so the read-only root carries the weight here; Docker adds [`noexec` temp mounts](/docs/operate/secure#harden-the-container) on top. The 386 image needs `socketcall`: drop `seccompProfile` there, or set a profile that allows it, as the Docker note above describes.
 
 A community-maintained Helm chart lives at [MaikuMori/helm-charts](https://github.com/MaikuMori/helm-charts).
 
