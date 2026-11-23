@@ -48,3 +48,4 @@ The PDF prints as before. An image or a style sheet the HTML points at an intern
 - The templates need your own assets: upload them with the page, or allow your asset host with `CHROMIUM_ALLOW_LIST`, together with `^file:///tmp/` for the files uploaded with the page.
 - The templates need scripts: keep JavaScript on, and keep the timeout short.
 - Users send URLs, not HTML: the same settings apply to `/forms/chromium/convert/url`.
+- Harden the container itself: a [read-only root and `noexec` temp mounts](/docs/operate/secure#harden-the-container) stop a caller who plants a file from running it.
