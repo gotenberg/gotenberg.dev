@@ -51,7 +51,7 @@
   },
   "devDependencies": {
     "baseline-browser-mapping": "^2.11.34",
-    "js-yaml": "4.3.2",
+    "js-yaml": "5.5.0",
     "prettier": "^3.9.10"
   }
 }
