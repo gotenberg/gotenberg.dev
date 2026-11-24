@@ -20,6 +20,7 @@ The files the docs' `<Request>` examples upload. `npm run check:examples` copies
 - `invoice.xml`: a Factur-X invoice at the EN 16931 level, the European standard for e-invoices. `invoice.pdf` is `report.pdf` with it embedded, made by Gotenberg.
 - `protected.docx`: `report.docx` encrypted with the password `secret`, by msoffcrypto-tool.
 - `sales.csv`: 120 rows of sales, which LibreOffice prints on three pages, for spreadsheets.
+- `changes.docx`: one tracked deletion and one tracked insertion, from Gotenberg's integration tests.
 - `sales.xlsx`: four days of sales in Excel's short date and currency formats, which follow the reader's locale.
 - `encrypted.pdf`: `report.pdf` encrypted with the user password `secret`, made by Gotenberg.
 - `archive.pdf`: `report.pdf` remediated to PDF/A-2b and PDF/UA-1 together, made by Gotenberg. veraPDF passes it on both.

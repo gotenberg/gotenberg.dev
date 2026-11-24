@@ -671,6 +671,13 @@
       },
       {
         "section": "content",
+        "name": "showTrackedChanges",
+        "type": "boolean",
+        "default": "false",
+        "description": "Shows the tracked changes marked up, deletions struck through and insertions underlined. `false` converts the document as if every change were accepted."
+      },
+      {
+        "section": "content",
         "name": "exportFormFields",
         "type": "boolean",
         "default": "true",

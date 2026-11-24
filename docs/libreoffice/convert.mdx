@@ -91,6 +91,19 @@ A spreadsheet spreads over as many pages as its print settings ask. `sales.csv` 
   output="sales.pdf"
 />
 
+## Show tracked changes
+
+A document with tracked changes converts as if every change were accepted: deleted text disappears and inserted text reads as plain text. `showTrackedChanges` keeps them marked up, as Word shows them:
+
+<Request
+  route="/forms/libreoffice/convert"
+  files={["changes.docx"]}
+  fields={{ showTrackedChanges: true }}
+  output="changes.pdf"
+/>
+
+The PDF shows the deleted sentence struck through and the inserted one underlined, with a bar in the margin next to the changed line.
+
 ## Make it archival
 
 LibreOffice writes PDF/A itself with `nativePdfa`:

@@ -1653,6 +1653,13 @@ paths:
 
                     Default: `true`.
                   default: true
+                showTrackedChanges:
+                  type: boolean
+                  description: |-
+                    Shows the tracked changes marked up, deletions struck through and insertions underlined. `false` converts the document as if every change were accepted.
+
+                    Default: `false`.
+                  default: false
                 exportFormFields:
                   type: boolean
                   description: |-
