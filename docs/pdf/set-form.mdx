@@ -23,6 +23,8 @@ Fills the fields of a PDF form.
 
 `fields` keys each value by the field's name, as `/forms/pdf/form` lists them: `name`, or `address.city` for a field `city` inside a field `address`. A checkbox takes one of its states, a choice field one of its options. The fields stay editable. A field the PDF marks read-only takes its value too.
 
+A text field or a combo shows its new value in every viewer: Gotenberg draws it into each of the field's widgets, on one line in the field's font. A value outside Western European text, Cyrillic or Chinese for instance, is drawn with a font installed in the image. A viewer that lays fields out itself still aligns, wraps or spaces the value as the field asks. A value no installed font has the characters of is left for the viewer to draw, and Gotenberg logs a warning naming the field.
+
 ## Select several items
 
 A list that selects several takes an array:
