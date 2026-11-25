@@ -82,6 +82,31 @@ Each of these flags trades a protection for a feature. Turn one on only when eve
 
 The image already runs as an unprivileged user, `gotenberg`, UID 1001.
 
+## Harden the container
+
+The image needs no writable root and no Linux capabilities. Lock both down, so a caller who plants a file can't run it and a flaw that writes outside the temp space has nowhere to land.
+
+Gotenberg writes its working files under `/tmp`. Mount the root file system read-only and give it writable `tmpfs` space there. Mark every writable mount `noexec` and `nosuid`: a `noexec` mount refuses to run any file on it, and the loader can't map a file from it and jump in either. Drop all capabilities and block privilege escalation.
+
+```yaml title="compose.yaml"
+services:
+  gotenberg:
+    image: gotenberg/gotenberg:9
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=1g
+      - /home/gotenberg:rw,noexec,nosuid,size=128m,uid=1001,gid=1001
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    shm_size: 256m
+```
+
+`/tmp` is the mount that must stay writable: every conversion's working files live there, LibreOffice's user profile included. Size it for your largest conversions. The home mount only covers what the engines cache in the home directory. Chromium needs shared memory, which `shm_size` sets; a heavy page may want more.
+
+Filter egress as well. [Refusing private addresses](/docs/operate/outbound) keeps Gotenberg off your internal network. A firewall or Kubernetes NetworkPolicy that allows only the destinations your conversions need backs that up at the network layer.
+
 ## Next
 
 [Restrict outbound requests](/docs/operate/outbound), then [limit resources](/docs/operate/limits).

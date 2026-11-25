@@ -85,9 +85,22 @@ containers:
     ports:
       - containerPort: 3000
     securityContext:
+      runAsNonRoot: true
       runAsUser: 1001
+      runAsGroup: 1001
       allowPrivilegeEscalation: false
       privileged: false
+      readOnlyRootFilesystem: true
+      capabilities:
+        drop:
+          - ALL
+      seccompProfile:
+        type: RuntimeDefault
+    volumeMounts:
+      - name: tmp
+        mountPath: /tmp
+      - name: home
+        mountPath: /home/gotenberg
     readinessProbe:
       httpGet:
         path: /health
@@ -100,7 +113,18 @@ containers:
       requests:
         memory: 512Mi
         cpu: 200m
+volumes:
+  - name: tmp
+    emptyDir:
+      medium: Memory
+      sizeLimit: 1Gi
+  - name: home
+    emptyDir:
+      medium: Memory
+      sizeLimit: 128Mi
 ```
+
+The `securityContext` locks the container down: a read-only root file system, no capabilities, no privilege escalation, and the runtime's default seccomp profile. Gotenberg writes its working files under `/tmp`, so an in-memory `emptyDir` keeps it writable; a second one covers the home directory, where the engines may cache. Kubernetes mounts an `emptyDir` with execution allowed and offers no `noexec` for it, so the read-only root carries the weight here; Docker adds [`noexec` temp mounts](/docs/operate/secure#harden-the-container) on top. The 386 image needs `socketcall`: drop `seccompProfile` there, or set a profile that allows it, as the Docker note above describes.
 
 A community-maintained Helm chart lives at [MaikuMori/helm-charts](https://github.com/MaikuMori/helm-charts).
 
